@@ -1,0 +1,487 @@
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward } from 'react-icons/fi';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
+import api from '../api/axios';
+import ProductCard from '../components/ui/ProductCard';
+import Loader from '../components/ui/Loader';
+
+const HERO_BGS = [
+  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=2400&q=100",
+  "https://images.unsplash.com/photo-1600166898405-da9535204843?w=2400&q=100",
+  "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=2400&q=100",
+  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=2400&q=100",
+  "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=2400&q=100"
+];
+
+const TRUST_BADGES = [
+  { icon: FiShield, label: "100% Authentic", desc: "Genuine handmade products" },
+  { icon: FiTruck, label: "Free Shipping", desc: "On orders above ₹5,000" },
+  { icon: FiRefreshCw, label: "Easy Returns", desc: "7-day return policy" },
+  { icon: FiAward, label: "Award Winning", desc: "Premium quality guaranteed" },
+];
+
+const CATEGORIES_DEFAULT = [
+  { name: "Persian Handmade", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" },
+  { name: "Handwoven Wool", img: "https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80" },
+  { name: "Turkish Kilims", img: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&q=80" },
+  { name: "Kashmiri Silk", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" },
+  { name: "Vintage Craft", img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&q=80" },
+];
+
+const TESTIMONIALS = [
+  { name: "Priya Sharma", location: "Mumbai", rating: 5, comment: "Absolutely stunning carpet! The quality is exceptional and it's transformed my living room completely. Will definitely order again." },
+  { name: "Rahul Gupta", location: "Delhi", rating: 5, comment: "Jannat Rugs Co. delivers true luxury. My Persian rug arrived beautifully packaged and exceeded all expectations." },
+  { name: "Ayesha Khan", location: "Hyderabad", rating: 5, comment: "The craftsmanship is unparalleled. Every thread tells a story. Customer service was also impeccable." },
+  { name: "Vikram Mehta", location: "Bangalore", rating: 5, comment: "Ordered a custom silk carpet. The artisans are true masters. My home feels like a palace now!" },
+];
+
+export default function Home() {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [featured, best, newArr, cats] = await Promise.all([
+          api.get('/products?featured=true&limit=8'),
+          api.get('/products?bestSeller=true&limit=4'),
+          api.get('/products?newArrival=true&limit=4'),
+          api.get('/categories'),
+        ]);
+        setFeaturedProducts(featured.data.products);
+        setBestSellers(best.data.products);
+        setNewArrivals(newArr.data.products);
+        setCategories(cats.data.categories.slice(0, 6));
+      } catch {}
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  return (
+    <>
+      <Helmet>
+        <title>Jannat Rugs Co. – Premium Handmade Carpets & Luxury Rugs</title>
+        <meta name="description" content="Discover our exquisite collection of handmade Persian carpets, luxury rugs, and premium floor coverings. Crafted by master artisans with generations of expertise." />
+      </Helmet>
+
+      {/* HERO SECTION */}
+      <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="w-full h-full object-cover"
+          >
+            <source src="https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4" type="video/mp4" />
+          </video>
+          {/* Theme Overlay (Keeps the exact same luxury dark aesthetic) */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.4) 50%, rgba(13,13,13,0.85) 100%)' }} />
+        </div>
+        
+        <div className="relative z-10 px-4 max-w-5xl mx-auto flex flex-col items-center justify-center text-center w-full mt-16">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.2 }}
+            className="flex flex-col items-center justify-center w-full"
+          >
+            {/* Massive Logo */}
+            <img src="/logo.png" alt="Jannat Rugs Logo" className="w-64 md:w-80 lg:w-96 aspect-square rounded-full object-cover mb-8 filter drop-shadow-2xl border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.15)]" />
+            
+            {/* Massive Firm Name */}
+            <h1 className="font-luxury text-6xl md:text-8xl lg:text-[10rem] text-gold-gradient font-bold tracking-widest leading-none mb-4 text-center" style={{ textShadow: '0 4px 30px rgba(0,0,0,0.6)' }}>
+              JANNAT
+            </h1>
+            <h2 className="font-luxury text-4xl md:text-6xl lg:text-7xl text-gold-gradient font-bold tracking-[0.3em] leading-none mb-10 text-center" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+              RUGS CO.
+            </h2>
+            
+            <Link to="/shop" className="btn-gold flex items-center justify-center gap-2 px-12 py-5 text-lg mt-8 shadow-2xl">
+              Explore The Collection <FiArrowRight size={20} />
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
+          <motion.div animate={{ y: [0, 15, 0] }} transition={{ repeat: Infinity, duration: 2 }}
+            className="w-px h-20 bg-gradient-to-b from-amber-400 to-transparent mx-auto" />
+        </div>
+      </section>
+
+      {/* BRAND HERITAGE BANNER (Minimalist) */}
+      <section className="py-24 border-y border-amber-900/10" style={{ background: '#050505' }}>
+        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
+          <div className="md:w-1/2">
+            <h2 className="font-luxury text-3xl md:text-4xl text-white leading-snug">
+              A Heritage of <br/><span className="text-amber-400">Hand-Knotted Perfection.</span>
+            </h2>
+          </div>
+          <div className="md:w-1/2 flex flex-wrap justify-center md:justify-end gap-x-12 gap-y-8">
+            {[
+              { label: 'Craftsmanship', desc: '100% Authentic' },
+              { label: 'Worldwide', desc: 'Global Shipping' },
+              { label: 'Est. 1999', desc: 'Legacy of Trust' },
+            ].map(item => (
+              <div key={item.label} className="flex flex-col items-center md:items-start">
+                <span className="text-amber-100 text-lg font-medium tracking-wide uppercase">{item.label}</span>
+                <span className="text-amber-100/40 text-xs tracking-widest uppercase mt-1">{item.desc}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED COLLECTION */}
+      <section className="py-32 px-4 max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center mb-24">
+          <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Curated For You</p>
+          <h2 className="font-luxury text-4xl md:text-5xl text-white mb-4">Featured Collection</h2>
+          <div className="divider-gold mb-4" />
+          <p className="text-amber-100/50 max-w-lg mx-auto text-sm leading-relaxed">
+            Each carpet is a work of art, handcrafted by master artisans using centuries-old techniques.
+          </p>
+        </div>
+        {loading ? <Loader /> : (
+          <>
+            <div className="flex flex-wrap justify-center gap-6">
+              {featuredProducts.length > 0 ? featuredProducts.map((p, i) => (
+                <div key={p._id} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(25%-1.2rem)] max-w-[320px]">
+                  <ProductCard product={p} index={i} />
+                </div>
+              )) : (
+                <div className="w-full text-center py-16">
+                  <p className="text-amber-100/30 font-luxury text-2xl mb-4">Collection Coming Soon</p>
+                  <p className="text-amber-100/20 text-sm">Our artisans are crafting exclusive pieces for you.</p>
+                </div>
+              )}
+            </div>
+            {featuredProducts.length > 0 && (
+              <div className="text-center mt-12">
+                <Link to="/shop" className="btn-outline-gold inline-flex items-center gap-2">
+                  View All Products <FiArrowRight size={16} />
+                </Link>
+              </div>
+            )}
+          </>
+        )}
+      </section>
+
+      {/* COLLECTIONS / CATEGORIES (Carpet Couture Style Split Layout) */}
+      <section className="py-0">
+        {CATEGORIES_DEFAULT.slice(0, 3).map((cat, i) => (
+          <div key={cat.name} className={`flex flex-col ${i % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} min-h-[500px] lg:min-h-[600px] group border-b border-amber-900/10`}>
+            <div className="w-full lg:w-1/2 relative h-[400px] lg:h-auto overflow-hidden">
+              <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-transparent" />
+            </div>
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-24 bg-[#050505] text-center">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-md">
+                <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4">Collection</p>
+                <h3 className="font-luxury text-4xl md:text-5xl text-white mb-6">{cat.name}</h3>
+                <div className="divider-gold mx-auto mb-6" />
+                <p className="text-amber-100/50 text-sm leading-relaxed mb-10">
+                  Experience the pinnacle of craftsmanship with our authentic {cat.name.toLowerCase()} collection. Carefully hand-knotted by expert artisans using the finest materials.
+                </p>
+                <Link to={`/shop?search=${cat.name.split(' ')[0]}`} className="btn-outline-gold inline-flex items-center justify-center gap-2 px-10 py-4 text-xs tracking-widest uppercase">
+                  Explore Collection <FiArrowRight size={14} />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* BESPOKE SERVICE (Custom Rugs Video Split Layout) */}
+      <section className="py-0 px-0 relative overflow-hidden flex flex-col lg:flex-row min-h-[600px] border-b border-amber-900/20" style={{ background: '#0a0a0a' }}>
+        <div className="w-full lg:w-1/2 relative h-[450px] lg:h-auto overflow-hidden">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="w-full h-full object-cover scale-105"
+          >
+            {/* Another elegant carpet making video */}
+            <source src="https://cdn.shopify.com/videos/c/o/v/6300a3211db748b88ff208c7e3eec239.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-24 bg-[#0a0a0a]">
+          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="max-w-xl text-center lg:text-left">
+            <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4">The Bespoke Experience</p>
+            <h2 className="font-luxury text-4xl md:text-6xl text-white mb-6 leading-tight">
+              Custom Rugs <br /><span className="text-gold-gradient">Made For You</span>
+            </h2>
+            <div className="w-12 h-px bg-amber-400/50 mb-6 mx-auto lg:mx-0" />
+            <p className="text-amber-100/50 text-base leading-relaxed mb-10">
+              Create a masterpiece that reflects your unique style. From selecting the finest hand-spun wool and pure silk to choosing custom colors and dimensions, our master weavers bring your vision to life perfectly.
+            </p>
+            <a href="https://wa.me/919235508422?text=I%20want%20to%20inquire%20about%20a%20custom%20rug" target="_blank" rel="noreferrer" className="btn-gold inline-flex items-center justify-center gap-2 px-10 py-4 uppercase tracking-widest text-xs">
+              Inquire Now <FiArrowRight size={14} />
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* BEST SELLERS */}
+      {(bestSellers.length > 0 || loading) && (
+        <section className="py-32 px-4 max-w-7xl mx-auto">
+          <div className="flex flex-col items-center text-center mb-24">
+            <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Customer Favorites</p>
+            <h2 className="font-luxury text-4xl md:text-5xl text-white mb-4">Best Sellers</h2>
+            <div className="divider-gold" />
+          </div>
+          {loading ? <Loader /> : (
+            <div className="flex flex-wrap justify-center gap-6">
+              {bestSellers.map((p, i) => (
+                <div key={p._id} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.2rem)] max-w-[320px]">
+                  <ProductCard product={p} index={i} />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* NEW ARRIVALS */}
+      {(newArrivals.length > 0 || loading) && (
+        <section className="py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)' }}>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col items-center text-center mb-24">
+              <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Fresh From The Loom</p>
+              <h2 className="font-luxury text-4xl md:text-5xl text-white mb-4">New Arrivals</h2>
+              <div className="divider-gold" />
+            </div>
+            {loading ? <Loader /> : (
+              <div className="flex flex-wrap justify-center gap-6">
+                {newArrivals.map((p, i) => (
+                  <div key={p._id} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.2rem)] max-w-[320px]">
+                    <ProductCard product={p} index={i} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+
+
+      {/* VIDEO CUSTOMER REVIEWS */}
+      <section className="py-32 px-4 relative" style={{ background: '#080808' }}>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-overlay pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col items-center text-center mb-16">
+            <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Real Stories</p>
+            <h2 className="font-luxury text-4xl md:text-5xl text-white mb-4">Customer Video Reviews</h2>
+            <div className="divider-gold mb-6" />
+            <p className="text-amber-100/50 max-w-xl mx-auto text-sm leading-relaxed">
+              Hear directly from our beloved clients about their experience with Jannat Rugs Co. and how our authentic hand-knotted carpets transformed their homes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {/* Video Review 1 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              viewport={{ once: true }}
+              className="w-full glass-card-dark p-2 md:p-4 rounded-[30px] border border-amber-900/30 shadow-[0_0_50px_rgba(201,168,76,0.05)] bg-black/40"
+            >
+              <div className="relative aspect-[4/5] sm:aspect-video rounded-[24px] overflow-hidden bg-black group border border-amber-900/20">
+                <video 
+                  controls 
+                  poster="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"
+                  className="w-full h-full object-cover"
+                >
+                  <source src="https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
+                  <div className="flex text-amber-400">
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 mb-4 text-center px-4">
+                <p className="text-amber-100/80 italic font-luxury text-lg md:text-xl mb-4 leading-relaxed">
+                  "I ordered a pure Kashmiri Silk rug for my living room, and it exceeded every expectation. The craftsmanship is truly world-class, and it completely elevated the aura of my home."
+                </p>
+                <p className="text-amber-400 text-xs tracking-[0.2em] uppercase font-medium">— Vikram Rajput, Mumbai</p>
+              </div>
+            </motion.div>
+
+            {/* Video Review 2 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="w-full glass-card-dark p-2 md:p-4 rounded-[30px] border border-amber-900/30 shadow-[0_0_50px_rgba(201,168,76,0.05)] bg-black/40"
+            >
+              <div className="relative aspect-[4/5] sm:aspect-video rounded-[24px] overflow-hidden bg-black group border border-amber-900/20">
+                <video 
+                  controls 
+                  poster="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80"
+                  className="w-full h-full object-cover"
+                >
+                  <source src="https://cdn.shopify.com/videos/c/o/v/6300a3211db748b88ff208c7e3eec239.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
+                  <div className="flex text-amber-400">
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                    <FiStar size={12} fill="currentColor" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 mb-4 text-center px-4">
+                <p className="text-amber-100/80 italic font-luxury text-lg md:text-xl mb-4 leading-relaxed">
+                  "The Persian handmade carpet I received is a literal piece of art. You can feel the quality of the wool and the dedication of the artisans. Highly recommend Jannat Rugs!"
+                </p>
+                <p className="text-amber-400 text-xs tracking-[0.2em] uppercase font-medium">— Rohan Desai, Delhi</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
+        <div className="max-w-3xl mx-auto">
+          <div className="flex flex-col items-center text-center mb-24">
+            <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Common Questions</p>
+            <h2 className="font-luxury text-4xl text-white mb-4">FAQ</h2>
+            <div className="divider-gold" />
+          </div>
+          {[
+            { q: "Are your carpets genuinely handmade?", a: "Yes! Every carpet in our collection is handmade by skilled artisans using traditional techniques passed down through generations. We never sell machine-made products under the handmade label." },
+            { q: "What is your return policy?", a: "We offer a 7-day hassle-free return policy. If you're not completely satisfied with your purchase, simply contact us and we'll arrange a return or exchange." },
+            { q: "Do you offer custom carpet sizes?", a: "Absolutely! We specialize in custom-size carpets. Contact us with your dimensions and our artisans will create the perfect piece for your space." },
+            { q: "How do I care for my carpet?", a: "Regular vacuuming, rotating every 6 months, and professional cleaning every 1-2 years will keep your carpet in pristine condition. We provide detailed care instructions with every purchase." },
+            { q: "What payment methods do you accept?", a: "We accept Cash on Delivery (COD), Razorpay, UPI, Credit/Debit Cards, and digital wallets. All online payments are secured with industry-standard encryption." },
+          ].map((faq, i) => (
+            <FAQItem key={i} question={faq.q} answer={faq.a} />
+          ))}
+        </div>
+      </section>
+
+      {/* GET TO KNOW US / TEAM (Split Layout like Carpet Couture) */}
+      <section className="py-40 px-4" style={{ background: '#080808' }}>
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
+          {/* Image Side */}
+          <div className="w-full lg:w-1/2 relative">
+            <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-bl-[100px] rounded-tr-[100px] border border-amber-900/20 relative group shadow-2xl">
+              <img 
+                src="/uploads/team/sahana.jpg" 
+                alt="Jannat Rugs Team" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                onError={(e) => {
+                  e.target.src = "https://images.unsplash.com/photo-1600166898405-da9535204843?w=800&q=80"; // Beautiful fallback rug making image
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
+            </div>
+            
+            {/* Decorative Element */}
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 border border-amber-500/20 rounded-full -z-10" />
+            <div className="absolute -top-10 -right-10 w-60 h-60 border border-amber-500/10 rounded-full -z-10" />
+          </div>
+
+          {/* Text Side */}
+          <div className="w-full lg:w-1/2 text-center lg:text-left">
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <p className="text-amber-400 text-sm tracking-[0.5em] uppercase mb-6 font-medium">Get To Know Us</p>
+              <h2 className="font-luxury text-5xl md:text-6xl text-white mb-8 leading-snug">
+                The <span className="text-gold-gradient">Visionaries</span> <br className="hidden md:block" /> Behind Jannat
+              </h2>
+              <div className="w-20 h-px bg-amber-500/50 mb-10 mx-auto lg:mx-0" />
+              <p className="text-amber-100/70 text-lg md:text-xl leading-relaxed mb-8 font-light">
+                Meet the founders who brought the dream of preserving authentic Indian craftsmanship to life. Combining rich heritage with modern luxury, Shahid Ali and Sazid Ali create timeless masterpieces that breathe soul into your living spaces.
+              </p>
+              <p className="text-amber-100/50 text-base leading-relaxed mb-12">
+                Every rug we deliver is a testament to the meticulous care, passion, and unparalleled skill of our generational artisans. 
+              </p>
+              <Link to="/team" className="btn-gold inline-flex items-center justify-center gap-3 px-12 py-5 uppercase tracking-widest text-sm shadow-xl hover:shadow-amber-500/20">
+                Meet Our Team <FiArrowRight size={18} />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA BANNER (Cinematic Full Width) */}
+      <section className="relative py-40 px-4 flex items-center justify-center overflow-hidden border-t border-amber-900/20">
+        <div className="absolute inset-0 z-0">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80" alt="Luxury Interior" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/75" />
+        </div>
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <p className="text-amber-400 text-xs tracking-[0.5em] uppercase mb-6">Begin Your Journey</p>
+            <h2 className="font-luxury text-5xl md:text-7xl text-white mb-8 leading-tight">
+              Ready to Transform <br />Your Space?
+            </h2>
+            <div className="w-16 h-px bg-amber-400/50 mb-8 mx-auto" />
+            <p className="text-amber-100/70 mb-12 text-lg max-w-xl mx-auto leading-relaxed">
+              Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link to="/shop" className="btn-gold inline-flex items-center gap-3 px-12 py-5 text-sm tracking-widest uppercase">
+                Shop Collection <FiArrowRight size={16} />
+              </Link>
+              <Link to="/contact" className="text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-widest text-xs border-b border-amber-400/30 hover:border-amber-400 pb-1">
+                Request a Consultation
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function FAQItem({ question, answer }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-amber-900/20 py-4">
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between text-left gap-4 group">
+        <span className="text-amber-100/80 group-hover:text-amber-400 transition-colors font-medium text-sm">{question}</span>
+        <motion.span animate={{ rotate: open ? 45 : 0 }} className="text-amber-400 text-xl flex-shrink-0">+</motion.span>
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: open ? 'auto' : 0, opacity: open ? 1 : 0 }}
+        className="overflow-hidden"
+      >
+        <p className="text-amber-100/50 text-sm leading-relaxed pt-3">{answer}</p>
+      </motion.div>
+    </div>
+  );
+}
