@@ -15,7 +15,7 @@ export default function AdminProducts() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([null, null, null, null]);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -30,8 +30,8 @@ export default function AdminProducts() {
     catch {} finally { setLoading(false); }
   };
 
-  const openAdd = () => { setEditing(null); setForm(EMPTY); setImages([]); setShowModal(true); };
-  const openEdit = (p) => { setEditing(p); setForm({ ...p, category: p.category?._id, tags: p.tags?.join(', '), colors: p.colors?.join(', ') }); setImages([]); setShowModal(true); };
+  const openAdd = () => { setEditing(null); setForm(EMPTY); setImages([null, null, null, null]); setShowModal(true); };
+  const openEdit = (p) => { setEditing(p); setForm({ ...p, category: p.category?._id, tags: p.tags?.join(', '), colors: p.colors?.join(', ') }); setImages([null, null, null, null]); setShowModal(true); };
 
   const save = async (e) => {
     e.preventDefault();
@@ -50,9 +50,11 @@ export default function AdminProducts() {
         }
       });
       
-      // Append actual file objects
+      // Append actual file objects from slots
       images.forEach(img => {
-        fd.append('images', img);
+        if (img instanceof File) {
+          fd.append('images', img);
+        }
       });
 
       if (editing) { 
@@ -225,13 +227,43 @@ export default function AdminProducts() {
                     ))}
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Product Images</label>
-                    <label className="flex flex-col items-center justify-center border-2 border-dashed border-amber-900/40 rounded-xl p-6 cursor-pointer hover:border-amber-700/60 transition-colors">
-                      <FiUpload size={24} className="text-amber-400/50 mb-2" />
-                      <span className="text-amber-100/40 text-sm">Click to upload images (max 50)</span>
-                      <input type="file" accept="image/*" multiple className="hidden" onChange={e => setImages([...e.target.files])} />
-                    </label>
-                    {images.length > 0 && <p className="text-xs text-amber-400 mt-2">{images.length} image(s) selected</p>}
+                    <label className="text-xs text-amber-100/50 block mb-4 uppercase tracking-widest font-bold">Product Images (4 Slots)</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      {[0, 1, 2, 3].map((index) => (
+                        <label key={index} className="relative aspect-square rounded-xl border-2 border-dashed border-amber-900/30 hover:border-amber-500/50 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-black/20 group">
+                          {images[index] || (editing?.images?.[index]) ? (
+                            <>
+                              <img 
+                                src={images[index] ? URL.createObjectURL(images[index]) : editing.images[index]} 
+                                alt={`Preview ${index}`} 
+                                className="w-full h-full object-cover" 
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                <FiUpload className="text-white" size={20} />
+                              </div>
+                            </>
+                          ) : (
+                            <div className="flex flex-col items-center gap-1">
+                              <FiPlus className="text-amber-500/40" size={20} />
+                              <span className="text-[10px] text-amber-100/20 uppercase font-bold">Slot {index + 1}</span>
+                            </div>
+                          )}
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="hidden" 
+                            onChange={e => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                const newImages = [...images];
+                                newImages[index] = file;
+                                setImages(newImages);
+                              }
+                            }} 
+                          />
+                        </label>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-3 pt-2">
