@@ -138,6 +138,54 @@ export default function AdminSettings() {
             </div>
           </div>
 
+          <div className="glass-card p-6 rounded-2xl space-y-4">
+            <h2 className="text-amber-400 font-medium">Leadership Photos</h2>
+            <p className="text-[10px] text-amber-100/30 uppercase tracking-widest mb-4">Upload photos of the Founder and Co-Founder</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Founder */}
+              <div className="space-y-3">
+                <label className="text-xs text-amber-100/50 block uppercase tracking-wider">Founder (Shahid Ali)</label>
+                <label className="relative aspect-square rounded-2xl border-2 border-dashed border-amber-900/30 hover:border-amber-500/50 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-black/20 group">
+                  {settings.founderImage ? (
+                    <>
+                      <img src={settings.founderImage} alt="Founder" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <FiUpload className="text-white" size={20} />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center gap-2">
+                      <FiUpload className="text-amber-500/40" size={24} />
+                      <span className="text-[10px] text-amber-100/20 uppercase font-bold">Upload Photo</span>
+                    </div>
+                  )}
+                  <input name="founderImage" type="file" accept="image/*" className="hidden" />
+                </label>
+              </div>
+
+              {/* Co-Founder */}
+              <div className="space-y-3">
+                <label className="text-xs text-amber-100/50 block uppercase tracking-wider">Co-Founder (Sazid Ali)</label>
+                <label className="relative aspect-square rounded-2xl border-2 border-dashed border-amber-900/30 hover:border-amber-500/50 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-black/20 group">
+                  {settings.coFounderImage ? (
+                    <>
+                      <img src={settings.coFounderImage} alt="Co-Founder" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <FiUpload className="text-white" size={20} />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center gap-2">
+                      <FiUpload className="text-amber-500/40" size={24} />
+                      <span className="text-[10px] text-amber-100/20 uppercase font-bold">Upload Photo</span>
+                    </div>
+                  )}
+                  <input name="coFounderImage" type="file" accept="image/*" className="hidden" />
+                </label>
+              </div>
+            </div>
+          </div>
+
           <button type="submit" disabled={saving} className="btn-gold py-2.5 px-8">{saving ? 'Saving...' : 'Save Settings'}</button>
         </form>
       )}

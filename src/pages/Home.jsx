@@ -438,22 +438,37 @@ export default function Home() {
       <section className="py-40 px-4" style={{ background: '#080808' }}>
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
           {/* Image Side */}
-          <div className="w-full lg:w-1/2 relative">
-            <div className="aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-bl-[100px] rounded-tr-[100px] border border-amber-900/20 relative group shadow-2xl">
-              <img 
-                src="/uploads/team/sahana.jpg" 
-                alt="Jannat Rugs Team" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                onError={(e) => {
-                  e.target.src = "https://images.unsplash.com/photo-1600166898405-da9535204843?w=800&q=80"; // Beautiful fallback rug making image
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
+          <div className="w-full lg:w-1/2">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-amber-900/20 relative group shadow-2xl">
+                  <img 
+                    src={getImageUrl(settings?.founderImage) || "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"} 
+                    alt="Founder Shahid Ali" 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
+                  <div className="absolute bottom-4 left-4">
+                    <p className="text-amber-400 text-[10px] uppercase tracking-widest font-bold">Founder</p>
+                    <p className="text-white text-xs font-luxury">Shahid Ali</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4 pt-8">
+                <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-amber-900/20 relative group shadow-2xl">
+                  <img 
+                    src={getImageUrl(settings?.coFounderImage) || "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80"} 
+                    alt="Co-Founder Sazid Ali" 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
+                  <div className="absolute bottom-4 left-4">
+                    <p className="text-amber-400 text-[10px] uppercase tracking-widest font-bold">Co-Founder</p>
+                    <p className="text-white text-xs font-luxury">Sazid Ali</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            
-            {/* Decorative Element */}
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 border border-amber-500/20 rounded-full -z-10" />
-            <div className="absolute -top-10 -right-10 w-60 h-60 border border-amber-500/10 rounded-full -z-10" />
           </div>
 
           {/* Text Side */}
