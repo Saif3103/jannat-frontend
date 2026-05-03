@@ -11,7 +11,7 @@ const USER_AVATAR = '👤';
 
 const initialMessage = {
   from: 'bot',
-  text: "Hello! 🙏\n\nI am the Jannat Rugs Co. AI Assistant. You can ask me anything about:\n• Carpet sizes & prices\n• Materials & craftsmanship\n• Delivery & returns",
+  text: "Welcome to Jannat Rugs Co. Luxury Experience. ✨\n\nI am your Personal Concierge. How may I assist you in finding the perfect masterpiece for your home today?",
   time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 };
 
@@ -47,27 +47,27 @@ export default function ChatBot() {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       
-      // Format text so phone numbers are read as individual digits with small pauses
       const spokenText = text.replace(/\b(\d{10})\b/g, match => match.split('').join(', '));
-      
       const utterance = new SpeechSynthesisUtterance(spokenText);
-      
-      // Basic language detection for choosing the right voice (Indian English)
       utterance.lang = 'en-IN';
       
       const voices = window.speechSynthesis.getVoices();
+      // Priority: Natural Indian English -> Any Indian English -> Any Natural English -> Default
+      let bestVoice = voices.find(v => v.lang.includes('en-IN') && v.name.toLowerCase().includes('natural')) || 
+                      voices.find(v => v.lang.includes('en-IN') && v.name.toLowerCase().includes('google')) ||
+                      voices.find(v => v.lang.includes('en-IN')) ||
+                      voices.find(v => v.name.toLowerCase().includes('natural') && v.lang.includes('en')) ||
+                      voices.find(v => v.lang.includes('en'));
+
+      if (bestVoice) {
+        utterance.voice = bestVoice;
+        // Adjust parameters based on voice quality
+        utterance.rate = bestVoice.name.toLowerCase().includes('natural') ? 1.0 : 0.9;
+      } else {
+        utterance.rate = 0.9;
+      }
       
-      // Find best Indian English female/natural voice
-      let bestVoice = voices.find(v => v.lang.includes('en-IN') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('google'))) || 
-                  voices.find(v => v.lang.includes('en-IN')) ||
-                  voices.find(v => v.lang.includes('en'));
-
-      if (bestVoice) utterance.voice = bestVoice;
-
-      // Natural speech parameters
-      utterance.rate = 0.9; 
-      utterance.pitch = 1.1; // Higher pitch for more female-sounding voice
-
+      utterance.pitch = 1.05; 
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -266,24 +266,47 @@ export default function ChatBot() {
               ))}
             </div>
 
-            {/* Input */}
-            <div className="p-3" style={{ borderTop: '1px solid rgba(201,168,76,0.15)' }}>
-              <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="flex gap-2">
-                <button type="button" onClick={startListening} title="Speak in English"
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors border ${isListening ? 'border-red-500 text-red-500 bg-red-500/10' : 'border-amber-700/40 text-amber-400 hover:bg-amber-500/10'}`}>
-                  {isListening ? <FiMicOff size={18} className="animate-pulse" /> : <FiMic size={18} />}
-                </button>
-                <input
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  placeholder={isListening ? 'Listening...' : 'Type message...'}
-                  className="input-luxury text-sm py-2"
-                  id="chat-input"
-                />
-                <button type="submit"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all"
-                  style={{ background: 'linear-gradient(135deg, #C9A84C, #9B7B2E)' }}>
-                  <FiSend size={16} color="#0D0D0D" />
+            {/* Input Area */}
+            <div className="p-4" style={{ borderTop: '1px solid rgba(201,168,76,0.1)' }}>
+              {isListening && (
+                <div className="flex justify-center gap-1 mb-4">
+                  {[0, 1, 2, 3, 4].map(i => (
+                    <motion.div 
+                      key={i} 
+                      className="w-1 bg-amber-400/60 rounded-full"
+                      animate={{ height: [8, 24, 8] }}
+                      transition={{ repeat: Infinity, duration: 0.5, delay: i * 0.1 }}
+                    />
+                  ))}
+                </div>
+              )}
+              <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="flex gap-2 items-center">
+                <div className="relative">
+                  {isListening && (
+                    <motion.div 
+                      layoutId="listening-pulse"
+                      className="absolute inset-0 bg-red-500/20 rounded-xl"
+                      animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                    />
+                  )}
+                  <button type="button" onClick={startListening} 
+                    className={`relative w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all border ${isListening ? 'border-red-500 text-red-500 bg-red-500/10' : 'border-amber-700/30 text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/5'}`}>
+                    {isListening ? <FiMicOff size={20} /> : <FiMic size={20} />}
+                  </button>
+                </div>
+                <div className="flex-1 relative">
+                  <input
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    placeholder={isListening ? 'I am listening...' : 'Ask me anything...'}
+                    className="w-full bg-white/5 border border-amber-900/20 rounded-xl px-4 py-2.5 text-sm text-amber-100 placeholder:text-amber-100/20 focus:outline-none focus:border-amber-500/40 transition-all"
+                    id="chat-input"
+                  />
+                </div>
+                <button type="submit" disabled={!input.trim()}
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all ${input.trim() ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'bg-white/5 text-amber-100/20 border border-amber-900/20'}`}>
+                  <FiSend size={18} />
                 </button>
               </form>
             </div>
