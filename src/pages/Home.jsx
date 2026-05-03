@@ -224,7 +224,7 @@ export default function Home() {
 
       {/* COLLECTIONS / CATEGORIES (Carpet Couture Style Split Layout) */}
       <section className="py-0">
-        {CATEGORIES_DEFAULT.slice(0, 3).map((cat, i) => (
+        {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => (
           <div key={cat.name} className={`flex flex-col ${i % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} min-h-[500px] lg:min-h-[600px] group border-b border-amber-900/10`}>
             <div className="w-full lg:w-1/2 relative h-[400px] lg:h-auto overflow-hidden">
               <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
