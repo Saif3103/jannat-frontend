@@ -22,7 +22,8 @@ export default function AdminSettings() {
   const save = async (data) => {
     setSaving(true);
     try {
-      const { res } = await api.put('/settings', data);
+      // Use FormData if data is an instance of FormData, otherwise just the object
+      await api.put('/settings', data);
       toast.success('Settings saved!');
       api.get('/settings').then(r => setSettings(r.data.settings));
     } catch { toast.error('Failed to save'); }
@@ -61,7 +62,7 @@ export default function AdminSettings() {
 
       {/* GENERAL */}
       {activeTab === 'general' && settings && (
-        <form onSubmit={e => { e.preventDefault(); const fd = new FormData(e.target); save(Object.fromEntries(fd)); }} className="space-y-6 max-w-2xl">
+        <form onSubmit={e => { e.preventDefault(); const fd = new FormData(e.target); save(fd); }} className="space-y-6 max-w-2xl">
           <div className="glass-card p-6 rounded-2xl space-y-4">
             <h2 className="text-amber-400 font-medium">Contact Information</h2>
             {[
@@ -98,6 +99,26 @@ export default function AdminSettings() {
               </div>
             ))}
           </div>
+
+          <div className="glass-card p-6 rounded-2xl space-y-4">
+            <h2 className="text-amber-400 font-medium">Homepage Brand Video</h2>
+            <p className="text-[10px] text-amber-100/30 uppercase tracking-widest mb-2">Upload an advertisement or brand story video (MP4/WEBM)</p>
+            <div className="flex flex-col gap-4">
+              {settings.heroVideo && (
+                <div className="aspect-video w-full max-w-sm rounded-lg overflow-hidden border border-amber-900/30 bg-black">
+                  <video src={settings.heroVideo} className="w-full h-full object-cover" muted />
+                </div>
+              )}
+              <label className="flex items-center gap-3 px-6 py-4 border-2 border-dashed border-amber-900/30 rounded-xl cursor-pointer hover:border-amber-500/50 transition-all group">
+                <FiUpload size={20} className="text-amber-500/50 group-hover:text-amber-400" />
+                <span className="text-xs text-amber-100/40 font-bold uppercase tracking-widest">
+                  {settings.heroVideo ? 'Replace Brand Video' : 'Upload Brand Video'}
+                </span>
+                <input name="heroVideo" type="file" accept="video/*" className="hidden" />
+              </label>
+            </div>
+          </div>
+
           <button type="submit" disabled={saving} className="btn-gold py-2.5 px-8">{saving ? 'Saving...' : 'Save Settings'}</button>
         </form>
       )}

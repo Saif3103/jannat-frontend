@@ -48,20 +48,23 @@ export default function Home() {
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [featured, best, newArr, cats] = await Promise.all([
+        const [featured, best, newArr, cats, setts] = await Promise.all([
           api.get('/products?featured=true&limit=8'),
           api.get('/products?bestSeller=true&limit=4'),
           api.get('/products?newArrival=true&limit=4'),
           api.get('/categories'),
+          api.get('/settings'),
         ]);
         setFeaturedProducts(featured.data.products);
         setBestSellers(best.data.products);
         setNewArrivals(newArr.data.products);
         setCategories(cats.data.categories.slice(0, 6));
+        setSettings(setts.data.settings);
       } catch {}
       setLoading(false);
     };
@@ -84,9 +87,10 @@ export default function Home() {
             loop 
             muted 
             playsInline 
+            key={settings?.heroVideo}
             className="w-full h-full object-cover"
           >
-            <source src="https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4" type="video/mp4" />
+            <source src={settings?.heroVideo || "https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4"} type="video/mp4" />
           </video>
           {/* Theme Overlay (Keeps the exact same luxury dark aesthetic) */}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.4) 50%, rgba(13,13,13,0.85) 100%)' }} />
