@@ -57,17 +57,19 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [settings, setSettings] = useState(null);
   const [offers, setOffers] = useState([]);
+  const [videoReviews, setVideoReviews] = useState([]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [featured, best, newArr, cats, setts, offs] = await Promise.all([
+        const [featured, best, newArr, cats, setts, offs, vReviews] = await Promise.all([
           api.get('/products?featured=true&limit=8'),
           api.get('/products?bestSeller=true&limit=4'),
           api.get('/products?newArrival=true&limit=4'),
           api.get('/categories'),
           api.get('/settings'),
           api.get('/offers'),
+          api.get('/video-reviews'),
         ]);
         setFeaturedProducts(featured.data.products);
         setBestSellers(best.data.products);
@@ -75,6 +77,7 @@ export default function Home() {
         setCategories(cats.data.categories.slice(0, 6));
         setSettings(setts.data.settings);
         setOffers(offs.data.offers);
+        setVideoReviews(vReviews.data.reviews.slice(0, 2));
       } catch {}
       setLoading(false);
     };
@@ -411,78 +414,49 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Video Review 1 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }}
-              className="w-full glass-card-dark p-2 md:p-4 rounded-[30px] border border-amber-900/30 shadow-[0_0_50px_rgba(201,168,76,0.05)] bg-black/40"
-            >
-              <div className="relative aspect-[4/5] sm:aspect-video rounded-[24px] overflow-hidden bg-black group border border-amber-900/20">
-                <video 
-                  controls 
-                  poster="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"
-                  className="w-full h-full object-cover"
-                >
-                  <source src="https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
-                  <div className="flex text-amber-400">
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
+            {videoReviews.length > 0 ? videoReviews.map((rev, idx) => (
+              <motion.div 
+                key={rev._id} 
+                initial={{ opacity: 0, y: 30 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.2 }}
+                className="w-full glass-card-dark p-2 md:p-4 rounded-[30px] border border-amber-900/30 shadow-[0_0_50px_rgba(201,168,76,0.05)] bg-black/40"
+              >
+                <div className="relative aspect-[4/5] sm:aspect-video rounded-[24px] overflow-hidden bg-black group border border-amber-900/20">
+                  <video 
+                    controls 
+                    className="w-full h-full object-cover"
+                  >
+                    <source src={getImageUrl(rev.video)} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  
+                  <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
+                    <div className="flex text-amber-400">
+                      {[...Array(rev.rating)].map((_, i) => <FiStar key={i} size={12} fill="currentColor" />)}
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="mt-6 mb-4 text-center px-4">
-                <p className="text-amber-100/80 italic font-luxury text-lg md:text-xl mb-4 leading-relaxed">
-                  "I ordered a pure Kashmiri Silk rug for my living room, and it exceeded every expectation. The craftsmanship is truly world-class, and it completely elevated the aura of my home."
-                </p>
-                <p className="text-amber-400 text-xs tracking-[0.2em] uppercase font-medium">— Vikram Rajput, Mumbai</p>
-              </div>
-            </motion.div>
-
-            {/* Video Review 2 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="w-full glass-card-dark p-2 md:p-4 rounded-[30px] border border-amber-900/30 shadow-[0_0_50px_rgba(201,168,76,0.05)] bg-black/40"
-            >
-              <div className="relative aspect-[4/5] sm:aspect-video rounded-[24px] overflow-hidden bg-black group border border-amber-900/20">
-                <video 
-                  controls 
-                  poster="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80"
-                  className="w-full h-full object-cover"
-                >
-                  <source src="https://cdn.shopify.com/videos/c/o/v/6300a3211db748b88ff208c7e3eec239.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
                 
-                <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
-                  <div className="flex text-amber-400">
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                    <FiStar size={12} fill="currentColor" />
-                  </div>
+                <div className="mt-6 mb-4 text-center px-4">
+                  <p className="text-amber-100/80 italic font-luxury text-lg md:text-xl mb-4 leading-relaxed line-clamp-2">
+                    "{rev.comment}"
+                  </p>
+                  <p className="text-amber-400 text-xs tracking-[0.2em] uppercase font-medium">— {rev.name}, Verified Buyer</p>
+                  {rev.productName && (
+                    <Link to={`/product/${rev.productId}`} className="text-[10px] text-amber-100/30 hover:text-amber-500 transition-colors mt-2 block uppercase tracking-widest">
+                      Product: {rev.productName}
+                    </Link>
+                  )}
                 </div>
+              </motion.div>
+            )) : (
+              <div className="col-span-2 text-center py-20 border border-dashed border-amber-900/20 rounded-3xl">
+                <p className="text-amber-100/30 font-luxury text-2xl">Sharing the Joy Soon</p>
+                <p className="text-amber-100/20 text-xs mt-2 uppercase tracking-widest">Our customers are preparing their video stories</p>
               </div>
-              
-              <div className="mt-6 mb-4 text-center px-4">
-                <p className="text-amber-100/80 italic font-luxury text-lg md:text-xl mb-4 leading-relaxed">
-                  "The Persian handmade carpet I received is a literal piece of art. You can feel the quality of the wool and the dedication of the artisans. Highly recommend Jannat Rugs!"
-                </p>
-                <p className="text-amber-400 text-xs tracking-[0.2em] uppercase font-medium">— Rohan Desai, Delhi</p>
-              </div>
-            </motion.div>
+            )}
           </div>
         </div>
       </section>

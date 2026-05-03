@@ -26,6 +26,9 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
+  const [reviewVideo, setReviewVideo] = useState(null);
+  const [reviewImages, setReviewImages] = useState([]);
+  const [canReview, setCanReview] = useState(false);
   const [reviewLoading, setReviewLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
 
@@ -41,6 +44,18 @@ export default function ProductDetail() {
       setActiveImg(0);
       if (r.data.product.sizes?.length) setSelectedSize(r.data.product.sizes[0].label);
       if (r.data.product.colors?.length) setSelectedColor(r.data.product.colors[0]);
+      
+      // Check if user can review
+      if (user) {
+        api.get('/orders/myorders').then(ordersRes => {
+          const delivered = ordersRes.data.orders?.some(o => 
+            o.orderStatus === 'Delivered' && 
+            o.orderItems.some(item => (item.product?._id || item.product) === r.data.product._id)
+          );
+          setCanReview(delivered);
+        });
+      }
+
       // Fetch related
       if (r.data.product.category?._id) {
         api.get(`/products?category=${r.data.product.category._id}&limit=4`).then(rel => {
@@ -48,7 +63,7 @@ export default function ProductDetail() {
         });
       }
     }).catch(() => toast.error('Product not found')).finally(() => setLoading(false));
-  }, [id]);
+  }, [id, user]);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -58,11 +73,19 @@ export default function ProductDetail() {
   const handleReview = async (e) => {
     e.preventDefault();
     if (!user) { toast.error('Please login to review'); return; }
+    if (!canReview) { toast.error('Only customers with delivered orders can review'); return; }
+    
     setReviewLoading(true);
     try {
-      await api.post(`/products/${id}/review`, { rating: reviewRating, comment: reviewText });
-      toast.success('Review submitted!');
-      setReviewText(''); setReviewRating(5);
+      const fd = new FormData();
+      fd.append('rating', reviewRating);
+      fd.append('comment', reviewText);
+      if (reviewVideo) fd.append('video', reviewVideo);
+      reviewImages.forEach(img => fd.append('images', img));
+
+      await api.post(`/products/${id}/review`, fd);
+      toast.success('Thank you for your feedback!');
+      setReviewText(''); setReviewRating(5); setReviewVideo(null); setReviewImages([]);
       const r = await api.get(`/products/${id}`);
       setProduct(r.data.product);
     } catch (err) {
@@ -270,27 +293,93 @@ export default function ProductDetail() {
                         </div>
                       </div>
                     </div>
-                    <p className="text-amber-100/60 text-sm leading-relaxed">{r.comment}</p>
+                    <p className="text-amber-100/60 text-sm leading-relaxed mb-4">{r.comment}</p>
+                    
+                    {/* Review Media */}
+                    {(r.video || r.images?.length > 0) && (
+                      <div className="flex flex-wrap gap-3 mt-4">
+                        {r.video && (
+                          <div className="w-40 aspect-video rounded-lg overflow-hidden bg-black border border-amber-900/30">
+                            <video src={getImageUrl(r.video)} className="w-full h-full object-cover" controls />
+                          </div>
+                        )}
+                        {r.images?.map((img, idx) => (
+                          <div key={idx} className="w-20 h-20 rounded-lg overflow-hidden border border-amber-900/30">
+                            <img src={getImageUrl(img)} alt="" className="w-full h-full object-cover cursor-zoom-in" 
+                              onClick={() => window.open(getImageUrl(img), '_blank')} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
                 {product.reviews?.length === 0 && <p className="text-amber-100/30 text-center py-8">No reviews yet. Be the first!</p>}
-                {user && (
-                  <form onSubmit={handleReview} className="glass-card p-6 mt-8">
-                    <h3 className="font-luxury text-xl text-amber-400 mb-4">Write a Review</h3>
-                    <div className="flex gap-2 mb-4">
+                {user && canReview ? (
+                  <form onSubmit={handleReview} className="glass-card p-6 mt-8 border border-amber-500/20 shadow-[0_0_30px_rgba(201,168,76,0.05)]">
+                    <h3 className="font-luxury text-xl text-amber-400 mb-4 flex items-center gap-2">
+                      <FiStar className="text-amber-500" /> Share Your Experience
+                    </h3>
+                    <div className="flex gap-2 mb-6">
                       {[1,2,3,4,5].map(s => (
                         <button key={s} type="button" onClick={() => setReviewRating(s)} className="text-2xl transition-transform hover:scale-110">
-                          <FiStar size={24} className={s <= reviewRating ? 'text-amber-400 fill-amber-400' : 'text-amber-900'} fill={s <= reviewRating ? 'currentColor' : 'none'} />
+                          <FiStar size={28} className={s <= reviewRating ? 'text-amber-400 fill-amber-400' : 'text-amber-900'} fill={s <= reviewRating ? 'currentColor' : 'none'} />
                         </button>
                       ))}
                     </div>
+                    
                     <textarea value={reviewText} onChange={e => setReviewText(e.target.value)} required
-                      rows={4} placeholder="Share your experience with this carpet..."
-                      className="input-luxury resize-none mb-4" />
-                    <button type="submit" disabled={reviewLoading} className="btn-gold py-2.5">
-                      {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                      rows={4} placeholder="How does the carpet feel in your space? Tell us about the texture, color, and quality..."
+                      className="w-full bg-white/5 border border-amber-900/20 rounded-xl px-4 py-3 text-sm text-amber-100 placeholder:text-amber-100/20 focus:outline-none focus:border-amber-500/40 transition-all mb-4 resize-none" />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      {/* Video Upload */}
+                      <div>
+                        <label className="text-[10px] text-amber-100/50 block mb-2 uppercase tracking-widest">Add Video Review</label>
+                        <label className="flex items-center gap-3 p-3 border border-dashed border-amber-900/30 rounded-xl cursor-pointer hover:border-amber-500/50 transition-all bg-white/5">
+                          <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+                            <FiTruck size={20} />
+                          </div>
+                          <div className="flex-1 overflow-hidden">
+                            <p className="text-[10px] text-amber-100/80 font-medium truncate">{reviewVideo ? reviewVideo.name : 'Upload short video'}</p>
+                            <p className="text-[9px] text-amber-100/30">MP4, MOV up to 10MB</p>
+                          </div>
+                          <input type="file" accept="video/*" className="hidden" onChange={e => setReviewVideo(e.target.files[0])} />
+                        </label>
+                      </div>
+                      
+                      {/* Photo Upload */}
+                      <div>
+                        <label className="text-[10px] text-amber-100/50 block mb-2 uppercase tracking-widest">Add Photos ({reviewImages.length}/5)</label>
+                        <label className="flex items-center gap-3 p-3 border border-dashed border-amber-900/30 rounded-xl cursor-pointer hover:border-amber-500/50 transition-all bg-white/5">
+                          <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+                            <FiHeart size={20} />
+                          </div>
+                          <div className="flex-1 overflow-hidden">
+                            <p className="text-[10px] text-amber-100/80 font-medium truncate">{reviewImages.length > 0 ? `${reviewImages.length} photos selected` : 'Upload photos'}</p>
+                            <p className="text-[9px] text-amber-100/30">JPG, PNG up to 5 files</p>
+                          </div>
+                          <input type="file" accept="image/*" multiple className="hidden" 
+                            onChange={e => setReviewImages(Array.from(e.target.files).slice(0, 5))} />
+                        </label>
+                      </div>
+                    </div>
+
+                    <button type="submit" disabled={reviewLoading} 
+                      className="w-full btn-gold py-3.5 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10">
+                      {reviewLoading ? 'Submitting Feedback...' : 'Post Verified Review'}
                     </button>
                   </form>
+                ) : user ? (
+                  <div className="glass-card p-10 mt-8 text-center border border-amber-900/10">
+                    <FiShield size={30} className="text-amber-100/20 mx-auto mb-4" />
+                    <p className="text-amber-100/50 font-luxury text-xl mb-2">Verified Purchase Required</p>
+                    <p className="text-amber-100/30 text-xs uppercase tracking-widest">Only customers who have received their delivery can share reviews.</p>
+                  </div>
+                ) : (
+                  <div className="glass-card p-10 mt-8 text-center border border-amber-900/10">
+                    <p className="text-amber-100/50 font-luxury text-xl mb-4">Join the Conversation</p>
+                    <Link to="/login" className="btn-outline-gold px-8 py-2.5 inline-block">Login to Review</Link>
+                  </div>
                 )}
               </div>
             )}
