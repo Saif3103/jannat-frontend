@@ -80,7 +80,14 @@ export default function ProductDetail() {
       const fd = new FormData();
       fd.append('rating', reviewRating);
       fd.append('comment', reviewText);
-      if (reviewVideo) fd.append('video', reviewVideo);
+      if (reviewVideo) {
+        if (reviewVideo.size > 50 * 1024 * 1024) {
+          toast.error('Video size should be less than 50MB');
+          setReviewLoading(false);
+          return;
+        }
+        fd.append('video', reviewVideo);
+      }
       reviewImages.forEach(img => fd.append('images', img));
 
       await api.post(`/products/${id}/review`, fd);

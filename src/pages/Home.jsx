@@ -428,7 +428,7 @@ export default function Home() {
                     controls 
                     className="w-full h-full object-cover"
                   >
-                    <source src={getImageUrl(rev.video)} type="video/mp4" />
+                    <source src={getImageUrl(rev.video)} />
                     Your browser does not support the video tag.
                   </video>
                   

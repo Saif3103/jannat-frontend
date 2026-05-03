@@ -73,7 +73,14 @@ export default function UserDashboard() {
       const fd = new FormData();
       fd.append('rating', rating);
       fd.append('comment', comment);
-      if (video) fd.append('video', video);
+      if (video) {
+        if (video.size > 50 * 1024 * 1024) {
+          toast.error('Video size should be less than 50MB');
+          setSaving(false);
+          return;
+        }
+        fd.append('video', video);
+      }
       images.forEach(img => fd.append('images', img));
 
       await api.post(`/products/${reviewProduct._id}/review`, fd);
