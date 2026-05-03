@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiUpload } from 'react-icons/fi';
 import { AnimatePresence, motion } from 'framer-motion';
-import api from '../../api/axios';
+import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
 
@@ -14,6 +14,12 @@ export default function AdminCategories() {
   const [form, setForm] = useState({ name: '', description: '' });
   const [image, setImage] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  const getImageUrl = (url) => {
+    if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400';
+    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    return `${BASE_URL}/${url}`;
+  };
 
   useEffect(() => { load(); }, []);
 
@@ -57,7 +63,7 @@ export default function AdminCategories() {
           cats.map(cat => (
             <div key={cat._id} className="glass-card rounded-2xl overflow-hidden">
               <div className="h-32 relative">
-                <img src={cat.image || 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400'} alt={cat.name} className="w-full h-full object-cover" />
+                <img src={getImageUrl(cat.image)} alt={cat.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-3">
                   <p className="text-white font-luxury text-lg">{cat.name}</p>
@@ -95,9 +101,19 @@ export default function AdminCategories() {
                 </div>
                 <div>
                   <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Category Image</label>
-                  <label className="flex items-center gap-3 border border-dashed border-amber-900/40 rounded-xl p-4 cursor-pointer hover:border-amber-700/60 transition-colors">
-                    <FiUpload size={18} className="text-amber-400/50" />
-                    <span className="text-amber-100/40 text-sm">{image ? image.name : 'Click to upload'}</span>
+                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-amber-900/40 rounded-xl p-4 cursor-pointer hover:border-amber-700/60 transition-colors bg-black/20 group overflow-hidden aspect-video">
+                    {image || editing?.image ? (
+                      <img 
+                        src={getImageUrl(image ? URL.createObjectURL(image) : editing?.image)} 
+                        className="w-full h-full object-cover rounded-lg" 
+                        alt="Preview" 
+                      />
+                    ) : (
+                      <>
+                        <FiUpload size={24} className="text-amber-400/50 mb-2" />
+                        <span className="text-amber-100/40 text-xs">Click to upload image</span>
+                      </>
+                    )}
                     <input type="file" accept="image/*" className="hidden" onChange={e => setImage(e.target.files[0])} />
                   </label>
                 </div>

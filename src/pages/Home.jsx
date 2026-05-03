@@ -192,6 +192,37 @@ export default function Home() {
         )}
       </section>
 
+      {/* BRAND AD VIDEO SECTION */}
+      {settings?.adVideo && (
+        <section className="py-32 px-4 bg-black relative overflow-hidden">
+          <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2" />
+          <div className="max-w-6xl mx-auto relative z-10">
+            <div className="flex flex-col items-center text-center mb-16">
+              <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Our Story</p>
+              <h2 className="font-luxury text-4xl md:text-5xl text-white mb-6">Experience Jannat Rugs</h2>
+              <div className="divider-gold" />
+            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative aspect-video w-full rounded-[40px] overflow-hidden border border-amber-900/30 shadow-[0_0_80px_rgba(201,168,76,0.1)] group"
+            >
+              <video 
+                controls 
+                playsInline
+                className="w-full h-full object-cover"
+              >
+                <source src={getImageUrl(settings.adVideo)} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="absolute inset-0 pointer-events-none border-[10px] border-black/20 rounded-[40px]" />
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* COLLECTIONS / CATEGORIES (Carpet Couture Style Split Layout) */}
       <section className="py-0">
         {CATEGORIES_DEFAULT.slice(0, 3).map((cat, i) => (
