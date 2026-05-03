@@ -71,6 +71,7 @@ export default function AdminOffers() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? [...Array(3)].map((_, i) => <div key={i} className="glass-card h-44 shimmer rounded-2xl" />) :
+          offers.map(offer => (
             <div key={offer._id} className={`glass-card rounded-2xl overflow-hidden border ${offer.isActive ? 'border-amber-700/20' : 'border-red-900/20 opacity-60'}`}>
               <div className="h-32 relative">
                 <img src={getImageUrl(offer.image)} alt={offer.title} className="w-full h-full object-cover" />
@@ -90,6 +91,7 @@ export default function AdminOffers() {
                 </div>
               </div>
             </div>
+          ))}
       </div>
 
       <AnimatePresence>
