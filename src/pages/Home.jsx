@@ -56,22 +56,25 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [settings, setSettings] = useState(null);
+  const [offers, setOffers] = useState([]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [featured, best, newArr, cats, setts] = await Promise.all([
+        const [featured, best, newArr, cats, setts, offs] = await Promise.all([
           api.get('/products?featured=true&limit=8'),
           api.get('/products?bestSeller=true&limit=4'),
           api.get('/products?newArrival=true&limit=4'),
           api.get('/categories'),
           api.get('/settings'),
+          api.get('/offers'),
         ]);
         setFeaturedProducts(featured.data.products);
         setBestSellers(best.data.products);
         setNewArrivals(newArr.data.products);
         setCategories(cats.data.categories.slice(0, 6));
         setSettings(setts.data.settings);
+        setOffers(offs.data.offers);
       } catch {}
       setLoading(false);
     };
@@ -133,6 +136,77 @@ export default function Home() {
             className="w-px h-20 bg-gradient-to-b from-amber-400 to-transparent mx-auto" />
         </div>
       </section>
+
+      {/* OFFERS SLIDER SECTION */}
+      {offers.length > 0 && (
+        <section className="py-20 px-4 bg-black relative overflow-hidden">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="flex flex-col items-center text-center mb-16">
+              <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Limited Time Offers</p>
+              <h2 className="font-luxury text-4xl md:text-5xl text-white mb-6">Exclusive Promotions</h2>
+              <div className="divider-gold w-24" />
+            </div>
+
+            <Swiper
+              modules={[Autoplay, Pagination, EffectFade]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              pagination={{ clickable: true }}
+              className="rounded-[40px] overflow-hidden border border-amber-900/20 shadow-[0_0_80px_rgba(201,168,76,0.1)]"
+            >
+              {offers.map((offer, i) => (
+                <SwiperSlide key={offer._id}>
+                  <div className="relative h-[400px] md:h-[550px] lg:h-[650px] w-full group">
+                    <img 
+                      src={getImageUrl(offer.image)} 
+                      alt={offer.title} 
+                      className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex items-center p-8 md:p-20">
+                      <div className="max-w-2xl">
+                        <motion.p 
+                          initial={{ opacity: 0, x: -30 }} 
+                          whileInView={{ opacity: 1, x: 0 }}
+                          className="text-amber-400 font-bold tracking-[0.3em] uppercase text-xs mb-6"
+                        >
+                          {offer.subtitle || 'Flash Sale'}
+                        </motion.p>
+                        <motion.h3 
+                          initial={{ opacity: 0, x: -30 }} 
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="font-luxury text-4xl md:text-6xl lg:text-7xl text-white mb-8 leading-tight"
+                        >
+                          {offer.title}
+                        </motion.h3>
+                        <motion.div 
+                          initial={{ opacity: 0, x: -30 }} 
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+                        >
+                          {offer.link && (
+                            <Link to={offer.link} className="btn-gold px-12 py-5 text-sm uppercase tracking-widest">
+                              Claim Offer
+                            </Link>
+                          )}
+                          {offer.code && (
+                            <div className="px-6 py-4 border border-amber-500/30 rounded-xl bg-amber-500/5 backdrop-blur-md">
+                              <p className="text-[10px] text-amber-100/40 uppercase mb-1">Use Code</p>
+                              <p className="text-amber-400 font-bold tracking-widest text-lg">{offer.code}</p>
+                            </div>
+                          )}
+                        </motion.div>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </section>
+      )}
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
       <section className="py-24 border-y border-amber-900/10" style={{ background: '#050505' }}>
