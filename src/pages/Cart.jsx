@@ -3,6 +3,13 @@ import { motion } from 'framer-motion';
 import { FiShoppingCart, FiTrash2, FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { Helmet } from 'react-helmet-async';
 import { useCartStore, useAuthStore } from '../store';
+import { BASE_URL } from '../api/axios';
+
+const getImageUrl = (url) => {
+  if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=200';
+  if (url.startsWith('http')) return url;
+  return `${BASE_URL}/${url}`;
+};
 
 export default function Cart() {
   const { items, removeFromCart, updateQuantity, clearCart } = useCartStore();
@@ -44,7 +51,7 @@ export default function Cart() {
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
                   className="glass-card p-4 flex gap-4">
                   <Link to={`/product/${item._id}`} className="flex-shrink-0">
-                    <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=200'}
+                    <img src={getImageUrl(item.images?.[0])}
                       alt={item.name} className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-xl" />
                   </Link>
                   <div className="flex-1 min-w-0">

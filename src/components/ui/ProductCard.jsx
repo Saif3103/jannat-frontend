@@ -2,11 +2,18 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiStar, FiEye } from 'react-icons/fi';
 import { useCartStore, useAuthStore, useWishlistStore } from '../../store';
+import { BASE_URL } from '../../api/axios';
 
 export default function ProductCard({ product, index = 0 }) {
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
+
+  const getImageUrl = (url) => {
+    if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400';
+    if (url.startsWith('http')) return url;
+    return `${BASE_URL}/${url}`;
+  };
 
   const price = product.discountPrice || product.price;
   const discount = product.price && product.discountPrice
@@ -27,7 +34,7 @@ export default function ProductCard({ product, index = 0 }) {
         <div className="relative overflow-hidden aspect-[4/3]">
           <Link to={`/product/${product._id}`}>
             <img
-              src={product.images?.[0] || 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400'}
+              src={getImageUrl(product.images?.[0])}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               loading="lazy"

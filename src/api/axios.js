@@ -1,9 +1,13 @@
 import axios from 'axios';
 
+const BASE_URL = 'https://jannat-backend-azwb.onrender.com';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${BASE_URL}/api`,
   timeout: 60000,
 });
+
+export { BASE_URL };
 
 // Request interceptor – attach JWT token
 api.interceptors.request.use(

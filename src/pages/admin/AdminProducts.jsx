@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiUpload } from 'react-icons/fi';
-import api from '../../api/axios';
+import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
 
@@ -18,6 +18,12 @@ export default function AdminProducts() {
   const [images, setImages] = useState([null, null, null, null]);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState('');
+
+  const getImageUrl = (url) => {
+    if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=100';
+    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    return `${BASE_URL}/${url}`;
+  };
 
   useEffect(() => {
     load();
@@ -114,7 +120,7 @@ export default function AdminProducts() {
               )) : filtered.map(p => (
                 <tr key={p._id} className="border-b border-amber-900/10 hover:bg-amber-500/5 transition-colors">
                   <td className="px-4 py-3">
-                    <img src={p.images?.[0] || 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=100'} alt={p.name} className="w-12 h-12 object-cover rounded-lg" />
+                    <img src={getImageUrl(p.images?.[0])} alt={p.name} className="w-12 h-12 object-cover rounded-lg" />
                   </td>
                   <td className="px-4 py-3 text-amber-100 max-w-[180px] truncate">{p.name}</td>
                   <td className="px-4 py-3 text-amber-100/50">{p.category?.name || '—'}</td>
@@ -234,7 +240,7 @@ export default function AdminProducts() {
                           {images[index] || (editing?.images?.[index]) ? (
                             <>
                               <img 
-                                src={images[index] ? URL.createObjectURL(images[index]) : editing.images[index]} 
+                                src={getImageUrl(images[index] ? URL.createObjectURL(images[index]) : editing?.images?.[index])} 
                                 alt={`Preview ${index}`} 
                                 className="w-full h-full object-cover" 
                               />

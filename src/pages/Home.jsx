@@ -8,9 +8,16 @@ import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
-import api from '../api/axios';
+import api, { BASE_URL } from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
+
+const getImageUrl = (url) => {
+  if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80';
+  if (typeof url !== 'string') return url;
+  if (url.startsWith('http')) return url;
+  return `${BASE_URL}/${url}`;
+};
 
 const HERO_BGS = [
   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=2400&q=100",
@@ -90,7 +97,7 @@ export default function Home() {
             key={settings?.heroVideo}
             className="w-full h-full object-cover"
           >
-            <source src={settings?.heroVideo || "https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4"} type="video/mp4" />
+            <source src={settings?.heroVideo ? getImageUrl(settings.heroVideo) : "https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4"} type="video/mp4" />
           </video>
           {/* Theme Overlay (Keeps the exact same luxury dark aesthetic) */}
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.4) 50%, rgba(13,13,13,0.85) 100%)' }} />
@@ -190,7 +197,7 @@ export default function Home() {
         {CATEGORIES_DEFAULT.slice(0, 3).map((cat, i) => (
           <div key={cat.name} className={`flex flex-col ${i % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} min-h-[500px] lg:min-h-[600px] group border-b border-amber-900/10`}>
             <div className="w-full lg:w-1/2 relative h-[400px] lg:h-auto overflow-hidden">
-              <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+              <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-transparent" />
             </div>
             <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-24 bg-[#050505] text-center">

@@ -3,11 +3,17 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiStar, FiHeart, FiShoppingCart, FiTruck, FiShield, FiRefreshCw, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import api from '../api/axios';
+import api, { BASE_URL } from '../api/axios';
 import { useCartStore, useAuthStore, useWishlistStore } from '../store';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
 import toast from 'react-hot-toast';
+
+const getImageUrl = (url) => {
+  if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=800';
+  if (url.startsWith('http')) return url;
+  return `${BASE_URL}/${url}`;
+};
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -96,9 +102,9 @@ export default function ProductDetail() {
             <div>
               <div className="relative rounded-2xl overflow-hidden bg-amber-950/20 border border-amber-900/20 mb-4" style={{ aspectRatio: '1' }}>
                 <AnimatePresence mode="wait">
-                  <motion.img key={activeImg}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    src={images[activeImg]} alt={product.name} className="w-full h-full object-cover" />
+                    <motion.img key={activeImg}
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      src={getImageUrl(images[activeImg])} alt={product.name} className="w-full h-full object-cover" />
                 </AnimatePresence>
                 {images.length > 1 && (
                   <>
@@ -118,7 +124,7 @@ export default function ProductDetail() {
                 {images.map((img, i) => (
                   <button key={i} onClick={() => setActiveImg(i)}
                     className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${activeImg === i ? 'border-amber-500' : 'border-amber-900/30 opacity-60 hover:opacity-100'}`}>
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={getImageUrl(img)} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
