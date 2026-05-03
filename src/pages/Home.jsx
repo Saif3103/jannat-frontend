@@ -194,20 +194,20 @@ export default function Home() {
 
       {/* BRAND AD VIDEO SECTION */}
       {settings?.adVideo && (
-        <section className="py-32 px-4 bg-black relative overflow-hidden">
+        <section className="py-24 px-4 bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2" />
-          <div className="max-w-6xl mx-auto relative z-10">
-            <div className="flex flex-col items-center text-center mb-16">
-              <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Our Story</p>
-              <h2 className="font-luxury text-4xl md:text-5xl text-white mb-6">Experience Jannat Rugs</h2>
-              <div className="divider-gold" />
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="flex flex-col items-center text-center mb-12">
+              <p className="text-amber-400 text-[10px] tracking-[0.4em] uppercase mb-3">Our Story</p>
+              <h2 className="font-luxury text-3xl md:text-4xl text-white mb-6">Experience Jannat Rugs</h2>
+              <div className="divider-gold w-20" />
             </div>
             
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative aspect-video w-full rounded-[40px] overflow-hidden border border-amber-900/30 shadow-[0_0_80px_rgba(201,168,76,0.1)] group"
+              className="relative aspect-video w-full rounded-3xl overflow-hidden border border-amber-900/30 shadow-[0_0_50px_rgba(201,168,76,0.05)] group"
             >
               <video 
                 controls 
@@ -217,7 +217,6 @@ export default function Home() {
                 <source src={getImageUrl(settings.adVideo)} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <div className="absolute inset-0 pointer-events-none border-[10px] border-black/20 rounded-[40px]" />
             </motion.div>
           </div>
         </section>
@@ -415,22 +414,24 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
-        <div className="max-w-3xl mx-auto">
+      <section className="py-40 px-4" style={{ background: '#050505', borderTop: '1px solid rgba(201,168,76,0.05)' }}>
+        <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-24">
-            <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Common Questions</p>
-            <h2 className="font-luxury text-4xl text-white mb-4">FAQ</h2>
-            <div className="divider-gold" />
+            <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Common Questions</p>
+            <h2 className="font-luxury text-4xl md:text-5xl text-white mb-6">Everything You Need To Know</h2>
+            <div className="divider-gold w-24" />
           </div>
-          {[
-            { q: "Are your carpets genuinely handmade?", a: "Yes! Every carpet in our collection is handmade by skilled artisans using traditional techniques passed down through generations. We never sell machine-made products under the handmade label." },
-            { q: "What is your return policy?", a: "We offer a 7-day hassle-free return policy. If you're not completely satisfied with your purchase, simply contact us and we'll arrange a return or exchange." },
-            { q: "Do you offer custom carpet sizes?", a: "Absolutely! We specialize in custom-size carpets. Contact us with your dimensions and our artisans will create the perfect piece for your space." },
-            { q: "How do I care for my carpet?", a: "Regular vacuuming, rotating every 6 months, and professional cleaning every 1-2 years will keep your carpet in pristine condition. We provide detailed care instructions with every purchase." },
-            { q: "What payment methods do you accept?", a: "We accept Cash on Delivery (COD), Razorpay, UPI, Credit/Debit Cards, and digital wallets. All online payments are secured with industry-standard encryption." },
-          ].map((faq, i) => (
-            <FAQItem key={i} question={faq.q} answer={faq.a} />
-          ))}
+          <div className="space-y-6">
+            {[
+              { q: "Are your carpets genuinely handmade?", a: "Yes! Every carpet in our collection is handmade by skilled artisans using traditional techniques passed down through generations. We never sell machine-made products under the handmade label." },
+              { q: "What is your return policy?", a: "We offer a 7-day hassle-free return policy. If you're not completely satisfied with your purchase, simply contact us and we'll arrange a return or exchange." },
+              { q: "Do you offer custom carpet sizes?", a: "Absolutely! We specialize in custom-size carpets. Contact us with your dimensions and our artisans will create the perfect piece for your space." },
+              { q: "How do I care for my carpet?", a: "Regular vacuuming, rotating every 6 months, and professional cleaning every 1-2 years will keep your carpet in pristine condition. We provide detailed care instructions with every purchase." },
+              { q: "What payment methods do you accept?", a: "We accept Cash on Delivery (COD), Razorpay, UPI, Credit/Debit Cards, and digital wallets. All online payments are secured with industry-standard encryption." },
+            ].map((faq, i) => (
+              <FAQItem key={i} question={faq.q} answer={faq.a} />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -527,17 +528,19 @@ export default function Home() {
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-amber-900/20 py-4">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between text-left gap-4 group">
-        <span className="text-amber-100/80 group-hover:text-amber-400 transition-colors font-medium text-sm">{question}</span>
-        <motion.span animate={{ rotate: open ? 45 : 0 }} className="text-amber-400 text-xl flex-shrink-0">+</motion.span>
+    <div className={`glass-card-dark rounded-2xl transition-all duration-300 ${open ? 'border-amber-500/30' : 'border-amber-900/10 hover:border-amber-500/20'}`}>
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between text-left gap-4 px-6 py-5 group">
+        <span className={`text-sm md:text-base font-medium transition-colors ${open ? 'text-amber-400' : 'text-amber-100/80 group-hover:text-amber-200'}`}>{question}</span>
+        <motion.span animate={{ rotate: open ? 45 : 0 }} className={`text-2xl flex-shrink-0 ${open ? 'text-amber-400' : 'text-amber-100/30'}`}>+</motion.span>
       </button>
       <motion.div
         initial={false}
         animate={{ height: open ? 'auto' : 0, opacity: open ? 1 : 0 }}
         className="overflow-hidden"
       >
-        <p className="text-amber-100/50 text-sm leading-relaxed pt-3">{answer}</p>
+        <div className="px-6 pb-6 pt-2">
+          <p className="text-amber-100/50 text-sm leading-relaxed border-t border-amber-900/10 pt-4">{answer}</p>
+        </div>
       </motion.div>
     </div>
   );
