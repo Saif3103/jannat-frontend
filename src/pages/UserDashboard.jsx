@@ -68,6 +68,12 @@ export default function UserDashboard() {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!reviewProduct) return;
+    const productId = reviewProduct?._id || reviewProduct;
+    if (!productId || productId === 'undefined') {
+      toast.error('Invalid product information');
+      return;
+    }
+    
     setSaving(true);
     try {
       const fd = new FormData();
@@ -83,7 +89,7 @@ export default function UserDashboard() {
       }
       images.forEach(img => fd.append('images', img));
 
-      await api.post(`/products/${reviewProduct._id}/review`, fd);
+      await api.post(`/products/${productId}/review`, fd);
       toast.success('Thank you for your feedback!');
       setReviewModal(false);
       setComment(''); setRating(5); setVideo(null); setImages([]);
