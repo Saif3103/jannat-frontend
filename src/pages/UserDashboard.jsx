@@ -2,10 +2,17 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { FiUser, FiPackage, FiHeart, FiMapPin, FiBell, FiLock, FiEdit2 } from 'react-icons/fi';
-import api from '../api/axios';
+import api, { BASE_URL } from '../api/axios';
 import { useAuthStore } from '../store';
 import toast from 'react-hot-toast';
+import { FiUser, FiPackage, FiHeart, FiMapPin, FiLock, FiEdit2, FiStar, FiX, FiUpload, FiTruck, FiShield, FiSend } from 'react-icons/fi';
+import { AnimatePresence } from 'framer-motion';
+
+const getImageUrl = (url) => {
+  if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=800';
+  if (url.startsWith('http')) return url;
+  return `${BASE_URL}/${url}`;
+};
 
 const STATUS_COLORS = { Pending: 'amber', Confirmed: 'blue', Processing: 'purple', Shipped: 'orange', Delivered: 'green', Cancelled: 'red', Returned: 'gray' };
 
@@ -18,6 +25,15 @@ export default function UserDashboard() {
   const [editMode, setEditMode] = useState(false);
   const { user, updateUser, getProfile } = useAuthStore();
   const [formData, setFormData] = useState({ name: user?.name || '', phone: user?.phone || '' });
+
+  // Review states
+  const [reviewModal, setReviewModal] = useState(false);
+  const [reviewProduct, setReviewProduct] = useState(null);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [video, setVideo] = useState(null);
+  const [images, setImages] = useState([]);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (activeTab === 'orders') fetchOrders();
@@ -47,6 +63,27 @@ export default function UserDashboard() {
       toast.success('Profile updated!');
       setEditMode(false);
     } catch { toast.error('Failed to update'); }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!reviewProduct) return;
+    setSaving(true);
+    try {
+      const fd = new FormData();
+      fd.append('rating', rating);
+      fd.append('comment', comment);
+      if (video) fd.append('video', video);
+      images.forEach(img => fd.append('images', img));
+
+      await api.post(`/products/${reviewProduct._id}/review`, fd);
+      toast.success('Thank you for your feedback!');
+      setReviewModal(false);
+      setComment(''); setRating(5); setVideo(null); setImages([]);
+      fetchOrders(); // Refresh to reflect reviewed status (if backend handled alreadyReviewed)
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to submit review');
+    } finally { setSaving(false); }
   };
 
   const TABS = [
@@ -142,12 +179,26 @@ export default function UserDashboard() {
                         </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-3">
-                        {order.orderItems?.slice(0, 3).map(item => (
-                          <img key={item._id} src={item.image} alt={item.name} className="w-14 h-14 rounded-lg object-cover border border-amber-900/20" />
+                        {order.orderItems?.map(item => (
+                          <div key={item._id} className="relative group">
+                            <img src={getImageUrl(item.image)} alt={item.name} className="w-16 h-16 rounded-xl object-cover border border-amber-900/20" />
+                            {order.orderStatus === 'Delivered' && (
+                              <button 
+                                onClick={() => { setReviewProduct(item.product); setReviewModal(true); }}
+                                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center rounded-xl text-[10px] text-amber-400 font-bold"
+                              >
+                                <FiStar size={12} className="mb-0.5" /> REVIEW
+                              </button>
+                            )}
+                          </div>
                         ))}
-                        {order.orderItems?.length > 3 && <span className="text-amber-100/40 text-xs">+{order.orderItems.length - 3} more</span>}
                       </div>
-                      <div className="mt-3 text-xs text-amber-100/40">Tracking: <span className="text-amber-400 font-medium">{order.trackingNumber}</span></div>
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="text-[10px] text-amber-100/40 uppercase tracking-widest">Tracking: <span className="text-amber-400 font-medium">{order.trackingNumber || 'N/A'}</span></div>
+                        {order.orderStatus === 'Delivered' && (
+                          <p className="text-[9px] text-amber-500 font-bold uppercase tracking-widest">Click item to Review</p>
+                        )}
+                      </div>
                     </div>
                   ))}
               </motion.div>
@@ -186,8 +237,96 @@ export default function UserDashboard() {
             )}
           </div>
         </div>
+
+        <ReviewModal 
+          show={reviewModal} 
+          onClose={() => setReviewModal(false)}
+          product={reviewProduct}
+          rating={rating}
+          setRating={setRating}
+          comment={comment}
+          setComment={setComment}
+          video={video}
+          setVideo={setVideo}
+          images={images}
+          setImages={setImages}
+          saving={saving}
+          onSubmit={handleReviewSubmit}
+        />
       </div>
     </>
+  );
+}
+
+function ReviewModal({ show, onClose, product, rating, setRating, comment, setComment, video, setVideo, images, setImages, saving, onSubmit }) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+          <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
+            className="glass-card w-full max-w-xl rounded-[2rem] p-8 max-h-[90vh] overflow-y-auto border-amber-500/20 shadow-[0_0_100px_rgba(201,168,76,0.1)]">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="font-luxury text-2xl text-amber-400">Verified Experience</h2>
+                <p className="text-[10px] text-amber-100/30 uppercase tracking-[0.2em] mt-1">Reviewing: {product?.name}</p>
+              </div>
+              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-amber-100/40"><FiX size={20} /></button>
+            </div>
+
+            <form onSubmit={onSubmit} className="space-y-6">
+              {/* Rating */}
+              <div className="flex justify-center gap-2 py-4 border-y border-amber-900/10">
+                {[1,2,3,4,5].map(s => (
+                  <button key={s} type="button" onClick={() => setRating(s)} className="transition-transform hover:scale-125">
+                    <FiStar size={32} className={s <= rating ? 'text-amber-400 fill-amber-400 shadow-lg' : 'text-amber-900'} fill={s <= rating ? 'currentColor' : 'none'} />
+                  </button>
+                ))}
+              </div>
+
+              {/* Comment */}
+              <div>
+                <label className="text-[10px] text-amber-100/40 uppercase tracking-widest block mb-2">Detailed Feedback</label>
+                <textarea value={comment} onChange={e => setComment(e.target.value)} required rows={4}
+                  placeholder="Tell us about the texture, color depth, and how it complements your room..."
+                  className="w-full bg-white/5 border border-amber-900/20 rounded-2xl px-5 py-4 text-sm text-amber-100 focus:outline-none focus:border-amber-500/40 transition-all resize-none" />
+              </div>
+
+              {/* Media Uploads */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-amber-100/40 uppercase tracking-widest block mb-2">Video Experience</label>
+                  <label className="flex items-center gap-3 p-3 border border-dashed border-amber-900/30 rounded-2xl cursor-pointer hover:border-amber-500/50 bg-white/5 transition-all">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500"><FiTruck size={18} /></div>
+                    <div className="flex-1 overflow-hidden">
+                      <p className="text-[10px] text-amber-100/80 font-medium truncate">{video ? video.name : 'Upload Video'}</p>
+                      <p className="text-[8px] text-amber-100/30">VERIFIED VIDEO REVIEW</p>
+                    </div>
+                    <input type="file" accept="video/*" className="hidden" onChange={e => setVideo(e.target.files[0])} />
+                  </label>
+                </div>
+                <div>
+                  <label className="text-[10px] text-amber-100/40 uppercase tracking-widest block mb-2">Visual Gallery ({images.length}/5)</label>
+                  <label className="flex items-center gap-3 p-3 border border-dashed border-amber-900/30 rounded-2xl cursor-pointer hover:border-amber-500/50 bg-white/5 transition-all">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500"><FiHeart size={18} /></div>
+                    <div className="flex-1 overflow-hidden">
+                      <p className="text-[10px] text-amber-100/80 font-medium truncate">{images.length > 0 ? `${images.length} Photos selected` : 'Upload Photos'}</p>
+                      <p className="text-[8px] text-amber-100/30">HIGH-QUALITY IMAGES</p>
+                    </div>
+                    <input type="file" accept="image/*" multiple className="hidden" 
+                      onChange={e => setImages(Array.from(e.target.files).slice(0, 5))} />
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" disabled={saving} className="w-full btn-gold py-4 rounded-2xl font-luxury text-lg tracking-widest shadow-xl shadow-amber-500/10">
+                {saving ? 'Publishing Review...' : 'Post Verified Review'}
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
