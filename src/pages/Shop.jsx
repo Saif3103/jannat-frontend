@@ -68,7 +68,7 @@ export default function Shop() {
         <title>Shop Luxury Carpets | Jannat Rugs Co.</title>
         <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />
       </Helmet>
-    <div className="pt-24 min-h-screen bg-white">
+    <div className="pt-24 min-h-screen bg-[#0D0D0D]">
       <Helmet>
         <title>Shop Luxury Carpets | Jannat Rugs Co.</title>
         <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />
@@ -80,30 +80,30 @@ export default function Shop() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.4em] mb-4">Our Collection</p>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">Artisanal Masterpieces</h1>
-              <p className="text-gray-400 text-sm max-w-xl font-medium">Explore our curated gallery of hand-knotted treasures, each carrying a legacy of centuries-old craftsmanship.</p>
+              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4 font-luxury">Artisanal Masterpieces</h1>
+              <p className="text-amber-100/40 text-sm max-w-xl font-medium">Explore our curated gallery of hand-knotted treasures, each carrying a legacy of centuries-old craftsmanship.</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="hidden sm:block text-right">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Available Pieces</p>
-                <p className="text-sm font-bold text-gray-900">{total} Collections</p>
+                <p className="text-[10px] font-bold text-amber-100/30 uppercase tracking-widest mb-1">Available Pieces</p>
+                <p className="text-sm font-bold text-white">{total} Collections</p>
               </div>
               <select 
                 value={sort} 
                 onChange={e => setParam('sort', e.target.value)}
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold text-gray-700 focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
+                className="bg-white/5 border border-amber-900/20 rounded-xl px-4 py-2.5 text-sm font-bold text-amber-100/60 focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
               >
-                {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                {SORT_OPTIONS.map(o => <option key={o.value} value={o.value} className="bg-black text-white">{o.label}</option>)}
               </select>
             </div>
           </div>
         </div>
 
         {/* Toolbar & Filters Toggle */}
-        <div className="flex flex-wrap items-center gap-4 mb-10 pb-8 border-b border-gray-100">
+        <div className="flex flex-wrap items-center gap-4 mb-10 pb-8 border-b border-amber-900/10">
           <button 
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-xs transition-all ${showFilters ? 'bg-black text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-xs transition-all ${showFilters ? 'bg-[#C9A84C] text-black' : 'bg-white/5 text-amber-100/60 hover:bg-white/10'}`}
           >
             <FiFilter size={16} /> 
             {showFilters ? 'Hide Filters' : 'Show Filters'}
@@ -111,7 +111,7 @@ export default function Shop() {
           </button>
           
           {hasFilters && (
-            <button onClick={clearFilters} className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors">
+            <button onClick={clearFilters} className="text-xs font-bold text-red-400 hover:text-red-500 transition-colors">
               Clear All Filters
             </button>
           )}
@@ -119,13 +119,13 @@ export default function Shop() {
           {/* Active Tags */}
           <div className="flex flex-wrap gap-2 ml-auto">
              {category && (
-               <div className="bg-[#C9A84C]/10 text-[#C9A84C] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+               <div className="bg-[#C9A84C]/10 text-[#C9A84C] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 border border-[#C9A84C]/20">
                  Category: {categories.find(c => c._id === category)?.name}
                  <FiX className="cursor-pointer" onClick={() => setParam('category', '')} />
                </div>
              )}
              {color && (
-               <div className="bg-[#C9A84C]/10 text-[#C9A84C] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+               <div className="bg-[#C9A84C]/10 text-[#C9A84C] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 border border-[#C9A84C]/20">
                  Color: {color}
                  <FiX className="cursor-pointer" onClick={() => setParam('color', '')} />
                </div>
@@ -143,12 +143,12 @@ export default function Shop() {
                 exit={{ opacity: 0, x: -20 }}
                 className="w-full lg:w-72 space-y-8 lg:sticky lg:top-32 h-fit"
               >
-                <div className="bg-gray-50/50 p-8 rounded-[2.5rem] border border-gray-100">
+                <div className="bg-white/5 p-8 rounded-[2.5rem] border border-amber-900/10">
                   <FilterSection title="Categories">
                     <div className="flex flex-col gap-3 pt-2">
                       <button 
-                        onClick={() => setParam('category', '')}
-                        className={`text-left text-sm font-bold transition-all ${!category ? 'text-[#C9A84C]' : 'text-gray-400 hover:text-gray-900'}`}
+                         onClick={() => setParam('category', '')}
+                         className={`text-left text-sm font-bold transition-all ${!category ? 'text-[#C9A84C]' : 'text-amber-100/40 hover:text-white'}`}
                       >
                         All Categories
                       </button>
@@ -156,7 +156,7 @@ export default function Shop() {
                         <button 
                           key={c._id}
                           onClick={() => setParam('category', c._id)}
-                          className={`text-left text-sm font-bold transition-all ${category === c._id ? 'text-[#C9A84C]' : 'text-gray-400 hover:text-gray-900'}`}
+                          className={`text-left text-sm font-bold transition-all ${category === c._id ? 'text-[#C9A84C]' : 'text-amber-100/40 hover:text-white'}`}
                         >
                           {c.name}
                         </button>
@@ -167,23 +167,23 @@ export default function Shop() {
                   <FilterSection title="Price Range">
                     <div className="flex gap-3 pt-2">
                       <div className="relative flex-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] font-bold">₹</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-100/20 text-[10px] font-bold">₹</span>
                         <input 
                           type="number" 
                           placeholder="Min" 
                           value={minPrice} 
                           onChange={e => setParam('minPrice', e.target.value)}
-                          className="w-full bg-white border border-gray-200 rounded-xl pl-6 pr-2 py-2 text-xs font-bold outline-none focus:border-[#C9A84C]"
+                          className="w-full bg-black/40 border border-amber-900/10 rounded-xl pl-6 pr-2 py-2 text-xs font-bold text-white outline-none focus:border-[#C9A84C]/50"
                         />
                       </div>
                       <div className="relative flex-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] font-bold">₹</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-100/20 text-[10px] font-bold">₹</span>
                         <input 
                           type="number" 
                           placeholder="Max" 
                           value={maxPrice} 
                           onChange={e => setParam('maxPrice', e.target.value)}
-                          className="w-full bg-white border border-gray-200 rounded-xl pl-6 pr-2 py-2 text-xs font-bold outline-none focus:border-[#C9A84C]"
+                          className="w-full bg-black/40 border border-amber-900/10 rounded-xl pl-6 pr-2 py-2 text-xs font-bold text-white outline-none focus:border-[#C9A84C]/50"
                         />
                       </div>
                     </div>
@@ -195,7 +195,7 @@ export default function Shop() {
                         <button 
                           key={c}
                           onClick={() => setParam('color', color === c ? '' : c)}
-                          className={`px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase transition-all ${color === c ? 'bg-black text-white' : 'bg-white text-gray-400 border border-gray-100 hover:border-gray-300'}`}
+                          className={`px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase transition-all ${color === c ? 'bg-[#C9A84C] text-black' : 'bg-black/40 text-amber-100/40 border border-amber-900/10 hover:border-amber-900/30'}`}
                         >
                           {c}
                         </button>
@@ -211,9 +211,9 @@ export default function Shop() {
                             type="checkbox" 
                             checked={type === t} 
                             onChange={() => setParam('type', type === t ? '' : t)}
-                            className="w-4 h-4 rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]" 
+                            className="w-4 h-4 rounded border-amber-900/30 bg-black text-[#C9A84C] focus:ring-[#C9A84C]" 
                           />
-                          <span className={`text-sm font-bold transition-all ${type === t ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`}>{t}</span>
+                          <span className={`text-sm font-bold transition-all ${type === t ? 'text-white' : 'text-amber-100/40 group-hover:text-amber-100/60'}`}>{t}</span>
                         </label>
                       ))}
                     </div>
@@ -227,14 +227,14 @@ export default function Shop() {
           <div className="flex-1">
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-                {[...Array(6)].map((_, i) => <div key={i} className="h-[400px] bg-gray-50 rounded-[2.5rem] shimmer" />)}
+                {[...Array(6)].map((_, i) => <div key={i} className="h-[400px] bg-white/5 rounded-[2.5rem] animate-pulse" />)}
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-32 bg-gray-50 rounded-[3rem] border border-dashed border-gray-200">
-                <FiShoppingBag className="mx-auto text-gray-200 mb-6" size={48} />
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No masterpieces found</h3>
-                <p className="text-gray-400 text-sm mb-8">Try adjusting your filters or search terms.</p>
-                <button onClick={clearFilters} className="bg-black text-white px-8 py-3 rounded-2xl font-bold text-sm">Clear All Filters</button>
+              <div className="text-center py-32 bg-white/5 rounded-[3rem] border border-dashed border-amber-900/20">
+                <FiShoppingBag className="mx-auto text-amber-900/20 mb-6" size={48} />
+                <h3 className="text-xl font-bold text-white mb-2 font-luxury">No masterpieces found</h3>
+                <p className="text-amber-100/30 text-sm mb-8">Try adjusting your filters or search terms.</p>
+                <button onClick={clearFilters} className="btn-gold px-8 py-3 rounded-2xl font-bold text-sm">Clear All Filters</button>
               </div>
             ) : (
               <>
@@ -251,7 +251,7 @@ export default function Shop() {
                       <button 
                         key={i} 
                         onClick={() => setParam('page', i + 1)}
-                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-black text-white shadow-xl' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-[#C9A84C] text-black shadow-xl shadow-[#C9A84C]/20' : 'bg-white/5 text-amber-100/40 hover:bg-white/10'}`}
                       >
                         {i + 1}
                       </button>

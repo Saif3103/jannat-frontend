@@ -37,18 +37,18 @@ export default function ProductCard({ product, index = 0 }) {
       transition={{ delay: index * 0.05, duration: 0.4 }}
       className="group relative"
     >
-      <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 h-full flex flex-col">
+      <div className="bg-[#1A1A1A] rounded-3xl overflow-hidden border border-white/5 shadow-2xl hover:shadow-amber-500/10 transition-all duration-500 h-full flex flex-col group/card">
         {/* Image Container */}
-        <div className="relative overflow-hidden aspect-[4/5] bg-gray-50">
+        <div className="relative overflow-hidden aspect-[4/5] bg-[#222]">
           <Link to={`/product/${product._id}`}>
             <img
               src={getImageUrl(product.images?.[0])}
               alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110"
               loading="lazy"
             />
             {/* Soft Overlay */}
-            <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
+            <div className="absolute inset-0 bg-black/20 group-hover/card:bg-transparent transition-colors duration-500" />
           </Link>
 
           {/* Badges */}
@@ -57,10 +57,10 @@ export default function ProductCard({ product, index = 0 }) {
               <span className="bg-[#C9A84C] text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-lg">-{discount}%</span>
             )}
             {product.isBestSeller && (
-              <span className="bg-gray-900 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-lg uppercase tracking-wider">Best Seller</span>
+              <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-lg uppercase tracking-wider border border-white/10">Best Seller</span>
             )}
             {product.isNewArrival && (
-              <span className="bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-lg uppercase tracking-wider">New</span>
+              <span className="bg-emerald-500/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-lg uppercase tracking-wider border border-white/10">New</span>
             )}
           </div>
 
@@ -70,7 +70,7 @@ export default function ProductCard({ product, index = 0 }) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => toggleWishlist(product._id, !!user)}
-              className={`w-10 h-10 rounded-2xl flex items-center justify-center backdrop-blur-md shadow-lg transition-all ${inWishlist ? 'bg-[#C9A84C] text-white' : 'bg-white/90 text-gray-400 hover:text-[#C9A84C]'}`}
+              className={`w-10 h-10 rounded-2xl flex items-center justify-center backdrop-blur-md shadow-lg transition-all ${inWishlist ? 'bg-[#C9A84C] text-white' : 'bg-black/30 text-white hover:text-[#C9A84C]'}`}
               id={`wishlist-${product._id}`}
             >
               <FiHeart size={18} fill={inWishlist ? 'currentColor' : 'none'} />
@@ -78,8 +78,8 @@ export default function ProductCard({ product, index = 0 }) {
           </div>
 
           {/* Quick View Button (Desktop only) */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <div className="bg-white/20 backdrop-blur-sm p-4 rounded-full border border-white/30 transform scale-90 group-hover:scale-100 transition-transform duration-500">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div className="bg-white/10 backdrop-blur-sm p-4 rounded-full border border-white/20 transform scale-90 group-hover/card:scale-100 transition-transform duration-500">
                <FiEye size={24} className="text-white" />
             </div>
           </div>
@@ -93,14 +93,14 @@ export default function ProductCard({ product, index = 0 }) {
             </span>
             {product.numReviews > 0 && (
               <div className="flex items-center gap-1">
-                <FiStar size={12} className="text-amber-400 fill-amber-400" />
-                <span className="text-[11px] font-bold text-gray-400">({product.numReviews})</span>
+                <FiStar size={12} className="text-[#C9A84C] fill-[#C9A84C]" />
+                <span className="text-[11px] font-bold text-amber-100/40">({product.numReviews})</span>
               </div>
             )}
           </div>
 
           <Link to={`/product/${product._id}`}>
-            <h3 className="text-gray-900 font-bold text-lg mb-4 line-clamp-1 group-hover:text-[#C9A84C] transition-colors tracking-tight">
+            <h3 className="text-white font-bold text-lg mb-4 line-clamp-1 group-hover/card:text-[#C9A84C] transition-colors tracking-tight">
               {product.name}
             </h3>
           </Link>
@@ -108,15 +108,15 @@ export default function ProductCard({ product, index = 0 }) {
           <div className="mt-auto flex items-center justify-between">
             <div className="flex flex-col">
               {discount > 0 && (
-                <span className="text-xs text-gray-400 line-through mb-1">₹{product.price?.toLocaleString()}</span>
+                <span className="text-xs text-amber-100/20 line-through mb-1">₹{product.price?.toLocaleString()}</span>
               )}
-              <span className="text-xl font-bold text-gray-900">₹{price?.toLocaleString()}</span>
+              <span className="text-xl font-bold text-white tracking-tight">₹{price?.toLocaleString()}</span>
             </div>
             
             <div className="flex gap-2">
               <button
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); toast.success('Added to cart'); }}
-                className="w-12 h-12 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center text-gray-900 hover:bg-gray-100 transition-all shadow-sm"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); }}
+                className="w-12 h-12 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center text-white hover:bg-white/10 transition-all shadow-sm"
                 id={`add-cart-${product._id}`}
                 title="Add to Cart"
               >
@@ -124,7 +124,7 @@ export default function ProductCard({ product, index = 0 }) {
               </button>
               <button
                 onClick={handleBuyNow}
-                className="px-4 h-12 bg-black text-white rounded-2xl flex items-center justify-center font-bold text-[10px] tracking-widest hover:bg-gray-900 transition-all shadow-lg active:scale-95"
+                className="px-6 h-12 bg-[#E31E24] text-white rounded-2xl flex items-center justify-center font-bold text-[11px] tracking-[0.1em] hover:bg-[#ff242b] transition-all shadow-xl shadow-[#E31E24]/20 active:scale-95"
                 id={`buy-now-${product._id}`}
               >
                 BUY NOW
