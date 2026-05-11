@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiUpload } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiImage, FiVideo } from 'react-icons/fi';
 import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
 
-const EMPTY = { name: '', description: '', price: '', discountPrice: '', category: '', material: '', type: 'Handmade', stock: '', tags: '', colors: '', offerLabel: '', isFeatured: false, isBestSeller: false, isNewArrival: true, isTrending: false, isLuxury: false };
+const EMPTY = { name: '', description: '', price: '', discountPrice: '', category: '', material: '', type: 'Handmade', stock: '', tags: '', colors: '', isFeatured: false };
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [editing, setEditing] = useState(null);
+  
+  // Editor State
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const [form, setForm] = useState(EMPTY);
-  const [images, setImages] = useState([null, null, null, null]);
+  const [images, setImages] = useState(Array(10).fill(null));
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -36,253 +37,326 @@ export default function AdminProducts() {
     catch {} finally { setLoading(false); }
   };
 
-  const openAdd = () => { setEditing(null); setForm(EMPTY); setImages([null, null, null, null]); setShowModal(true); };
-  const openEdit = (p) => { setEditing(p); setForm({ ...p, category: p.category?._id, tags: p.tags?.join(', '), colors: p.colors?.join(', ') }); setImages([null, null, null, null]); setShowModal(true); };
+  const openAdd = () => { setEditingProduct(null); setForm(EMPTY); setImages(Array(10).fill(null)); setIsEditing(true); };
+  const openEdit = (p) => { 
+    setEditingProduct(p); 
+    setForm({ ...p, category: p.category?._id, tags: p.tags?.join(', '), colors: p.colors?.join(', ') }); 
+    const loadedImages = Array(10).fill(null);
+    p.images?.forEach((img, i) => { if(i < 10) loadedImages[i] = img; });
+    setImages(loadedImages); 
+    setIsEditing(true); 
+  };
+  const closeEdit = () => { setIsEditing(false); setEditingProduct(null); };
 
   const save = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setSaving(true);
     try {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => {
-        // Skip system fields and the old images array to prevent multer from crashing
         if (['images', '_id', '__v', 'createdAt', 'updatedAt', 'reviews', 'slug'].includes(k)) return;
-        
-        // Handle booleans properly
-        if (typeof v === 'boolean') {
-          fd.append(k, v.toString());
-        } else if (v !== null && v !== undefined) {
-          fd.append(k, v);
-        }
+        if (typeof v === 'boolean') fd.append(k, v.toString());
+        else if (v !== null && v !== undefined) fd.append(k, v);
       });
       
-      // Append actual file objects from slots
       images.forEach(img => {
-        if (img instanceof File) {
-          fd.append('images', img);
-        }
+        if (img instanceof File) fd.append('images', img);
       });
 
-      if (editing) { 
-        await api.put(`/products/${editing._id}`, fd); 
-        toast.success('Product updated!'); 
+      if (editingProduct) { 
+        await api.put(`/products/${editingProduct._id}`, fd); 
+        toast.success('Listing updated!'); 
       } else { 
         await api.post('/products', fd); 
-        toast.success('Product added!'); 
+        toast.success('Listing published!'); 
       }
-      setShowModal(false); 
+      setIsEditing(false); 
       load();
     } catch (err) { 
-      console.error(err);
-      toast.error(err.response?.data?.message || 'Failed to save product'); 
+      toast.error('Failed to save listing'); 
     }
     finally { setSaving(false); }
   };
 
   const del = async (id) => {
-    if (!confirm('Delete this product?')) return;
+    if (!confirm('Delete this listing?')) return;
     try { await api.delete(`/products/${id}`); toast.success('Deleted'); load(); }
     catch { toast.error('Failed to delete'); }
   };
 
   const filtered = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
 
-  return (
-    <AdminLayout>
-      <Helmet><title>Products | Admin</title></Helmet>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-luxury text-2xl text-white">Products</h1>
-        <button onClick={openAdd} className="btn-gold flex items-center gap-2 py-2 px-4 text-sm" id="add-product-btn">
-          <FiPlus size={16} /> Add Product
-        </button>
-      </div>
+  // -------------------------
+  // LISTINGS VIEW
+  // -------------------------
+  if (!isEditing) {
+    return (
+      <AdminLayout>
+        <Helmet><title>Listings | Shop Manager</title></Helmet>
+        
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-2xl font-semibold text-[#222]">Listings</h1>
+          <button onClick={openAdd} className="bg-[#222] text-white px-5 py-2 rounded-full font-semibold text-sm hover:bg-black transition-colors shadow-sm">
+            Add a listing
+          </button>
+        </div>
 
-      <div className="mb-4">
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search products..."
-          className="input-luxury max-w-xs" id="admin-product-search" />
-      </div>
-
-      <div className="glass-card rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-                {['Image', 'Name', 'Category', 'Price', 'Stock', 'Featured', 'Actions'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-amber-100/40 text-xs uppercase tracking-wider font-medium">{h}</th>
+        <div className="bg-white rounded-xl border border-[#E0E0E0] shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-[#E0E0E0] flex gap-4 bg-gray-50/50">
+            <div className="relative flex-1 max-w-md">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input 
+                value={search} onChange={e => setSearch(e.target.value)} 
+                placeholder="Search your listings..."
+                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-black/5" 
+              />
+            </div>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-white border-b border-[#E0E0E0] text-gray-500 font-medium">
+                <tr>
+                  <th className="px-6 py-4 font-normal">Listing details</th>
+                  <th className="px-6 py-4 font-normal">Category</th>
+                  <th className="px-6 py-4 font-normal">Price</th>
+                  <th className="px-6 py-4 font-normal">Stock</th>
+                  <th className="px-6 py-4 font-normal text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E0E0E0]">
+                {loading ? [...Array(5)].map((_, i) => (
+                  <tr key={i}><td colSpan="5" className="px-6 py-4"><div className="h-10 bg-gray-100 animate-pulse rounded" /></td></tr>
+                )) : filtered.map(p => (
+                  <tr key={p._id} className="hover:bg-gray-50 transition-colors group">
+                    <td className="px-6 py-4 flex items-center gap-4">
+                      <img src={getImageUrl(p.images?.[0])} alt={p.name} className="w-12 h-12 object-cover rounded border border-gray-200" />
+                      <div>
+                        <p className="font-semibold text-[#222] max-w-[250px] truncate">{p.name}</p>
+                        <p className="text-xs text-gray-500 mt-1">ID: {p._id.slice(-6)}</p>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-[#595959]">{p.category?.name || '—'}</td>
+                    <td className="px-6 py-4 font-medium text-[#222]">₹{p.price?.toLocaleString()}</td>
+                    <td className="px-6 py-4">
+                      <span className="text-[#595959]">{p.stock > 0 ? `${p.stock} in stock` : <span className="text-red-500">Sold out</span>}</span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button onClick={() => openEdit(p)} className="text-gray-500 hover:text-black p-2 font-medium bg-gray-100 rounded-full mx-1 opacity-0 group-hover:opacity-100 transition-opacity">Edit</button>
+                      <button onClick={() => del(p._id)} className="text-red-500 hover:bg-red-50 p-2 font-medium rounded-full mx-1 opacity-0 group-hover:opacity-100 transition-opacity">Delete</button>
+                    </td>
+                  </tr>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? [...Array(5)].map((_, i) => (
-                <tr key={i} className="border-b border-amber-900/10">
-                  {[...Array(7)].map((_, j) => <td key={j} className="px-4 py-3"><div className="h-8 shimmer rounded" /></td>)}
-                </tr>
-              )) : filtered.map(p => (
-                <tr key={p._id} className="border-b border-amber-900/10 hover:bg-amber-500/5 transition-colors">
-                  <td className="px-4 py-3">
-                    <img src={getImageUrl(p.images?.[0])} alt={p.name} className="w-12 h-12 object-cover rounded-lg" />
-                  </td>
-                  <td className="px-4 py-3 text-amber-100 max-w-[180px] truncate">{p.name}</td>
-                  <td className="px-4 py-3 text-amber-100/50">{p.category?.name || '—'}</td>
-                  <td className="px-4 py-3 text-amber-400 font-medium">₹{p.price?.toLocaleString()}</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded ${p.stock > 0 ? 'text-emerald-400 bg-emerald-900/20' : 'text-red-400 bg-red-900/20'}`}>
-                      {p.stock > 0 ? p.stock : 'Out'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {p.isFeatured && <span className="text-xs text-amber-400 bg-amber-900/20 px-2 py-0.5 rounded">Yes</span>}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      <button onClick={() => openEdit(p)} className="p-2 text-amber-400/60 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors">
-                        <FiEdit2 size={15} />
-                      </button>
-                      <button onClick={() => del(p._id)} className="p-2 text-red-400/60 hover:text-red-400 hover:bg-red-900/10 rounded-lg transition-colors">
-                        <FiTrash2 size={15} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {!loading && filtered.length === 0 && (
-            <div className="text-center py-10 text-amber-100/30">No products found</div>
-          )}
+              </tbody>
+            </table>
+            {!loading && filtered.length === 0 && (
+              <div className="text-center py-16 text-gray-500">No listings found.</div>
+            )}
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  // -------------------------
+  // EDITOR VIEW (Etsy Style)
+  // -------------------------
+  const sizes = [
+    { label: "3x3", price: "16,200" },
+    { label: "4x4", price: "28,800" },
+    { label: "5x5", price: "45,000" },
+    { label: "6x6", price: "64,800" },
+    { label: "7x7", price: "88,200" },
+    { label: "8x8", price: "115,200" },
+    { label: "9x9", price: "145,800" },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#F8F9FA] pb-24 font-sans text-[#222]">
+      <Helmet><title>{editingProduct ? 'Edit Listing' : 'Add Listing'} | Shop Manager</title></Helmet>
+      
+      {/* Top Navigation */}
+      <div className="bg-white border-b border-[#E0E0E0] sticky top-0 z-40">
+        <div className="max-w-[1000px] mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button onClick={closeEdit} className="text-sm font-semibold hover:underline">&larr; Back to Listings</button>
+            <h1 className="text-xl font-semibold border-l pl-4 border-gray-300">{editingProduct ? 'Edit listing' : 'Add a new listing'}</h1>
+          </div>
+        </div>
+        
+        {/* Banner */}
+        <div className="bg-[#2D64D3] text-white px-6 py-3 text-sm flex items-center justify-between max-w-[1000px] mx-auto rounded-t-none rounded-b-lg mb-6 shadow-sm">
+          <p><strong>We're building a better listing form</strong><br/><span className="text-blue-100">First up: a refreshed order that's easier to follow...</span></p>
+          <div className="flex gap-2">
+            <button className="px-4 py-1.5 border border-white/30 rounded-full hover:bg-white/10 font-semibold">Dismiss</button>
+            <button className="px-4 py-1.5 bg-white text-[#2D64D3] rounded-full font-semibold">Share feedback</button>
+          </div>
+        </div>
+
+        {/* Anchor Tabs */}
+        <div className="max-w-[1000px] mx-auto px-6 flex gap-6 text-sm font-medium text-gray-500 overflow-x-auto">
+          {['Performance', 'Photo & Video', 'Category', 'Item Details', 'Item Options', 'Pricing & Delivery', 'How It\'s Made', 'Settings'].map((tab, i) => (
+            <button key={tab} className={`pb-3 border-b-2 whitespace-nowrap ${i === 1 ? 'border-black text-black' : 'border-transparent hover:text-gray-800'}`}>
+              {tab}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Modal */}
-      <AnimatePresence>
-        {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
-            onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="glass-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-luxury text-xl text-amber-400">{editing ? 'Edit Product' : 'Add Product'}</h2>
-                <button onClick={() => setShowModal(false)} className="text-amber-100/40 hover:text-amber-100 p-1"><FiX size={20} /></button>
+      <div className="max-w-[1000px] mx-auto px-6 py-8 space-y-8">
+        
+        {/* Photos & Video */}
+        <div className="bg-white rounded-2xl border border-[#E0E0E0] p-8 shadow-sm">
+          <h2 className="text-xl font-bold mb-1">Photo and video</h2>
+          <p className="text-sm text-gray-500 mb-6">Show off different angles, available options, or even a peek behind the scenes.</p>
+          
+          <div className="mb-4">
+            <p className="font-semibold text-[15px] mb-2 flex items-center gap-1">Add up to 10 photos and 1 video. <span className="text-red-500">*</span></p>
+            <div className="flex flex-wrap gap-3">
+              {/* Photo Slots */}
+              {images.map((img, i) => (
+                <div key={i} className={`relative w-28 h-28 rounded-lg border ${img ? 'border-gray-200' : 'border-dashed border-gray-300 bg-gray-50'} overflow-hidden flex items-center justify-center group`}>
+                  {img ? (
+                    <>
+                      <img src={getImageUrl(img instanceof File ? URL.createObjectURL(img) : img)} alt="" className="w-full h-full object-cover" />
+                      {i === 0 && <span className="absolute top-1 left-1 bg-white px-2 py-0.5 text-[10px] font-bold rounded shadow-sm">Primary</span>}
+                      <button 
+                        onClick={() => { const newImgs = [...images]; newImgs[i] = null; setImages(newImgs); }}
+                        className="absolute inset-0 bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <FiTrash2 size={20} />
+                      </button>
+                    </>
+                  ) : (
+                    <label className="w-full h-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
+                      <FiImage className="text-gray-400" size={24} />
+                      <input type="file" className="hidden" accept="image/*" onChange={e => {
+                        const file = e.target.files[0];
+                        if(file) { const newImgs = [...images]; newImgs[i] = file; setImages(newImgs); }
+                      }} />
+                    </label>
+                  )}
+                </div>
+              ))}
+              
+              {/* Video Slot */}
+              <div className="relative w-28 h-28 rounded-lg border-dashed border-gray-300 bg-gray-50 overflow-hidden flex items-center justify-center">
+                <div className="flex flex-col items-center gap-1 text-gray-400">
+                  <FiVideo size={24} />
+                  <span className="text-[10px] font-semibold uppercase">Video</span>
+                </div>
               </div>
-              <form onSubmit={save} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Product Name *</label>
-                    <input required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className="input-luxury" />
+            </div>
+          </div>
+        </div>
+
+        {/* Category */}
+        <div className="bg-white rounded-2xl border border-[#E0E0E0] p-8 shadow-sm">
+          <h2 className="text-xl font-bold mb-6">Category</h2>
+          <div className="max-w-2xl">
+            <label className="font-semibold text-[15px] mb-2 block">Selected category <span className="text-red-500">*</span></label>
+            <div className="flex items-center justify-between p-4 border border-gray-300 rounded-lg">
+              <div>
+                <select value={form.category} onChange={e => setForm({...form, category: e.target.value})} className="font-medium text-lg bg-transparent focus:outline-none cursor-pointer">
+                  <option value="">Select a category...</option>
+                  {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Physical item • Made to order</p>
+              </div>
+              <button className="px-4 py-1.5 border border-gray-300 rounded-full text-sm font-semibold hover:bg-gray-50">Change</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Item Details */}
+        <div className="bg-white rounded-2xl border border-[#E0E0E0] p-8 shadow-sm">
+          <h2 className="text-xl font-bold mb-1">Item details</h2>
+          <p className="text-sm text-gray-500 mb-6">Help buyers understand your item better.</p>
+          
+          <div className="max-w-2xl space-y-6">
+            <div>
+              <label className="font-semibold text-[15px] mb-2 block">Title <span className="text-red-500">*</span></label>
+              <p className="text-sm text-gray-500 mb-2">Make sure your title is easy to understand and clearly describes the items you're selling.</p>
+              <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black outline-none" placeholder="e.g. Handmade Abstract Tufted Wool Cotton Rug..." />
+              <div className="text-right text-xs text-gray-400 mt-1">{form.name.length}/140</div>
+            </div>
+            
+            <div>
+              <label className="font-semibold text-[15px] mb-2 block">Description <span className="text-red-500">*</span></label>
+              <p className="text-sm text-gray-500 mb-2">What makes your item special? Buyers will only see the first few lines unless they expand the description.</p>
+              <textarea rows={8} value={form.description} onChange={e => setForm({...form, description: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black outline-none resize-y" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="font-semibold text-[15px] mb-2 block">Price (₹) <span className="text-red-500">*</span></label>
+                <input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none" />
+              </div>
+              <div>
+                <label className="font-semibold text-[15px] mb-2 block">Stock</label>
+                <input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Item Options / Variations */}
+        <div className="bg-white rounded-2xl border border-[#E0E0E0] p-8 shadow-sm">
+          <h2 className="text-xl font-bold mb-1">Item options</h2>
+          <p className="text-sm text-gray-500 mb-6">Share any standard options or special personalization choices available for this item.</p>
+          
+          <div className="border border-gray-200 rounded-xl p-6 bg-gray-50/30">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-semibold text-lg">Variations</h3>
+                <p className="text-sm text-gray-500">Add available options like colour or size.</p>
+              </div>
+              <button className="px-4 py-2 border border-gray-300 bg-white rounded-full text-sm font-semibold hover:bg-gray-50 shadow-sm">Manage variations</button>
+            </div>
+            
+            <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-4">Size Feet <span className="font-normal lowercase">({sizes.length} variants)</span></p>
+            
+            <div className="space-y-0">
+              <div className="flex gap-4 px-4 py-2 text-xs font-bold border-b border-gray-200">
+                <div className="w-8"></div>
+                <div className="w-24 border-b border-black pb-1 inline-block">Size Feet</div>
+                <div className="flex-1 border-b border-black pb-1 inline-block">Price in India</div>
+                <div className="flex-1 border-b border-black pb-1 inline-block">Price in United States</div>
+              </div>
+              
+              {sizes.map((s, i) => (
+                <div key={s.label} className={`flex items-center gap-4 px-4 py-3 border-b border-gray-200 ${i === 5 ? 'bg-gray-200/60 rounded' : ''}`}>
+                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black" />
+                  <div className="w-24 text-sm font-medium">{s.label}</div>
+                  <div className="flex-1 relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                    <input type="text" defaultValue={s.price} className="w-full pl-7 p-2 border border-gray-300 rounded bg-white text-sm" />
                   </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Price (₹) *</label>
-                    <input type="number" required value={form.price} onChange={e => setForm(p => ({ ...p, price: e.target.value }))} className="input-luxury" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Discount Price (₹)</label>
-                    <input type="number" value={form.discountPrice} onChange={e => setForm(p => ({ ...p, discountPrice: e.target.value }))} className="input-luxury" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Category *</label>
-                    <select required value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} className="input-luxury">
-                      <option value="" style={{ background: '#1a1008' }}>Select category</option>
-                      {categories.map(c => <option key={c._id} value={c._id} style={{ background: '#1a1008' }}>{c.name}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Type</label>
-                    <select value={form.type} onChange={e => setForm(p => ({ ...p, type: e.target.value }))} className="input-luxury">
-                      {['Handmade', 'Machine Made', 'Hand-Tufted', 'Hand-Knotted', 'Modern'].map(t => (
-                        <option key={t} value={t} style={{ background: '#1a1008' }}>{t}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Material</label>
-                    <input value={form.material} onChange={e => setForm(p => ({ ...p, material: e.target.value }))} className="input-luxury" placeholder="e.g. Pure Wool, Silk" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Stock</label>
-                    <input type="number" value={form.stock} onChange={e => setForm(p => ({ ...p, stock: e.target.value }))} className="input-luxury" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Tags (comma separated)</label>
-                    <input value={form.tags} onChange={e => setForm(p => ({ ...p, tags: e.target.value }))} className="input-luxury" placeholder="persian, wool, luxury" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Colors (comma separated)</label>
-                    <input value={form.colors} onChange={e => setForm(p => ({ ...p, colors: e.target.value }))} className="input-luxury" placeholder="Red, Gold, Beige" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Offer Label</label>
-                    <input value={form.offerLabel} onChange={e => setForm(p => ({ ...p, offerLabel: e.target.value }))} className="input-luxury" placeholder="Hot Deal, 20% Off" />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Description</label>
-                    <textarea rows={3} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} className="input-luxury resize-none" />
-                  </div>
-                  <div className="sm:col-span-2 flex flex-wrap gap-4">
-                    {[
-                      { key: 'isFeatured', label: 'Featured' },
-                      { key: 'isBestSeller', label: 'Best Seller' },
-                      { key: 'isNewArrival', label: 'New Arrival' },
-                      { key: 'isTrending', label: 'Trending' },
-                      { key: 'isLuxury', label: 'Luxury' },
-                    ].map(f => (
-                      <label key={f.key} className="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" checked={form[f.key]} onChange={e => setForm(p => ({ ...p, [f.key]: e.target.checked }))} className="accent-amber-500" />
-                        <span className="text-sm text-amber-100/70">{f.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-xs text-amber-100/50 block mb-4 uppercase tracking-widest font-bold">Product Images (4 Slots)</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {[0, 1, 2, 3].map((index) => (
-                        <label key={index} className="relative aspect-square rounded-xl border-2 border-dashed border-amber-900/30 hover:border-amber-500/50 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-black/20 group">
-                          {images[index] || (editing?.images?.[index]) ? (
-                            <>
-                              <img 
-                                src={getImageUrl(images[index] ? URL.createObjectURL(images[index]) : editing?.images?.[index])} 
-                                alt={`Preview ${index}`} 
-                                className="w-full h-full object-cover" 
-                              />
-                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                <FiUpload className="text-white" size={20} />
-                              </div>
-                            </>
-                          ) : (
-                            <div className="flex flex-col items-center gap-1">
-                              <FiPlus className="text-amber-500/40" size={20} />
-                              <span className="text-[10px] text-amber-100/20 uppercase font-bold">Slot {index + 1}</span>
-                            </div>
-                          )}
-                          <input 
-                            type="file" 
-                            accept="image/*" 
-                            className="hidden" 
-                            onChange={e => {
-                              const file = e.target.files[0];
-                              if (file) {
-                                const newImages = [...images];
-                                newImages[index] = file;
-                                setImages(newImages);
-                              }
-                            }} 
-                          />
-                        </label>
-                      ))}
-                    </div>
+                  <div className="flex-1 relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                    <input type="text" defaultValue={s.price} className="w-full pl-7 p-2 border border-gray-300 rounded bg-white text-sm" />
                   </div>
                 </div>
-                <div className="flex gap-3 pt-2">
-                  <button type="button" onClick={() => setShowModal(false)} className="btn-outline-gold flex-1 py-2.5">Cancel</button>
-                  <button type="submit" disabled={saving} className="btn-gold flex-1 py-2.5">
-                    {saving ? 'Saving...' : editing ? 'Update Product' : 'Add Product'}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </AdminLayout>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Fixed Bottom Action Bar */}
+      <div className="fixed bottom-0 left-0 lg:left-64 right-0 bg-white border-t border-[#E0E0E0] py-4 px-6 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div className="max-w-[1000px] mx-auto flex items-center justify-between">
+          <p className="text-sm text-gray-600">You have unsaved changes.</p>
+          <div className="flex gap-3">
+            <button onClick={closeEdit} className="px-6 py-2.5 bg-white border border-gray-300 rounded-full font-bold text-sm hover:bg-gray-50 transition-colors shadow-sm">
+              Cancel
+            </button>
+            <button onClick={() => save()} disabled={saving} className="px-6 py-2.5 bg-[#222] text-white rounded-full font-bold text-sm hover:bg-black transition-colors shadow-sm">
+              {saving ? 'Publishing...' : 'Publish changes'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
