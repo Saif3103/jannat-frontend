@@ -159,7 +159,7 @@ export default function AdminProducts() {
   }
 
   // -------------------------
-  // EDITOR VIEW (Etsy Style)
+  // EDITOR VIEW (Jannat Style)
   // -------------------------
   const sizes = [
     { label: "3x3", price: "16,200" },
@@ -378,17 +378,30 @@ export default function AdminProducts() {
                 <label className="font-semibold text-[13px] block mb-1">Tags</label>
                 <p className="text-xs text-gray-500 mb-2">Add up to 13 tags to help people search for your listings.</p>
                 <div className="flex gap-2 mb-3">
-                  <input type="text" placeholder="Shape, colour, style, function, etc." className="flex-1 p-3 bg-gray-100 border border-gray-300 rounded-lg text-sm outline-none focus:ring-1 focus:ring-black" />
-                  <button className="px-5 py-3 text-sm font-semibold rounded-lg bg-white border border-gray-300 hover:bg-gray-50">Add</button>
+                  <input type="text" id="tagInput" placeholder="Shape, colour, style, function, etc." className="flex-1 p-3 bg-gray-100 border border-gray-300 rounded-lg text-sm outline-none focus:ring-1 focus:ring-black" />
+                  <button type="button" onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById('tagInput');
+                    if(el.value.trim()) { 
+                      const currentTags = form.tags ? form.tags.split(',').map(t=>t.trim()).filter(Boolean) : [];
+                      if(currentTags.length < 13 && !currentTags.includes(el.value.trim())) {
+                        setForm({...form, tags: [...currentTags, el.value.trim()].join(', ')});
+                      }
+                      el.value = ''; 
+                    }
+                  }} className="px-5 py-3 text-sm font-semibold rounded-lg bg-white border border-gray-300 hover:bg-gray-50">Add</button>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {['abstract tufted rug', 'washable rug', 'colorful rug', 'irregular shape rug', 'handmade wool rug', 'contemporary rug', 'funky modern rug', 'statement rug', 'custom size rug', 'designer carpet', 'wool cotton rug', 'artistic area rug', 'luxury tufted rug'].map(tag => (
-                    <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-[13px] text-gray-700">
-                      {tag} <FiX size={14} className="cursor-pointer hover:text-black" />
+                  {(form.tags ? form.tags.split(',').map(t=>t.trim()).filter(Boolean) : []).map((tag, idx) => (
+                    <span key={idx} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-[13px] text-gray-700">
+                      {tag} <FiX size={14} className="cursor-pointer hover:text-black" onClick={() => {
+                        const newTags = form.tags.split(',').map(t=>t.trim()).filter(t=> t && t !== tag).join(', ');
+                        setForm({...form, tags: newTags});
+                      }} />
                     </span>
                   ))}
                 </div>
-                <div className="text-right text-xs text-gray-500 mt-2 font-medium">All 13 used</div>
+                <div className="text-right text-xs text-gray-500 mt-2 font-medium">{(form.tags ? form.tags.split(',').filter(t=>t.trim()).length : 0)} used</div>
               </div>
               
               <div>
@@ -482,8 +495,8 @@ export default function AdminProducts() {
               <div className="pt-2">
                 <label className="font-semibold text-[13px] block mb-3">Can be personalised <span className="font-normal text-gray-500 underline ml-2 cursor-pointer hover:text-gray-800">Reset</span></label>
                 <div className="space-y-3">
-                  <label className="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" checked readOnly className="accent-black w-4 h-4" /> Yes</label>
-                  <label className="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" readOnly className="accent-black w-4 h-4" /> No</label>
+                  <label className="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" defaultChecked className="accent-black w-4 h-4" /> Yes</label>
+                  <label className="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" className="accent-black w-4 h-4" /> No</label>
                 </div>
               </div>
               
@@ -610,7 +623,7 @@ export default function AdminProducts() {
             <div className="border-t border-gray-200 pt-6 flex justify-between items-start">
               <div>
                 <h3 className="font-semibold text-[15px] mb-1">Customs information</h3>
-                <p className="text-xs text-gray-500 max-w-3xl leading-relaxed">This info is used to prefill a customs form when you purchase an International Postage Label on Etsy based on the information you provided. Sellers are solely responsible for the accuracy of all information provided to customs authorities and should validate before purchase of the label.</p>
+                <p className="text-xs text-gray-500 max-w-3xl leading-relaxed">This info is used to prefill a customs form when you purchase an International Postage Label based on the information you provided. Sellers are solely responsible for the accuracy of all information provided to customs authorities and should validate before purchase of the label.</p>
               </div>
               <button className="px-4 py-2 bg-gray-100 rounded-full font-semibold text-[13px] hover:bg-gray-200 flex items-center gap-2 whitespace-nowrap"><FiTrash2 size={14}/> Remove tariff number</button>
             </div>
@@ -625,23 +638,23 @@ export default function AdminProducts() {
         {/* How it's made */}
         <div className="bg-white rounded-2xl border border-[#E0E0E0] p-8 shadow-sm">
           <div className="border-b-2 border-blue-600 inline-block pb-2 mb-2"><h2 className="text-xl font-bold text-blue-600">How it's made</h2></div>
-          <p className="text-sm text-gray-500 mb-8 mt-2 max-w-4xl leading-relaxed">We want to know more about how your item was made, and so do buyers. This helps to show what makes your item special, and helps the Etsy marketplace stay unique. <span className="underline cursor-pointer">Learn more about what types of items are allowed on Etsy.</span></p>
+          <p className="text-sm text-gray-500 mb-8 mt-2 max-w-4xl leading-relaxed">We want to know more about how your item was made, and so do buyers. This helps to show what makes your item special, and helps the Jannat Rugs stay unique. <span className="underline cursor-pointer">Learn more about what types of items are allowed on Jannat Rugs.co.</span></p>
           
           <div className="space-y-8">
             <div>
               <label className="font-semibold text-[15px] block mb-3">Who made it? <span className="text-red-500">*</span></label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="who" checked readOnly className="accent-black w-5 h-5" /> I did</label>
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="who" readOnly className="accent-black w-5 h-5" /> A member of my shop</label>
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="who" readOnly className="accent-black w-5 h-5" /> Another company or person</label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="who" defaultChecked className="accent-black w-5 h-5" /> I did</label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="who" className="accent-black w-5 h-5" /> A member of my shop</label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="who" className="accent-black w-5 h-5" /> Another company or person</label>
               </div>
             </div>
             
             <div>
               <label className="font-semibold text-[15px] block mb-3">What is it? <span className="text-red-500">*</span></label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="what" checked readOnly className="accent-black w-5 h-5" /> A finished product</label>
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="what" readOnly className="accent-black w-5 h-5" /> A supply or tool to make things</label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="what" defaultChecked className="accent-black w-5 h-5" /> A finished product</label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="what" className="accent-black w-5 h-5" /> A supply or tool to make things</label>
               </div>
             </div>
             
@@ -649,7 +662,7 @@ export default function AdminProducts() {
               <label className="font-semibold text-[15px] block mb-4">How does your shop produce this item?</label>
               <div className="space-y-5">
                 <label className="flex items-start gap-3 text-sm cursor-pointer">
-                  <input type="radio" name="how" checked readOnly className="accent-black w-5 h-5 mt-0.5" /> 
+                  <input type="radio" name="how" defaultChecked className="accent-black w-5 h-5 mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">It's made from scratch.</strong>
                     <p className="text-gray-500 text-xs mt-1">My shop makes this item using only raw or basic craft materials, such as fabric, clay, resin, glass, etc.</p>
@@ -657,25 +670,25 @@ export default function AdminProducts() {
                   </div>
                 </label>
                 <label className="flex items-start gap-3 text-sm opacity-50 cursor-pointer">
-                  <input type="radio" name="how" readOnly className="accent-black w-5 h-5 mt-0.5" /> 
+                  <input type="radio" name="how" className="accent-black w-5 h-5 mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">It's assembled from purchased parts.</strong>
                   </div>
                 </label>
                 <label className="flex items-start gap-3 text-sm opacity-50 cursor-pointer">
-                  <input type="radio" name="how" readOnly className="accent-black w-5 h-5 mt-0.5" /> 
+                  <input type="radio" name="how" className="accent-black w-5 h-5 mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">It's an item that my shop alters.</strong>
                   </div>
                 </label>
                 <label className="flex items-start gap-3 text-sm opacity-50 cursor-pointer">
-                  <input type="radio" name="how" readOnly className="accent-black w-5 h-5 mt-0.5" /> 
+                  <input type="radio" name="how" className="accent-black w-5 h-5 mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">It's a curated set of purchased goods.</strong>
                   </div>
                 </label>
                 <label className="flex items-start gap-3 text-sm opacity-50 cursor-pointer">
-                  <input type="radio" name="how" readOnly className="accent-black w-5 h-5 mt-0.5" /> 
+                  <input type="radio" name="how" className="accent-black w-5 h-5 mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">It's a natural material.</strong>
                   </div>
@@ -688,25 +701,25 @@ export default function AdminProducts() {
               <p className="text-sm text-gray-500 mb-4">Select all that apply.</p>
               <div className="space-y-4">
                 <label className="flex items-start gap-3 text-sm cursor-pointer">
-                  <input type="checkbox" checked readOnly className="accent-black w-5 h-5 rounded mt-0.5" /> 
+                  <input type="checkbox" defaultChecked className="accent-black w-5 h-5 rounded mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">Handheld or hand-guided tools</strong>
                     <p className="text-gray-400 text-[11px] mt-1">Examples: sewing needles, paintbrush, sewing machine, table saw, etc.</p>
                   </div>
                 </label>
                 <label className="flex items-start gap-3 text-sm cursor-pointer">
-                  <input type="checkbox" checked readOnly className="accent-black w-5 h-5 rounded mt-0.5" /> 
+                  <input type="checkbox" defaultChecked className="accent-black w-5 h-5 rounded mt-0.5" /> 
                   <div>
                     <strong className="text-[15px]">Computerised tools or machines</strong>
                     <p className="text-gray-400 text-[11px] mt-1">Examples: laser printer, computerised embroidery machine, Cricut machine, CNC machine, 3D printer, etc.</p>
                   </div>
                 </label>
                 <label className="flex items-start gap-3 text-sm opacity-50 cursor-pointer">
-                  <input type="checkbox" readOnly className="accent-black w-5 h-5 rounded mt-0.5" /> 
+                  <input type="checkbox" className="accent-black w-5 h-5 rounded mt-0.5" /> 
                   <div><strong className="text-[15px]">An AI generator</strong></div>
                 </label>
                 <label className="flex items-start gap-3 text-sm opacity-50 cursor-pointer">
-                  <input type="checkbox" readOnly className="accent-black w-5 h-5 rounded mt-0.5" /> 
+                  <input type="checkbox" className="accent-black w-5 h-5 rounded mt-0.5" /> 
                   <div><strong className="text-[15px]">None, I don't use tools</strong></div>
                 </label>
               </div>
@@ -715,7 +728,7 @@ export default function AdminProducts() {
             <div className="border border-gray-200 rounded-xl p-6 bg-gray-50/50 flex justify-between items-center mt-8">
               <div>
                 <h4 className="font-bold text-[15px] mb-1">Production partners for this listing</h4>
-                <p className="text-sm text-gray-500">A production partner is anyone who's not a part of your Etsy shop who <strong>helps</strong> you physically produce<br/>your items. <span className="underline cursor-pointer">Is this required for you?</span></p>
+                <p className="text-sm text-gray-500">A production partner is anyone who's not a part of your shop who <strong>helps</strong> you physically produce<br/>your items. <span className="underline cursor-pointer">Is this required for you?</span></p>
               </div>
               <button className="px-5 py-2.5 border border-gray-300 bg-white rounded-full font-semibold text-[13px] hover:bg-gray-50 flex items-center gap-2 whitespace-nowrap shadow-sm"><FiPlus/> Add production partners</button>
             </div>
@@ -725,7 +738,7 @@ export default function AdminProducts() {
         {/* Settings */}
         <div className="bg-white rounded-2xl border border-[#E0E0E0] p-8 shadow-sm">
           <h2 className="text-xl font-bold mb-1">Settings</h2>
-          <p className="text-sm text-gray-500 mb-8">Choose how this listing will display in your shop, how it will renew, and if you want it to be promoted in Etsy Ads.</p>
+          <p className="text-sm text-gray-500 mb-8">Choose how this listing will display in your shop, how it will renew, and if you want it to be promoted in Promoted Listings.</p>
           
           <div className="space-y-8">
             <div>
@@ -746,8 +759,8 @@ export default function AdminProducts() {
             
             <div className="flex justify-between items-center py-6 border-t border-gray-200">
               <div>
-                <h4 className="font-bold text-[15px] mb-1">Etsy Ads</h4>
-                <p className="text-sm text-gray-500">Promote this listing on Etsy as part of your Etsy Ads campaign.</p>
+                <h4 className="font-bold text-[15px] mb-1">Promoted Listings</h4>
+                <p className="text-sm text-gray-500">Promote this listing as part of your Promoted Listings campaign.</p>
               </div>
               <div className="w-12 h-7 bg-black rounded-full relative cursor-pointer flex-shrink-0">
                 <div className="absolute right-1 top-1 w-5 h-5 bg-white rounded-full"></div>
@@ -758,8 +771,8 @@ export default function AdminProducts() {
               <label className="font-semibold text-[15px] block mb-2">Renewal options <span className="text-red-500">*</span></label>
               <p className="text-sm text-gray-500 mb-4">Each renewal lasts for 4 months or until the listing sells out.</p>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="renew" checked readOnly className="accent-black w-5 h-5" /> <strong>Automatic</strong> <span className="text-gray-500 ml-1">— 17.00 INR each time it renews</span></label>
-                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="renew" readOnly className="accent-black w-5 h-5" /> <strong>Manual</strong> <span className="text-gray-500 ml-1">— I'll renew expired listings myself</span></label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="renew" defaultChecked className="accent-black w-5 h-5" /> <strong>Automatic</strong> <span className="text-gray-500 ml-1">— 17.00 INR each time it renews</span></label>
+                <label className="flex items-center gap-3 text-sm cursor-pointer"><input type="radio" name="renew" className="accent-black w-5 h-5" /> <strong>Manual</strong> <span className="text-gray-500 ml-1">— I'll renew expired listings myself</span></label>
               </div>
             </div>
           </div>
