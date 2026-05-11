@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiX, FiSend, FiMic, FiMicOff, FiRefreshCw, FiUser, FiMapPin, FiGrid } from 'react-icons/fi';
-import { LuRug } from "react-icons/lu";
+import { FiX, FiSend, FiMic, FiMicOff, FiRefreshCw, FiUser, FiMapPin, FiGrid as LuRug } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
@@ -25,7 +24,7 @@ export default function ChatBot() {
     { text: 'How are carpets made?', icon: LuRug },
     { text: 'Who is the owner?', icon: FiUser },
     { text: 'Your address?', icon: FiMapPin },
-    { text: 'Show me collections', icon: FiGrid }
+    { text: 'Show me collections', icon: LuRug }
   ];
 
   useEffect(() => {
