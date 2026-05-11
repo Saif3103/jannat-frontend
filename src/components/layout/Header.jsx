@@ -73,127 +73,109 @@ export default function Header() {
           : (isHome ? 'bg-transparent py-4' : 'header-blur py-4')
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between gap-4">
-        {/* Left Side: Nav (Desktop) / Menu (Mobile) */}
-        <div className="flex-1 flex justify-start items-center">
-          {/* Mobile Menu */}
-          <button onClick={() => setMobileMenu(!isMobileMenuOpen)} id="mobile-menu-btn"
+      <div className="max-w-[1600px] mx-auto px-6 flex items-center justify-between h-20">
+        
+        {/* LEFT: Logo & Brand */}
+        <div className="flex-1 flex items-center justify-start gap-4">
+           {/* Mobile Menu Button (Left aligned on mobile) */}
+           <button onClick={() => setMobileMenu(!isMobileMenuOpen)} id="mobile-menu-btn"
             className="lg:hidden p-2 -ml-2 text-amber-100/70 hover:text-amber-400 transition-colors">
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map(link => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className="text-sm tracking-wider text-amber-100/80 hover:text-amber-400 transition-colors duration-200 uppercase font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <Link to="/" className="flex items-center gap-4">
+            <img
+              src="/logo.png"
+              alt="Jannat Rugs Co."
+              className="h-12 w-12 aspect-square rounded-full object-cover border border-amber-500/20 shadow-[0_0_15px_rgba(201,168,76,0.15)]"
+            />
+            <div className="hidden sm:flex flex-col">
+              <span className="font-luxury text-xl md:text-2xl text-gold-gradient tracking-[0.1em] font-bold leading-tight">JANNAT RUGS CO.</span>
+              <span className="text-[8px] md:text-[9px] text-amber-100/40 tracking-[0.4em] uppercase font-bold">Handmade Luxury Rugs</span>
+            </div>
+          </Link>
         </div>
 
-        {/* Right Side: All Icons + Login + Logo */}
-        <div className="flex-1 flex items-center justify-end gap-3 sm:gap-4 md:gap-5">
+        {/* CENTER: Navigation Links (Desktop Only) */}
+        <nav className="hidden lg:flex items-center justify-center gap-10">
+          {navLinks.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`text-[11px] tracking-[0.2em] uppercase font-bold transition-all duration-300 ${
+                location.pathname === link.path ? 'text-amber-400' : 'text-amber-100/60 hover:text-white'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* RIGHT: Action Icons */}
+        <div className="flex-1 flex items-center justify-end gap-2 md:gap-4">
           {/* Search */}
           <button onClick={() => setSearchOpen(!isSearchOpen)} id="search-toggle"
-            className="p-1 sm:p-2 text-amber-100/70 hover:text-amber-400 transition-colors">
+            className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors">
             <FiSearch size={20} />
           </button>
 
-          {/* Dark/Light mode */}
-          <button onClick={toggleDarkMode} id="theme-toggle"
-            className="p-1 sm:p-2 text-amber-100/70 hover:text-amber-400 transition-colors hidden md:flex">
-            {isDarkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
-          </button>
-
           {/* Wishlist */}
-          <Link to="/wishlist" id="wishlist-btn" className="p-1 sm:p-2 text-amber-100/70 hover:text-amber-400 transition-colors hidden sm:flex">
+          <Link to="/wishlist" id="wishlist-btn" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors hidden md:flex">
             <FiHeart size={20} />
           </Link>
 
           {/* Cart */}
-          <Link to="/cart" id="cart-btn" className="p-1 sm:p-2 text-amber-100/70 hover:text-amber-400 transition-colors relative">
+          <Link to="/cart" id="cart-btn" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors relative">
             <FiShoppingCart size={20} />
             {cartCount > 0 && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute -top-1 -right-1 bg-amber-500 text-black text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"
-              >
+              <span className="absolute top-1 right-1 bg-amber-500 text-black text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                 {cartCount}
-              </motion.span>
+              </span>
             )}
           </Link>
 
-          <div className="w-px h-6 bg-amber-500/20 mx-1 hidden sm:block"></div>
+          <div className="w-px h-6 bg-amber-500/10 mx-1 hidden sm:block"></div>
 
-          {/* User */}
-          {user ? (
-            <div className="relative">
+          {/* User Profile */}
+          <div className="relative">
+            {user ? (
               <button onClick={() => setShowUserMenu(!showUserMenu)} id="user-menu-btn"
-                className="flex items-center gap-2 p-1 sm:p-2 text-amber-100/70 hover:text-amber-400 transition-colors">
+                className="flex items-center gap-2 p-1 text-amber-100/70 hover:text-amber-400 transition-colors border border-amber-900/20 rounded-full">
                 {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-full object-cover border border-amber-500/30" />
+                  <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-sm font-bold">
+                  <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400 text-xs font-bold">
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
                 )}
               </button>
-              <AnimatePresence>
-                {showUserMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 top-full mt-2 w-52 glass-card-dark rounded-xl overflow-hidden shadow-2xl"
-                  >
-                    <div className="p-3 border-b border-amber-900/30">
-                      <p className="text-amber-100 font-medium text-sm">{user.name}</p>
-                      <p className="text-amber-100/50 text-xs truncate">{user.email}</p>
-                    </div>
-                    {user.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-3 px-4 py-3 text-amber-400 hover:bg-amber-500/10 text-sm transition-colors">
-                        <FiSettings size={15} /> Admin Panel
-                      </Link>
-                    )}
-                    <Link to="/dashboard" onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-amber-100/80 hover:bg-amber-500/10 text-sm transition-colors">
-                      <FiUser size={15} /> My Dashboard
-                    </Link>
-                    <Link to="/dashboard?tab=orders" onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-amber-100/80 hover:bg-amber-500/10 text-sm transition-colors">
-                      <FiPackage size={15} /> My Orders
-                    </Link>
-                    <button onClick={() => { logout(); setShowUserMenu(false); }}
-                      className="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 text-sm transition-colors w-full">
-                      <FiLogOut size={15} /> Logout
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ) : (
-            <Link to="/login" id="login-btn"
-              className="hidden sm:flex items-center gap-2 btn-outline-gold text-xs py-2 px-4">
-              <FiUser size={14} /> Login
-            </Link>
-          )}
+            ) : (
+              <Link to="/login" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors border border-amber-900/20 rounded-full flex items-center justify-center">
+                <FiUser size={20} />
+              </Link>
+            )}
 
-          {/* Logo */}
-          <Link to="/" className="flex flex-col items-center justify-center gap-1 flex-shrink-0">
-            <img
-              src="/logo.png"
-              alt="Jannat Rugs Co."
-              className="h-10 w-10 md:h-14 md:w-14 aspect-square rounded-full object-cover border border-amber-500/30 shadow-[0_0_15px_rgba(201,168,76,0.2)]"
-              onError={e => { e.target.style.display = 'none'; }}
-            />
-          </Link>
+            <AnimatePresence>
+              {showUserMenu && user && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                  className="absolute right-0 top-full mt-4 w-56 glass-card-dark rounded-2xl overflow-hidden shadow-2xl border border-amber-900/20"
+                >
+                  <div className="p-4 border-b border-amber-900/10">
+                    <p className="text-white font-bold text-sm">{user.name}</p>
+                    <p className="text-amber-100/40 text-[10px] truncate">{user.email}</p>
+                  </div>
+                  <div className="p-2">
+                    {user.role === 'admin' && (
+                      <Link to="/admin" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-amber-400 hover:bg-amber-500/10 text-xs font-bold transition-all rounded-xl"><FiSettings size={14} /> Admin Panel</Link>
+                    )}
+                    <Link to="/dashboard" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-amber-100/70 hover:bg-white/5 text-xs font-bold transition-all rounded-xl"><FiUser size={14} /> My Profile</Link>
+                    <button onClick={() => { logout(); setShowUserMenu(false); }} className="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all rounded-xl w-full"><FiLogOut size={14} /> Logout</button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
