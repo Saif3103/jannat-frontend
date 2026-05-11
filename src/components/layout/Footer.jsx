@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiInstagram, FiFacebook, FiYoutube, FiSend, FiMessageCircle, FiArrowRight } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
+import ChatBot from '../ChatBot';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 
@@ -91,22 +92,12 @@ export default function Footer() {
 
       {/* 3. MAIN FOOTER */}
       <div className="bg-black py-20 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           
-          {/* Logo & About */}
-          <div className="md:col-span-4 space-y-8">
-            <Link to="/" className="inline-block">
-              <img src="/logo.png" alt="Logo" className="w-24 h-24 object-cover rounded-full border border-amber-900/20 p-1" />
-            </Link>
-            <p className="text-amber-100/40 text-sm leading-relaxed max-w-xs">
-              Crafting luxury carpets and rugs with heritage artistry. Each piece is a masterwork of tradition and elegance.
-            </p>
-          </div>
-
           {/* Quick Links */}
-          <div className="md:col-span-4 space-y-8">
+          <div className="space-y-8">
             <h4 className="text-amber-400 text-[10px] tracking-[0.4em] uppercase font-bold">Quick Links</h4>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               {links.map(link => (
                 <Link 
                   key={link.path} 
@@ -120,7 +111,7 @@ export default function Footer() {
           </div>
 
           {/* Contact & Socials */}
-          <div className="md:col-span-4 space-y-8 flex flex-col items-start md:items-end md:text-right">
+          <div className="space-y-8 flex flex-col items-start md:items-end md:text-right">
             <h4 className="text-amber-400 text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
             <div className="space-y-4">
               <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-amber-100/60 hover:text-amber-400 transition-colors justify-end text-sm">
@@ -168,18 +159,15 @@ export default function Footer() {
           href="https://wa.me/919235508422" 
           target="_blank" 
           rel="noreferrer"
-          className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform"
+          className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-all duration-300 group"
         >
-          <FaWhatsapp size={30} />
+          <FaWhatsapp size={32} />
+          <span className="absolute left-full ml-4 bg-black/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap tracking-widest border border-white/10 pointer-events-none">WHATSAPP US</span>
         </a>
       </div>
 
       <div className="fixed bottom-8 right-8 z-50">
-        <button 
-          className="w-14 h-14 bg-[#C9A84C] text-black rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.4)] hover:scale-110 transition-transform"
-        >
-          <FiMessageCircle size={30} />
-        </button>
+        <ChatBot />
       </div>
 
     </footer>
