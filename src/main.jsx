@@ -6,10 +6,13 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import './index.css';
 
+console.log('App mounting...');
+console.log('App execution verified.');
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
+
         <App />
         <Toaster
           position="top-right"
