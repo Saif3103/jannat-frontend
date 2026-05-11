@@ -21,7 +21,7 @@ export default function AdminLayout({ children }) {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex bg-white text-[#222222] font-sans">
+    <div className="admin-panel min-h-screen flex bg-white text-[#222222] font-sans">
       {/* Sidebar */}
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 flex flex-col transition-transform duration-300 bg-white border-r border-[#E0E0E0] ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="flex items-center justify-between p-4 border-b border-[#E0E0E0]">

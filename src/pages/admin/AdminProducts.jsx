@@ -290,11 +290,11 @@ export default function AdminProducts() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="font-semibold text-[15px] mb-2 block">Price (₹) <span className="text-red-500">*</span></label>
-                <input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none" />
+                <input type="text" value={form.price} onChange={e => setForm({...form, price: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none" />
               </div>
               <div>
                 <label className="font-semibold text-[15px] mb-2 block">Stock</label>
-                <input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none" />
+                <input type="text" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none" />
               </div>
             </div>
           </div>

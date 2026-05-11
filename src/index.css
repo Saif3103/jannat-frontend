@@ -309,3 +309,15 @@ body.light-mode .glass-card {
   transform: translateY(0);
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
+
+/* Admin Panel overrides */
+.admin-panel input,
+.admin-panel textarea,
+.admin-panel select {
+  color: #111827 !important;
+}
+
+.admin-panel input::placeholder,
+.admin-panel textarea::placeholder {
+  color: #9ca3af !important;
+}
