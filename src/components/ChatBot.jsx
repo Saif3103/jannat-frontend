@@ -250,6 +250,5 @@ export default function ChatBot() {
         )}
       </motion.button>
     </>
-    </>
   );
 }
