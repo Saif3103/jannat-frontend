@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiMail, FiPhone, FiInstagram, FiFacebook, FiYoutube, FiSend } from 'react-icons/fi';
+import { FiMail, FiPhone, FiInstagram, FiFacebook, FiYoutube, FiSend, FiMessageCircle, FiArrowRight } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
@@ -35,80 +35,117 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-20" style={{ background: 'linear-gradient(180deg, #0a0a0a 0%, #050505 100%)', borderTop: '1px solid rgba(201,168,76,0.15)' }}>
-      {/* Newsletter Section (Centered) */}
-      <div style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.05), rgba(201,168,76,0.02))' }} className="py-16 border-b border-amber-900/20">
-        <div className="max-w-xl mx-auto px-4 text-center">
-          <h3 className="font-luxury text-3xl text-gold-gradient mb-3">Stay In The Loop</h3>
-          <p className="text-amber-100/50 text-sm mb-8">Subscribe for exclusive offers, new collections & carpet care tips.</p>
-          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+    <footer className="relative mt-20 font-sans">
+      
+      {/* 1. CTA SECTION: READY TO TRANSFORM YOUR SPACE */}
+      <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1600&q=80" 
+            alt="Luxury Space" 
+            className="w-full h-full object-cover grayscale-[0.3]"
+          />
+          {/* Dark Overlay with Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/80" />
+        </div>
+        
+        <div className="relative z-10 text-center px-4 max-w-4xl">
+          <p className="text-amber-400 text-xs tracking-[0.5em] uppercase mb-6 font-medium">Begin Your Journey</p>
+          <h2 className="font-luxury text-5xl md:text-7xl text-white mb-6 leading-tight">Ready to Transform<br />Your Space?</h2>
+          <p className="text-amber-100/60 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
+            Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+            <Link to="/shop" className="btn-gold px-10 py-4 flex items-center gap-3 group">
+              SHOP COLLECTION <FiArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link to="/contact" className="text-amber-400 text-xs tracking-widest uppercase font-bold hover:text-amber-300 transition-colors border-b border-amber-400/30 pb-1">
+              Request a Consultation
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. NEWSLETTER SECTION */}
+      <div className="bg-[#080808] border-y border-amber-900/10 py-16 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div className="text-center md:text-left">
+            <h3 className="font-luxury text-3xl text-gold-gradient mb-2">Stay In The Loop</h3>
+            <p className="text-amber-100/40 text-xs tracking-wider uppercase">Subscribe for exclusive offers, new collections & carpet care tips.</p>
+          </div>
+          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-md">
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="Your email address"
-              className="input-luxury w-full sm:w-72 text-center sm:text-left"
-              id="newsletter-input"
+              className="bg-white/5 border border-amber-900/20 px-6 py-4 text-sm text-white outline-none focus:bg-white/10 w-full rounded-l-xl"
             />
-            <button type="submit" disabled={loading} className="btn-gold flex items-center justify-center gap-2 px-8" id="newsletter-submit">
-              <FiSend size={16} /> Subscribe
+            <button type="submit" disabled={loading} className="btn-gold whitespace-nowrap px-8 rounded-l-none rounded-r-xl flex items-center gap-2">
+              <FiSend /> SUBSCRIBE
             </button>
           </form>
         </div>
       </div>
 
-      {/* Main Footer (Full Width Layout) */}
-      <div className="max-w-7xl mx-auto px-4 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 justify-between">
+      {/* 3. MAIN FOOTER */}
+      <div className="bg-black py-20 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16">
           
-          {/* Brand & Logo (Left) */}
-          <div className="flex flex-col items-start md:max-w-sm">
-            <img src="/logo.png" alt="Jannat Rugs Co." className="w-24 h-24 object-cover rounded-full border border-amber-900/30 mb-6 p-1 bg-[#0a0a0a]"
-              onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
-            <div style={{ display: 'none' }}>
-              <div className="font-luxury text-gold-gradient text-3xl font-bold tracking-wider mb-2">JANNAT</div>
-            </div>
-            <p className="text-amber-100/50 text-sm leading-relaxed text-left">
+          {/* Logo & About */}
+          <div className="md:col-span-4 space-y-8">
+            <Link to="/" className="inline-block">
+              <img src="/logo.png" alt="Logo" className="w-24 h-24 object-cover rounded-full border border-amber-900/20 p-1" />
+            </Link>
+            <p className="text-amber-100/40 text-sm leading-relaxed max-w-xs">
               Crafting luxury carpets and rugs with heritage artistry. Each piece is a masterwork of tradition and elegance.
             </p>
           </div>
 
-          {/* Links (Center) */}
-          <div className="flex flex-col items-start md:items-center">
-            <div className="flex flex-col items-start">
-              <h4 className="text-amber-400 text-xs tracking-widest uppercase mb-6">Quick Links</h4>
-              <div className="flex flex-col gap-3">
-                {links.map(link => (
-                  <Link key={link.path} to={link.path}
-                    className="text-amber-100/60 hover:text-amber-400 transition-colors text-sm uppercase tracking-wider text-left">
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
+          {/* Quick Links */}
+          <div className="md:col-span-4 space-y-8">
+            <h4 className="text-amber-400 text-[10px] tracking-[0.4em] uppercase font-bold">Quick Links</h4>
+            <div className="grid grid-cols-1 gap-4">
+              {links.map(link => (
+                <Link 
+                  key={link.path} 
+                  to={link.path} 
+                  className="text-amber-100/60 hover:text-amber-400 text-sm tracking-wider uppercase transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 
-          {/* Contact (Right) */}
-          <div className="flex flex-col items-start md:items-end text-left md:text-right">
-            <h4 className="text-amber-400 text-xs tracking-widest uppercase mb-6">Get In Touch</h4>
-            <div className="flex flex-col gap-4 text-sm text-amber-100/50 mb-6 w-full items-start md:items-end">
-              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 hover:text-amber-400 transition-colors justify-end">
-                <FiMail size={16} /> jannatrugs786@gmail.com
+          {/* Contact & Socials */}
+          <div className="md:col-span-4 space-y-8 flex flex-col items-start md:items-end md:text-right">
+            <h4 className="text-amber-400 text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
+            <div className="space-y-4">
+              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-amber-100/60 hover:text-amber-400 transition-colors justify-end text-sm">
+                <FiMail /> jannatrugs786@gmail.com
               </a>
-              <a href="tel:+919235508422" className="flex items-center gap-3 hover:text-amber-400 transition-colors justify-end">
-                <FiPhone size={16} /> +91 9235508422
+              <a href="tel:+919235508422" className="flex items-center gap-3 text-amber-100/60 hover:text-amber-400 transition-colors justify-end text-sm">
+                <FiPhone /> +91 9235508422
               </a>
             </div>
-            <div className="flex gap-4">
+            
+            <div className="flex gap-4 pt-4">
               {[
-                { icon: FiInstagram, href: '#', label: 'Instagram' },
-                { icon: FiFacebook, href: '#', label: 'Facebook' },
-                { icon: FiYoutube, href: '#', label: 'YouTube' },
-                { icon: FaWhatsapp, href: 'https://wa.me/919235508422', label: 'WhatsApp' },
-              ].map(({ icon: Icon, href, label }) => (
-                <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}
-                  className="w-10 h-10 rounded-full border border-amber-900/40 flex items-center justify-center text-amber-100/50 hover:border-amber-400 hover:text-amber-400 transition-all duration-300">
-                  <Icon size={18} />
+                { icon: FiInstagram, href: '#' },
+                { icon: FiFacebook, href: '#' },
+                { icon: FiYoutube, href: '#' },
+                { icon: FaWhatsapp, href: 'https://wa.me/919235508422' },
+              ].map(({ icon: Icon, href }, i) => (
+                <a 
+                  key={i} 
+                  href={href} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="w-10 h-10 rounded-full border border-amber-900/30 flex items-center justify-center text-amber-100/40 hover:border-amber-400 hover:text-amber-400 transition-all duration-300"
+                >
+                  <Icon size={16} />
                 </a>
               ))}
             </div>
@@ -116,29 +153,35 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Trust badges */}
-      <div className="border-t border-amber-900/15" style={{ background: 'rgba(201,168,76,0.02)' }}>
-        <div className="max-w-4xl mx-auto px-4 py-6 flex flex-wrap justify-center gap-8">
-          {['100% Handmade', 'Free Returns', 'Secure Pay', 'Fast Delivery'].map(badge => (
-            <div key={badge} className="text-amber-100/40 text-xs tracking-widest uppercase flex items-center gap-2">
-              <div className="w-1 h-1 rounded-full bg-amber-700/50" />
-              {badge}
-            </div>
-          ))}
+      {/* 4. COPYRIGHT */}
+      <div className="bg-black border-t border-amber-900/10 py-10 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-2">
+          <p className="text-amber-100/20 text-[10px] tracking-[0.3em] uppercase">
+            © {new Date().getFullYear()} Jannat Rugs Co. All Rights Reserved.
+          </p>
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="border-t border-amber-900/15 py-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center gap-2">
-          <p className="text-amber-100/30 text-xs tracking-wider">
-            © {new Date().getFullYear()} JANNAT RUGS CO. ALL RIGHTS RESERVED.
-          </p>
-          <p className="text-amber-100/20 text-[10px] tracking-widest uppercase">
-            Premium Handmade Carpets & Luxury Rugs
-          </p>
-        </div>
+      {/* FLOATING BUTTONS */}
+      <div className="fixed bottom-8 left-8 z-50">
+        <a 
+          href="https://wa.me/919235508422" 
+          target="_blank" 
+          rel="noreferrer"
+          className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform"
+        >
+          <FaWhatsapp size={30} />
+        </a>
       </div>
+
+      <div className="fixed bottom-8 right-8 z-50">
+        <button 
+          className="w-14 h-14 bg-[#C9A84C] text-black rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.4)] hover:scale-110 transition-transform"
+        >
+          <FiMessageCircle size={30} />
+        </button>
+      </div>
+
     </footer>
   );
 }
