@@ -172,11 +172,12 @@ export default function AdminProducts() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] pb-24 font-sans text-[#222]">
-      <Helmet><title>{editingProduct ? 'Edit Listing' : 'Add Listing'} | Shop Manager</title></Helmet>
-      
-      {/* Top Navigation */}
-      <div className="bg-white border-b border-[#E0E0E0] sticky top-0 z-40">
+    <AdminLayout>
+      <div className="bg-[#F8F9FA] pb-24 font-sans text-[#222] -mx-6 lg:-mx-10 -mt-6 lg:-mt-10 min-h-screen">
+        <Helmet><title>{editingProduct ? 'Edit Listing' : 'Add Listing'} | Shop Manager</title></Helmet>
+        
+        {/* Top Navigation */}
+        <div className="bg-white border-b border-[#E0E0E0] sticky top-0 z-40">
         <div className="max-w-[1000px] mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button onClick={closeEdit} className="text-sm font-semibold hover:underline">&larr; Back to Listings</button>
@@ -780,6 +781,7 @@ export default function AdminProducts() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
