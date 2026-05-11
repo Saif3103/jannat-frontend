@@ -76,6 +76,12 @@ export default function AdminProducts() {
   const save = async (e) => {
     if (e) e.preventDefault();
     setSaving(true);
+    if (!form.name || !form.price || !form.category) {
+      toast.error('Please fill name, price and category');
+      setSaving(false);
+      return;
+    }
+
     try {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => {
@@ -99,7 +105,8 @@ export default function AdminProducts() {
       setIsEditing(false); 
       load();
     } catch (err) { 
-      toast.error('Failed to save listing'); 
+      console.error('Save error:', err.response?.data || err.message);
+      toast.error(err.response?.data?.message || 'Failed to save listing'); 
     }
     finally { setSaving(false); }
   };
