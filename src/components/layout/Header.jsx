@@ -67,7 +67,7 @@ export default function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`${isHome ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`${isHome ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[70] transition-all duration-500 ${
         isScrolled 
           ? 'header-blur py-2' 
           : (isHome ? 'bg-transparent py-4' : 'header-blur py-4')
@@ -241,8 +241,7 @@ export default function Header() {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-40 lg:hidden"
-            style={{ background: 'rgba(13,13,13,0.97)', top: '60px' }}
+            className="fixed inset-0 z-[60] lg:hidden bg-[#000000] flex flex-col pt-28"
           >
             <div className="flex flex-col p-6 gap-2">
               {navLinks.map(link => (
