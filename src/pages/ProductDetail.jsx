@@ -23,7 +23,7 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
@@ -43,7 +43,7 @@ export default function ProductDetail() {
     api.get(`/products/${id}`).then(r => {
       setProduct(r.data.product);
       setActiveImg(0);
-      if (r.data.product.sizes?.length) setSelectedSize(r.data.product.sizes[0].label);
+      if (r.data.product.sizes?.length) setSelectedSize(r.data.product.sizes[0]);
       if (r.data.product.colors?.length) setSelectedColor(r.data.product.colors[0]);
       
       if (user) {
@@ -66,13 +66,13 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    addToCart(product, qty, selectedSize, selectedColor);
+    addToCart(product, qty, selectedSize?.label, selectedColor);
     toast.success('Added to cart');
   };
 
   const handleBuyNow = () => {
     if (!product) return;
-    addToCart(product, qty, selectedSize, selectedColor);
+    addToCart(product, qty, selectedSize?.label, selectedColor);
     navigate('/checkout');
   };
 
@@ -102,7 +102,8 @@ export default function ProductDetail() {
   if (loading) return <div className="pt-24"><Loader fullscreen /></div>;
   if (!product) return <div className="pt-24 text-center text-gray-400 py-20 font-luxury text-2xl">Product not found</div>;
 
-  const price = product.discountPrice || product.price;
+  const basePrice = product.discountPrice || product.price;
+  const price = selectedSize?.price || basePrice;
   const discount = product.price && product.discountPrice ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0;
   const images = product.images?.length ? product.images : ['https://images.unsplash.com/photo-1600166898405-da9535204843?w=800'];
 
@@ -202,11 +203,11 @@ export default function ProductDetail() {
                 {/* Sizes */}
                 {product.sizes?.length > 0 && (
                   <div>
-                    <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">Select Size (Feet): <span className="text-gray-900">{selectedSize}</span></p>
+                    <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">Select Size (Feet): <span className="text-gray-900">{selectedSize?.label}</span></p>
                     <div className="flex flex-wrap gap-3">
                       {product.sizes.map(s => (
-                        <button key={s.label} onClick={() => setSelectedSize(s.label)}
-                          className={`px-6 py-2.5 rounded-xl border-2 text-sm font-bold transition-all ${selectedSize === s.label ? 'border-[#C9A84C] text-[#C9A84C] bg-[#FFF9E6]' : 'border-gray-100 text-gray-500 hover:border-gray-300'}`}>
+                        <button key={s.label} onClick={() => setSelectedSize(s)}
+                          className={`px-6 py-2.5 rounded-xl border-2 text-sm font-bold transition-all ${selectedSize?.label === s.label ? 'border-[#C9A84C] text-[#C9A84C] bg-[#FFF9E6]' : 'border-gray-100 text-gray-500 hover:border-gray-300'}`}>
                           {s.label}
                         </button>
                       ))}

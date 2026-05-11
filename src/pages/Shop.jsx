@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import { FiFilter, FiX, FiChevronDown } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiFilter, FiX, FiChevronDown, FiShoppingBag } from 'react-icons/fi';
 import api from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
