@@ -25,53 +25,55 @@ export default function Cart() {
       <Helmet>
         <title>My Cart | Jannat Rugs Co.</title>
       </Helmet>
-      <div className="pt-24 min-h-screen max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="font-luxury text-4xl text-white">Shopping Cart</h1>
+      <div className="pt-20 sm:pt-24 min-h-screen max-w-7xl mx-auto px-4 py-6 sm:py-8">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <h1 className="font-luxury text-3xl sm:text-4xl text-white">Shopping Cart</h1>
           {items.length > 0 && (
-            <button onClick={clearCart} className="text-sm text-red-400/70 hover:text-red-400 transition-colors flex items-center gap-1">
-              <FiTrash2 size={14} /> Clear Cart
+            <button onClick={clearCart} className="text-xs sm:text-sm text-red-400/70 hover:text-red-400 transition-colors flex items-center gap-1">
+              <FiTrash2 size={12} className="sm:w-3.5 sm:h-3.5" /> Clear Cart
             </button>
           )}
         </div>
 
         {items.length === 0 ? (
-          <div className="text-center py-24">
-            <FiShoppingCart size={64} className="text-amber-900/30 mx-auto mb-6" />
-            <h2 className="font-luxury text-3xl text-amber-100/30 mb-4">Your Cart is Empty</h2>
-            <p className="text-amber-100/20 mb-8">Discover our luxury carpet collection and find your perfect piece.</p>
-            <Link to="/shop" className="btn-gold inline-flex items-center gap-2"><FiArrowLeft size={16} /> Browse Collection</Link>
+          <div className="text-center py-20 sm:py-24">
+            <FiShoppingCart size={48} className="text-amber-900/30 mx-auto mb-6 sm:w-16 sm:h-16" />
+            <h2 className="font-luxury text-2xl sm:text-3xl text-amber-100/30 mb-4">Your Cart is Empty</h2>
+            <p className="text-amber-100/20 text-sm mb-8">Discover our luxury carpet collection today.</p>
+            <Link to="/shop" className="btn-gold inline-flex items-center gap-2 py-3 px-6 text-xs sm:text-sm">
+              <FiArrowLeft size={14} /> Browse Collection
+            </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Items */}
             <div className="lg:col-span-2 space-y-4">
               {items.map((item, i) => (
                 <motion.div key={`${item._id}-${item.size}-${item.color}`}
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
-                  className="glass-card p-4 flex gap-4">
+                  className="glass-card p-3 sm:p-4 flex gap-3 sm:gap-4">
                   <Link to={`/product/${item._id}`} className="flex-shrink-0">
                     <img src={getImageUrl(item.images?.[0])}
-                      alt={item.name} className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-xl" />
+                      alt={item.name} className="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-lg sm:rounded-xl" />
                   </Link>
                   <div className="flex-1 min-w-0">
-                    <Link to={`/product/${item._id}`} className="font-luxury text-amber-100 hover:text-amber-400 transition-colors text-lg block truncate">{item.name}</Link>
-                    <div className="flex flex-wrap gap-3 mt-1 mb-3">
-                      {item.size && <span className="text-xs text-amber-100/40">Size: {item.size}</span>}
-                      {item.color && <span className="text-xs text-amber-100/40">Color: {item.color}</span>}
+                    <div className="flex justify-between items-start">
+                      <Link to={`/product/${item._id}`} className="font-luxury text-amber-100 hover:text-amber-400 transition-colors text-sm sm:text-lg block truncate pr-4">{item.name}</Link>
+                      <button onClick={() => removeFromCart(item._id, item.size, item.color)} className="text-red-400/60 hover:text-red-400 transition-colors shrink-0">
+                        <FiTrash2 size={14} className="sm:w-4 sm:h-4" />
+                      </button>
                     </div>
-                    <div className="flex items-center justify-between flex-wrap gap-3">
-                      <div className="flex items-center border border-amber-900/30 rounded overflow-hidden">
-                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity - 1)} className="px-3 py-1.5 text-amber-400 hover:bg-amber-500/10 transition-colors">−</button>
-                        <span className="px-3 py-1.5 text-amber-100 text-sm min-w-[32px] text-center">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity + 1)} className="px-3 py-1.5 text-amber-400 hover:bg-amber-500/10 transition-colors">+</button>
+                    <div className="flex flex-wrap gap-2 sm:gap-3 mt-1 mb-2 sm:mb-3">
+                      {item.size && <span className="text-[10px] sm:text-xs text-amber-100/40 uppercase tracking-wider">Size: {item.size}</span>}
+                      {item.color && <span className="text-[10px] sm:text-xs text-amber-100/40 uppercase tracking-wider">Color: {item.color}</span>}
+                    </div>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="flex items-center border border-amber-900/30 rounded overflow-hidden h-8 sm:h-10">
+                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity - 1)} className="px-2.5 sm:px-3 text-amber-400 hover:bg-amber-500/10 transition-colors">−</button>
+                        <span className="px-2 sm:px-3 text-amber-100 text-xs sm:text-sm min-w-[28px] sm:min-w-[32px] text-center font-bold">{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity + 1)} className="px-2.5 sm:px-3 text-amber-400 hover:bg-amber-500/10 transition-colors">+</button>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-amber-400 font-bold text-lg">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
-                        <button onClick={() => removeFromCart(item._id, item.size, item.color)} className="text-red-400/60 hover:text-red-400 transition-colors">
-                          <FiTrash2 size={16} />
-                        </button>
-                      </div>
+                      <span className="text-amber-400 font-bold text-base sm:text-lg">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -79,28 +81,28 @@ export default function Cart() {
             </div>
 
             {/* Summary */}
-            <div className="glass-card p-6 h-fit sticky top-24">
-              <h3 className="font-luxury text-2xl text-white mb-6">Order Summary</h3>
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-sm"><span className="text-amber-100/60">Subtotal</span><span className="text-amber-100">₹{subtotal.toLocaleString()}</span></div>
-                <div className="flex justify-between text-sm"><span className="text-amber-100/60">Shipping</span><span className={shipping === 0 ? 'text-emerald-400' : 'text-amber-100'}>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span></div>
-                <div className="flex justify-between text-sm"><span className="text-amber-100/60">Tax (5%)</span><span className="text-amber-100">₹{tax.toLocaleString()}</span></div>
-                {shipping > 0 && <p className="text-xs text-amber-100/30">Add ₹{(5000 - subtotal).toLocaleString()} more for free shipping</p>}
+            <div className="glass-card p-5 sm:p-6 h-fit lg:sticky lg:top-24 mt-4 lg:mt-0">
+              <h3 className="font-luxury text-xl sm:text-2xl text-white mb-5 sm:mb-6">Order Summary</h3>
+              <div className="space-y-2.5 sm:space-y-3 mb-5 sm:mb-6">
+                <div className="flex justify-between text-xs sm:text-sm"><span className="text-amber-100/60 uppercase tracking-widest text-[10px] sm:text-xs">Subtotal</span><span className="text-amber-100 font-bold">₹{subtotal.toLocaleString()}</span></div>
+                <div className="flex justify-between text-xs sm:text-sm"><span className="text-amber-100/60 uppercase tracking-widest text-[10px] sm:text-xs">Shipping</span><span className={shipping === 0 ? 'text-emerald-400 font-bold' : 'text-amber-100 font-bold'}>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span></div>
+                <div className="flex justify-between text-xs sm:text-sm"><span className="text-amber-100/60 uppercase tracking-widest text-[10px] sm:text-xs">Tax (5%)</span><span className="text-amber-100 font-bold">₹{tax.toLocaleString()}</span></div>
+                {shipping > 0 && <p className="text-[9px] sm:text-[10px] text-amber-100/30 uppercase tracking-wider">Add ₹{(5000 - subtotal).toLocaleString()} for free delivery</p>}
               </div>
-              <div className="border-t border-amber-900/20 pt-4 mb-6">
-                <div className="flex justify-between"><span className="font-luxury text-lg text-amber-100">Total</span><span className="font-luxury text-2xl text-amber-400">₹{total.toLocaleString()}</span></div>
+              <div className="border-t border-amber-900/20 pt-4 mb-6 sm:mb-8">
+                <div className="flex justify-between items-center"><span className="font-luxury text-lg text-amber-100 uppercase tracking-widest">Total</span><span className="font-luxury text-2xl sm:text-3xl text-amber-400">₹{total.toLocaleString()}</span></div>
               </div>
               {user ? (
-                <Link to="/checkout" className="btn-gold w-full flex items-center justify-center gap-2 py-3">
-                  Proceed to Checkout <FiArrowRight size={16} />
+                <Link to="/checkout" className="btn-gold w-full flex items-center justify-center gap-2 py-3.5 sm:py-4 text-xs font-bold tracking-[0.2em]">
+                  CHECKOUT <FiArrowRight size={14} />
                 </Link>
               ) : (
-                <Link to="/login?redirect=checkout" className="btn-gold w-full flex items-center justify-center gap-2 py-3">
-                  Login to Checkout <FiArrowRight size={16} />
+                <Link to="/login?redirect=checkout" className="btn-gold w-full flex items-center justify-center gap-2 py-3.5 sm:py-4 text-xs font-bold tracking-[0.2em]">
+                  LOGIN TO ORDER <FiArrowRight size={14} />
                 </Link>
               )}
-              <Link to="/shop" className="btn-outline-gold w-full flex items-center justify-center gap-2 py-2.5 mt-3 text-xs">
-                <FiArrowLeft size={14} /> Continue Shopping
+              <Link to="/shop" className="btn-outline-gold w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 mt-3 text-[10px] sm:text-xs tracking-widest">
+                <FiArrowLeft size={12} /> BACK TO SHOP
               </Link>
             </div>
           </div>

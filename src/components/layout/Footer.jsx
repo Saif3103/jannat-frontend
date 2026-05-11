@@ -153,23 +153,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* FLOATING BUTTONS */}
-      <div className="fixed bottom-8 left-8 z-50">
-        <a 
-          href="https://wa.me/919235508422" 
-          target="_blank" 
-          rel="noreferrer"
-          className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-all duration-300 group"
-        >
-          <FaWhatsapp size={32} />
-          <span className="absolute left-full ml-4 bg-black/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap tracking-widest border border-white/10 pointer-events-none">WHATSAPP US</span>
-        </a>
-      </div>
-
-      <div className="fixed bottom-8 right-8 z-50">
-        <ChatBot />
-      </div>
-
     </footer>
   );
 }

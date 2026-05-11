@@ -38,23 +38,22 @@ export default function Categories() {
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-20">
-          <div className="flex flex-wrap justify-center gap-8">
+        <div className="max-w-7xl mx-auto px-4 py-12 sm:py-20">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {display.map((cat, i) => (
               <motion.div key={cat._id || cat.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }} whileHover={{ y: -6 }}
-                className="category-card rounded-2xl overflow-hidden cursor-pointer w-full sm:w-[350px]" style={{ height: '350px' }}>
+                className="category-card rounded-2xl overflow-hidden cursor-pointer h-[250px] sm:h-[400px]">
                 <Link to={`/shop?category=${cat._id || ''}`} className="block h-full relative group">
                   <img src={cat.image || fallback[i % fallback.length]?.image} alt={cat.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80" />
                   
-                  {/* Content perfectly centered inside the card */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10 transition-transform duration-500 group-hover:-translate-y-2">
-                    <h2 className="font-luxury text-white text-3xl mb-2">{cat.name}</h2>
-                    <div className="w-12 h-px bg-amber-400/50 mb-3" />
-                    {cat.description && <p className="text-amber-100/60 text-sm mb-4 line-clamp-2 max-w-[250px]">{cat.description}</p>}
-                    <span className="text-amber-400 text-xs tracking-widest uppercase flex items-center gap-2 group-hover:text-amber-300 transition-colors">
-                      Browse Collection <FiArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10 transition-transform duration-500 group-hover:-translate-y-2">
+                    <h2 className="font-luxury text-white text-xl sm:text-3xl mb-1 sm:mb-2">{cat.name}</h2>
+                    <div className="w-8 sm:w-12 h-px bg-amber-400/50 mb-2 sm:mb-3" />
+                    {cat.description && <p className="text-amber-100/60 text-[10px] sm:text-sm mb-3 sm:mb-4 line-clamp-1 sm:line-clamp-2 max-w-[250px]">{cat.description}</p>}
+                    <span className="text-amber-400 text-[8px] sm:text-xs tracking-widest uppercase flex items-center gap-2 group-hover:text-amber-300 transition-colors">
+                      Browse <FiArrowRight size={12} className="group-hover:translate-x-1 transition-transform sm:w-3.5 sm:h-3.5" />
                     </span>
                   </div>
                 </Link>
