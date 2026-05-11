@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiImage, FiVideo } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiImage, FiVideo, FiX } from 'react-icons/fi';
 import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
