@@ -25,7 +25,7 @@ export default function AdminLayout({ children }) {
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-72 flex flex-col transition-transform duration-300 bg-white border-r border-gray-200 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="flex items-center justify-between px-6 py-7 border-b border-gray-100">
           <Link to="/admin" className="font-bold text-xl text-[#222] tracking-tight">
-            Shop Manager
+            Jannat Rugs
           </Link>
           <button onClick={() => setOpen(!open)} className="lg:hidden text-gray-500">
             <FiMenu size={22} />

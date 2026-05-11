@@ -92,8 +92,9 @@ export default function Home() {
         <meta name="description" content="Discover our exquisite collection of handmade Persian carpets, luxury rugs, and premium floor coverings. Crafted by master artisans with generations of expertise." />
       </Helmet>
 
-      {/* HERO SECTION */}
-      <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+      <div style={{ background: '#0D0D0D' }}>
+        {/* HERO SECTION */}
+        <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         {/* Background Video */}
         <div className="absolute inset-0 z-0">
           <video 
@@ -561,6 +562,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      </div>
     </>
   );
 }

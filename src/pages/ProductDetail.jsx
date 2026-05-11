@@ -235,23 +235,46 @@ export default function ProductDetail() {
                 </div>
               </div>
               
-              {/* Trust Indicators */}
+              {/* Delivery & Returns Info */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-10 border-t border-gray-100">
                  <div className="flex flex-col items-center text-center">
                     <div className="w-12 h-12 bg-[#FFF9E6] rounded-full flex items-center justify-center text-[#C9A84C] mb-3 shadow-sm border border-[#C9A84C]/10"><FiTruck size={22}/></div>
-                    <p className="text-gray-900 font-bold text-xs">Free Delivery</p>
-                    <p className="text-gray-400 text-[10px] mt-1">Across all of India</p>
+                    <p className="text-gray-900 font-bold text-xs">Standard Delivery</p>
+                    <p className="text-gray-400 text-[10px] mt-1">Ready in {product.processingTime || '1-2 weeks'}</p>
                  </div>
                  <div className="flex flex-col items-center text-center">
                     <div className="w-12 h-12 bg-[#EEF2FF] rounded-full flex items-center justify-center text-blue-600 mb-3 shadow-sm border border-blue-100"><FiShield size={22}/></div>
-                    <p className="text-gray-900 font-bold text-xs">Secure Checkout</p>
-                    <p className="text-gray-400 text-[10px] mt-1">SSL Encrypted Portal</p>
+                    <p className="text-gray-900 font-bold text-xs">Returns Policy</p>
+                    <p className="text-gray-400 text-[10px] mt-1">{product.returnPolicy || '7-Day Guarantee'}</p>
                  </div>
                  <div className="flex flex-col items-center text-center">
                     <div className="w-12 h-12 bg-[#ECFDF5] rounded-full flex items-center justify-center text-green-600 mb-3 shadow-sm border border-green-100"><FiRefreshCw size={22}/></div>
-                    <p className="text-gray-900 font-bold text-xs">Easy Returns</p>
-                    <p className="text-gray-400 text-[10px] mt-1">7-Day Guarantee</p>
+                    <p className="text-gray-900 font-bold text-xs">Origin</p>
+                    <p className="text-gray-400 text-[10px] mt-1">Mirzapur, India ({product.originPostcode || '281001'})</p>
                  </div>
+              </div>
+
+              {/* Product Specs List */}
+              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 space-y-4">
+                 <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">Specifications</h3>
+                 <div className="flex justify-between items-center text-sm border-b border-gray-200/50 pb-3">
+                    <span className="text-gray-400 font-medium">Material</span>
+                    <span className="text-gray-900 font-bold">{product.material || 'Premium Wool'}</span>
+                 </div>
+                 <div className="flex justify-between items-center text-sm border-b border-gray-200/50 pb-3">
+                    <span className="text-gray-400 font-medium">Craft Type</span>
+                    <span className="text-gray-900 font-bold">{product.type || 'Handmade'}</span>
+                 </div>
+                 <div className="flex justify-between items-center text-sm border-b border-gray-200/50 pb-3">
+                    <span className="text-gray-400 font-medium">Availability</span>
+                    <span className="text-gray-900 font-bold">{product.stock > 0 ? 'In Stock' : 'Made to Order'}</span>
+                 </div>
+                 {product.manufacturerInfo && (
+                   <div className="pt-2">
+                      <span className="text-gray-400 text-xs font-medium block mb-1">Manufacturer Information</span>
+                      <span className="text-gray-500 text-xs leading-relaxed">{product.manufacturerInfo}</span>
+                   </div>
+                 )}
               </div>
             </div>
           </div>

@@ -68,124 +68,202 @@ export default function Shop() {
         <title>Shop Luxury Carpets | Jannat Rugs Co.</title>
         <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />
       </Helmet>
-      <div className="pt-20 min-h-screen">
-        {/* Banner */}
-        <div className="py-16 px-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-          <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-2">Our Collection</p>
-          <h1 className="font-luxury text-4xl md:text-5xl text-white mb-2">Shop All Rugs</h1>
-          {search && <p className="text-amber-100/50 mt-2">Results for: <span className="text-amber-400">"{search}"</span></p>}
+    <div className="pt-24 min-h-screen bg-white">
+      <Helmet>
+        <title>Shop Luxury Carpets | Jannat Rugs Co.</title>
+        <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />
+      </Helmet>
+
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+        {/* Header Section */}
+        <div className="mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.4em] mb-4">Our Collection</p>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">Artisanal Masterpieces</h1>
+              <p className="text-gray-400 text-sm max-w-xl font-medium">Explore our curated gallery of hand-knotted treasures, each carrying a legacy of centuries-old craftsmanship.</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:block text-right">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Available Pieces</p>
+                <p className="text-sm font-bold text-gray-900">{total} Collections</p>
+              </div>
+              <select 
+                value={sort} 
+                onChange={e => setParam('sort', e.target.value)}
+                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold text-gray-700 focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
+              >
+                {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-3">
-              <button onClick={() => setShowFilters(!showFilters)} id="filter-toggle"
-                className="flex items-center gap-2 btn-outline-gold py-2 px-4 text-xs">
-                <FiFilter size={14} /> Filters {hasFilters && <span className="bg-amber-500 text-black rounded-full w-4 h-4 flex items-center justify-center text-xs">!</span>}
-              </button>
-              {hasFilters && (
-                <button onClick={clearFilters} className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 transition-colors">
-                  <FiX size={12} /> Clear All
-                </button>
-              )}
-              <span className="text-amber-100/40 text-sm">{total} products</span>
-            </div>
-            <select value={sort} onChange={e => setParam('sort', e.target.value)}
-              className="input-luxury w-auto text-sm py-2" id="sort-select">
-              {SORT_OPTIONS.map(o => <option key={o.value} value={o.value} style={{ background: '#1a1008' }}>{o.label}</option>)}
-            </select>
+        {/* Toolbar & Filters Toggle */}
+        <div className="flex flex-wrap items-center gap-4 mb-10 pb-8 border-b border-gray-100">
+          <button 
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-xs transition-all ${showFilters ? 'bg-black text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+          >
+            <FiFilter size={16} /> 
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+            {hasFilters && <span className="ml-1 w-2 h-2 bg-[#C9A84C] rounded-full" />}
+          </button>
+          
+          {hasFilters && (
+            <button onClick={clearFilters} className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors">
+              Clear All Filters
+            </button>
+          )}
+
+          {/* Active Tags */}
+          <div className="flex flex-wrap gap-2 ml-auto">
+             {category && (
+               <div className="bg-[#C9A84C]/10 text-[#C9A84C] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+                 Category: {categories.find(c => c._id === category)?.name}
+                 <FiX className="cursor-pointer" onClick={() => setParam('category', '')} />
+               </div>
+             )}
+             {color && (
+               <div className="bg-[#C9A84C]/10 text-[#C9A84C] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+                 Color: {color}
+                 <FiX className="cursor-pointer" onClick={() => setParam('color', '')} />
+               </div>
+             )}
           </div>
+        </div>
 
-          <div className="flex gap-8">
-            {/* Sidebar */}
-            <motion.aside
-              animate={{ width: showFilters ? '260px' : '0px', opacity: showFilters ? 1 : 0 }}
-              className="flex-shrink-0 overflow-hidden hidden lg:block"
-            >
-              <div className="w-64 space-y-6 pr-4">
-                <FilterSection title="Category">
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="radio" name="category" checked={!category} onChange={() => setParam('category', '')}
-                        className="accent-amber-500" /> <span className="text-sm text-amber-100/70">All</span>
-                    </label>
-                    {categories.map(c => (
-                      <label key={c._id} className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="category" checked={category === c._id} onChange={() => setParam('category', c._id)}
-                          className="accent-amber-500" />
-                        <span className="text-sm text-amber-100/70 hover:text-amber-400 transition-colors">{c.name}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FilterSection>
-
-                <FilterSection title="Price Range">
-                  <div className="flex gap-2">
-                    <input type="number" placeholder="Min ₹" value={minPrice} onChange={e => setParam('minPrice', e.target.value)}
-                      className="input-luxury text-xs py-2 w-1/2" />
-                    <input type="number" placeholder="Max ₹" value={maxPrice} onChange={e => setParam('maxPrice', e.target.value)}
-                      className="input-luxury text-xs py-2 w-1/2" />
-                  </div>
-                </FilterSection>
-
-                <FilterSection title="Color">
-                  <div className="flex flex-wrap gap-2">
-                    {COLORS.map(c => (
-                      <button key={c} onClick={() => setParam('color', color === c ? '' : c)}
-                        className={`text-xs px-3 py-1 rounded-full border transition-all ${color === c ? 'border-amber-500 bg-amber-500/20 text-amber-400' : 'border-amber-900/40 text-amber-100/50 hover:border-amber-700'}`}>
-                        {c}
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Sidebar Filters */}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.aside
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="w-full lg:w-72 space-y-8 lg:sticky lg:top-32 h-fit"
+              >
+                <div className="bg-gray-50/50 p-8 rounded-[2.5rem] border border-gray-100">
+                  <FilterSection title="Categories">
+                    <div className="flex flex-col gap-3 pt-2">
+                      <button 
+                        onClick={() => setParam('category', '')}
+                        className={`text-left text-sm font-bold transition-all ${!category ? 'text-[#C9A84C]' : 'text-gray-400 hover:text-gray-900'}`}
+                      >
+                        All Categories
                       </button>
-                    ))}
-                  </div>
-                </FilterSection>
-
-                <FilterSection title="Type">
-                  <div className="space-y-2">
-                    {TYPES.map(t => (
-                      <label key={t} className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="type" checked={type === t} onChange={() => setParam('type', type === t ? '' : t)}
-                          className="accent-amber-500" />
-                        <span className="text-sm text-amber-100/70">{t}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FilterSection>
-              </div>
-            </motion.aside>
-
-            {/* Products */}
-            <div className="flex-1">
-              {loading ? <Loader /> : products.length === 0 ? (
-                <div className="text-center py-20">
-                  <p className="font-luxury text-3xl text-amber-100/30 mb-4">No Products Found</p>
-                  <button onClick={clearFilters} className="btn-outline-gold text-xs">Clear Filters</button>
-                </div>
-              ) : (
-                <>
-                  <div className="flex flex-wrap justify-center gap-6">
-                    {products.map((p, i) => (
-                      <div key={p._id} className="w-full sm:w-[320px]">
-                        <ProductCard product={p} index={i} />
-                      </div>
-                    ))}
-                  </div>
-                  {pages > 1 && (
-                    <div className="flex justify-center gap-2 mt-10">
-                      {[...Array(pages)].map((_, i) => (
-                        <button key={i} onClick={() => setParam('page', i + 1)}
-                          className={`w-10 h-10 rounded text-sm transition-all ${page === i + 1 ? 'bg-amber-500 text-black' : 'border border-amber-900/40 text-amber-100/50 hover:border-amber-500'}`}>
-                          {i + 1}
+                      {categories.map(c => (
+                        <button 
+                          key={c._id}
+                          onClick={() => setParam('category', c._id)}
+                          className={`text-left text-sm font-bold transition-all ${category === c._id ? 'text-[#C9A84C]' : 'text-gray-400 hover:text-gray-900'}`}
+                        >
+                          {c.name}
                         </button>
                       ))}
                     </div>
-                  )}
-                </>
-              )}
-            </div>
+                  </FilterSection>
+
+                  <FilterSection title="Price Range">
+                    <div className="flex gap-3 pt-2">
+                      <div className="relative flex-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] font-bold">₹</span>
+                        <input 
+                          type="number" 
+                          placeholder="Min" 
+                          value={minPrice} 
+                          onChange={e => setParam('minPrice', e.target.value)}
+                          className="w-full bg-white border border-gray-200 rounded-xl pl-6 pr-2 py-2 text-xs font-bold outline-none focus:border-[#C9A84C]"
+                        />
+                      </div>
+                      <div className="relative flex-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] font-bold">₹</span>
+                        <input 
+                          type="number" 
+                          placeholder="Max" 
+                          value={maxPrice} 
+                          onChange={e => setParam('maxPrice', e.target.value)}
+                          className="w-full bg-white border border-gray-200 rounded-xl pl-6 pr-2 py-2 text-xs font-bold outline-none focus:border-[#C9A84C]"
+                        />
+                      </div>
+                    </div>
+                  </FilterSection>
+
+                  <FilterSection title="Color Palette">
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {COLORS.map(c => (
+                        <button 
+                          key={c}
+                          onClick={() => setParam('color', color === c ? '' : c)}
+                          className={`px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase transition-all ${color === c ? 'bg-black text-white' : 'bg-white text-gray-400 border border-gray-100 hover:border-gray-300'}`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  </FilterSection>
+
+                  <FilterSection title="Craft Type">
+                    <div className="flex flex-col gap-3 pt-2">
+                      {TYPES.map(t => (
+                        <label key={t} className="flex items-center gap-3 cursor-pointer group">
+                          <input 
+                            type="checkbox" 
+                            checked={type === t} 
+                            onChange={() => setParam('type', type === t ? '' : t)}
+                            className="w-4 h-4 rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]" 
+                          />
+                          <span className={`text-sm font-bold transition-all ${type === t ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`}>{t}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </FilterSection>
+                </div>
+              </motion.aside>
+            )}
+          </AnimatePresence>
+
+          {/* Product Grid */}
+          <div className="flex-1">
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                {[...Array(6)].map((_, i) => <div key={i} className="h-[400px] bg-gray-50 rounded-[2.5rem] shimmer" />)}
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-32 bg-gray-50 rounded-[3rem] border border-dashed border-gray-200">
+                <FiShoppingBag className="mx-auto text-gray-200 mb-6" size={48} />
+                <h3 className="text-xl font-bold text-gray-900 mb-2">No masterpieces found</h3>
+                <p className="text-gray-400 text-sm mb-8">Try adjusting your filters or search terms.</p>
+                <button onClick={clearFilters} className="bg-black text-white px-8 py-3 rounded-2xl font-bold text-sm">Clear All Filters</button>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {products.map((p, i) => (
+                    <ProductCard key={p._id} product={p} index={i} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {pages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-20">
+                    {[...Array(pages)].map((_, i) => (
+                      <button 
+                        key={i} 
+                        onClick={() => setParam('page', i + 1)}
+                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-black text-white shadow-xl' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 }

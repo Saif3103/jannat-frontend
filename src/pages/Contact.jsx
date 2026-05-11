@@ -27,95 +27,107 @@ export default function Contact() {
         <title>Contact Us | Jannat Rugs Co.</title>
         <meta name="description" content="Get in touch with Jannat Rugs Co. for inquiries about our luxury handmade carpets." />
       </Helmet>
-      <div className="pt-20 min-h-screen">
-        <div className="py-20 px-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-          <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">We're Here For You</p>
-          <h1 className="font-luxury text-5xl md:text-6xl text-white mb-4">Get In Touch</h1>
-          <div className="divider-gold mx-auto mb-4" />
-          <p className="text-amber-100/50 max-w-lg mx-auto text-sm leading-relaxed">
-            Have a question about a carpet, or need a custom design? We're here to help you bring luxury into your home.
-          </p>
+    <div className="pt-24 min-h-screen bg-white">
+      <Helmet>
+        <title>Contact Us | Jannat Rugs Co.</title>
+        <meta name="description" content="Get in touch with Jannat Rugs Co. for inquiries about our luxury handmade carpets." />
+      </Helmet>
+
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+        {/* Header Section */}
+        <div className="text-center mb-20">
+          <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.4em] mb-4">We're Here For You</p>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight mb-6">Let's Connect</h1>
+          <p className="text-gray-400 text-sm max-w-xl mx-auto font-medium leading-relaxed">Have a question about our collections or need a bespoke masterpiece? Our luxury consultants are ready to assist you.</p>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-24">
-          <div className="flex flex-col items-center gap-16">
-            
-            {/* Info Cards (Centered) */}
-            <div className="flex flex-wrap justify-center gap-6 w-full">
-              {[
-                { icon: FiMail, label: 'Email Us', value: 'jannatrugs786@gmail.com', href: 'mailto:jannatrugs786@gmail.com' },
-                { icon: FiPhone, label: 'Call Us', value: '+91 9235508422\n+91 9696700737', href: 'tel:+919235508422' },
-                { icon: FiMapPin, label: 'Our Location', value: 'Ghantaghar, Mirzapur\nUttar Pradesh, India', href: null },
-              ].map(({ icon: Icon, label, value, href }) => (
-                <div key={label} className="glass-card p-8 flex flex-col items-center text-center w-full sm:w-[280px]">
-                  <div className="w-16 h-16 rounded-full border border-amber-900/40 flex items-center justify-center mb-6 bg-amber-900/10">
-                    <Icon size={24} className="text-amber-400" />
-                  </div>
-                  <h3 className="font-luxury text-xl text-white mb-2">{label}</h3>
-                  {href ? (
-                    <a href={href} className="text-amber-100/60 hover:text-amber-400 transition-colors text-sm whitespace-pre-line leading-relaxed">{value}</a>
-                  ) : (
-                    <p className="text-amber-100/60 text-sm whitespace-pre-line leading-relaxed">{value}</p>
-                  )}
-                </div>
-              ))}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
+          {[
+            { icon: FiMail, label: 'Email', value: 'jannatrugs786@gmail.com', href: 'mailto:jannatrugs786@gmail.com' },
+            { icon: FiPhone, label: 'Phone', value: '+91 9235508422', href: 'tel:+919235508422' },
+            { icon: FiMapPin, label: 'Showroom', value: 'Ghantaghar, Mirzapur, UP', href: null },
+          ].map(({ icon: Icon, label, value, href }) => (
+            <div key={label} className="bg-gray-50 border border-gray-100 p-10 rounded-[2.5rem] text-center flex flex-col items-center group hover:bg-white hover:shadow-xl transition-all duration-500">
+              <div className="w-16 h-16 rounded-3xl bg-white flex items-center justify-center text-[#C9A84C] shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                <Icon size={24} />
+              </div>
+              <h3 className="text-gray-900 font-bold text-xl mb-2">{label}</h3>
+              {href ? (
+                <a href={href} className="text-gray-500 font-medium hover:text-[#C9A84C] transition-colors">{value}</a>
+              ) : (
+                <p className="text-gray-500 font-medium">{value}</p>
+              )}
             </div>
+          ))}
+        </div>
 
-            <a href="https://wa.me/919235508422?text=Hello%20Jannat%20Rugs%20Co.!"
-              target="_blank" rel="noreferrer"
-              className="inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full border border-green-700/40 bg-green-900/10 text-green-400 hover:bg-green-900/20 hover:scale-105 transition-all w-full sm:w-auto">
-              <FaWhatsapp size={24} /> Chat on WhatsApp
-            </a>
+        <div className="flex flex-col lg:flex-row gap-20 items-start">
+          {/* Form Side */}
+          <div className="w-full lg:w-2/3 bg-gray-50 p-10 md:p-16 rounded-[3rem] border border-gray-100">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Send an Inquiry</h2>
+            <p className="text-gray-400 text-sm mb-10 font-medium tracking-wide uppercase">Response within 24 hours</p>
+            
+            <form onSubmit={submit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2 pl-1">Full Name</label>
+                  <input type="text" required value={form.name}
+                    onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-2xl p-4 text-sm font-bold text-gray-900 outline-none focus:ring-4 focus:ring-[#C9A84C]/10 focus:border-[#C9A84C] transition-all" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2 pl-1">Email Address</label>
+                  <input type="email" required value={form.email}
+                    onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-2xl p-4 text-sm font-bold text-gray-900 outline-none focus:ring-4 focus:ring-[#C9A84C]/10 focus:border-[#C9A84C] transition-all" />
+                </div>
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2 pl-1">Phone Number</label>
+                <input type="tel" value={form.phone}
+                  onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+                  className="w-full bg-white border border-gray-200 rounded-2xl p-4 text-sm font-bold text-gray-900 outline-none focus:ring-4 focus:ring-[#C9A84C]/10 focus:border-[#C9A84C] transition-all" />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2 pl-1">Your Message</label>
+                <textarea rows={6} required value={form.message}
+                  onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+                  placeholder="Share your requirements with us..."
+                  className="w-full bg-white border border-gray-200 rounded-2xl p-4 text-sm font-bold text-gray-900 outline-none focus:ring-4 focus:ring-[#C9A84C]/10 focus:border-[#C9A84C] transition-all resize-none" />
+              </div>
+              <button type="submit" disabled={loading} className="w-full bg-black text-white py-5 rounded-2xl font-bold tracking-widest text-xs hover:bg-gray-900 transition-all active:scale-[0.98] shadow-xl">
+                {loading ? 'SENDING...' : 'SEND MESSAGE'}
+              </button>
+            </form>
+          </div>
 
-            <div className="w-full h-px bg-amber-900/20 my-4" />
-
-            {/* Form (Centered) */}
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-2xl">
-              <div className="glass-card p-10 sm:p-14">
-                <div className="text-center mb-10">
-                  <h2 className="font-luxury text-4xl text-white mb-3">Send a Message</h2>
-                  <p className="text-amber-100/40 text-sm tracking-wider uppercase">We'll respond within 24 hours.</p>
+          {/* Social Side */}
+          <div className="w-full lg:w-1/3">
+             <div className="sticky top-32 space-y-12">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">Concierge Support</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-8">For immediate assistance, please reach out via our direct WhatsApp channel. Our team is available 24/7 for bespoke consultations.</p>
+                  <a href="https://wa.me/919235508422" className="flex items-center justify-center gap-3 bg-[#25D366] text-white py-5 rounded-2xl font-bold text-sm shadow-lg hover:shadow-green-500/20 transition-all">
+                    <FaWhatsapp size={24} /> Chat on WhatsApp
+                  </a>
                 </div>
                 
-                <form onSubmit={submit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="text-xs text-amber-100/50 block mb-2 uppercase tracking-wider pl-1">Your Name</label>
-                      <input type="text" required value={form.name}
-                        onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                        className="input-luxury w-full" id="contact-name" />
-                    </div>
-                    <div>
-                      <label className="text-xs text-amber-100/50 block mb-2 uppercase tracking-wider pl-1">Phone Number</label>
-                      <input type="tel" value={form.phone}
-                        onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                        className="input-luxury w-full" id="contact-phone" />
-                    </div>
+                <div className="pt-8 border-t border-gray-100">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">Visit Our Showroom</h3>
+                  <div className="w-full aspect-video rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
+                    <iframe 
+                      title="Showroom Location"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.123456789!2d82.56!3d25.15!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDA5JzAwLjAiTiA4MsKwMzMnMzYuMCJF!5e0!3m2!1sen!2sin!4v1234567890123" 
+                      className="w-full h-full border-0"
+                      loading="lazy"
+                    />
                   </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-2 uppercase tracking-wider pl-1">Email Address</label>
-                    <input type="email" required value={form.email}
-                      onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                      className="input-luxury w-full" id="contact-email" />
-                  </div>
-                  <div>
-                    <label className="text-xs text-amber-100/50 block mb-2 uppercase tracking-wider pl-1">Message</label>
-                    <textarea rows={6} required value={form.message}
-                      onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                      placeholder="Tell us about your carpet requirements..."
-                      className="input-luxury resize-none w-full" id="contact-message" />
-                  </div>
-                  <div className="pt-4 text-center">
-                    <button type="submit" disabled={loading} id="contact-submit" className="btn-gold inline-flex items-center justify-center gap-2 px-16 py-4">
-                      <FiSend size={16} /> {loading ? 'Sending...' : 'Send Message'}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </motion.div>
+                </div>
+             </div>
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 }
