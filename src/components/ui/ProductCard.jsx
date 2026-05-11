@@ -86,45 +86,45 @@ export default function ProductCard({ product, index = 0 }) {
         </div>
 
         {/* Info */}
-        <div className="p-6 flex flex-col flex-1">
-          <div className="mb-2 flex items-center justify-between gap-2">
-            <span className="text-[10px] font-bold text-[#C9A84C] uppercase tracking-[0.2em] truncate">
+        <div className="p-3 sm:p-6 flex flex-col flex-1">
+          <div className="mb-1 sm:mb-2 flex items-center justify-between gap-2">
+            <span className="text-[8px] sm:text-[10px] font-bold text-[#C9A84C] uppercase tracking-[0.2em] truncate">
               {product.category?.name || 'Handmade Luxury'}
             </span>
             {product.numReviews > 0 && (
               <div className="flex items-center gap-1">
-                <FiStar size={12} className="text-[#C9A84C] fill-[#C9A84C]" />
-                <span className="text-[11px] font-bold text-amber-100/40">({product.numReviews})</span>
+                <FiStar size={10} className="text-[#C9A84C] fill-[#C9A84C] sm:w-3 sm:h-3" />
+                <span className="text-[9px] sm:text-[11px] font-bold text-amber-100/40">({product.numReviews})</span>
               </div>
             )}
           </div>
 
           <Link to={`/product/${product._id}`}>
-            <h3 className="text-white font-bold text-lg mb-4 line-clamp-1 group-hover/card:text-[#C9A84C] transition-colors tracking-tight">
+            <h3 className="text-white font-bold text-sm sm:text-lg mb-2 sm:mb-4 line-clamp-1 group-hover/card:text-[#C9A84C] transition-colors tracking-tight">
               {product.name}
             </h3>
           </Link>
 
-          <div className="mt-auto flex items-center justify-between">
+          <div className="mt-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex flex-col">
               {discount > 0 && (
-                <span className="text-xs text-amber-100/20 line-through mb-1">₹{product.price?.toLocaleString()}</span>
+                <span className="text-[10px] sm:text-xs text-amber-100/20 line-through mb-0 sm:mb-1">₹{product.price?.toLocaleString()}</span>
               )}
-              <span className="text-xl font-bold text-white tracking-tight">₹{price?.toLocaleString()}</span>
+              <span className="text-base sm:text-xl font-bold text-white tracking-tight">₹{price?.toLocaleString()}</span>
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <button
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); }}
-                className="w-12 h-12 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center text-white hover:bg-white/10 transition-all shadow-sm"
+                className="flex-1 sm:w-12 sm:h-12 h-10 bg-white/5 border border-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center text-white hover:bg-white/10 transition-all shadow-sm"
                 id={`add-cart-${product._id}`}
                 title="Add to Cart"
               >
-                <FiShoppingCart size={18} />
+                <FiShoppingCart size={16} className="sm:w-[18px] sm:h-[18px]" />
               </button>
               <button
                 onClick={handleBuyNow}
-                className="px-6 h-12 bg-[#E31E24] text-white rounded-2xl flex items-center justify-center font-bold text-[11px] tracking-[0.1em] hover:bg-[#ff242b] transition-all shadow-xl shadow-[#E31E24]/20 active:scale-95"
+                className="flex-[2] sm:px-6 sm:h-12 h-10 bg-[#E31E24] text-white rounded-xl sm:rounded-2xl flex items-center justify-center font-bold text-[9px] sm:text-[11px] tracking-[0.1em] hover:bg-[#ff242b] transition-all shadow-xl shadow-[#E31E24]/20 active:scale-95 whitespace-nowrap"
                 id={`buy-now-${product._id}`}
               >
                 BUY NOW

@@ -83,15 +83,15 @@ export default function Header() {
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
 
-          <Link to="/" className="flex items-center gap-4">
+          <Link to="/" className="flex items-center gap-3 md:gap-4">
             <img
               src="/logo.png"
               alt="Jannat Rugs Co."
-              className="h-12 w-12 aspect-square rounded-full object-cover border border-amber-500/20 shadow-[0_0_15px_rgba(201,168,76,0.15)]"
+              className="h-10 w-10 md:h-12 md:w-12 aspect-square rounded-full object-cover border border-amber-500/20 shadow-[0_0_15px_rgba(201,168,76,0.15)]"
             />
-            <div className="hidden sm:flex flex-col">
-              <span className="font-luxury text-xl md:text-2xl text-gold-gradient tracking-[0.1em] font-bold leading-tight">JANNAT RUGS CO.</span>
-              <span className="text-[8px] md:text-[9px] text-amber-100/40 tracking-[0.4em] uppercase font-bold">Handmade Luxury Rugs</span>
+            <div className="flex flex-col">
+              <span className="font-luxury text-sm md:text-2xl text-gold-gradient tracking-[0.1em] font-bold leading-tight">JANNAT RUGS CO.</span>
+              <span className="text-[7px] md:text-[9px] text-amber-100/40 tracking-[0.4em] uppercase font-bold">Handmade Luxury Rugs</span>
             </div>
           </Link>
         </div>
