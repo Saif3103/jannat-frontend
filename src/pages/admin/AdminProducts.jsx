@@ -392,8 +392,6 @@ export default function AdminProducts() {
               ))}
             </div>
           </div>
-          
-        </div>
         </div>
 
         {/* Delivery, Processing and Returns */}
