@@ -1,131 +1,149 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { FiPlus, FiMinus, FiTruck, FiShield, FiRotateCcw, FiHeadphones } from 'react-icons/fi';
+import { GiQueenCrown } from 'react-icons/gi';
+import { useSettingsStore } from '../store';
+import { BASE_URL } from '../api/axios';
 
 export default function Team() {
-  const teamMembers = [
-    {
-      name: 'Shahid Ali',
-      role: 'Founder & CEO',
-      description: 'Growing up surrounded by the profound historical tapestries and the rich textile heritage of India, Shahid developed an early and unyielding fascination with the intricate art of carpet weaving. He spent his formative years observing the mesmerizing rhythmic dance of generational artisans at their wooden looms, where threads were transformed into magnificent story-telling canvases. Deeply moved by their unwavering dedication, his profound respect for these master craftsmen became the catalyst for an ambitious dream. Shahid’s visionary approach sought to seamlessly bridge the gap between age-old traditional techniques and modern luxury aesthetics. Driven by this passion, he laid the foundation for Jannat Rugs Co. As the creative soul of the brand, he meticulously guides the design narrative, ensuring that every collection not only meets the pinnacle of luxury but also honors the soulful, time-tested heritage woven into every single knot.',
-      image: '/uploads/team/sahana.jpg'
-    },
-    {
-      name: 'Sazid Ali',
-      role: 'Co-Founder & COO',
-      description: 'With an uncompromising eye for absolute perfection and a profound understanding of structural craftsmanship, Sazid is the driving force that transforms creative visions into tangible, world-class masterpieces. Coming from a background rooted in meticulous quality control and operational excellence, Sazid ensures that the journey of a rug—from the initial sourcing of the finest raw silk and wool to the final rigorous inspection—is nothing short of flawless. He believes that true luxury lies in durability and the finer details that often go unnoticed by the untrained eye. Through his relentless dedication to operational precision and curation, Sazid guarantees that every single piece delivered by Jannat Rugs Co. stands as a timeless symbol of elegance, capable of becoming a treasured heirloom for generations to come.',
-      image: '/uploads/team/saif.jpg'
-    }
+  const { settings } = useSettingsStore();
+  const [openFaq, setOpenFaq] = useState(0);
+
+  const getImageUrl = (url) => {
+    if (!url) return "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80";
+    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    return `${BASE_URL}/${url}`;
+  };
+
+  const faqs = [
+    { q: "Are your carpets genuinely handmade?", a: "Yes, every single rug in our collection is hand-knotted or hand-tufted by master artisans using traditional techniques passed down through generations." },
+    { q: "How do I care for my carpet?", a: "We recommend regular vacuuming and professional cleaning every 1-2 years. Avoid direct sunlight and rotate your rug every few months for even wear." },
+    { q: "What is your return policy?", a: "We offer a 7-day hassle-free return policy if the item is in its original condition. Please contact our support for a return authorization." },
+    { q: "What payment methods do you accept?", a: "We accept all major credit/debit cards, net banking, UPI, and bank transfers through our secure payment gateway." },
+    { q: "Do you offer custom carpet sizes?", a: "Absolutely. We specialize in bespoke orders. You can specify dimensions, patterns, and materials to create a unique piece for your home." },
+    { q: "Do you ship internationally?", a: "Yes, we ship to most countries worldwide via premium logistics partners like FedEx and DHL with full insurance." }
   ];
 
   return (
     <>
-      <Helmet><title>Our Team | Jannat Rugs Co.</title></Helmet>
-
-      {/* Hero Section */}
-      <section className="pt-40 pb-24 px-4 text-center border-b border-amber-900/20 relative overflow-hidden flex flex-col items-center justify-center min-h-[50vh]" style={{ background: '#050505' }}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-amber-500/5 blur-[100px] rounded-full pointer-events-none" />
+      <Helmet><title>Our Founder | Jannat Rugs Co.</title></Helmet>
+      <div className="bg-[#050505] min-h-screen pt-32 pb-20 px-4 font-sans text-white">
         
-        {/* Extra spacer to push content strictly below the header */}
-        <div className="h-24 md:h-32 w-full"></div>
-
-        <div className="relative z-10">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="font-luxury text-5xl md:text-7xl lg:text-8xl text-white tracking-widest uppercase leading-snug"
-          >
-            The Visionary <br className="md:hidden" />
-            <span className="text-amber-400">Team</span>
-          </motion.h1>
+        {/* Breadcrumb */}
+        <div className="max-w-7xl mx-auto mb-12 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.2em] text-gray-500">
+          <span className="hover:text-white cursor-pointer transition-colors">Home</span>
+          <span className="text-gray-700">/</span>
+          <span className="hover:text-white cursor-pointer transition-colors">About Us</span>
+          <span className="text-gray-700">/</span>
+          <span className="text-amber-400">Our Founders</span>
         </div>
-      </section>
 
-      {/* Team Members (Carpet Couture 50-50 Split Style) */}
-      <section className="flex flex-col w-full" style={{ background: '#0D0D0D' }}>
-        {teamMembers.map((member, index) => (
-          <div 
-            key={member.name}
-            className={`flex flex-col lg:flex-row w-full border-b border-amber-900/20 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}
+        {/* Founder Section */}
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-32 mb-40">
+          {/* Left: Image */}
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="w-full lg:w-[45%] aspect-[4/5] rounded-[2rem] overflow-hidden border border-gray-800 shadow-2xl relative group"
           >
-            {/* Text Side (50%) */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-32 bg-[#0A0A0A]">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="max-w-xl text-center lg:text-left"
-              >
-                <p className="text-amber-400 font-medium tracking-[0.4em] text-xs uppercase mb-4">Meet The</p>
-                <h3 className="font-luxury text-5xl md:text-6xl text-white mb-4 uppercase tracking-widest">{member.name}</h3>
-                <p className="text-amber-100/50 font-medium tracking-[0.2em] text-sm uppercase mb-10">{member.role}</p>
-                <p className="text-amber-100/70 text-lg leading-loose font-light text-justify lg:text-left">
-                  {member.description}
+            <img 
+              src={getImageUrl(settings?.founderImage) || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"} 
+              alt="Founder Azeem Ansari" 
+              className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+          </motion.div>
+
+          {/* Right: Content */}
+          <div className="w-full lg:w-[55%]">
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.4em] mb-6">Get To Know Us</p>
+              <h1 className="font-serif text-5xl md:text-7xl text-white mb-10 leading-[1.1] font-light">
+                The Visionary Behind <br />
+                <span className="text-[#C9A84C] font-normal italic">Jannat Rugs</span>
+              </h1>
+              
+              <div className="space-y-6 text-gray-400 text-lg leading-relaxed mb-12 font-light">
+                <p>
+                  Founded by <span className="text-white font-medium">Azeem Ansari</span>, Jannat Rugs Co. was born from a passion for preserving India's rich weaving heritage and transforming it into timeless pieces of art.
                 </p>
-              </motion.div>
-            </div>
-            
-            {/* Image Side (50%) */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-20 relative">
-              <div className="absolute inset-0 bg-[#0D0D0D] opacity-50 pointer-events-none" />
-              <div className="relative w-full max-w-[450px] aspect-[4/5] rounded-tl-[80px] rounded-br-[80px] overflow-hidden border border-amber-900/30 shadow-2xl group z-10">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="absolute inset-0 w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                <div className="absolute inset-0 hidden flex-col items-center justify-center text-amber-100/30 font-luxury text-2xl bg-amber-900/10 p-8 text-center border border-amber-900/20">
-                  <span className="text-5xl mb-4 opacity-50">📷</span>
-                  <span>Upload Image</span>
-                  <span className="text-sm opacity-60 mt-2 font-sans tracking-widest">{member.image}</span>
+                <p>
+                  With a vision to blend tradition with modern aesthetics, Azeem Ansari leads a team of skilled artisans who pour their heart into every creation.
+                </p>
+                <p>
+                  Each rug we craft is more than a product — it's a story of culture, craftsmanship, and care.
+                </p>
+              </div>
+
+              {/* Name Card */}
+              <div className="bg-[#0A0A0A] border border-gray-800/50 p-6 rounded-3xl flex items-center gap-6 max-w-md shadow-xl">
+                <div className="w-14 h-14 bg-[#C9A84C]/10 rounded-2xl flex items-center justify-center text-[#C9A84C] border border-[#C9A84C]/20">
+                  <GiQueenCrown size={28} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white tracking-tight">Azeem Ansari</h3>
+                  <p className="text-[10px] text-[#C9A84C] font-bold uppercase tracking-[0.2em] mt-1">Founder & Creative Director</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
-        ))}
-      </section>
+        </div>
 
-      {/* The Story Section */}
-      <section className="pt-24 pb-40 px-4 relative flex flex-col justify-center items-center" style={{ background: '#0D0D0D' }}>
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600166898405-da9535204843?w=1600&q=80')] opacity-5 bg-cover bg-center mix-blend-overlay pointer-events-none" />
-        
-        {/* Extra massive spacer to force the box down */}
-        <div className="w-full h-40 md:h-64"></div>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl w-full mx-auto relative z-10 text-center bg-[#050505] border border-amber-900/40 p-10 md:p-20 rounded-[40px] shadow-[0_0_60px_rgba(201,168,76,0.07)]"
-        >
-          {/* Decorative Top Accent */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-transparent via-amber-500/80 to-transparent"></div>
+        {/* FAQ Section */}
+        <div className="max-w-7xl mx-auto mb-40 text-center">
+          <p className="text-[#C9A84C] text-[10px] font-bold uppercase tracking-[0.4em] mb-4">Common Questions</p>
+          <h2 className="font-serif text-4xl md:text-5xl text-white mb-16">Everything You Need To Know</h2>
           
-          <h2 className="font-luxury text-4xl md:text-5xl text-amber-400 mb-8 tracking-wide">
-            How It All Began
-          </h2>
-          
-          <div className="w-16 h-px bg-amber-500/30 mx-auto mb-10"></div>
-          
-          <div className="space-y-6 text-amber-100/70 text-lg md:text-xl leading-relaxed font-light">
-            <p className="text-center">
-              The journey of <span className="text-amber-400 font-medium">Jannat Rugs Co.</span> began deep within the historic weaving heartlands of India. Driven by a passion to protect the fading magic of authentic, handmade carpets, Shahid Ali and Sazid Ali recognized that true luxury lies in the skilled hands of generational artisans. 
-            </p>
-            <p className="text-center">
-              They traveled across remote villages, removing commercial middlemen to forge direct, empowering relationships with master weavers. By personally sourcing the finest premium wool and pure silk, they flawlessly fused ancient traditional motifs with sophisticated modern elegance. 
-            </p>
-            <p className="text-center">
-              What started as a small, deeply passionate dream has now blossomed into a globally cherished luxury brand, delivering bespoke masterpieces that breathe unparalleled warmth and timeless art into your home.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-left">
+            {faqs.map((faq, i) => (
+              <div key={i} className="border border-gray-800 bg-[#0A0A0A] rounded-2xl overflow-hidden transition-all hover:border-gray-700">
+                <button 
+                  onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
+                  className="w-full p-6 flex items-center justify-between group"
+                >
+                  <span className="text-gray-200 font-bold text-sm text-left">{faq.q}</span>
+                  <div className="text-[#C9A84C] transition-transform duration-300">
+                    {openFaq === i ? <FiMinus size={20} /> : <FiPlus size={20} className="group-hover:rotate-90" />}
+                  </div>
+                </button>
+                <motion.div 
+                  initial={false}
+                  animate={{ height: openFaq === i ? 'auto' : 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6 text-gray-500 text-sm leading-relaxed border-t border-gray-800/50 pt-4">
+                    {faq.a}
+                  </div>
+                </motion.div>
+              </div>
+            ))}
           </div>
-        </motion.div>
-      </section>
+        </div>
 
+        {/* Trust Badges */}
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-[#0A0A0A] border border-gray-800 p-10 md:p-16 rounded-[3rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 relative overflow-hidden">
+            {[
+              { icon: FiTruck, title: "Free Shipping", sub: "On all orders" },
+              { icon: FiShield, title: "Secure Payment", sub: "100% secure checkout" },
+              { icon: FiRotateCcw, title: "7-day Returns", sub: "Easy return policy" },
+              { icon: FiHeadphones, title: "Dedicated Support", sub: "We're here to help" },
+            ].map((b, i) => (
+              <div key={i} className="flex items-center gap-6 group">
+                <div className="w-14 h-14 bg-gray-900 rounded-2xl flex items-center justify-center text-[#C9A84C] border border-gray-800 transition-all group-hover:scale-110 group-hover:bg-[#C9A84C] group-hover:text-black">
+                  <b.icon size={24} />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1">{b.title}</h4>
+                  <p className="text-gray-500 text-[10px] font-medium uppercase tracking-widest">{b.sub}</p>
+                </div>
+                {i < 3 && <div className="hidden lg:block absolute h-12 w-px bg-gray-800 right-[25%] left-auto" style={{ left: `${(i+1)*25}%`, right: 'auto' }} />}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

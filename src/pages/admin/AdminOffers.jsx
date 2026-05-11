@@ -63,31 +63,44 @@ export default function AdminOffers() {
   return (
     <AdminLayout>
       <Helmet><title>Offers | Admin</title></Helmet>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-luxury text-2xl text-white">Offers & Coupons</h1>
-        <button onClick={() => { setForm(EMPTY); setShowModal(true); }} className="btn-gold flex items-center gap-2 py-2 px-4 text-sm">
-          <FiPlus size={16} /> Add Offer
+      
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Offers & Promotions</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage marketing banners and seasonal coupons</p>
+        </div>
+        <button onClick={() => { setForm(EMPTY); setShowModal(true); }} 
+          className="bg-[#222] text-white hover:bg-black px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-all flex items-center gap-2">
+          <FiPlus size={18} /> Add New Offer
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading ? [...Array(3)].map((_, i) => <div key={i} className="glass-card h-44 shimmer rounded-2xl" />) :
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {loading ? [...Array(3)].map((_, i) => <div key={i} className="bg-white border border-gray-100 h-64 animate-pulse rounded-2xl" />) :
           offers.map(offer => (
-            <div key={offer._id} className={`glass-card rounded-2xl overflow-hidden border ${offer.isActive ? 'border-amber-700/20' : 'border-red-900/20 opacity-60'}`}>
-              <div className="h-32 relative">
+            <div key={offer._id} className={`bg-white rounded-2xl overflow-hidden border transition-all ${offer.isActive ? 'border-gray-200 shadow-sm hover:shadow-md' : 'border-red-100 opacity-60'}`}>
+              <div className="h-40 relative group">
                 <img src={getImageUrl(offer.image)} alt={offer.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute top-3 right-3">
-                  <button onClick={() => del(offer._id)} className="p-1.5 bg-black/50 text-red-400 hover:bg-red-500 hover:text-white rounded-full transition-all"><FiTrash2 size={12} /></button>
-                </div>
-                <div className="absolute bottom-3 left-3">
-                  <h3 className="text-white font-medium text-sm">{offer.title}</h3>
+                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
+                <div className="absolute top-4 right-4">
+                  <button onClick={() => del(offer._id)} className="w-8 h-8 flex items-center justify-center bg-white/90 text-red-500 hover:bg-red-500 hover:text-white rounded-lg shadow-sm transition-all"><FiTrash2 size={14} /></button>
                 </div>
               </div>
-              <div className="p-4">
-                <p className="text-amber-100/40 text-[10px] mb-3 line-clamp-1">{offer.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full ${offer.isActive ? 'bg-emerald-900/20 text-emerald-400' : 'bg-red-900/20 text-red-400'}`}>{offer.isActive ? 'Active' : 'Inactive'}</span>
-                  <button onClick={() => toggleActive(offer)} className="text-[10px] text-amber-400 hover:underline">Toggle</button>
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-gray-900 font-bold text-base truncate pr-2">{offer.title}</h3>
+                  <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider ${offer.isActive ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>{offer.isActive ? 'Active' : 'Paused'}</span>
+                </div>
+                <p className="text-gray-500 text-xs mb-5 line-clamp-2 min-h-[32px]">{offer.description || 'No description provided.'}</p>
+                
+                <div className="flex items-center justify-between pt-4 border-t border-gray-50">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Discount</span>
+                    <span className="text-sm font-bold text-gray-900">{offer.discountPercent}% OFF</span>
+                  </div>
+                  <button onClick={() => toggleActive(offer)} className="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">
+                    {offer.isActive ? 'Pause Offer' : 'Resume Offer'}
+                  </button>
                 </div>
               </div>
             </div>
@@ -97,51 +110,64 @@ export default function AdminOffers() {
       <AnimatePresence>
         {showModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
-              className="glass-card w-full max-w-lg rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-5">
-                <h2 className="font-luxury text-xl text-amber-400">Create Offer</h2>
-                <button onClick={() => setShowModal(false)} className="text-amber-100/40 hover:text-amber-100"><FiX size={18} /></button>
+            className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+            <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
+              className="bg-white w-full max-w-lg rounded-[2rem] p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Create New Offer</h2>
+                  <p className="text-sm text-gray-500 mt-1">Configure your promotional campaign</p>
+                </div>
+                <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-all shadow-sm"><FiX size={20} /></button>
               </div>
-              <form onSubmit={save} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              
+              <form onSubmit={save} className="space-y-6">
+                <div className="grid grid-cols-2 gap-5">
                   {[
-                    { key: 'title', label: 'Title', type: 'text', required: true },
-                    { key: 'subtitle', label: 'Subtitle (e.g. Flash Sale)', type: 'text' },
-                    { key: 'discountPercent', label: 'Discount %', type: 'number' },
-                    { key: 'couponCode', label: 'Coupon Code', type: 'text' },
-                    { key: 'link', label: 'Action Link (e.g. /shop)', type: 'text' },
-                    { key: 'validUntil', label: 'Expires', type: 'date' },
+                    { key: 'title', label: 'Offer Title', type: 'text', placeholder: 'e.g. Summer Sale', required: true },
+                    { key: 'subtitle', label: 'Subtitle/Tagline', type: 'text', placeholder: 'e.g. Up to 50% Off' },
+                    { key: 'discountPercent', label: 'Discount (%)', type: 'number', placeholder: '20' },
+                    { key: 'couponCode', label: 'Coupon Code', type: 'text', placeholder: 'SUMMER20' },
+                    { key: 'link', label: 'CTA Link', type: 'text', placeholder: '/shop' },
+                    { key: 'validUntil', label: 'Expiry Date', type: 'date' },
                   ].map(f => (
                     <div key={f.key}>
-                      <label className="text-[10px] text-amber-100/50 block mb-1 uppercase tracking-widest">{f.label}</label>
-                      <input type={f.type} required={f.required} value={form[f.key]}
-                        onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))} className="input-luxury py-2 text-sm" />
+                      <label className="text-[11px] font-bold text-gray-500 block mb-2 uppercase tracking-widest">{f.label}</label>
+                      <input type={f.type} required={f.required} value={form[f.key]} placeholder={f.placeholder}
+                        onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))} 
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-gray-300" />
                     </div>
                   ))}
                 </div>
+                
                 <div>
-                  <label className="text-[10px] text-amber-100/50 block mb-1 uppercase tracking-widest">Banner Image</label>
-                  <label className="flex flex-col items-center justify-center border border-dashed border-amber-900/30 rounded-xl p-4 cursor-pointer hover:border-amber-500/50 transition-all aspect-video bg-black/20 group overflow-hidden">
+                  <label className="text-[11px] font-bold text-gray-500 block mb-2 uppercase tracking-widest">Campaign Banner</label>
+                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-4 cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all aspect-video group overflow-hidden relative shadow-inner">
                     {image ? (
-                      <img src={URL.createObjectURL(image)} className="w-full h-full object-cover rounded-lg" alt="Preview" />
+                      <img src={URL.createObjectURL(image)} className="w-full h-full object-cover rounded-xl" alt="Preview" />
                     ) : (
                       <>
-                        <FiUpload size={20} className="text-amber-500/30 group-hover:text-amber-400 transition-colors" />
-                        <span className="text-[10px] text-amber-100/20 mt-2 font-bold uppercase tracking-widest">Upload Banner</span>
+                        <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-gray-400 group-hover:text-gray-900 shadow-sm transition-all mb-3"><FiUpload size={24} /></div>
+                        <p className="text-xs font-bold text-gray-900">Upload Banner Image</p>
+                        <p className="text-[10px] text-gray-400 mt-1 font-medium italic">Recommended ratio 16:9</p>
                       </>
                     )}
                     <input type="file" accept="image/*" className="hidden" onChange={e => setImage(e.target.files[0])} />
                   </label>
                 </div>
+                
                 <div>
-                  <label className="text-[10px] text-amber-100/50 block mb-1 uppercase tracking-widest">Description</label>
-                  <textarea rows={2} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} className="input-luxury resize-none text-sm" />
+                  <label className="text-[11px] font-bold text-gray-500 block mb-2 uppercase tracking-widest">Promotion Details</label>
+                  <textarea rows={3} value={form.description} placeholder="Describe the offer for your customers..."
+                    onChange={e => setForm(p => ({ ...p, description: e.target.value }))} 
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-gray-300 resize-none" />
                 </div>
-                <div className="flex gap-3">
-                  <button type="button" onClick={() => setShowModal(false)} className="btn-outline-gold flex-1 py-2.5">Cancel</button>
-                  <button type="submit" disabled={saving} className="btn-gold flex-1 py-2.5">{saving ? 'Creating...' : 'Create Offer'}</button>
+                
+                <div className="flex gap-4 pt-4">
+                  <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-3.5 bg-gray-50 text-gray-600 font-bold rounded-2xl hover:bg-gray-100 transition-all border border-gray-100">Cancel</button>
+                  <button type="submit" disabled={saving} className="flex-1 py-3.5 bg-[#222] text-white font-bold rounded-2xl hover:bg-black transition-all shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                    {saving ? 'Creating Campaign...' : 'Launch Offer'}
+                  </button>
                 </div>
               </form>
             </motion.div>

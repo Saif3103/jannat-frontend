@@ -173,36 +173,41 @@ export default function AdminProducts() {
 
   return (
     <AdminLayout>
-      <div className="bg-[#F8F9FA] pb-24 font-sans text-[#222] -mx-6 lg:-mx-10 -mt-6 lg:-mt-10 min-h-screen">
+      <div className="bg-white pb-24 font-sans text-[#222] -mx-6 lg:-mx-10 -mt-6 lg:-mt-10 min-h-screen">
         <Helmet><title>{editingProduct ? 'Edit Listing' : 'Add Listing'} | Shop Manager</title></Helmet>
         
         {/* Top Navigation */}
         <div className="bg-white border-b border-[#E0E0E0] sticky top-0 z-40">
-        <div className="max-w-[1000px] mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={closeEdit} className="text-sm font-semibold hover:underline">&larr; Back to Listings</button>
-            <h1 className="text-xl font-semibold border-l pl-4 border-gray-300">{editingProduct ? 'Edit listing' : 'Add a new listing'}</h1>
+          <div className="max-w-[1000px] mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button onClick={closeEdit} className="text-sm font-semibold hover:underline">&larr; Back to Listings</button>
+              <h1 className="text-xl font-semibold border-l pl-4 border-gray-300">{editingProduct ? 'Edit listing' : 'Add a new listing'}</h1>
+            </div>
           </div>
-        </div>
-        
-        {/* Banner */}
-        <div className="bg-[#2D64D3] text-white px-6 py-3 text-sm flex items-center justify-between max-w-[1000px] mx-auto rounded-t-none rounded-b-lg mb-6 shadow-sm">
-          <p><strong>We're building a better listing form</strong><br/><span className="text-blue-100">First up: a refreshed order that's easier to follow...</span></p>
-          <div className="flex gap-2">
-            <button className="px-4 py-1.5 border border-white/30 rounded-full hover:bg-white/10 font-semibold">Dismiss</button>
-            <button className="px-4 py-1.5 bg-white text-[#2D64D3] rounded-full font-semibold">Share feedback</button>
+          
+          {/* Anchor Tabs */}
+          <div className="max-w-[1000px] mx-auto px-6 flex gap-6 text-sm font-medium text-gray-500 overflow-x-auto">
+            {['Photo & Video', 'Category', 'Item Details', 'Item Options'].map((tab, i) => (
+              <button key={tab} className={`pb-3 border-b-2 whitespace-nowrap ${i === 0 ? 'border-black text-black' : 'border-transparent hover:text-gray-800'}`}>
+                {tab}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Anchor Tabs */}
-        <div className="max-w-[1000px] mx-auto px-6 flex gap-6 text-sm font-medium text-gray-500 overflow-x-auto">
-          {['Photo & Video', 'Category', 'Item Details', 'Item Options'].map((tab, i) => (
-            <button key={tab} className={`pb-3 border-b-2 whitespace-nowrap ${i === 0 ? 'border-black text-black' : 'border-transparent hover:text-gray-800'}`}>
-              {tab}
-            </button>
-          ))}
+        {/* Tip Banner (Subtle Light Theme) */}
+        <div className="max-w-[1000px] mx-auto px-6 mt-6">
+          <div className="bg-blue-50 border border-blue-100 text-blue-800 px-6 py-4 text-sm flex items-center justify-between rounded-2xl shadow-sm">
+            <div>
+              <p className="font-bold mb-0.5">We're building a better listing form</p>
+              <p className="text-blue-600 font-medium">First up: a refreshed order that's easier to follow...</p>
+            </div>
+            <div className="flex gap-2">
+              <button className="px-4 py-1.5 bg-white border border-blue-200 rounded-full hover:bg-blue-50 font-bold transition-all">Dismiss</button>
+              <button className="px-4 py-1.5 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition-all">Feedback</button>
+            </div>
+          </div>
         </div>
-      </div>
 
       <div className="max-w-[1000px] mx-auto px-6 py-8 space-y-8">
         

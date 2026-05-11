@@ -50,7 +50,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0D0D0D' }}>
+    <div className="min-h-screen flex flex-col bg-white">
       {!isAdminPage && <Header />}
       <main className="flex-1">
         <AnimatePresence mode="wait">

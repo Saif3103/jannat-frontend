@@ -25,51 +25,58 @@ export default function AdminUsers() {
   return (
     <AdminLayout>
       <Helmet><title>Users | Admin</title></Helmet>
-      <h1 className="font-luxury text-2xl text-white mb-6">Users ({users.length})</h1>
-      <div className="glass-card rounded-2xl overflow-hidden">
+      
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">User Management</h1>
+        <div className="bg-blue-50 text-blue-700 px-4 py-1.5 rounded-full text-xs font-bold border border-blue-100">
+          Total Users: {users.length}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
+              <tr className="bg-gray-50/50 border-b border-gray-200">
                 {['Name', 'Email', 'Phone', 'Role', 'Joined', 'Status', 'Actions'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-amber-100/40 text-xs uppercase tracking-wider font-medium">{h}</th>
+                  <th key={h} className="text-left px-6 py-4 text-gray-500 text-[10px] uppercase tracking-wider font-bold">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-100">
               {loading ? [...Array(6)].map((_, i) => (
-                <tr key={i} className="border-b border-amber-900/10">
-                  {[...Array(7)].map((_, j) => <td key={j} className="px-4 py-3"><div className="h-8 shimmer rounded" /></td>)}
+                <tr key={i}>
+                  {[...Array(7)].map((_, j) => <td key={j} className="px-6 py-4"><div className="h-5 bg-gray-100 animate-pulse rounded w-full" /></td>)}
                 </tr>
               )) : users.map(user => (
-                <tr key={user._id} className="border-b border-amber-900/10 hover:bg-amber-500/5 transition-colors">
-                  <td className="px-4 py-3">
+                <tr key={user._id} className="hover:bg-gray-50/50 transition-colors group">
+                  <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-amber-900/30 flex items-center justify-center text-amber-400 text-xs font-bold">
+                      <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 text-xs font-bold border border-gray-200 group-hover:bg-white group-hover:border-blue-200 transition-colors">
                         {user.name?.[0]?.toUpperCase()}
                       </div>
-                      <span className="text-amber-100">{user.name}</span>
+                      <span className="text-gray-900 font-semibold">{user.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-amber-100/60">{user.email}</td>
-                  <td className="px-4 py-3 text-amber-100/50">{user.phone || '—'}</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded ${user.role === 'admin' ? 'bg-amber-900/30 text-amber-400' : 'bg-blue-900/20 text-blue-400'}`}>
+                  <td className="px-6 py-4 text-gray-600 font-medium">{user.email}</td>
+                  <td className="px-6 py-4 text-gray-500">{user.phone || '—'}</td>
+                  <td className="px-6 py-4">
+                    <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider ${user.role === 'admin' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-blue-50 text-blue-600 border border-blue-100'}`}>
                       {user.role}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-amber-100/40 text-xs">{new Date(user.createdAt).toLocaleDateString()}</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded ${user.isActive ? 'bg-emerald-900/20 text-emerald-400' : 'bg-red-900/20 text-red-400'}`}>
+                  <td className="px-6 py-4 text-gray-400 font-medium">{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">
+                    <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider ${user.isActive ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
                       {user.isActive ? 'Active' : 'Blocked'}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-6 py-4 text-right">
                     {user.role !== 'admin' && (
                       <button onClick={() => toggle(user._id)}
-                        className={`p-2 rounded-lg transition-colors ${user.isActive ? 'text-red-400/60 hover:text-red-400 hover:bg-red-900/10' : 'text-emerald-400/60 hover:text-emerald-400 hover:bg-emerald-900/10'}`}
+                        className={`p-2 rounded-xl transition-all ${user.isActive ? 'text-red-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 shadow-sm' : 'text-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 border border-transparent hover:border-emerald-100 shadow-sm'}`}
                         title={user.isActive ? 'Block User' : 'Activate User'}>
-                        {user.isActive ? <FiUserX size={15} /> : <FiUserCheck size={15} />}
+                        {user.isActive ? <FiUserX size={16} /> : <FiUserCheck size={16} />}
                       </button>
                     )}
                   </td>

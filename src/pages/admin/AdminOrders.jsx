@@ -35,36 +35,34 @@ export default function AdminOrders() {
   return (
     <AdminLayout>
       <Helmet><title>Orders | Admin</title></Helmet>
-      <h1 className="font-luxury text-2xl text-white mb-6">Orders</h1>
+      <h1 className="font-bold text-2xl text-[#222] mb-6">Orders</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 glass-card rounded-2xl overflow-hidden">
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
+                <tr className="bg-gray-50 border-b border-gray-200">
                   {['Order ID', 'Customer', 'Total', 'Payment', 'Status', 'Date'].map(h => (
-                    <th key={h} className="text-left px-4 py-3 text-amber-100/40 text-xs uppercase tracking-wider font-medium">{h}</th>
+                    <th key={h} className="text-left px-4 py-4 text-gray-400 text-[11px] uppercase tracking-wider font-bold">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-gray-100">
                 {loading ? [...Array(6)].map((_, i) => (
-                  <tr key={i} className="border-b border-amber-900/10">
-                    {[...Array(6)].map((_, j) => <td key={j} className="px-4 py-3"><div className="h-8 shimmer rounded" /></td>)}
-                  </tr>
+                  <tr key={i}><td colSpan="6" className="px-4 py-4"><div className="h-8 shimmer rounded" /></td></tr>
                 )) : orders.map(order => (
                   <tr key={order._id} onClick={() => { setSelected(order); setNewStatus(order.orderStatus); }}
-                    className={`border-b border-amber-900/10 cursor-pointer transition-colors ${selected?._id === order._id ? 'bg-amber-500/10' : 'hover:bg-amber-500/5'}`}>
-                    <td className="px-4 py-3 text-amber-400 font-medium">#{order._id.slice(-6).toUpperCase()}</td>
-                    <td className="px-4 py-3 text-amber-100/70">{order.user?.name || 'N/A'}</td>
-                    <td className="px-4 py-3 text-amber-100">₹{order.totalPrice?.toLocaleString()}</td>
-                    <td className="px-4 py-3 text-amber-100/50 text-xs">{order.paymentMethod}</td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: `${STATUS_COLORS[order.orderStatus]}20`, color: STATUS_COLORS[order.orderStatus] }}>
+                    className={`cursor-pointer transition-colors ${selected?._id === order._id ? 'bg-[#FFF9E6]' : 'hover:bg-gray-50'}`}>
+                    <td className="px-4 py-4 text-[#C9A84C] font-bold">#{order._id.slice(-6).toUpperCase()}</td>
+                    <td className="px-4 py-4 text-gray-700 font-medium">{order.user?.name || 'N/A'}</td>
+                    <td className="px-4 py-4 text-[#222] font-bold">₹{order.totalPrice?.toLocaleString()}</td>
+                    <td className="px-4 py-4 text-gray-400 text-xs">{order.paymentMethod}</td>
+                    <td className="px-4 py-4">
+                      <span className="text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-tight" style={{ background: `${STATUS_COLORS[order.orderStatus]}15`, color: STATUS_COLORS[order.orderStatus] }}>
                         {order.orderStatus}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-amber-100/40 text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-4 text-gray-400 text-xs">{new Date(order.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -73,54 +71,57 @@ export default function AdminOrders() {
         </div>
 
         {/* Detail Panel */}
-        <div className="glass-card rounded-2xl p-5">
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           {selected ? (
-            <div>
-              <h3 className="font-luxury text-lg text-amber-400 mb-4">Order Details</h3>
-              <div className="space-y-3 mb-5 text-sm">
-                <div><span className="text-amber-100/40">Order ID:</span> <span className="text-amber-100">#{selected._id.slice(-8).toUpperCase()}</span></div>
-                <div><span className="text-amber-100/40">Customer:</span> <span className="text-amber-100">{selected.user?.name}</span></div>
-                <div><span className="text-amber-100/40">Email:</span> <span className="text-amber-100/70 text-xs">{selected.user?.email}</span></div>
-                <div><span className="text-amber-100/40">Total:</span> <span className="text-amber-400 font-bold">₹{selected.totalPrice?.toLocaleString()}</span></div>
-                <div><span className="text-amber-100/40">Tracking:</span> <span className="text-amber-400 text-xs font-mono">{selected.trackingNumber}</span></div>
-                <div>
-                  <span className="text-amber-100/40">Shipping To:</span>
-                  <p className="text-amber-100/70 text-xs mt-1 leading-relaxed">
-                    {selected.shippingAddress?.name}<br />
+            <div className="space-y-6">
+              <h3 className="font-bold text-lg text-[#222] border-b border-gray-100 pb-4">Order Details</h3>
+              <div className="space-y-4 text-sm">
+                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Order ID</span> <span className="text-[#222] font-bold">#{selected._id.slice(-8).toUpperCase()}</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Customer</span> <span className="text-[#222] font-medium">{selected.user?.name}</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Email</span> <span className="text-gray-600 text-xs">{selected.user?.email}</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Total</span> <span className="text-[#C9A84C] font-bold text-lg">₹{selected.totalPrice?.toLocaleString()}</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Tracking</span> <span className="text-blue-600 text-xs font-mono font-bold bg-blue-50 px-2 py-0.5 rounded">{selected.trackingNumber || 'PENDING'}</span></div>
+                <div className="pt-2">
+                  <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest block mb-2">Shipping To</span>
+                  <div className="bg-gray-50 p-3 rounded-xl text-gray-600 text-xs leading-relaxed border border-gray-100">
+                    <p className="font-bold text-[#222] mb-1">{selected.shippingAddress?.name}</p>
                     {selected.shippingAddress?.street}, {selected.shippingAddress?.city}<br />
                     {selected.shippingAddress?.state} - {selected.shippingAddress?.pincode}
-                  </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="mb-5">
-                <p className="text-xs text-amber-100/40 uppercase tracking-wider mb-2">Items</p>
-                <div className="space-y-2">
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Order Items</p>
+                <div className="space-y-3">
                   {selected.orderItems?.map((item, i) => (
-                    <div key={i} className="flex gap-2">
-                      <img src={item.image} alt={item.name} className="w-10 h-10 rounded object-cover" />
-                      <div className="min-w-0">
-                        <p className="text-xs text-amber-100 truncate">{item.name}</p>
-                        <p className="text-xs text-amber-100/40">×{item.quantity} • ₹{item.price?.toLocaleString()}</p>
+                    <div key={i} className="flex gap-3 items-center bg-gray-50 p-2 rounded-lg border border-gray-100">
+                      <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-bold text-[#222] truncate">{item.name}</p>
+                        <p className="text-[11px] text-gray-400 font-medium mt-0.5">{item.quantity} × ₹{item.price?.toLocaleString()}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <p className="text-xs text-amber-100/40 uppercase tracking-wider">Update Status</p>
-                <select value={newStatus} onChange={e => setNewStatus(e.target.value)} className="input-luxury text-sm">
-                  {STATUS_OPTIONS.map(s => <option key={s} value={s} style={{ background: '#1a1008' }}>{s}</option>)}
+              <div className="pt-4 border-t border-gray-100 space-y-3">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Update Status</p>
+                <select value={newStatus} onChange={e => setNewStatus(e.target.value)} className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl text-sm font-bold text-[#222] outline-none focus:ring-1 focus:ring-[#C9A84C]/50">
+                  {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
-                <button onClick={updateStatus} disabled={updating} className="btn-gold w-full py-2.5 text-sm">
+                <button onClick={updateStatus} disabled={updating} className="w-full bg-[#222] text-white py-3 rounded-xl font-bold text-sm hover:bg-black transition-all shadow-sm">
                   {updating ? 'Updating...' : 'Update Status'}
                 </button>
               </div>
             </div>
           ) : (
-            <div className="text-center py-10">
-              <p className="text-amber-100/30 text-sm">Select an order to view details</p>
+            <div className="text-center py-20">
+              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FiShoppingBag className="text-gray-300" size={24} />
+              </div>
+              <p className="text-gray-400 text-sm font-medium">Select an order to view details</p>
             </div>
           )}
         </div>

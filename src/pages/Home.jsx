@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward } from 'react-icons/fi';
+import { GiQueenCrown } from 'react-icons/gi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import 'swiper/css';
@@ -488,35 +489,26 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 lg:gap-32">
           {/* Image Side */}
           <div className="w-full lg:w-1/2">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-amber-900/20 relative group shadow-2xl">
-                  <img 
-                    src={getImageUrl(settings?.founderImage) || "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"} 
-                    alt="Founder Shahid Ali" 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
-                  <div className="absolute bottom-4 left-4">
-                    <p className="text-amber-400 text-[10px] uppercase tracking-widest font-bold">Founder</p>
-                    <p className="text-white text-xs font-luxury">Shahid Ali</p>
+            <div className="relative group max-w-lg mx-auto">
+              <div className="aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-amber-900/20 relative shadow-2xl">
+                <img 
+                  src={getImageUrl(settings?.founderImage) || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"} 
+                  alt="Founder Azeem Ansari" 
+                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
+                <div className="absolute bottom-8 left-8">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 bg-[#C9A84C] rounded-lg flex items-center justify-center text-black">
+                      <GiQueenCrown size={18} />
+                    </div>
+                    <p className="text-amber-400 text-xs uppercase tracking-[0.3em] font-bold">The Visionary</p>
                   </div>
+                  <p className="text-white text-2xl font-serif">Azeem Ansari</p>
                 </div>
               </div>
-              <div className="space-y-4 pt-8">
-                <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-amber-900/20 relative group shadow-2xl">
-                  <img 
-                    src={getImageUrl(settings?.coFounderImage) || "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80"} 
-                    alt="Co-Founder Sazid Ali" 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
-                  <div className="absolute bottom-4 left-4">
-                    <p className="text-amber-400 text-[10px] uppercase tracking-widest font-bold">Co-Founder</p>
-                    <p className="text-white text-xs font-luxury">Sazid Ali</p>
-                  </div>
-                </div>
-              </div>
+              {/* Decorative Accent */}
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 border-b-2 border-r-2 border-[#C9A84C]/30 rounded-br-[3rem] pointer-events-none" />
             </div>
           </div>
 
@@ -524,15 +516,15 @@ export default function Home() {
           <div className="w-full lg:w-1/2 text-center lg:text-left">
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
               <p className="text-amber-400 text-sm tracking-[0.5em] uppercase mb-6 font-medium">Get To Know Us</p>
-              <h2 className="font-luxury text-5xl md:text-6xl text-white mb-8 leading-snug">
-                The <span className="text-gold-gradient">Visionaries</span> <br className="hidden md:block" /> Behind Jannat
+              <h2 className="font-serif text-5xl md:text-6xl text-white mb-8 leading-tight">
+                The <span className="text-[#C9A84C] italic">Visionary</span> <br className="hidden md:block" /> Behind Jannat
               </h2>
-              <div className="w-20 h-px bg-amber-500/50 mb-10 mx-auto lg:mx-0" />
-              <p className="text-amber-100/70 text-lg md:text-xl leading-relaxed mb-8 font-light">
-                Meet the founders who brought the dream of preserving authentic Indian craftsmanship to life. Combining rich heritage with modern luxury, Shahid Ali and Sazid Ali create timeless masterpieces that breathe soul into your living spaces.
+              <div className="w-20 h-px bg-[#C9A84C]/30 mb-10 mx-auto lg:mx-0" />
+              <p className="text-gray-400 text-lg md:text-xl leading-relaxed mb-8 font-light italic">
+                "We don't just sell carpets; we preserve stories of human craftsmanship that have been whispered through centuries."
               </p>
-              <p className="text-amber-100/50 text-base leading-relaxed mb-12">
-                Every rug we deliver is a testament to the meticulous care, passion, and unparalleled skill of our generational artisans. 
+              <p className="text-gray-500 text-base leading-relaxed mb-12">
+                Azeem Ansari founded Jannat Rugs with a singular mission: to bring the authentic, soulful art of Indian weaving to the world's most discerning homes. Every knot is a testament to our heritage.
               </p>
               <Link to="/team" className="btn-gold inline-flex items-center justify-center gap-3 px-12 py-5 uppercase tracking-widest text-sm shadow-xl hover:shadow-amber-500/20">
                 Meet Our Team <FiArrowRight size={18} />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiUpload } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiUpload, FiFolder } from 'react-icons/fi';
 import { AnimatePresence, motion } from 'framer-motion';
 import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
@@ -54,78 +54,92 @@ export default function AdminCategories() {
   return (
     <AdminLayout>
       <Helmet><title>Categories | Admin</title></Helmet>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-luxury text-2xl text-white">Categories</h1>
-        <button onClick={openAdd} className="btn-gold flex items-center gap-2 py-2 px-4 text-sm"><FiPlus size={16} /> Add Category</button>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-bold text-2xl text-[#222]">Categories</h1>
+        <button onClick={openAdd} className="bg-[#222] text-white flex items-center gap-2 py-2.5 px-5 rounded-full font-bold text-sm hover:bg-black transition-all shadow-sm">
+          <FiPlus size={18} /> Add Category
+        </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading ? [...Array(6)].map((_, i) => <div key={i} className="glass-card h-40 shimmer rounded-2xl" />) :
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {loading ? [...Array(4)].map((_, i) => <div key={i} className="bg-white h-48 shimmer rounded-3xl border border-gray-100" />) :
           cats.map(cat => (
-            <div key={cat._id} className="glass-card rounded-2xl overflow-hidden">
-              <div className="h-32 relative">
-                <img src={getImageUrl(cat.image)} alt={cat.name} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <p className="text-white font-luxury text-lg">{cat.name}</p>
+            <div key={cat._id} className="group bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <div className="h-40 relative overflow-hidden">
+                <img src={getImageUrl(cat.image)} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="text-white font-bold text-lg tracking-tight">{cat.name}</p>
                 </div>
               </div>
-              <div className="p-4 flex items-center justify-between">
-                <p className="text-amber-100/40 text-xs line-clamp-1">{cat.description || 'No description'}</p>
-                <div className="flex gap-2">
-                  <button onClick={() => openEdit(cat)} className="p-1.5 text-amber-400/60 hover:text-amber-400 rounded transition-colors"><FiEdit2 size={14} /></button>
-                  <button onClick={() => del(cat._id)} className="p-1.5 text-red-400/60 hover:text-red-400 rounded transition-colors"><FiTrash2 size={14} /></button>
+              <div className="p-5 flex items-center justify-between">
+                <p className="text-gray-400 text-xs font-medium line-clamp-1 flex-1 pr-4">{cat.description || 'No description'}</p>
+                <div className="flex gap-1">
+                  <button onClick={() => openEdit(cat)} className="p-2 text-gray-400 hover:text-[#C9A84C] hover:bg-[#FFF9E6] rounded-full transition-all"><FiEdit2 size={16} /></button>
+                  <button onClick={() => del(cat._id)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"><FiTrash2 size={16} /></button>
                 </div>
               </div>
             </div>
           ))}
+        {!loading && cats.length === 0 && (
+          <div className="col-span-full py-20 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+            <FiFolder className="mx-auto text-gray-300 mb-4" size={40} />
+            <p className="text-gray-400 font-medium">No categories found yet.</p>
+          </div>
+        )}
       </div>
 
       <AnimatePresence>
         {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
-              className="glass-card w-full max-w-md rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-5">
-                <h2 className="font-luxury text-xl text-amber-400">{editing ? 'Edit Category' : 'Add Category'}</h2>
-                <button onClick={() => setShowModal(false)} className="text-amber-100/40 hover:text-amber-100"><FiX size={18} /></button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} 
+              onClick={() => setShowModal(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="relative bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl border border-gray-100 overflow-hidden">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="font-bold text-xl text-[#222]">{editing ? 'Edit Category' : 'Add Category'}</h2>
+                <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 text-gray-400 transition-colors"><FiX size={20} /></button>
               </div>
-              <form onSubmit={save} className="space-y-4">
+              <form onSubmit={save} className="space-y-6">
                 <div>
-                  <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Name *</label>
-                  <input required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} className="input-luxury" />
+                  <label className="text-[11px] font-bold text-gray-400 block mb-2 uppercase tracking-widest">Category Name</label>
+                  <input required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} 
+                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-2xl text-sm font-bold text-[#222] outline-none focus:ring-1 focus:ring-[#C9A84C]/50" 
+                    placeholder="e.g. Modern Rugs" />
                 </div>
                 <div>
-                  <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Description</label>
-                  <textarea rows={3} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} className="input-luxury resize-none" />
+                  <label className="text-[11px] font-bold text-gray-400 block mb-2 uppercase tracking-widest">Description</label>
+                  <textarea rows={3} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} 
+                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-2xl text-sm font-medium text-[#222] outline-none focus:ring-1 focus:ring-[#C9A84C]/50 resize-none" 
+                    placeholder="Tell us about this category..." />
                 </div>
                 <div>
-                  <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Category Image</label>
-                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-amber-900/40 rounded-xl p-4 cursor-pointer hover:border-amber-700/60 transition-colors bg-black/20 group overflow-hidden aspect-video">
+                  <label className="text-[11px] font-bold text-gray-400 block mb-2 uppercase tracking-widest">Category Image</label>
+                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-4 cursor-pointer hover:bg-gray-50 transition-all group overflow-hidden aspect-video relative">
                     {image || editing?.image ? (
                       <img 
                         src={getImageUrl(image ? URL.createObjectURL(image) : editing?.image)} 
-                        className="w-full h-full object-cover rounded-lg" 
+                        className="w-full h-full object-cover rounded-xl" 
                         alt="Preview" 
                       />
                     ) : (
-                      <>
-                        <FiUpload size={24} className="text-amber-400/50 mb-2" />
-                        <span className="text-amber-100/40 text-xs">Click to upload image</span>
-                      </>
+                      <div className="text-center">
+                        <FiUpload size={24} className="text-gray-300 mx-auto mb-2 group-hover:text-[#C9A84C] transition-colors" />
+                        <span className="text-gray-400 text-xs font-medium">Click to upload image</span>
+                      </div>
                     )}
                     <input type="file" accept="image/*" className="hidden" onChange={e => setImage(e.target.files[0])} />
                   </label>
                 </div>
-                <div className="flex gap-3">
-                  <button type="button" onClick={() => setShowModal(false)} className="btn-outline-gold flex-1 py-2.5">Cancel</button>
-                  <button type="submit" disabled={saving} className="btn-gold flex-1 py-2.5">
+                <div className="flex gap-4 pt-2">
+                  <button type="button" onClick={() => setShowModal(false)} className="flex-1 py-3.5 rounded-2xl font-bold text-sm text-gray-500 hover:bg-gray-50 transition-colors">Cancel</button>
+                  <button type="submit" disabled={saving} className="flex-1 bg-[#222] text-white py-3.5 rounded-2xl font-bold text-sm hover:bg-black transition-all shadow-sm">
                     {saving ? 'Saving...' : editing ? 'Update' : 'Add Category'}
                   </button>
                 </div>
               </form>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </AdminLayout>
