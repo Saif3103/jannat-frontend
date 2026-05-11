@@ -63,11 +63,21 @@ export default function Header() {
     { label: 'Contact', path: '/contact' },
   ];
 
+  // Scroll Lock for Mobile Menu
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isMobileMenuOpen]);
+
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`${isHome ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[70] transition-all duration-500 ${
+      className={`${isHome ? 'fixed' : 'sticky'} top-0 left-0 right-0 z-[100] transition-all duration-500 ${
         isScrolled 
           ? 'header-blur py-2' 
           : (isHome ? 'bg-transparent py-4' : 'header-blur py-4')
@@ -79,7 +89,7 @@ export default function Header() {
         <div className="flex-1 flex items-center justify-start gap-4">
            {/* Mobile Menu Button (Left aligned on mobile) */}
            <button onClick={() => setMobileMenu(!isMobileMenuOpen)} id="mobile-menu-btn"
-            className="lg:hidden p-2 -ml-2 text-amber-100/70 hover:text-amber-400 transition-colors">
+            className="lg:hidden p-2 -ml-2 text-amber-100/70 hover:text-amber-400 transition-colors z-[110]">
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
 
@@ -241,7 +251,7 @@ export default function Header() {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-[60] lg:hidden bg-[#000000] flex flex-col pt-28"
+            className="fixed inset-0 z-[90] lg:hidden bg-[#080808]/98 backdrop-blur-3xl flex flex-col pt-28"
           >
             <div className="flex flex-col p-6 gap-2">
               {navLinks.map(link => (
@@ -249,19 +259,19 @@ export default function Header() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenu(false)}
-                  className="text-lg text-amber-100/80 hover:text-amber-400 transition-colors py-3 border-b border-amber-900/30 font-luxury tracking-wider"
+                  className="text-lg text-amber-100/80 hover:text-amber-400 transition-colors py-3 border-b border-amber-900/10 font-luxury tracking-wider"
                 >
                   {link.label}
                 </Link>
               ))}
               {!user ? (
                 <div className="mt-6 flex flex-col gap-3">
-                  <Link to="/login" onClick={() => setMobileMenu(false)} className="btn-gold text-center">Login</Link>
-                  <Link to="/register" onClick={() => setMobileMenu(false)} className="btn-outline-gold text-center">Register</Link>
+                  <Link to="/login" onClick={() => setMobileMenu(false)} className="btn-gold text-center py-4">Login</Link>
+                  <Link to="/register" onClick={() => setMobileMenu(false)} className="btn-outline-gold text-center py-4">Register</Link>
                 </div>
               ) : (
                 <button onClick={() => { logout(); setMobileMenu(false); }}
-                  className="mt-4 text-red-400 text-left text-sm flex items-center gap-2">
+                  className="mt-4 text-red-400 text-left text-sm flex items-center gap-2 py-4">
                   <FiLogOut /> Logout
                 </button>
               )}
