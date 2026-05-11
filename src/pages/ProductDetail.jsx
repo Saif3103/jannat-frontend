@@ -253,31 +253,31 @@ export default function ProductDetail() {
               )}
               
               {/* Quantity and Buy Buttons */}
-              <div className="mb-6">
-                 <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
+              <div className="mb-5">
+                 <div className="flex items-end gap-5">
                     <div>
-                       <p className="text-sm text-gray-400 mb-2">Quantity</p>
-                       <div className="flex items-center bg-[#111] border border-white/10 rounded overflow-hidden w-[120px] shadow-lg">
-                          <button onClick={() => setQty(q => Math.max(1, q-1))} className="flex-1 py-3 text-[#D4AF37] hover:bg-[#222] transition-colors">−</button>
-                          <span className="flex-1 text-center text-white font-medium">{qty}</span>
-                          <button onClick={() => setQty(q => Math.min(product.stock || 99, q+1))} className="flex-1 py-3 text-[#D4AF37] hover:bg-[#222] transition-colors">+</button>
+                       <p className="text-sm text-gray-400 mb-2 font-medium">Quantity</p>
+                       <div className="flex items-center bg-[#111] border border-white/10 rounded-xl overflow-hidden w-40 h-[52px] shadow-lg">
+                          <button onClick={() => setQty(q => Math.max(1, q-1))} className="flex-1 h-full text-[#D4AF37] hover:bg-[#222] transition-colors text-xl">−</button>
+                          <span className="flex-1 h-full flex items-center justify-center text-white font-bold">{qty}</span>
+                          <button onClick={() => setQty(q => Math.min(product.stock || 99, q+1))} className="flex-1 h-full text-[#D4AF37] hover:bg-[#222] transition-colors text-xl">+</button>
                        </div>
                     </div>
                     <div className="flex-1">
-                       <button onClick={handleBuyNow} className="w-full bg-gradient-to-r from-[#D4AF37] to-[#AA8529] text-black font-bold tracking-wider py-3.5 rounded hover:brightness-110 shadow-[0_4px_15px_rgba(212,175,55,0.2)] transition-all flex items-center justify-center gap-2">
-                          <FiShoppingCart size={18}/> BUY NOW
+                       <button onClick={handleBuyNow} className="w-full h-[52px] bg-gradient-to-r from-[#D4AF37] to-[#AA8529] text-black font-bold tracking-[0.1em] rounded-xl hover:brightness-110 shadow-[0_4px_20px_rgba(212,175,55,0.2)] transition-all flex items-center justify-center gap-3">
+                          <FiShoppingBag size={20}/> BUY NOW
                        </button>
                     </div>
                  </div>
               </div>
               
               {/* Add to Cart and Wishlist */}
-              <div className="flex gap-4 mb-10">
-                 <button onClick={handleAddToCart} className="flex-1 border border-[#D4AF37]/50 text-[#D4AF37] font-bold tracking-wider py-3.5 rounded hover:bg-[#D4AF37]/10 transition-colors flex items-center justify-center gap-2 shadow-lg">
-                    <FiShoppingCart size={18}/> ADD TO CART
+              <div className="flex gap-5 mb-10">
+                 <button onClick={handleAddToCart} className="flex-1 h-[52px] border border-[#D4AF37]/50 text-[#D4AF37] font-bold tracking-[0.1em] rounded-xl hover:bg-[#D4AF37]/10 transition-colors flex items-center justify-center gap-3 shadow-lg">
+                    <FiShoppingCart size={20}/> ADD TO CART
                  </button>
-                 <button onClick={() => toggleWishlist(product._id, !!user)} className="w-[52px] flex items-center justify-center border border-white/10 rounded text-[#D4AF37] hover:bg-[#222] transition-colors shadow-lg">
-                    <FiHeart size={20} fill={isInWishlist(product._id) ? 'currentColor' : 'none'}/>
+                 <button onClick={() => toggleWishlist(product._id, !!user)} className="w-[52px] h-[52px] flex items-center justify-center border border-white/10 rounded-xl text-[#D4AF37] hover:bg-[#222] transition-colors shadow-lg">
+                    <FiHeart size={22} fill={isInWishlist(product._id) ? 'currentColor' : 'none'}/>
                  </button>
               </div>
               
