@@ -28,7 +28,7 @@ export default function Categories() {
         <title>Carpet Categories | Jannat Rugs Co.</title>
         <meta name="description" content="Browse our curated carpet categories including Persian, Turkish, Silk, and handwoven wool rugs." />
       </Helmet>
-      <div className="pt-20 min-h-screen bg-[#0D0D0D]">
+      <div className="pt-20 min-h-screen">
         <div className="py-20 px-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
           <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Find Your Style</p>
           <h1 className="font-luxury text-5xl md:text-6xl text-white mb-4">All Categories</h1>

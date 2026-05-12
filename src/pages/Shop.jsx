@@ -44,9 +44,11 @@ export default function Shop() {
     setLoading(true);
     const params = new URLSearchParams({ page, sort, limit: 12, ...(category && { category }), ...(minPrice && { minPrice }), ...(maxPrice && { maxPrice }), ...(color && { color }), ...(type && { type }), ...(search && { search }) });
     api.get(`/products?${params}`).then(r => {
-      setProducts(r.data.products);
-      setTotal(r.data.total);
-      setPages(r.data.pages);
+      if (r?.data?.products) setProducts(r.data.products);
+      if (r?.data?.total !== undefined) setTotal(r.data.total);
+      if (r?.data?.pages !== undefined) setPages(r.data.pages);
+    }).catch(err => {
+      console.error('Failed to load products:', err);
     }).finally(() => setLoading(false));
   }, [searchParams]);
 
@@ -68,7 +70,7 @@ export default function Shop() {
         <title>Shop Luxury Carpets | Jannat Rugs Co.</title>
         <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />
       </Helmet>
-    <div className="pt-24 min-h-screen bg-[#0D0D0D]">
+    <div className="pt-24 min-h-screen">
       <Helmet>
         <title>Shop Luxury Carpets | Jannat Rugs Co.</title>
         <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />

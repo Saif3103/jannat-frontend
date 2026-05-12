@@ -15,7 +15,7 @@ export default function About() {
         <meta name="description" content="Learn about Jannat Rugs Co., our heritage of handmade carpet craftsmanship, and our commitment to luxury quality." />
       </Helmet>
       
-      <div className="bg-[#0D0D0D] min-h-screen pt-20 sm:pt-32 pb-16 sm:pb-20 text-white font-sans">
+      <div className="min-h-screen pt-20 sm:pt-32 pb-16 sm:pb-20 font-sans">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
           
           {/* Breadcrumb */}

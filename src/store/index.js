@@ -139,7 +139,7 @@ export const useWishlistStore = create((set, get) => ({
 
 // UI STORE
 export const useUIStore = create((set, get) => ({
-  isDarkMode: true,
+  isDarkMode: false,
   isMobileMenuOpen: false,
   isChatOpen: false,
   isSearchOpen: false,

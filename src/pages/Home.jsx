@@ -72,15 +72,19 @@ export default function Home() {
           api.get('/offers'),
           api.get('/video-reviews'),
         ]);
-        setFeaturedProducts(featured.data.products);
-        setBestSellers(best.data.products);
-        setNewArrivals(newArr.data.products);
-        setCategories(cats.data.categories.slice(0, 6));
-        setSettings(setts.data.settings);
-        setOffers(offs.data.offers);
-        setVideoReviews(vReviews.data.reviews.slice(0, 2));
-      } catch {}
-      setLoading(false);
+        
+        if (featured?.data?.products) setFeaturedProducts(featured.data.products);
+        if (best?.data?.products) setBestSellers(best.data.products);
+        if (newArr?.data?.products) setNewArrivals(newArr.data.products);
+        if (cats?.data?.categories) setCategories(cats.data.categories.slice(0, 6));
+        if (setts?.data?.settings) setSettings(setts.data.settings);
+        if (offs?.data?.offers) setOffers(offs.data.offers);
+        if (vReviews?.data?.reviews) setVideoReviews(vReviews.data.reviews.slice(0, 2));
+      } catch (err) {
+        console.error('Failed to load home data:', err);
+      } finally {
+        setLoading(false);
+      }
     };
     load();
   }, []);
@@ -92,7 +96,7 @@ export default function Home() {
         <meta name="description" content="Discover our exquisite collection of handmade Persian carpets, luxury rugs, and premium floor coverings. Crafted by master artisans with generations of expertise." />
       </Helmet>
 
-      <div style={{ background: '#0D0D0D' }}>
+      <div className="bg-transparent">
         {/* HERO SECTION */}
         <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         {/* Background Video */}

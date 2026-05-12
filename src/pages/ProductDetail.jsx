@@ -113,7 +113,7 @@ export default function ProductDetail() {
         <title>{product.name} | Jannat Rugs Co.</title>
         <meta name="description" content={product.description?.slice(0, 160)} />
       </Helmet>
-      <div className="pt-24 pb-20 bg-white min-h-screen text-[#222]">
+      <div className="pt-24 pb-20 min-h-screen">
         {/* Breadcrumb */}
         <div className="px-6 py-4 max-w-7xl mx-auto">
           <nav className="text-xs text-gray-400 flex items-center gap-2 font-medium">

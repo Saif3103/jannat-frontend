@@ -11,6 +11,13 @@
   --brown-light: #6D4C41;
   --black-luxury: #0D0D0D;
   --off-white: #FAF7F2;
+  --site-bg: var(--black-luxury);
+  --text-main: var(--cream);
+}
+
+body.light-mode {
+  --site-bg: var(--off-white);
+  --text-main: #1a1008;
 }
 
 * {
@@ -25,8 +32,8 @@ html {
 
 body {
   font-family: 'Jost', sans-serif;
-  background-color: var(--black-luxury);
-  color: #F5EDD8;
+  background-color: var(--site-bg);
+  color: var(--text-main);
   overflow-x: hidden;
   text-align: center;
   line-height: 1.8;
@@ -279,10 +286,7 @@ body {
 }
 
 /* Light mode */
-body.light-mode {
-  background-color: #FAF7F2;
-  color: #1a1008;
-}
+/* Light mode overrides handled via variables above */
 
 body.light-mode .glass-card {
   background: rgba(255, 255, 255, 0.7);

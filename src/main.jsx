@@ -6,14 +6,16 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import './index.css';
 
+import ErrorBoundary from './components/ErrorBoundary';
+
 console.log('App mounting...');
 console.log('App execution verified.');
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <BrowserRouter>
-
-        <App />
+    <ErrorBoundary>
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
         <Toaster
           position="top-right"
           toastOptions={{
@@ -30,5 +32,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         />
       </BrowserRouter>
     </HelmetProvider>
-  </React.StrictMode>
+  </ErrorBoundary>
+</React.StrictMode>
 );

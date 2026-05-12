@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useSettingsStore, useAuthStore } from './store';
+import { useSettingsStore, useAuthStore, useUIStore } from './store';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import ChatBot from './components/ChatBot';
@@ -37,20 +37,22 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
-const ADMIN_PATHS = ['/admin', '/admin/'];
-
 export default function App() {
   const location = useLocation();
-  const fetchSettings = useSettingsStore(s => s.fetchSettings);
-  const { user, token } = useAuthStore();
+  const { fetchSettings } = useSettingsStore();
+  const { isDarkMode } = useUIStore();
   const isAdminPage = location.pathname.startsWith('/admin');
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [fetchSettings]);
+
+  useEffect(() => {
+    document.body.classList.toggle('light-mode', !isDarkMode);
+  }, [isDarkMode]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-transparent">
       {!isAdminPage && <Header />}
       <main className="flex-1">
         <AnimatePresence mode="wait">
