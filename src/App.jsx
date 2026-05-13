@@ -4,6 +4,8 @@ import { AnimatePresence } from 'framer-motion';
 import { useSettingsStore, useAuthStore, useUIStore } from './store';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import ChatBot from './components/ChatBot';
+import WhatsAppButton from './components/WhatsAppButton';
 import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -95,6 +97,8 @@ export default function App() {
         </AnimatePresence>
       </main>
       {!isAdminPage && <Footer />}
+      {!isAdminPage && <ChatBot />}
+      {!isAdminPage && <WhatsAppButton />}
     </div>
   );
 }
