@@ -81,13 +81,15 @@ export const useCartStore = create(
       },
 
       removeFromCart: (productId, size, color) => {
-        set({ items: get().items.filter(i => !(i._id === productId && i.size === size && i.color === color)) });
+        const currentItems = get().items || [];
+        set({ items: currentItems.filter(i => !(i._id === productId && i.size === size && i.color === color)) });
         toast.success('Removed from cart');
       },
 
       updateQuantity: (productId, size, color, quantity) => {
         if (quantity < 1) return;
-        const updated = get().items.map(i => 
+        const currentItems = get().items || [];
+        const updated = currentItems.map(i => 
           (i._id === productId && i.size === size && i.color === color) ? { ...i, quantity } : i
         );
         set({ items: updated });
@@ -95,8 +97,8 @@ export const useCartStore = create(
 
       clearCart: () => set({ items: [] }),
 
-      get cartCount() { return get().items.reduce((a, i) => a + i.quantity, 0); },
-      get subtotal() { return get().items.reduce((a, i) => a + ((i.discountPrice || i.price) * i.quantity), 0); },
+      get cartCount() { return (get().items || []).reduce((a, i) => a + (i.quantity || 0), 0); },
+      get subtotal() { return (get().items || []).reduce((a, i) => a + (((i.discountPrice || i.price) || 0) * (i.quantity || 0)), 0); },
     }),
     { name: 'jannat_cart' }
   )

@@ -22,7 +22,7 @@ export default function Header() {
   const { settings } = useSettingsStore();
   const { isDarkMode, toggleDarkMode, isMobileMenuOpen, setMobileMenuOpen, isSearchOpen, setSearchOpen } = useUIStore();
 
-  const cartCount = items.reduce((a, i) => a + i.quantity, 0);
+  const cartCount = (items || []).reduce((a, i) => a + i.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
