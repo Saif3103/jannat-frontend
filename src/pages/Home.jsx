@@ -162,7 +162,7 @@ export default function Home() {
                    </p>
                    <h2 className="font-luxury text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-10 leading-[1.05]">
                       Festive Luxury <br />
-                      <span className="text-gold-gradient italic">Collection 2024</span>
+                      <span className="text-[#C9A84C] italic">Collection 2026</span>
                    </h2>
                    <p className="text-white/60 text-base sm:text-xl font-medium leading-relaxed mb-12 max-w-2xl mx-auto lg:mx-0">
                       Celebrate the season with handcrafted masterpieces. Get up to <span className="text-white font-black text-2xl sm:text-3xl mx-1 underline decoration-amber-500 underline-offset-8">50% OFF</span> on our most exclusive hand-knotted rugs.
