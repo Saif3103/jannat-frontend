@@ -111,8 +111,9 @@ export default function Home() {
           >
             <source src={settings?.heroVideo ? getImageUrl(settings.heroVideo) : "https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4"} type="video/mp4" />
           </video>
-          {/* Theme Overlay (Luxury Light Aesthetic) */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(250,247,242,0.6) 0%, rgba(250,247,242,0.3) 50%, rgba(250,247,242,0.85) 100%)' }} />
+          {/* High Definition Overlay for Video Clarity */}
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
         </div>
               <div className="relative z-10 px-4 max-w-5xl mx-auto flex flex-col items-center justify-center text-center w-full mt-8 md:mt-16">
           <motion.div
