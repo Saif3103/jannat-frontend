@@ -145,76 +145,82 @@ export default function Home() {
         </div>
       </section>
 
-      {/* OFFERS SLIDER SECTION */}
-      {offers.length > 0 && (
-        <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-              <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Limited Time Offers</p>
-              <h2 className="font-luxury text-3xl md:text-5xl text-white mb-4 sm:6">Exclusive Promotions</h2>
-              <div className="divider-gold w-20 sm:w-24" />
+      {/* FESTIVE OFFER BANNER */}
+      <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden border-y border-amber-900/10">
+        {/* Animated Confetti/Glow Background */}
+        <div className="absolute inset-0 opacity-40 pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <motion.div 
+              key={i}
+              animate={{ 
+                y: [0, -100], 
+                opacity: [0, 1, 0],
+                scale: [0.5, 1, 0.5]
+              }}
+              transition={{ 
+                duration: Math.random() * 5 + 5, 
+                repeat: Infinity,
+                delay: Math.random() * 5
+              }}
+              className="absolute w-1 h-1 bg-[#C9A84C] rounded-full shadow-[0_0_10px_#C9A84C]"
+              style={{ 
+                left: `${Math.random() * 100}%`, 
+                top: `${Math.random() * 100}%` 
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="max-w-[1400px] mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 bg-gradient-to-r from-black via-zinc-900/50 to-black p-8 sm:p-16 rounded-[2.5rem] border border-amber-900/20 shadow-[0_0_100px_rgba(201,168,76,0.1)]">
+            {/* Left: Offer Badge */}
+            <div className="flex-shrink-0 relative group">
+               <motion.div 
+                 animate={{ rotate: [0, 5, -5, 0] }}
+                 transition={{ duration: 4, repeat: Infinity }}
+                 className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-dashed border-[#C9A84C]/40 flex items-center justify-center p-4"
+               >
+                 <div className="w-full h-full bg-[#C9A84C] rounded-full flex flex-col items-center justify-center text-black text-center shadow-[0_0_50px_rgba(201,168,76,0.3)]">
+                    <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">Limited Time</p>
+                    <p className="text-2xl sm:text-3xl font-black uppercase">Offer</p>
+                 </div>
+               </motion.div>
             </div>
 
-            <Swiper
-              modules={[Autoplay, Pagination, EffectFade]}
-              effect="fade"
-              fadeEffect={{ crossFade: true }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              pagination={{ clickable: true }}
-              className="rounded-[24px] sm:rounded-[40px] overflow-hidden border border-amber-900/20 shadow-[0_0_80px_rgba(201,168,76,0.1)]"
-            >
-              {offers.map((offer, i) => (
-                <SwiperSlide key={offer._id}>
-                  <div className="relative h-[350px] md:h-[550px] lg:h-[650px] w-full group">
-                    <img 
-                      src={getImageUrl(offer.image)} 
-                      alt={offer.title} 
-                      className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex items-center p-6 md:p-20">
-                      <div className="max-w-2xl">
-                        <motion.p 
-                          initial={{ opacity: 0, x: -30 }} 
-                          whileInView={{ opacity: 1, x: 0 }}
-                          className="text-amber-400 font-bold tracking-[0.3em] uppercase text-[10px] sm:text-xs mb-4 sm:6"
-                        >
-                          {offer.subtitle || 'Flash Sale'}
-                        </motion.p>
-                        <motion.h3 
-                          initial={{ opacity: 0, x: -30 }} 
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.1 }}
-                          className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-6 sm:8 leading-tight"
-                        >
-                          {offer.title}
-                        </motion.h3>
-                        <motion.div 
-                          initial={{ opacity: 0, x: -30 }} 
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.2 }}
-                          className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:6"
-                        >
-                          {offer.link && (
-                            <Link to={offer.link} className="btn-gold px-8 sm:px-12 py-3 sm:py-5 text-xs sm:text-sm uppercase tracking-widest">
-                              Claim Offer
-                            </Link>
-                          )}
-                          {offer.code && (
-                            <div className="px-4 sm:px-6 py-2 sm:py-4 border border-amber-500/30 rounded-lg sm:rounded-xl bg-amber-500/5 backdrop-blur-md">
-                              <p className="text-[8px] sm:text-[10px] text-amber-100/40 uppercase mb-0 sm:1">Use Code</p>
-                              <p className="text-amber-400 font-bold tracking-widest text-base sm:text-lg">{offer.code}</p>
-                            </div>
-                          )}
-                        </motion.div>
-                      </div>
-                    </div>
+            {/* Center: Promo Text */}
+            <div className="flex-1 text-center">
+               <p className="text-[#C9A84C] text-xs sm:text-sm font-bold uppercase tracking-[0.5em] mb-4">Festive Offer</p>
+               <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white leading-none mb-4">UP TO 20% OFF</h2>
+               <p className="text-white text-xl sm:text-2xl font-bold tracking-widest uppercase opacity-80">On Handpicked Rugs</p>
+            </div>
+
+            {/* Right: Info & CTA */}
+            <div className="flex flex-col items-center lg:items-end gap-8">
+               <div className="flex gap-6 sm:gap-10">
+                  <div className="flex flex-col items-center">
+                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C9A84C] mb-2"><FiAward size={24}/></div>
+                     <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Premium Quality</p>
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+                  <div className="flex flex-col items-center">
+                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C9A84C] mb-2"><GiQueenCrown size={24}/></div>
+                     <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Timeless Designs</p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C9A84C] mb-2"><FiAward size={24}/></div>
+                     <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Trusted by Thousands</p>
+                  </div>
+               </div>
+
+               <div className="text-center lg:text-right">
+                  <Link to="/shop" className="group flex items-center gap-4 bg-[#C9A84C] text-black px-10 py-5 rounded-2xl font-bold text-sm tracking-widest uppercase hover:bg-amber-400 transition-all shadow-xl shadow-amber-500/20">
+                     Shop Now <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                  </Link>
+                  <p className="text-[10px] text-white/20 mt-4 uppercase tracking-widest font-medium">Offer valid till 31st May 2024</p>
+               </div>
+            </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
       <section className="py-16 sm:py-24 border-y border-amber-900/10" style={{ background: '#050505' }}>
@@ -255,7 +261,7 @@ export default function Home() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
               {featuredProducts.length > 0 ? featuredProducts.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               )) : (
@@ -375,7 +381,7 @@ export default function Home() {
               {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
               {bestSellers.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               ))}
@@ -398,7 +404,7 @@ export default function Home() {
                 {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
                 {newArrivals.map((p, i) => (
                   <ProductCard key={p._id} product={p} index={i} />
                 ))}

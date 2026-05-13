@@ -228,8 +228,8 @@ export default function Shop() {
           {/* Product Grid */}
           <div className="flex-1">
             {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-8">
-                {[...Array(6)].map((_, i) => <div key={i} className="h-[300px] sm:h-[400px] bg-white/5 rounded-2xl sm:rounded-[2.5rem] animate-pulse" />)}
+              <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-8">
+                {[...Array(6)].map((_, i) => <div key={i} className="h-[280px] sm:h-[320px] bg-white/5 rounded-[2rem] animate-pulse" />)}
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-32 bg-white/5 rounded-[3rem] border border-dashed border-amber-900/20">
@@ -240,7 +240,7 @@ export default function Shop() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-8">
                   {products.map((p, i) => (
                     <ProductCard key={p._id} product={p} index={i} />
                   ))}
