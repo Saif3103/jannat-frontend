@@ -13,6 +13,7 @@ import api, { BASE_URL } from '../api/axios';
 import { useCartStore, useAuthStore, useWishlistStore } from '../store';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
+import RoomVisualizer from '../components/ui/RoomVisualizer';
 import toast from 'react-hot-toast';
 
 const getImageUrl = (url) => {
@@ -34,6 +35,7 @@ export default function ProductDetail() {
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -280,6 +282,14 @@ export default function ProductDetail() {
 
             {/* Actions */}
             <div className="space-y-4 pt-4">
+               {/* VISUALIZE IN YOUR SPACE CTA */}
+               <button 
+                 onClick={() => setIsVisualizerOpen(true)}
+                 className="w-full bg-[#FAF7F2] border-2 border-dashed border-[#C9A84C]/30 text-[#1A1A1A] py-5 rounded-2xl font-bold tracking-[0.1em] hover:border-[#C9A84C] transition-all flex items-center justify-center gap-3 group mb-2"
+               >
+                  <FiMaximize className="text-[#C9A84C] group-hover:scale-110 transition-transform" size={20} /> TRY IN YOUR ROOM
+               </button>
+
                <div className="flex items-center gap-4 mb-2">
                  <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden h-14 bg-white">
                     <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-12 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-100">
@@ -304,6 +314,12 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+
+        <RoomVisualizer 
+          isOpen={isVisualizerOpen} 
+          onClose={() => setIsVisualizerOpen(false)} 
+          product={product} 
+        />
 
         {/* RELATED PRODUCTS */}
         {related.length > 0 && (
