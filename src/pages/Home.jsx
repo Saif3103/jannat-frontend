@@ -16,7 +16,7 @@ import RugQuiz from '../components/ui/RugQuiz';
 import OfferPill from '../components/ui/OfferPill';
 import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
-import SmartHero from '../components/ui/SmartHero';
+import DynamicHero from '../components/ui/SmartHero.jsx';
 
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80';
@@ -104,7 +104,7 @@ export default function Home() {
 
       <div className="bg-transparent">
         {/* DYNAMIC SMART HERO BANNER */}
-        <SmartHero logo="/logo.png" />
+        <DynamicHero logo="/logo.png" />
 
       {/* OFFERS SLIDER SECTION */}
       {/* FESTIVE OFFER BANNER - Restored High Impact Layout */}
