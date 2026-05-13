@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiHeart, FiShoppingCart, FiStar, FiEye, FiClock, FiShield, FiTruck } from 'react-icons/fi';
-import { GiRugbyConversion as LuRug } from 'react-icons/gi';
+import { FiHeart, FiShoppingCart, FiStar, FiClock, FiShield, FiArrowRight } from 'react-icons/fi';
 import { useCartStore, useAuthStore, useWishlistStore } from '../../store';
 import { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
@@ -33,6 +32,11 @@ export default function ProductCard({ product, index = 0 }) {
 
   const inWishlist = isInWishlist(product._id);
 
+  // Determine button color based on product (matching the image variation)
+  const isBespoke = product.name?.toLowerCase().includes('bespoke') || product.isBestSeller;
+  const buyNowBg = isBespoke ? 'bg-[#C9A84C]' : 'bg-[#E31E24]';
+  const buyNowText = isBespoke ? 'text-black' : 'text-white';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -41,87 +45,103 @@ export default function ProductCard({ product, index = 0 }) {
       transition={{ delay: index * 0.05, duration: 0.4 }}
       className="group relative"
     >
-      <div className="bg-[#0A0A0A] rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl hover:border-amber-500/20 transition-all duration-500 flex flex-col group/card h-full">
-        {/* Top Section: Horizontal Layout */}
+      <div className="bg-[#000000] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl transition-all duration-500 flex flex-col group/card h-full">
+        {/* Horizontal Split */}
         <div className="flex flex-col sm:flex-row flex-1">
-          {/* Left: Image */}
-          <div className="relative w-full sm:w-[45%] aspect-square sm:aspect-auto sm:h-full overflow-hidden">
+          {/* Left Side: Image Area */}
+          <div className="relative w-full sm:w-[45%] h-[240px] sm:h-full overflow-hidden">
              <Link to={`/product/${product._id}`} className="h-full block">
                 <img
                   src={getImageUrl(product.images?.[0])}
                   alt={product.name}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110"
                 />
-                <div className="absolute inset-0 bg-black/10 group-hover/card:bg-transparent transition-colors duration-500" />
              </Link>
              
-             {/* Badges */}
-             <div className="absolute top-4 left-4 flex flex-col gap-2">
+             {/* Badges - Top Left of Image */}
+             <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
                 {product.isBestSeller && (
-                   <span className="bg-[#E31E24] text-white text-[8px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-xl">Best Seller</span>
+                   <span className="bg-[#000000]/80 backdrop-blur-sm text-white text-[7px] font-bold px-2.5 py-1 rounded-md uppercase tracking-[0.2em] border border-white/10 shadow-lg">Best Seller</span>
                 )}
-                <span className="bg-[#00A699] text-white text-[8px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-xl">New</span>
+                <span className="bg-[#00A699] text-white text-[7px] font-bold px-2.5 py-1 rounded-md uppercase tracking-[0.2em] shadow-lg">New</span>
              </div>
-
-             {/* Heart Icon */}
-             <button 
-                onClick={(e) => { e.preventDefault(); toggleWishlist(product._id, !!user); }}
-                className={`absolute top-4 right-4 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all bg-black/20 backdrop-blur-md border border-white/10 ${inWishlist ? 'text-red-500' : 'text-white/40 hover:text-white'}`}>
-                <FiHeart size={20} fill={inWishlist ? 'currentColor' : 'none'} />
-             </button>
           </div>
 
-          {/* Right: Content */}
-          <div className="w-full sm:w-[55%] p-4 sm:p-6 flex flex-col bg-black">
-             <p className="text-[#C9A84C] text-[9px] font-bold uppercase tracking-[0.3em] mb-2">{product.category?.name || 'Modern Collection'}</p>
+          {/* Right Side: Info Area */}
+          <div className="w-full sm:w-[55%] p-5 sm:p-7 flex flex-col relative">
+             {/* Heart Icon - Top Right of Content */}
+             <button 
+                onClick={(e) => { e.preventDefault(); toggleWishlist(product._id, !!user); }}
+                className={`absolute top-6 right-6 z-10 transition-all ${inWishlist ? 'text-red-500' : 'text-white/30 hover:text-white'}`}>
+                <FiHeart size={22} fill={inWishlist ? 'currentColor' : 'none'} />
+             </button>
+
+             {/* Category */}
+             <p className="text-[#C9A84C] text-[9px] font-bold uppercase tracking-[0.4em] mb-2">{product.category?.name || 'Modern Collection'}</p>
+             
+             {/* Title */}
              <Link to={`/product/${product._id}`}>
-                <h3 className="text-white font-bold text-lg sm:text-xl mb-2 line-clamp-1 group-hover/card:text-[#C9A84C] transition-colors">{product.name}</h3>
+                <h3 className="text-white font-bold text-xl sm:text-2xl mb-3 leading-tight group-hover/card:text-[#C9A84C] transition-colors">{product.name}</h3>
              </Link>
              
-             <div className="flex items-center gap-2 mb-4">
+             {/* Rating */}
+             <div className="flex items-center gap-2 mb-5">
                 <div className="flex text-amber-400">
-                   {[...Array(5)].map((_, i) => <FiStar key={i} size={10} fill="currentColor" />)}
+                   {[...Array(5)].map((_, i) => <FiStar key={i} size={12} fill="currentColor" />)}
                 </div>
-                <span className="text-[10px] text-white font-bold">4.8 (128)</span>
+                <span className="text-[11px] text-white/80 font-bold">4.8 (128)</span>
              </div>
 
-             <div className="mb-4">
-                <p className="text-white text-2xl font-bold">₹{price?.toLocaleString()}</p>
-                <p className="text-[9px] text-white/40 uppercase tracking-widest">Inclusive of all taxes</p>
+             {/* Price */}
+             <div className="mb-6">
+                <p className="text-white text-3xl font-bold tracking-tight">₹{price?.toLocaleString()}</p>
+                <p className="text-[10px] text-white/30 uppercase tracking-widest mt-1">Inclusive of all taxes</p>
              </div>
 
-             {/* Icons Grid */}
-             <div className="grid grid-cols-4 gap-2 mb-6 border-t border-white/5 pt-4">
-                <div className="flex flex-col items-center"><FiGrid size={14} className="text-[#C9A84C] mb-1"/><span className="text-[7px] text-white/40 uppercase text-center leading-tight">Hand Knotted</span></div>
-                <div className="flex flex-col items-center"><LuRug size={14} className="text-[#C9A84C] mb-1"/><span className="text-[7px] text-white/40 uppercase text-center leading-tight">Premium Wool</span></div>
-                <div className="flex flex-col items-center"><FiShield size={14} className="text-[#C9A84C] mb-1"/><span className="text-[7px] text-white/40 uppercase text-center leading-tight">Secure Payment</span></div>
-                <div className="flex flex-col items-center"><FiClock size={14} className="text-[#C9A84C] mb-1"/><span className="text-[7px] text-white/40 uppercase text-center leading-tight">7-Day Return</span></div>
+             {/* Detailed Specs Icons (Matching the Reference) */}
+             <div className="grid grid-cols-4 gap-1 mb-8 pt-4 border-t border-white/5">
+                <div className="flex flex-col items-center">
+                   <div className="text-[#C9A84C] mb-1.5"><FiGrid size={14}/></div>
+                   <span className="text-[7px] text-white/40 uppercase font-medium text-center leading-tight">Hand Knotted</span>
+                </div>
+                <div className="flex flex-col items-center">
+                   <div className="text-[#C9A84C] mb-1.5"><FiFeather size={14}/></div>
+                   <span className="text-[7px] text-white/40 uppercase font-medium text-center leading-tight">Premium Wool</span>
+                </div>
+                <div className="flex flex-col items-center">
+                   <div className="text-[#C9A84C] mb-1.5"><FiShield size={14}/></div>
+                   <span className="text-[7px] text-white/40 uppercase font-medium text-center leading-tight">Secure Payment</span>
+                </div>
+                <div className="flex flex-col items-center">
+                   <div className="text-[#C9A84C] mb-1.5"><FiClock size={14}/></div>
+                   <span className="text-[7px] text-white/40 uppercase font-medium text-center leading-tight">7-Day Return</span>
+                </div>
              </div>
 
-             {/* Offer Box */}
-             <div className="mt-auto border border-[#E31E24]/30 rounded-2xl p-3 flex items-center justify-between bg-[#E31E24]/5">
+             {/* Redesigned Offer Box */}
+             <div className="mt-auto border border-[#E31E24]/30 rounded-2xl p-4 flex items-center justify-between bg-[#E31E24]/5">
                 <div>
-                   <p className="text-[8px] text-[#C9A84C] font-bold uppercase tracking-widest mb-1">Limited Time Offer</p>
-                   <p className="text-[#E31E24] text-xs font-bold uppercase">Flat {discount || '15'}% OFF</p>
+                   <p className="text-[8px] text-[#C9A84C] font-bold uppercase tracking-[0.2em] mb-1">Limited Time Offer <span className="ml-1 opacity-50">🏷️</span></p>
+                   <p className="text-[#E31E24] text-sm font-black uppercase">Flat {discount || '15'}% OFF</p>
                 </div>
-                <div className="bg-[#E31E24] text-white px-3 py-2 rounded-xl text-[8px] font-bold tracking-widest uppercase">
-                   Use Code: JANNAT15
+                <div className="bg-[#E31E24] text-white px-4 py-2.5 rounded-xl text-[9px] font-bold tracking-widest uppercase shadow-lg shadow-red-900/20 active:scale-95 transition-transform cursor-pointer">
+                   Use Code: JANNAT{discount || '15'}
                 </div>
              </div>
           </div>
         </div>
 
-        {/* Bottom Actions */}
-        <div className="flex border-t border-white/10">
+        {/* Action Buttons Area */}
+        <div className="flex p-4 gap-3 bg-[#000000] border-t border-white/5">
            <button 
              onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); toast.success('Added to bag'); }}
-             className="flex-1 py-4 flex items-center justify-center gap-3 text-white font-bold text-[10px] sm:text-xs tracking-widest border-r border-white/10 hover:bg-white/5 transition-all">
-             <FiShoppingCart size={16}/> ADD TO CART
+             className="flex-1 py-4.5 rounded-2xl flex items-center justify-center gap-3 text-white font-bold text-[10px] sm:text-xs tracking-[0.2em] border border-white/20 hover:bg-white/10 transition-all uppercase">
+             <FiShoppingCart size={18}/> Add to Cart
            </button>
            <button 
              onClick={handleBuyNow}
-             className="flex-1 py-4 flex items-center justify-center gap-3 bg-[#C9A84C] text-black font-bold text-[10px] sm:text-xs tracking-widest hover:bg-amber-400 transition-all">
-             BUY NOW <FiArrowRight size={16}/>
+             className={`flex-1 py-4.5 rounded-2xl flex items-center justify-center gap-3 ${buyNowBg} ${buyNowText} font-bold text-[10px] sm:text-xs tracking-[0.2em] hover:opacity-90 transition-all shadow-xl uppercase`}>
+             Buy Now <FiArrowRight size={18}/>
            </button>
         </div>
       </div>
@@ -129,6 +149,6 @@ export default function ProductCard({ product, index = 0 }) {
   );
 }
 
-// Icon helpers
+// Icon Helpers
 const FiGrid = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
-const FiArrowRight = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>;
+const FiFeather = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>;

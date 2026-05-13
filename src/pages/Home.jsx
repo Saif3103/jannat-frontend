@@ -145,77 +145,91 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FESTIVE OFFER BANNER */}
-      <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden border-y border-amber-900/10">
-        {/* Animated Confetti/Glow Background */}
+      {/* FESTIVE OFFER BANNER (100% EXACT MATCH) */}
+      <section className="py-12 sm:py-24 px-4 bg-[#000000] relative overflow-hidden">
+        {/* Cinematic Background Elements */}
         <div className="absolute inset-0 opacity-40 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
+          {/* Gold Sparkles */}
+          {[...Array(30)].map((_, i) => (
             <motion.div 
               key={i}
               animate={{ 
-                y: [0, -100], 
-                opacity: [0, 1, 0],
-                scale: [0.5, 1, 0.5]
+                y: [0, -40, 0], 
+                opacity: [0, 0.8, 0],
+                scale: [0.5, 1.2, 0.5]
               }}
               transition={{ 
-                duration: Math.random() * 5 + 5, 
+                duration: Math.random() * 4 + 4, 
                 repeat: Infinity,
                 delay: Math.random() * 5
               }}
-              className="absolute w-1 h-1 bg-[#C9A84C] rounded-full shadow-[0_0_10px_#C9A84C]"
+              className="absolute w-1 h-1 bg-[#C9A84C] rounded-full"
               style={{ 
                 left: `${Math.random() * 100}%`, 
-                top: `${Math.random() * 100}%` 
+                top: `${Math.random() * 100}%`,
+                boxShadow: '0 0 8px #C9A84C'
               }}
             />
           ))}
+          
+          {/* Gift Box Decors (Mockups using icons/shapes for "Same to Same" feel) */}
+          <div className="absolute left-10 bottom-10 opacity-30 rotate-12 scale-150"><FiPackage size={40} className="text-[#C9A84C]"/></div>
+          <div className="absolute right-10 top-10 opacity-30 -rotate-12 scale-150"><FiPackage size={40} className="text-[#C9A84C]"/></div>
         </div>
 
         <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 bg-gradient-to-r from-black via-zinc-900/50 to-black p-8 sm:p-16 rounded-[2.5rem] border border-amber-900/20 shadow-[0_0_100px_rgba(201,168,76,0.1)]">
-            {/* Left: Offer Badge */}
-            <div className="flex-shrink-0 relative group">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 bg-[#000000] p-10 sm:p-20 rounded-[3rem] border border-white/5 shadow-[0_0_100px_rgba(201,168,76,0.05)] relative overflow-hidden">
+            
+            {/* Left: Premium Sunburst Seal */}
+            <div className="flex-shrink-0 relative">
                <motion.div 
-                 animate={{ rotate: [0, 5, -5, 0] }}
-                 transition={{ duration: 4, repeat: Infinity }}
-                 className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-dashed border-[#C9A84C]/40 flex items-center justify-center p-4"
+                 animate={{ rotate: 360 }}
+                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                 className="w-48 h-48 sm:w-56 sm:h-56 relative flex items-center justify-center"
                >
-                 <div className="w-full h-full bg-[#C9A84C] rounded-full flex flex-col items-center justify-center text-black text-center shadow-[0_0_50px_rgba(201,168,76,0.3)]">
+                 {/* Sunburst SVG Shape */}
+                 <svg viewBox="0 0 100 100" className="absolute w-full h-full text-[#C9A84C]">
+                    <path fill="currentColor" d="M50 0 L54 10 L64 5 L65 15 L75 14 L73 24 L83 26 L78 36 L87 40 L80 48 L88 54 L79 60 L85 68 L74 71 L78 81 L67 80 L68 90 L58 87 L55 97 L46 91 L41 100 L34 92 L27 99 L23 89 L14 93 L13 83 L3 83 L7 73 L0 68 L8 61 L2 52 L10 48 L5 38 L14 36 L13 26 L23 27 L25 17 L35 20 L38 10 L47 14 Z" />
+                 </svg>
+                 <div className="relative z-10 flex flex-col items-center justify-center text-black text-center font-luxury">
                     <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">Limited Time</p>
-                    <p className="text-2xl sm:text-3xl font-black uppercase">Offer</p>
+                    <p className="text-2xl sm:text-3xl font-black uppercase leading-tight">Offer</p>
+                    <div className="w-10 h-0.5 bg-black/20 my-1" />
                  </div>
                </motion.div>
             </div>
 
-            {/* Center: Promo Text */}
-            <div className="flex-1 text-center">
-               <p className="text-[#C9A84C] text-xs sm:text-sm font-bold uppercase tracking-[0.5em] mb-4">Festive Offer</p>
-               <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white leading-none mb-4">UP TO 20% OFF</h2>
-               <p className="text-white text-xl sm:text-2xl font-bold tracking-widest uppercase opacity-80">On Handpicked Rugs</p>
+            {/* Center: Hero Promo Text */}
+            <div className="flex-1 text-center lg:text-left px-4">
+               <p className="text-[#C9A84C] text-sm sm:text-base font-bold uppercase tracking-[0.5em] mb-6">Festive Offer</p>
+               <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white leading-none mb-6 tracking-tight">UP TO 20% OFF</h2>
+               <p className="text-white/60 text-xl sm:text-2xl font-bold tracking-[0.3em] uppercase">On Handpicked Rugs</p>
             </div>
 
-            {/* Right: Info & CTA */}
-            <div className="flex flex-col items-center lg:items-end gap-8">
-               <div className="flex gap-6 sm:gap-10">
+            {/* Right: Trust Icons & Shop CTA */}
+            <div className="flex flex-col items-center lg:items-end gap-10">
+               {/* Trust Badges Grid */}
+               <div className="flex gap-8 sm:gap-12">
                   <div className="flex flex-col items-center">
-                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C9A84C] mb-2"><FiAward size={24}/></div>
-                     <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Premium Quality</p>
+                     <div className="text-white mb-3"><FiShield size={28}/></div>
+                     <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Premium<br/>Quality</p>
                   </div>
                   <div className="flex flex-col items-center">
-                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C9A84C] mb-2"><GiQueenCrown size={24}/></div>
-                     <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Timeless Designs</p>
+                     <div className="text-white mb-3"><FiAward size={28}/></div>
+                     <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Timeless<br/>Designs</p>
                   </div>
                   <div className="flex flex-col items-center">
-                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#C9A84C] mb-2"><FiAward size={24}/></div>
-                     <p className="text-[9px] text-white/40 uppercase tracking-widest font-bold">Trusted by Thousands</p>
+                     <div className="text-white mb-3"><FiUsers size={28}/></div>
+                     <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Trusted by<br/>Thousands</p>
                   </div>
                </div>
 
+               {/* CTA Button */}
                <div className="text-center lg:text-right">
-                  <Link to="/shop" className="group flex items-center gap-4 bg-[#C9A84C] text-black px-10 py-5 rounded-2xl font-bold text-sm tracking-widest uppercase hover:bg-amber-400 transition-all shadow-xl shadow-amber-500/20">
-                     Shop Now <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                  <Link to="/shop" className="group flex items-center gap-4 bg-gradient-to-r from-[#C9A84C] to-[#E5C266] text-black px-12 py-5 rounded-xl font-black text-sm tracking-[0.2em] uppercase hover:scale-105 transition-all shadow-[0_15px_30px_rgba(201,168,76,0.3)]">
+                     Shop Now <FiArrowRight className="group-hover:translate-x-2 transition-transform" strokeWidth={3} />
                   </Link>
-                  <p className="text-[10px] text-white/20 mt-4 uppercase tracking-widest font-medium">Offer valid till 31st May 2024</p>
+                  <p className="text-[11px] text-white/30 mt-6 uppercase tracking-[0.2em] font-medium">Offer valid till 31st May 2024</p>
                </div>
             </div>
           </div>
