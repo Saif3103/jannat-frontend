@@ -61,7 +61,7 @@ export default function Team() {
               <p className="text-[#1A1A1A] text-xs font-bold uppercase tracking-[0.4em] mb-6">Get To Know Us</p>
               <h1 className="font-serif text-5xl md:text-7xl text-white mb-10 leading-[1.1] font-light">
                 The Visionary Behind <br />
-                <span className="text-[#1A1A1A] font-normal italic">Jannat Rugs</span>
+                <span className="text-[#C9A84C] font-normal italic">Jannat Rugs</span>
               </h1>
               
               <div className="space-y-6 text-gray-400 text-lg leading-relaxed mb-12 font-light">

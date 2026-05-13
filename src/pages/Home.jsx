@@ -525,7 +525,7 @@ export default function Home() {
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
               <p className="text-[#1A1A1A] text-xs sm:text-sm tracking-[0.5em] uppercase mb-4 sm:mb-6 font-medium">Get To Know Us</p>
               <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl text-white mb-6 sm:mb-8 leading-tight">
-                The <span className="text-[#1A1A1A] italic">Visionary</span> <br className="hidden md:block" /> Behind Jannat
+                The <span className="text-[#C9A84C] italic">Visionary</span> <br className="hidden md:block" /> Behind <span className="text-[#C9A84C] italic">Jannat Rugs</span>
               </h2>
               <div className="w-16 sm:w-20 h-px bg-[#C9A84C]/30 mb-8 sm:mb-10 mx-auto lg:mx-0" />
               <p className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 font-light italic">
