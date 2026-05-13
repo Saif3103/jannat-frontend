@@ -130,7 +130,7 @@ export default function ProductDetail() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
             {/* Images Left Column */}
             <div className="lg:col-span-7">
-              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gray-50 mb-4 sm:mb-6 flex items-center justify-center p-4 sm:p-12 border border-gray-100" style={{ aspectRatio: '1/1' }}>
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-black mb-4 sm:mb-6 flex items-center justify-center p-4 sm:p-12 border border-white/5" style={{ aspectRatio: '1/1' }}>
                 <AnimatePresence mode="wait">
                     <motion.img key={activeImg}
                       initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }}
@@ -138,7 +138,7 @@ export default function ProductDetail() {
                 </AnimatePresence>
                 {discount > 0 && <span className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-[#C9A84C] text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full font-bold text-[10px] sm:text-xs tracking-widest shadow-lg">-{discount}% OFF</span>}
                 <button onClick={() => toggleWishlist(product._id, !!user)}
-                  className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-red-500 transition-all shadow-xl border border-gray-100 group">
+                  className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/40 hover:text-red-500 transition-all border border-white/10 group">
                   <FiHeart size={18} className="group-active:scale-125 transition-transform" fill={isInWishlist(product._id) ? '#ef4444' : 'none'} stroke={isInWishlist(product._id) ? '#ef4444' : 'currentColor'} />
                 </button>
               </div>
@@ -147,7 +147,7 @@ export default function ProductDetail() {
                  <div className="flex gap-2 sm:gap-4 overflow-x-auto flex-1 justify-center no-scrollbar py-2">
                     {images.map((img, i) => (
                       <button key={i} onClick={() => setActiveImg(i)}
-                        className={`flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl overflow-hidden border-2 bg-gray-50 transition-all p-1 sm:p-2 ${activeImg === i ? 'border-[#C9A84C] shadow-lg scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                        className={`flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl overflow-hidden border-2 bg-black transition-all p-1 sm:p-2 ${activeImg === i ? 'border-[#C9A84C] shadow-lg scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                         <img src={getImageUrl(img)} alt="" className="w-full h-full object-contain" />
                       </button>
                     ))}
@@ -155,9 +155,9 @@ export default function ProductDetail() {
                  <button onClick={() => setActiveImg(p => (p + 1) % images.length)} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#C9A84C] hover:bg-gray-50 transition-all border border-gray-100 shadow-sm"><FiChevronRight size={20}/></button>
               </div>
               
-              <div className="mt-8 sm:mt-16 bg-gray-50 rounded-[1.5rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-gray-100">
+              <div className="mt-8 sm:mt-16 bg-white/5 rounded-[1.5rem] sm:rounded-[2.5rem] p-6 sm:p-10 border border-white/5">
                 <h3 className="text-[#C9A84C] text-[10px] sm:text-[11px] font-bold tracking-[0.3em] uppercase mb-4">The Artisan Details</h3>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed font-medium">{product.description}</p>
+                <p className="text-white/60 text-sm sm:text-base leading-relaxed font-medium">{product.description}</p>
               </div>
             </div>
 
@@ -169,7 +169,7 @@ export default function ProductDetail() {
                     <span className="bg-[#FFF9E6] text-[#C9A84C] text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full border border-[#C9A84C]/20">{product.category.name} Collection</span>
                   </Link>
                 )}
-                <h1 className="text-2xl sm:text-4xl md:text-[42px] font-bold leading-[1.2] sm:leading-[1.1] text-gray-900 mb-3 sm:mb-5 tracking-tight">{product.name}</h1>
+                <h1 className="text-2xl sm:text-4xl md:text-[42px] font-bold leading-[1.2] sm:leading-[1.1] text-white mb-3 sm:mb-5 tracking-tight">{product.name}</h1>
                 
                 <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-gray-100">
                    <div className="flex gap-0.5 sm:gap-1">

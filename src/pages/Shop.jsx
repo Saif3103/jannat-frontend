@@ -93,7 +93,7 @@ export default function Shop() {
               <select 
                 value={sort} 
                 onChange={e => setParam('sort', e.target.value)}
-                className="bg-white/5 border border-amber-900/20 rounded-xl px-4 py-2.5 text-sm font-bold text-amber-100/60 focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm font-bold text-white focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
               >
                 {SORT_OPTIONS.map(o => <option key={o.value} value={o.value} className="bg-black text-white">{o.label}</option>)}
               </select>

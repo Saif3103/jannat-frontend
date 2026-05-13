@@ -409,7 +409,7 @@ export default function Home() {
       )}
 
       {/* VIDEO CUSTOMER REVIEWS */}
-      <section className="py-16 sm:py-32 px-4 relative" style={{ background: '#080808' }}>
+      <section className="py-16 sm:py-32 px-4 relative" style={{ background: '#000000' }}>
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-overlay pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
@@ -470,7 +470,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 sm:py-40 px-4" style={{ background: '#050505', borderTop: '1px solid rgba(201,168,76,0.05)' }}>
+      <section className="py-20 sm:py-40 px-4" style={{ background: '#000000', borderTop: '1px solid rgba(201,168,76,0.05)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
             <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Common Questions</p>
@@ -492,7 +492,7 @@ export default function Home() {
       </section>
 
       {/* GET TO KNOW US / TEAM (Split Layout like Carpet Couture) */}
-      <section className="py-20 sm:py-40 px-4" style={{ background: '#080808' }}>
+      <section className="py-20 sm:py-40 px-4" style={{ background: '#000000' }}>
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 sm:gap-32">
           {/* Image Side */}
           <div className="w-full lg:w-1/2">

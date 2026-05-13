@@ -69,7 +69,7 @@ export default function Footer() {
       </div>
 
       {/* 2. NEWSLETTER SECTION */}
-      <div className="bg-[#080808] border-y border-amber-900/10 py-16 px-4">
+      <div className="bg-black border-y border-amber-900/10 py-16 px-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="text-center md:text-left">
             <h3 className="font-luxury text-3xl text-gold-gradient mb-2">Stay In The Loop</h3>

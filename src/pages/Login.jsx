@@ -41,15 +41,15 @@ export default function Login() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md relative z-10">
           <div className="text-center mb-10">
             <Link to="/" className="inline-block group">
-              <div className="w-24 h-24 mx-auto bg-white rounded-3xl shadow-xl flex items-center justify-center border border-gray-100 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
+              <div className="w-24 h-24 mx-auto bg-black rounded-3xl shadow-xl flex items-center justify-center border border-white/5 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                 <img src="/logo.png" alt="Jannat Rugs Co." className="w-full h-full object-cover" />
               </div>
             </Link>
           </div>
           
-          <div className="bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100">
+          <div className="bg-black p-10 rounded-[2.5rem] shadow-2xl border border-white/5">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Welcome Back</h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight mb-2">Welcome Back</h1>
               <p className="text-gray-400 text-sm font-medium">Continue your journey in luxury</p>
             </div>
 

@@ -9,15 +9,15 @@
   --beige: #E8D5B0;
   --brown: #3E2723;
   --brown-light: #6D4C41;
-  --black-luxury: #0D0D0D;
+  --black-luxury: #000000;
   --off-white: #FAF7F2;
   --site-bg: var(--black-luxury);
   --text-main: var(--cream);
 }
 
 body.light-mode {
-  --site-bg: var(--off-white);
-  --text-main: #1a1008;
+  --site-bg: #000000;
+  --text-main: var(--cream);
 }
 
 * {

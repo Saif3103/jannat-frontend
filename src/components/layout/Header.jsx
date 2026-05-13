@@ -251,7 +251,7 @@ export default function Header() {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-[90] lg:hidden bg-[#080808]/98 backdrop-blur-3xl flex flex-col pt-28"
+            className="fixed inset-0 z-[90] lg:hidden bg-black/98 backdrop-blur-3xl flex flex-col pt-28"
           >
             <div className="flex flex-col p-6 gap-2">
               {navLinks.map(link => (
