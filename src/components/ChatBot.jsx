@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiX, FiSend, FiMic, FiMicOff, FiRefreshCw, FiUser, FiMapPin, FiGrid as LuRug } from 'react-icons/fi';
+import { FiX, FiSend, FiMic, FiMicOff, FiRefreshCw, FiUser, FiMapPin, FiMessageCircle, FiGrid as LuRug } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';

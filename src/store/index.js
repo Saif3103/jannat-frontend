@@ -149,7 +149,7 @@ export const useUIStore = create((set, get) => ({
     set({ isDarkMode: newMode });
     document.body.classList.toggle('light-mode', !newMode);
   },
-  setMobileMenu: (val) => set({ isMobileMenuOpen: val }),
+  setMobileMenuOpen: (val) => set({ isMobileMenuOpen: val }),
   setChatOpen: (val) => set({ isChatOpen: val }),
   setSearchOpen: (val) => set({ isSearchOpen: val }),
 }));

@@ -47,13 +47,13 @@ export default function ProductDetail() {
       if (r.data.product.colors?.length) setSelectedColor(r.data.product.colors[0]);
       
       if (user) {
-        api.get('/orders/myorders').then(ordersRes => {
+        api.get('/orders/my-orders').then(ordersRes => {
           const delivered = ordersRes.data.orders?.some(o => 
             o.orderStatus === 'Delivered' && 
             o.orderItems.some(item => (item.product?._id || item.product) === r.data.product._id)
           );
           setCanReview(delivered);
-        });
+        }).catch(() => setCanReview(false));
       }
 
       if (r.data.product.category?._id) {
@@ -174,7 +174,7 @@ export default function ProductDetail() {
                 <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-gray-100">
                    <div className="flex gap-0.5 sm:gap-1">
                       {[...Array(5)].map((_, i) => (
-                        <FiStar key={i} size={14} className={i < Math.round(product.rating || 4.8) ? 'text-[#C9A84C] fill-[#C9A84C]' : 'text-gray-200'} />
+                        <FiStar key={i} size={14} className={i < Math.round(Number(product.rating) || 4.8) ? 'text-[#C9A84C] fill-[#C9A84C]' : 'text-gray-200'} />
                       ))}
                    </div>
                    <span className="text-xs sm:text-sm text-gray-400 font-bold">{product.rating || '4.8'} <span className="font-medium text-gray-300">|</span> {product.numReviews || '124'} reviews</span>
@@ -310,11 +310,13 @@ export default function ProductDetail() {
                             <div>
                               <p className="text-gray-900 font-bold text-sm sm:text-base">{r.name}</p>
                               <div className="flex gap-0.5 mt-0.5">
-                                {[...Array(5)].map((_, j) => <FiStar key={j} size={12} className={j < r.rating ? 'text-[#C9A84C] fill-[#C9A84C]' : 'text-gray-100'} />)}
+                                {[...Array(5)].map((_, j) => <FiStar key={j} size={12} className={j < (Number(r.rating) || 5) ? 'text-[#C9A84C] fill-[#C9A84C]' : 'text-gray-100'} />)}
                               </div>
                             </div>
                           </div>
-                          <span className="text-gray-300 text-[10px] sm:text-xs font-medium">{new Date(r.createdAt).toLocaleDateString()}</span>
+                          <span className="text-gray-300 text-[10px] sm:text-xs font-medium">
+                            {r.createdAt ? new Date(r.createdAt).toLocaleDateString() : 'Recent'}
+                          </span>
                         </div>
                         <p className="text-gray-600 text-sm sm:text-base font-medium leading-relaxed italic">"{r.comment}"</p>
                         

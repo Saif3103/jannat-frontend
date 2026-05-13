@@ -249,7 +249,7 @@ export default function Shop() {
                 {/* Pagination */}
                 {pages > 1 && (
                   <div className="flex items-center justify-center gap-2 mt-20">
-                    {[...Array(pages)].map((_, i) => (
+                    {[...Array(Math.max(0, Number(pages) || 0))].map((_, i) => (
                       <button 
                         key={i} 
                         onClick={() => setParam('page', i + 1)}

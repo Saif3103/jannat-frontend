@@ -117,7 +117,7 @@ export default function AdminProducts() {
     catch { toast.error('Failed to delete'); }
   };
 
-  const filtered = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = products.filter(p => p.name?.toLowerCase().includes(search.toLowerCase()));
 
   // -------------------------
   // LISTINGS VIEW

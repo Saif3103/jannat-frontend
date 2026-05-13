@@ -20,7 +20,7 @@ export default function Header() {
   const { user, logout } = useAuthStore();
   const { items } = useCartStore();
   const { settings } = useSettingsStore();
-  const { isDarkMode, toggleDarkMode, isMobileMenuOpen, setMobileMenu, isSearchOpen, setSearchOpen } = useUIStore();
+  const { isDarkMode, toggleDarkMode, isMobileMenuOpen, setMobileMenuOpen, isSearchOpen, setSearchOpen } = useUIStore();
 
   const cartCount = items.reduce((a, i) => a + i.quantity, 0);
 
@@ -88,7 +88,7 @@ export default function Header() {
         {/* LEFT: Logo & Brand */}
         <div className="flex-1 flex items-center justify-start gap-4">
            {/* Mobile Menu Button (Left aligned on mobile) */}
-           <button onClick={() => setMobileMenu(!isMobileMenuOpen)} id="mobile-menu-btn"
+           <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} id="mobile-menu-btn"
             className="lg:hidden p-2 -ml-2 text-amber-100/70 hover:text-amber-400 transition-colors z-[110]">
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
@@ -258,7 +258,7 @@ export default function Header() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  onClick={() => setMobileMenu(false)}
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-lg text-amber-100/80 hover:text-amber-400 transition-colors py-3 border-b border-amber-900/10 font-luxury tracking-wider"
                 >
                   {link.label}
@@ -266,11 +266,11 @@ export default function Header() {
               ))}
               {!user ? (
                 <div className="mt-6 flex flex-col gap-3">
-                  <Link to="/login" onClick={() => setMobileMenu(false)} className="btn-gold text-center py-4">Login</Link>
-                  <Link to="/register" onClick={() => setMobileMenu(false)} className="btn-outline-gold text-center py-4">Register</Link>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="btn-gold text-center py-4">Login</Link>
+                  <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="btn-outline-gold text-center py-4">Register</Link>
                 </div>
               ) : (
-                <button onClick={() => { logout(); setMobileMenu(false); }}
+                <button onClick={() => { logout(); setMobileMenuOpen(false); }}
                   className="mt-4 text-red-400 text-left text-sm flex items-center gap-2 py-4">
                   <FiLogOut /> Logout
                 </button>

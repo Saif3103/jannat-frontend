@@ -108,9 +108,9 @@ export default function ProductCard({ product, index = 0 }) {
           <div className="mt-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex flex-col">
               {discount > 0 && (
-                <span className="text-[10px] sm:text-xs text-amber-100/20 line-through mb-0 sm:mb-1">₹{product.price?.toLocaleString()}</span>
+                <span className="text-[10px] sm:text-xs text-amber-100/20 line-through mb-0 sm:mb-1">₹{(Number(product.price) || 0).toLocaleString()}</span>
               )}
-              <span className="text-base sm:text-xl font-bold text-white tracking-tight">₹{price?.toLocaleString()}</span>
+              <span className="text-base sm:text-xl font-bold text-white tracking-tight">₹{(Number(price) || 0).toLocaleString()}</span>
             </div>
             
             <div className="flex gap-2 w-full sm:w-auto">

@@ -442,7 +442,7 @@ export default function Home() {
                   
                   <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
                     <div className="flex text-amber-400">
-                      {[...Array(rev.rating)].map((_, i) => <FiStar key={i} size={10} sm:size={12} fill="currentColor" />)}
+                      {[...Array(Math.max(0, Math.floor(Number(rev.rating)) || 5))].map((_, i) => <FiStar key={i} size={10} sm:size={12} fill="currentColor" />)}
                     </div>
                   </div>
                 </div>

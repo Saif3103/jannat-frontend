@@ -15,22 +15,24 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ErrorBoundary>
       <HelmetProvider>
         <BrowserRouter>
-          <App />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#1a1008',
-              color: '#F5EDD8',
-              border: '1px solid rgba(201,168,76,0.3)',
-              fontFamily: 'Jost, sans-serif',
-            },
-            success: { iconTheme: { primary: '#C9A84C', secondary: '#0D0D0D' } },
-            error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
-          }}
-        />
-      </BrowserRouter>
+          <>
+            <App />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: '#1a1008',
+                  color: '#F5EDD8',
+                  border: '1px solid rgba(201,168,76,0.3)',
+                  fontFamily: 'Jost, sans-serif',
+                },
+                success: { iconTheme: { primary: '#C9A84C', secondary: '#0D0D0D' } },
+                error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
+              }}
+            />
+          </>
+        </BrowserRouter>
     </HelmetProvider>
   </ErrorBoundary>
 </React.StrictMode>
