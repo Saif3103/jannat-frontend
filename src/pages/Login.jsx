@@ -56,7 +56,7 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#C9A84C] transition-colors">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1A1A] transition-colors">
                     <FiMail size={20} />
                   </div>
                   <input type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
@@ -65,7 +65,7 @@ export default function Login() {
                 </div>
                 
                 <div className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#C9A84C] transition-colors">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1A1A] transition-colors">
                     <FiLock size={20} />
                   </div>
                   <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
@@ -86,7 +86,7 @@ export default function Login() {
             <div className="mt-8 text-center">
               <p className="text-gray-400 text-sm font-medium">
                 New to Jannat Rugs?{' '}
-                <Link to="/register" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors font-bold underline-offset-4 hover:underline">Create an account</Link>
+                <Link to="/register" className="text-[#1A1A1A] hover:text-[#B08D3E] transition-colors font-bold underline-offset-4 hover:underline">Create an account</Link>
               </p>
             </div>
 

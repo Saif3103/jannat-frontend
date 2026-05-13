@@ -61,7 +61,7 @@ export default function AdminUsers() {
                   <td className="px-6 py-4 text-gray-600 font-medium">{user.email}</td>
                   <td className="px-6 py-4 text-gray-500">{user.phone || '—'}</td>
                   <td className="px-6 py-4">
-                    <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider ${user.role === 'admin' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-blue-50 text-blue-600 border border-blue-100'}`}>
+                    <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider ${user.role === 'admin' ? 'bg-amber-50 text-[#1A1A1A] border border-amber-100' : 'bg-blue-50 text-blue-600 border border-blue-100'}`}>
                       {user.role}
                     </span>
                   </td>

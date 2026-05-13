@@ -116,15 +116,15 @@ export default function UserDashboard() {
           {/* Sidebar */}
           <div className="glass-card p-4 h-fit">
             <div className="text-center mb-6 pb-6 border-b border-amber-900/20">
-              <div className="w-20 h-20 rounded-full bg-amber-900/30 flex items-center justify-center text-amber-400 font-bold text-3xl font-luxury mx-auto mb-3">
+              <div className="w-20 h-20 rounded-full bg-amber-900/30 flex items-center justify-center text-[#1A1A1A] font-bold text-3xl font-luxury mx-auto mb-3">
                 {user?.name?.[0]?.toUpperCase()}
               </div>
-              <p className="text-amber-100 font-medium">{user?.name}</p>
-              <p className="text-amber-100/40 text-xs truncate">{user?.email}</p>
+              <p className="text-[#1A1A1A] font-medium">{user?.name}</p>
+              <p className="text-[#1A1A1A]/40 text-xs truncate">{user?.email}</p>
             </div>
             {TABS.map(({ id, label, icon: Icon }) => (
               <button key={id} onClick={() => setActiveTab(id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all mb-1 ${activeTab === id ? 'bg-amber-500/15 text-amber-400 border-l-2 border-amber-500' : 'text-amber-100/60 hover:text-amber-400 hover:bg-amber-500/5'}`}>
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-all mb-1 ${activeTab === id ? 'bg-amber-500/15 text-[#1A1A1A] border-l-2 border-amber-500' : 'text-[#1A1A1A]/60 hover:text-[#1A1A1A] hover:bg-amber-500/5'}`}>
                 <Icon size={16} />{label}
               </button>
             ))}
@@ -136,7 +136,7 @@ export default function UserDashboard() {
             {activeTab === 'profile' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-luxury text-2xl text-amber-400">Profile Information</h2>
+                  <h2 className="font-luxury text-2xl text-[#1A1A1A]">Profile Information</h2>
                   <button onClick={() => setEditMode(!editMode)} className="flex items-center gap-2 btn-outline-gold text-xs py-2 px-4">
                     <FiEdit2 size={13} /> {editMode ? 'Cancel' : 'Edit'}
                   </button>
@@ -144,11 +144,11 @@ export default function UserDashboard() {
                 {editMode ? (
                   <form onSubmit={updateProfile} className="space-y-4 max-w-md">
                     <div>
-                      <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Full Name</label>
+                      <label className="text-xs text-[#1A1A1A]/50 block mb-1.5 uppercase tracking-wider">Full Name</label>
                       <input value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} className="input-luxury" required />
                     </div>
                     <div>
-                      <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">Phone</label>
+                      <label className="text-xs text-[#1A1A1A]/50 block mb-1.5 uppercase tracking-wider">Phone</label>
                       <input value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} className="input-luxury" />
                     </div>
                     <button type="submit" className="btn-gold py-2.5 px-8">Save Changes</button>
@@ -157,8 +157,8 @@ export default function UserDashboard() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[{ label: 'Full Name', value: user?.name }, { label: 'Email', value: user?.email }, { label: 'Phone', value: user?.phone || 'Not set' }, { label: 'Account Type', value: user?.role === 'admin' ? 'Administrator' : 'Customer' }].map(f => (
                       <div key={f.label} className="border border-amber-900/20 rounded-lg p-4">
-                        <p className="text-xs text-amber-100/40 uppercase tracking-wider mb-1">{f.label}</p>
-                        <p className="text-amber-100">{f.value}</p>
+                        <p className="text-xs text-[#1A1A1A]/40 uppercase tracking-wider mb-1">{f.label}</p>
+                        <p className="text-[#1A1A1A]">{f.value}</p>
                       </div>
                     ))}
                   </div>
@@ -169,26 +169,26 @@ export default function UserDashboard() {
             {/* ORDERS */}
             {activeTab === 'orders' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                <h2 className="font-luxury text-2xl text-amber-400 mb-4">My Orders</h2>
-                {loading ? <p className="text-amber-100/40 text-center py-10">Loading...</p>
+                <h2 className="font-luxury text-2xl text-[#1A1A1A] mb-4">My Orders</h2>
+                {loading ? <p className="text-[#1A1A1A]/40 text-center py-10">Loading...</p>
                   : orders.length === 0 ? (
                     <div className="glass-card p-10 text-center">
-                      <FiPackage size={48} className="text-amber-900/40 mx-auto mb-4" />
-                      <p className="text-amber-100/30 font-luxury text-xl mb-4">No Orders Yet</p>
+                      <FiPackage size={48} className="text-[#1A1A1A]/40 mx-auto mb-4" />
+                      <p className="text-[#1A1A1A]/30 font-luxury text-xl mb-4">No Orders Yet</p>
                       <Link to="/shop" className="btn-gold text-xs py-2.5 px-6 inline-flex">Start Shopping</Link>
                     </div>
                   ) : orders.map(order => (
                     <div key={order._id} className="glass-card p-5">
                       <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                         <div>
-                          <p className="text-amber-100 font-medium text-sm">Order #{order._id.slice(-8).toUpperCase()}</p>
-                          <p className="text-amber-100/40 text-xs">{new Date(order.createdAt).toLocaleDateString()} • {order.orderItems?.length} item(s)</p>
+                          <p className="text-[#1A1A1A] font-medium text-sm">Order #{order._id.slice(-8).toUpperCase()}</p>
+                          <p className="text-[#1A1A1A]/40 text-xs">{new Date(order.createdAt).toLocaleDateString()} • {order.orderItems?.length} item(s)</p>
                         </div>
                         <div className="text-right">
                           <span className={`badge-gold text-xs ${order.orderStatus === 'Delivered' ? 'bg-emerald-900 text-emerald-300' : order.orderStatus === 'Cancelled' ? 'bg-red-900 text-red-300' : ''}`}>
                             {order.orderStatus}
                           </span>
-                          <p className="text-amber-400 font-bold mt-1">₹{order.totalPrice?.toLocaleString()}</p>
+                          <p className="text-[#1A1A1A] font-bold mt-1">₹{order.totalPrice?.toLocaleString()}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-3">
@@ -198,7 +198,7 @@ export default function UserDashboard() {
                             {order.orderStatus === 'Delivered' && (
                               <button 
                                 onClick={() => { setReviewProduct(item.product); setReviewModal(true); }}
-                                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center rounded-xl text-[10px] text-amber-400 font-bold"
+                                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center rounded-xl text-[10px] text-[#1A1A1A] font-bold"
                               >
                                 <FiStar size={12} className="mb-0.5" /> REVIEW
                               </button>
@@ -207,9 +207,9 @@ export default function UserDashboard() {
                         ))}
                       </div>
                       <div className="mt-3 flex items-center justify-between">
-                        <div className="text-[10px] text-amber-100/40 uppercase tracking-widest">Tracking: <span className="text-amber-400 font-medium">{order.trackingNumber || 'N/A'}</span></div>
+                        <div className="text-[10px] text-[#1A1A1A]/40 uppercase tracking-widest">Tracking: <span className="text-[#1A1A1A] font-medium">{order.trackingNumber || 'N/A'}</span></div>
                         {order.orderStatus === 'Delivered' && (
-                          <p className="text-[9px] text-amber-500 font-bold uppercase tracking-widest">Click item to Review</p>
+                          <p className="text-[9px] text-[#1A1A1A] font-bold uppercase tracking-widest">Click item to Review</p>
                         )}
                       </div>
                     </div>
@@ -220,12 +220,12 @@ export default function UserDashboard() {
             {/* WISHLIST */}
             {activeTab === 'wishlist' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <h2 className="font-luxury text-2xl text-amber-400 mb-6">My Wishlist</h2>
-                {loading ? <p className="text-amber-100/40 text-center py-10">Loading...</p>
+                <h2 className="font-luxury text-2xl text-[#1A1A1A] mb-6">My Wishlist</h2>
+                {loading ? <p className="text-[#1A1A1A]/40 text-center py-10">Loading...</p>
                   : wishlist.length === 0 ? (
                     <div className="glass-card p-10 text-center">
-                      <FiHeart size={48} className="text-amber-900/40 mx-auto mb-4" />
-                      <p className="text-amber-100/30 font-luxury text-xl mb-4">Your wishlist is empty</p>
+                      <FiHeart size={48} className="text-[#1A1A1A]/40 mx-auto mb-4" />
+                      <p className="text-[#1A1A1A]/30 font-luxury text-xl mb-4">Your wishlist is empty</p>
                       <Link to="/shop" className="btn-gold text-xs py-2.5 px-6 inline-flex">Browse Products</Link>
                     </div>
                   ) : (
@@ -234,8 +234,8 @@ export default function UserDashboard() {
                         <Link key={p._id} to={`/product/${p._id}`} className="glass-card p-4 flex gap-3 hover:border-amber-700/30 transition-all">
                           <img src={p.images?.[0]} alt={p.name} className="w-20 h-20 object-cover rounded-lg" />
                           <div>
-                            <p className="text-amber-100 text-sm font-medium mb-1">{p.name}</p>
-                            <p className="text-amber-400 font-bold">₹{(p.discountPrice || p.price)?.toLocaleString()}</p>
+                            <p className="text-[#1A1A1A] text-sm font-medium mb-1">{p.name}</p>
+                            <p className="text-[#1A1A1A] font-bold">₹{(p.discountPrice || p.price)?.toLocaleString()}</p>
                           </div>
                         </Link>
                       ))}
@@ -281,10 +281,10 @@ function ReviewModal({ show, onClose, product, rating, setRating, comment, setCo
             className="glass-card w-full max-w-xl rounded-[2rem] p-8 max-h-[90vh] overflow-y-auto border-amber-500/20 shadow-[0_0_100px_rgba(201,168,76,0.1)]">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="font-luxury text-2xl text-amber-400">Verified Experience</h2>
-                <p className="text-[10px] text-amber-100/30 uppercase tracking-[0.2em] mt-1">Reviewing: {product?.name}</p>
+                <h2 className="font-luxury text-2xl text-[#1A1A1A]">Verified Experience</h2>
+                <p className="text-[10px] text-[#1A1A1A]/30 uppercase tracking-[0.2em] mt-1">Reviewing: {product?.name}</p>
               </div>
-              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-amber-100/40"><FiX size={20} /></button>
+              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-[#1A1A1A]/40"><FiX size={20} /></button>
             </div>
 
             <form onSubmit={onSubmit} className="space-y-6">
@@ -292,39 +292,39 @@ function ReviewModal({ show, onClose, product, rating, setRating, comment, setCo
               <div className="flex justify-center gap-2 py-4 border-y border-amber-900/10">
                 {[1,2,3,4,5].map(s => (
                   <button key={s} type="button" onClick={() => setRating(s)} className="transition-transform hover:scale-125">
-                    <FiStar size={32} className={s <= rating ? 'text-amber-400 fill-amber-400 shadow-lg' : 'text-amber-900'} fill={s <= rating ? 'currentColor' : 'none'} />
+                    <FiStar size={32} className={s <= rating ? 'text-[#1A1A1A] fill-amber-400 shadow-lg' : 'text-[#1A1A1A]'} fill={s <= rating ? 'currentColor' : 'none'} />
                   </button>
                 ))}
               </div>
 
               {/* Comment */}
               <div>
-                <label className="text-[10px] text-amber-100/40 uppercase tracking-widest block mb-2">Detailed Feedback</label>
+                <label className="text-[10px] text-[#1A1A1A]/40 uppercase tracking-widest block mb-2">Detailed Feedback</label>
                 <textarea value={comment} onChange={e => setComment(e.target.value)} required rows={4}
                   placeholder="Tell us about the texture, color depth, and how it complements your room..."
-                  className="w-full bg-white/5 border border-amber-900/20 rounded-2xl px-5 py-4 text-sm text-amber-100 focus:outline-none focus:border-amber-500/40 transition-all resize-none" />
+                  className="w-full bg-white/5 border border-amber-900/20 rounded-2xl px-5 py-4 text-sm text-[#1A1A1A] focus:outline-none focus:border-amber-500/40 transition-all resize-none" />
               </div>
 
               {/* Media Uploads */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-amber-100/40 uppercase tracking-widest block mb-2">Video Experience</label>
+                  <label className="text-[10px] text-[#1A1A1A]/40 uppercase tracking-widest block mb-2">Video Experience</label>
                   <label className="flex items-center gap-3 p-3 border border-dashed border-amber-900/30 rounded-2xl cursor-pointer hover:border-amber-500/50 bg-white/5 transition-all">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500"><FiTruck size={18} /></div>
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-[#1A1A1A]"><FiTruck size={18} /></div>
                     <div className="flex-1 overflow-hidden">
-                      <p className="text-[10px] text-amber-100/80 font-medium truncate">{video ? video.name : 'Upload Video'}</p>
-                      <p className="text-[8px] text-amber-100/30">VERIFIED VIDEO REVIEW</p>
+                      <p className="text-[10px] text-[#1A1A1A]/80 font-medium truncate">{video ? video.name : 'Upload Video'}</p>
+                      <p className="text-[8px] text-[#1A1A1A]/30">VERIFIED VIDEO REVIEW</p>
                     </div>
                     <input type="file" accept="video/*" className="hidden" onChange={e => setVideo(e.target.files[0])} />
                   </label>
                 </div>
                 <div>
-                  <label className="text-[10px] text-amber-100/40 uppercase tracking-widest block mb-2">Visual Gallery ({images.length}/5)</label>
+                  <label className="text-[10px] text-[#1A1A1A]/40 uppercase tracking-widest block mb-2">Visual Gallery ({images.length}/5)</label>
                   <label className="flex items-center gap-3 p-3 border border-dashed border-amber-900/30 rounded-2xl cursor-pointer hover:border-amber-500/50 bg-white/5 transition-all">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500"><FiHeart size={18} /></div>
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-[#1A1A1A]"><FiHeart size={18} /></div>
                     <div className="flex-1 overflow-hidden">
-                      <p className="text-[10px] text-amber-100/80 font-medium truncate">{images.length > 0 ? `${images.length} Photos selected` : 'Upload Photos'}</p>
-                      <p className="text-[8px] text-amber-100/30">HIGH-QUALITY IMAGES</p>
+                      <p className="text-[10px] text-[#1A1A1A]/80 font-medium truncate">{images.length > 0 ? `${images.length} Photos selected` : 'Upload Photos'}</p>
+                      <p className="text-[8px] text-[#1A1A1A]/30">HIGH-QUALITY IMAGES</p>
                     </div>
                     <input type="file" accept="image/*" multiple className="hidden" 
                       onChange={e => setImages(Array.from(e.target.files).slice(0, 5))} />
@@ -359,11 +359,11 @@ function ChangePasswordForm() {
   };
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card p-6 max-w-md">
-      <h2 className="font-luxury text-2xl text-amber-400 mb-6">Change Password</h2>
+      <h2 className="font-luxury text-2xl text-[#1A1A1A] mb-6">Change Password</h2>
       <form onSubmit={submit} className="space-y-4">
         {[{ key: 'oldPassword', label: 'Current Password' }, { key: 'newPassword', label: 'New Password' }, { key: 'confirm', label: 'Confirm New Password' }].map(f => (
           <div key={f.key}>
-            <label className="text-xs text-amber-100/50 block mb-1.5 uppercase tracking-wider">{f.label}</label>
+            <label className="text-xs text-[#1A1A1A]/50 block mb-1.5 uppercase tracking-wider">{f.label}</label>
             <input type="password" value={form[f.key]} onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
               className="input-luxury" required minLength={6} />
           </div>

@@ -56,7 +56,7 @@ export default function Register() {
                 { key: 'phone', type: 'tel', icon: FiPhone, placeholder: 'Phone (Optional)', id: 'reg-phone', required: false },
               ].map(f => (
                 <div key={f.key} className="relative group">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#C9A84C] transition-colors">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1A1A] transition-colors">
                     <f.icon size={20} />
                   </div>
                   <input type={f.type} required={f.required} value={form[f.key]}
@@ -67,7 +67,7 @@ export default function Register() {
               ))}
               
               <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#C9A84C] transition-colors">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1A1A] transition-colors">
                   <FiLock size={20} />
                 </div>
                 <input type={showPw ? 'text' : 'password'} required minLength={6} value={form.password}
@@ -80,7 +80,7 @@ export default function Register() {
               </div>
 
               <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#C9A84C] transition-colors">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#1A1A1A] transition-colors">
                   <FiLock size={20} />
                 </div>
                 <input type="password" required value={form.confirm}
@@ -98,7 +98,7 @@ export default function Register() {
             <div className="mt-8 text-center">
               <p className="text-gray-400 text-sm font-medium">
                 Already have an account?{' '}
-                <Link to="/login" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors font-bold underline-offset-4 hover:underline">Sign in instead</Link>
+                <Link to="/login" className="text-[#1A1A1A] hover:text-[#B08D3E] transition-colors font-bold underline-offset-4 hover:underline">Sign in instead</Link>
               </p>
             </div>
           </div>

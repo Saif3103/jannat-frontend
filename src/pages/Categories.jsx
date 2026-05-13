@@ -30,7 +30,7 @@ export default function Categories() {
       </Helmet>
       <div className="pt-20 min-h-screen">
         <div className="py-20 px-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-          <p className="text-amber-600 text-xs tracking-[0.4em] uppercase mb-3">Find Your Style</p>
+          <p className="text-[#1A1A1A] text-xs tracking-[0.4em] uppercase mb-3">Find Your Style</p>
           <h1 className="font-luxury text-5xl md:text-6xl text-[#1A1A1A] mb-4">All Categories</h1>
           <div className="divider-gold mx-auto mb-4" />
           <p className="text-black/50 max-w-lg mx-auto text-sm leading-relaxed">
@@ -51,8 +51,8 @@ export default function Categories() {
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10 transition-transform duration-500 group-hover:-translate-y-2">
                     <h2 className="font-luxury text-white text-xl sm:text-3xl mb-1 sm:mb-2">{cat.name}</h2>
                     <div className="w-8 sm:w-12 h-px bg-amber-400/50 mb-2 sm:mb-3" />
-                    {cat.description && <p className="text-amber-100/60 text-[10px] sm:text-sm mb-3 sm:mb-4 line-clamp-1 sm:line-clamp-2 max-w-[250px]">{cat.description}</p>}
-                    <span className="text-amber-400 text-[8px] sm:text-xs tracking-widest uppercase flex items-center gap-2 group-hover:text-amber-300 transition-colors">
+                    {cat.description && <p className="text-[#1A1A1A]/60 text-[10px] sm:text-sm mb-3 sm:mb-4 line-clamp-1 sm:line-clamp-2 max-w-[250px]">{cat.description}</p>}
+                    <span className="text-[#1A1A1A] text-[8px] sm:text-xs tracking-widest uppercase flex items-center gap-2 group-hover:text-[#1A1A1A] transition-colors">
                       Browse <FiArrowRight size={12} className="group-hover:translate-x-1 transition-transform sm:w-3.5 sm:h-3.5" />
                     </span>
                   </div>

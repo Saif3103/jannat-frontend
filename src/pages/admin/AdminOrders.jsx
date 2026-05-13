@@ -53,7 +53,7 @@ export default function AdminOrders() {
                 )) : orders.map(order => (
                   <tr key={order._id} onClick={() => { setSelected(order); setNewStatus(order.orderStatus); }}
                     className={`cursor-pointer transition-colors ${selected?._id === order._id ? 'bg-[#FFF9E6]' : 'hover:bg-gray-50'}`}>
-                    <td className="px-4 py-4 text-[#C9A84C] font-bold">#{order._id.slice(-6).toUpperCase()}</td>
+                    <td className="px-4 py-4 text-[#1A1A1A] font-bold">#{order._id.slice(-6).toUpperCase()}</td>
                     <td className="px-4 py-4 text-gray-700 font-medium">{order.user?.name || 'N/A'}</td>
                     <td className="px-4 py-4 text-[#222] font-bold">₹{order.totalPrice?.toLocaleString()}</td>
                     <td className="px-4 py-4 text-gray-400 text-xs">{order.paymentMethod}</td>
@@ -79,7 +79,7 @@ export default function AdminOrders() {
                 <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Order ID</span> <span className="text-[#222] font-bold">#{selected._id.slice(-8).toUpperCase()}</span></div>
                 <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Customer</span> <span className="text-[#222] font-medium">{selected.user?.name}</span></div>
                 <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Email</span> <span className="text-gray-600 text-xs">{selected.user?.email}</span></div>
-                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Total</span> <span className="text-[#C9A84C] font-bold text-lg">₹{selected.totalPrice?.toLocaleString()}</span></div>
+                <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Total</span> <span className="text-[#1A1A1A] font-bold text-lg">₹{selected.totalPrice?.toLocaleString()}</span></div>
                 <div className="flex justify-between items-center"><span className="text-gray-400 font-medium">Tracking</span> <span className="text-blue-600 text-xs font-mono font-bold bg-blue-50 px-2 py-0.5 rounded">{selected.trackingNumber || 'PENDING'}</span></div>
                 <div className="pt-2">
                   <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest block mb-2">Shipping To</span>

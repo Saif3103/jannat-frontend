@@ -38,7 +38,7 @@ export default function AdminLayout({ children }) {
         {/* Search */}
         <div className="px-5 py-6">
           <div className="relative group">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#C9A84C] transition-colors" size={16} />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#1A1A1A] transition-colors" size={16} />
             <input 
               type="text" 
               placeholder="Search" 
@@ -57,7 +57,7 @@ export default function AdminLayout({ children }) {
                     ? 'bg-gray-100 text-[#222] font-bold border border-gray-200' 
                     : 'text-gray-500 hover:text-[#222] hover:bg-gray-50'
                 }`}>
-                <Icon size={19} className={isActive ? 'text-[#C9A84C]' : ''} />
+                <Icon size={19} className={isActive ? 'text-[#1A1A1A]' : ''} />
                 {label}
               </Link>
             );
@@ -109,7 +109,7 @@ export default function AdminLayout({ children }) {
 
           <div className="flex items-center gap-4">
             <div className="relative cursor-pointer group">
-              <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-[#C9A84C] transition-all">
+              <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-[#1A1A1A] transition-all">
                 <FiBell size={20} />
               </div>
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#C9A84C] text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">5</span>

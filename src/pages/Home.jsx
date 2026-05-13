@@ -150,7 +150,7 @@ export default function Home() {
         <section className="py-12 sm:py-24 px-4 section-alt relative overflow-hidden border-y border-black/5">
           <div className="max-w-[1400px] mx-auto">
             <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-              <p className="text-[#B69640] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Limited Time Offers</p>
+              <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Limited Time Offers</p>
               <h2 className="font-luxury text-3xl md:text-5xl text-[#1A1A1A] mb-4 sm:6">Exclusive Promotions</h2>
               <div className="divider-gold w-20 sm:w-24" />
             </div>
@@ -176,7 +176,7 @@ export default function Home() {
                         <motion.p 
                           initial={{ opacity: 0, x: -30 }} 
                           whileInView={{ opacity: 1, x: 0 }}
-                          className="text-amber-400 font-bold tracking-[0.3em] uppercase text-[10px] sm:text-xs mb-4 sm:6"
+                          className="text-[#1A1A1A] font-bold tracking-[0.3em] uppercase text-[10px] sm:text-xs mb-4 sm:6"
                         >
                           {offer.subtitle || 'Flash Sale'}
                         </motion.p>
@@ -201,8 +201,8 @@ export default function Home() {
                           )}
                           {offer.code && (
                             <div className="px-4 sm:px-6 py-2 sm:py-4 border border-amber-500/30 rounded-lg sm:rounded-xl bg-amber-500/5 backdrop-blur-md">
-                              <p className="text-[8px] sm:text-[10px] text-amber-100/40 uppercase mb-0 sm:1">Use Code</p>
-                              <p className="text-amber-400 font-bold tracking-widest text-base sm:text-lg">{offer.code}</p>
+                              <p className="text-[8px] sm:text-[10px] text-[#1A1A1A]/40 uppercase mb-0 sm:1">Use Code</p>
+                              <p className="text-[#1A1A1A] font-bold tracking-widest text-base sm:text-lg">{offer.code}</p>
                             </div>
                           )}
                         </motion.div>
@@ -221,7 +221,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 text-center md:text-left">
           <div className="md:w-1/2">
             <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-[#1A1A1A] leading-snug">
-              A Heritage of <br/><span className="text-[#B69640]">Hand-Knotted Perfection.</span>
+              A Heritage of <br/><span className="text-[#1A1A1A]">Hand-Knotted Perfection.</span>
             </h2>
           </div>
           <div className="md:w-1/2 flex flex-wrap justify-center md:justify-end gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8">
@@ -242,7 +242,7 @@ export default function Home() {
       {/* FEATURED COLLECTION */}
       <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-          <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
+          <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
           <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Featured Collection</h2>
           <div className="divider-gold mb-4" />
           <p className="text-black/40 max-w-lg mx-auto text-xs sm:text-sm leading-relaxed font-medium">
@@ -260,8 +260,8 @@ export default function Home() {
                 <ProductCard key={p._id} product={p} index={i} />
               )) : (
                 <div className="col-span-full text-center py-16">
-                  <p className="text-amber-100/30 font-luxury text-xl sm:text-2xl mb-4">Collection Coming Soon</p>
-                  <p className="text-amber-100/20 text-[10px] sm:text-sm">Our artisans are crafting exclusive pieces for you.</p>
+                  <p className="text-[#1A1A1A]/30 font-luxury text-xl sm:text-2xl mb-4">Collection Coming Soon</p>
+                  <p className="text-[#1A1A1A]/20 text-[10px] sm:text-sm">Our artisans are crafting exclusive pieces for you.</p>
                 </div>
               )}
             </div>
@@ -282,7 +282,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2" />
           <div className="max-w-4xl mx-auto relative z-10">
             <div className="flex flex-col items-center text-center mb-10 sm:mb-12">
-              <p className="text-amber-400 text-[10px] tracking-[0.4em] uppercase mb-3">Our Story</p>
+              <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-3">Our Story</p>
               <h2 className="font-luxury text-3xl md:text-4xl text-white mb-4 sm:mb-6">Experience Jannat Rugs</h2>
               <div className="divider-gold w-16 sm:w-20" />
             </div>
@@ -316,7 +316,7 @@ export default function Home() {
             </div>
             <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white text-center">
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-md">
-                <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">Collection</p>
+                <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">Collection</p>
                 <h3 className="font-luxury text-3xl md:text-5xl text-[#1A1A1A] mb-4 sm:mb-6">{cat.name}</h3>
                 <div className="divider-gold mx-auto mb-4 sm:mb-6" />
                 <p className="text-black/40 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10 font-medium">
@@ -347,9 +347,9 @@ export default function Home() {
         </div>
         <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 section-alt">
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="max-w-xl text-center lg:text-left">
-            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">The Bespoke Experience</p>
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">The Bespoke Experience</p>
             <h2 className="font-luxury text-3xl md:text-6xl text-[#1A1A1A] mb-4 sm:mb-6 leading-tight">
-              Custom Rugs <br /><span className="text-[#B69640]">Made For You</span>
+              Custom Rugs <br /><span className="text-[#1A1A1A]">Made For You</span>
             </h2>
             <div className="w-10 sm:w-12 h-px bg-[#B69640]/50 mb-4 sm:mb-6 mx-auto lg:mx-0" />
             <p className="text-[#1A1A1A]/60 text-sm sm:text-base leading-relaxed mb-8 sm:mb-10 font-medium">
@@ -366,7 +366,7 @@ export default function Home() {
       {(bestSellers.length > 0 || loading) && (
         <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Customer Favorites</p>
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Customer Favorites</p>
             <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Best Sellers</h2>
             <div className="divider-gold" />
           </div>
@@ -389,7 +389,7 @@ export default function Home() {
         <section className="py-16 sm:py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)' }}>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-              <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Fresh From The Loom</p>
+              <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Fresh From The Loom</p>
               <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">New Arrivals</h2>
               <div className="divider-gold" />
             </div>
@@ -413,7 +413,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Real Stories</p>
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Real Stories</p>
             <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Customer Video Reviews</h2>
             <div className="divider-gold mb-6" />
             <p className="text-black/50 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
@@ -441,19 +441,19 @@ export default function Home() {
                   </video>
                   
                   <div className="absolute top-4 left-4 flex items-center gap-3 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 pointer-events-none">
-                    <div className="flex text-amber-400">
+                    <div className="flex text-[#1A1A1A]">
                       {[...Array(Math.max(0, Math.floor(Number(rev.rating)) || 5))].map((_, i) => <FiStar key={i} size={10} sm:size={12} fill="currentColor" />)}
                     </div>
                   </div>
                 </div>
                 
                 <div className="mt-6 mb-4 text-center px-4">
-                  <p className="text-amber-100/80 italic font-luxury text-base sm:text-xl mb-4 leading-relaxed line-clamp-2">
+                  <p className="text-[#1A1A1A]/80 italic font-luxury text-base sm:text-xl mb-4 leading-relaxed line-clamp-2">
                     "{rev.comment}"
                   </p>
-                  <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.2em] uppercase font-medium">— {rev.name}, Verified Buyer</p>
+                  <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.2em] uppercase font-medium">— {rev.name}, Verified Buyer</p>
                   {rev.productName && (
-                    <Link to={`/product/${rev.productId}`} className="text-[9px] sm:text-[10px] text-amber-100/30 hover:text-amber-500 transition-colors mt-2 block uppercase tracking-widest">
+                    <Link to={`/product/${rev.productId}`} className="text-[9px] sm:text-[10px] text-[#1A1A1A]/30 hover:text-[#1A1A1A] transition-colors mt-2 block uppercase tracking-widest">
                       Product: {rev.productName}
                     </Link>
                   )}
@@ -461,8 +461,8 @@ export default function Home() {
               </motion.div>
             )) : (
               <div className="col-span-full text-center py-16 sm:py-20 border border-dashed border-amber-900/20 rounded-2xl sm:rounded-3xl">
-                <p className="text-amber-100/30 font-luxury text-xl sm:text-2xl">Sharing the Joy Soon</p>
-                <p className="text-amber-100/20 text-[10px] mt-2 uppercase tracking-widest">Our customers are preparing their video stories</p>
+                <p className="text-[#1A1A1A]/30 font-luxury text-xl sm:text-2xl">Sharing the Joy Soon</p>
+                <p className="text-[#1A1A1A]/20 text-[10px] mt-2 uppercase tracking-widest">Our customers are preparing their video stories</p>
               </div>
             )}
           </div>
@@ -473,7 +473,7 @@ export default function Home() {
       <section className="py-20 sm:py-40 px-4 section-alt" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
-            <p className="text-[#B69640] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Common Questions</p>
+            <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Common Questions</p>
             <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Everything You Need To Know</h2>
             <div className="divider-gold w-20 sm:w-24" />
           </div>
@@ -509,7 +509,7 @@ export default function Home() {
                     <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#C9A84C] rounded-lg flex items-center justify-center text-black">
                       <GiQueenCrown size={14} sm:size={18} />
                     </div>
-                    <p className="text-amber-400 text-[10px] sm:text-xs uppercase tracking-[0.3em] font-bold">The Visionary</p>
+                    <p className="text-[#1A1A1A] text-[10px] sm:text-xs uppercase tracking-[0.3em] font-bold">The Visionary</p>
                   </div>
                   <p className="text-white text-xl sm:text-2xl font-serif">Azeem Ansari</p>
                 </div>
@@ -522,9 +522,9 @@ export default function Home() {
           {/* Text Side */}
           <div className="w-full lg:w-1/2 text-center lg:text-left mt-8 lg:mt-0">
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <p className="text-amber-400 text-xs sm:text-sm tracking-[0.5em] uppercase mb-4 sm:mb-6 font-medium">Get To Know Us</p>
+              <p className="text-[#1A1A1A] text-xs sm:text-sm tracking-[0.5em] uppercase mb-4 sm:mb-6 font-medium">Get To Know Us</p>
               <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl text-white mb-6 sm:mb-8 leading-tight">
-                The <span className="text-[#C9A84C] italic">Visionary</span> <br className="hidden md:block" /> Behind Jannat
+                The <span className="text-[#1A1A1A] italic">Visionary</span> <br className="hidden md:block" /> Behind Jannat
               </h2>
               <div className="w-16 sm:w-20 h-px bg-[#C9A84C]/30 mb-8 sm:mb-10 mx-auto lg:mx-0" />
               <p className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 font-light italic">
@@ -549,19 +549,19 @@ export default function Home() {
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.5em] uppercase mb-6">Begin Your Journey</p>
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.5em] uppercase mb-6">Begin Your Journey</p>
             <h2 className="font-luxury text-3xl sm:text-5xl md:text-7xl text-white mb-6 sm:mb-8 leading-tight">
               Ready to Transform <br />Your Space?
             </h2>
             <div className="w-12 sm:w-16 h-px bg-amber-400/50 mb-6 sm:mb-8 mx-auto" />
-            <p className="text-amber-100/70 mb-10 sm:mb-12 text-sm sm:text-lg max-w-xl mx-auto leading-relaxed">
+            <p className="text-[#1A1A1A]/70 mb-10 sm:mb-12 text-sm sm:text-lg max-w-xl mx-auto leading-relaxed">
               Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
               <Link to="/shop" className="btn-gold inline-flex items-center gap-3 px-10 sm:px-12 py-4 sm:py-5 text-xs sm:text-sm tracking-widest uppercase">
                 Shop Collection <FiArrowRight size={16} />
               </Link>
-              <Link to="/contact" className="text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-widest text-[10px] sm:text-xs border-b border-amber-400/30 hover:border-amber-400 pb-1">
+              <Link to="/contact" className="text-[#1A1A1A] hover:text-[#1A1A1A] transition-colors uppercase tracking-widest text-[10px] sm:text-xs border-b border-amber-400/30 hover:border-amber-400 pb-1">
                 Request a Consultation
               </Link>
             </div>
@@ -578,8 +578,8 @@ function FAQItem({ question, answer }) {
   return (
     <div className={`glass-card-dark rounded-2xl transition-all duration-300 ${open ? 'border-amber-500/30' : 'border-amber-900/10 hover:border-amber-500/20'}`}>
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between text-left gap-4 px-6 py-5 group">
-        <span className={`text-sm md:text-base font-medium transition-colors ${open ? 'text-amber-400' : 'text-amber-100/80 group-hover:text-amber-200'}`}>{question}</span>
-        <motion.span animate={{ rotate: open ? 45 : 0 }} className={`text-2xl flex-shrink-0 ${open ? 'text-amber-400' : 'text-amber-100/30'}`}>+</motion.span>
+        <span className={`text-sm md:text-base font-medium transition-colors ${open ? 'text-[#1A1A1A]' : 'text-[#1A1A1A]/80 group-hover:text-[#1A1A1A]'}`}>{question}</span>
+        <motion.span animate={{ rotate: open ? 45 : 0 }} className={`text-2xl flex-shrink-0 ${open ? 'text-[#1A1A1A]' : 'text-[#1A1A1A]/30'}`}>+</motion.span>
       </button>
       <motion.div
         initial={false}
@@ -587,7 +587,7 @@ function FAQItem({ question, answer }) {
         className="overflow-hidden"
       >
         <div className="px-6 pb-6 pt-2">
-          <p className="text-amber-100/50 text-sm leading-relaxed border-t border-amber-900/10 pt-4">{answer}</p>
+          <p className="text-[#1A1A1A]/50 text-sm leading-relaxed border-t border-amber-900/10 pt-4">{answer}</p>
         </div>
       </motion.div>
     </div>

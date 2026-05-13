@@ -36,7 +36,7 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 sm:py-12">
         {/* Header Section */}
         <div className="text-center mb-12 sm:mb-20">
-          <p className="text-amber-600 text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] mb-3 sm:mb-4">We're Here For You</p>
+          <p className="text-[#1A1A1A] text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] mb-3 sm:mb-4">We're Here For You</p>
           <h1 className="text-3xl sm:text-6xl font-bold text-[#1A1A1A] tracking-tight mb-4 sm:mb-6">Let's Connect</h1>
           <p className="text-black/40 text-xs sm:text-sm max-w-xl mx-auto font-medium leading-relaxed px-4">Have a question about our collections or need a bespoke masterpiece? Our luxury consultants are ready to assist you.</p>
         </div>
@@ -48,12 +48,12 @@ export default function Contact() {
             { icon: FiMapPin, label: 'Showroom', value: 'Mirzapur, UP', href: null },
           ].map(({ icon: Icon, label, value, href }) => (
             <div key={label} className="bg-white border border-amber-900/10 p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] text-center flex flex-col items-center group hover:shadow-xl transition-all duration-500">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-[#FAF7F2] flex items-center justify-center text-[#C9A84C] shadow-sm mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-[#FAF7F2] flex items-center justify-center text-[#1A1A1A] shadow-sm mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
                 <Icon size={20} className="sm:w-6 sm:h-6" />
               </div>
               <h3 className="text-[#1A1A1A] font-bold text-lg sm:text-xl mb-1 sm:mb-2">{label}</h3>
               {href ? (
-                <a href={href} className="text-black/40 text-xs sm:text-sm font-medium hover:text-amber-600 transition-colors truncate w-full px-2">{value}</a>
+                <a href={href} className="text-black/40 text-xs sm:text-sm font-medium hover:text-[#1A1A1A] transition-colors truncate w-full px-2">{value}</a>
               ) : (
                 <p className="text-black/40 text-xs sm:text-sm font-medium">{value}</p>
               )}

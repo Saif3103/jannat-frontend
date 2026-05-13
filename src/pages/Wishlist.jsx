@@ -25,15 +25,15 @@ export default function Wishlist() {
       <Helmet><title>My Wishlist | Jannat Rugs Co.</title></Helmet>
       <div className="pt-24 min-h-screen max-w-7xl mx-auto px-4 py-8">
         <h1 className="font-luxury text-4xl text-white mb-8 flex items-center gap-3">
-          <FiHeart className="text-amber-400" /> My Wishlist
+          <FiHeart className="text-[#1A1A1A]" /> My Wishlist
         </h1>
         {loading ? (
-          <p className="text-amber-100/40 text-center py-20">Loading...</p>
+          <p className="text-[#1A1A1A]/40 text-center py-20">Loading...</p>
         ) : products.length === 0 ? (
           <div className="text-center py-20">
-            <FiHeart size={64} className="text-amber-900/30 mx-auto mb-6" />
-            <h2 className="font-luxury text-3xl text-amber-100/30 mb-4">Nothing saved yet</h2>
-            <p className="text-amber-100/20 mb-8">Save your favourite carpets to come back to them later.</p>
+            <FiHeart size={64} className="text-[#1A1A1A]/30 mx-auto mb-6" />
+            <h2 className="font-luxury text-3xl text-[#1A1A1A]/30 mb-4">Nothing saved yet</h2>
+            <p className="text-[#1A1A1A]/20 mb-8">Save your favourite carpets to come back to them later.</p>
             <Link to="/shop" className="btn-gold inline-flex items-center gap-2"><FiArrowLeft size={16} /> Browse Collection</Link>
           </div>
         ) : (

@@ -36,7 +36,7 @@ export default function Team() {
           <span className="text-gray-700">/</span>
           <span className="hover:text-white cursor-pointer transition-colors">About Us</span>
           <span className="text-gray-700">/</span>
-          <span className="text-amber-400">Our Founders</span>
+          <span className="text-[#1A1A1A]">Our Founders</span>
         </div>
 
         {/* Founder Section */}
@@ -58,10 +58,10 @@ export default function Team() {
           {/* Right: Content */}
           <div className="w-full lg:w-[55%]">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.4em] mb-6">Get To Know Us</p>
+              <p className="text-[#1A1A1A] text-xs font-bold uppercase tracking-[0.4em] mb-6">Get To Know Us</p>
               <h1 className="font-serif text-5xl md:text-7xl text-white mb-10 leading-[1.1] font-light">
                 The Visionary Behind <br />
-                <span className="text-[#C9A84C] font-normal italic">Jannat Rugs</span>
+                <span className="text-[#1A1A1A] font-normal italic">Jannat Rugs</span>
               </h1>
               
               <div className="space-y-6 text-gray-400 text-lg leading-relaxed mb-12 font-light">
@@ -78,12 +78,12 @@ export default function Team() {
 
               {/* Name Card */}
               <div className="bg-[#0A0A0A] border border-gray-800/50 p-6 rounded-3xl flex items-center gap-6 max-w-md shadow-xl">
-                <div className="w-14 h-14 bg-[#C9A84C]/10 rounded-2xl flex items-center justify-center text-[#C9A84C] border border-[#C9A84C]/20">
+                <div className="w-14 h-14 bg-[#C9A84C]/10 rounded-2xl flex items-center justify-center text-[#1A1A1A] border border-[#C9A84C]/20">
                   <GiQueenCrown size={28} />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white tracking-tight">Azeem Ansari</h3>
-                  <p className="text-[10px] text-[#C9A84C] font-bold uppercase tracking-[0.2em] mt-1">Founder & Creative Director</p>
+                  <p className="text-[10px] text-[#1A1A1A] font-bold uppercase tracking-[0.2em] mt-1">Founder & Creative Director</p>
                 </div>
               </div>
             </motion.div>
@@ -92,7 +92,7 @@ export default function Team() {
 
         {/* FAQ Section */}
         <div className="max-w-7xl mx-auto mb-40 text-center">
-          <p className="text-[#C9A84C] text-[10px] font-bold uppercase tracking-[0.4em] mb-4">Common Questions</p>
+          <p className="text-[#1A1A1A] text-[10px] font-bold uppercase tracking-[0.4em] mb-4">Common Questions</p>
           <h2 className="font-serif text-4xl md:text-5xl text-white mb-16">Everything You Need To Know</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 text-left">
@@ -103,7 +103,7 @@ export default function Team() {
                   className="w-full p-6 flex items-center justify-between group"
                 >
                   <span className="text-gray-200 font-bold text-sm text-left">{faq.q}</span>
-                  <div className="text-[#C9A84C] transition-transform duration-300">
+                  <div className="text-[#1A1A1A] transition-transform duration-300">
                     {openFaq === i ? <FiMinus size={20} /> : <FiPlus size={20} className="group-hover:rotate-90" />}
                   </div>
                 </button>
@@ -131,7 +131,7 @@ export default function Team() {
               { icon: FiHeadphones, title: "Dedicated Support", sub: "We're here to help" },
             ].map((b, i) => (
               <div key={i} className="flex items-center gap-6 group">
-                <div className="w-14 h-14 bg-gray-900 rounded-2xl flex items-center justify-center text-[#C9A84C] border border-gray-800 transition-all group-hover:scale-110 group-hover:bg-[#C9A84C] group-hover:text-black">
+                <div className="w-14 h-14 bg-gray-900 rounded-2xl flex items-center justify-center text-[#1A1A1A] border border-gray-800 transition-all group-hover:scale-110 group-hover:bg-[#C9A84C] group-hover:text-black">
                   <b.icon size={24} />
                 </div>
                 <div>

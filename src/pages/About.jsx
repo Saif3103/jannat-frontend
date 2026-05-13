@@ -20,7 +20,7 @@ export default function About() {
           
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-[8px] sm:text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-8 sm:mb-12">
-            <Link to="/" className="hover:text-amber-400 transition-colors">Home</Link>
+            <Link to="/" className="hover:text-[#1A1A1A] transition-colors">Home</Link>
             <span>/</span>
             <span className="text-gray-300">About Us</span>
           </nav>
@@ -34,7 +34,7 @@ export default function About() {
               transition={{ duration: 0.8 }}
               className="text-center lg:text-left"
             >
-              <p className="text-amber-500 text-[9px] sm:text-[11px] font-bold tracking-[0.4em] uppercase mb-4 sm:mb-6">About Us</p>
+              <p className="text-[#1A1A1A] text-[9px] sm:text-[11px] font-bold tracking-[0.4em] uppercase mb-4 sm:mb-6">About Us</p>
               <h1 className="font-luxury text-4xl sm:text-7xl lg:text-8xl leading-[1.2] sm:leading-[1.1] mb-6 sm:mb-8 text-[#1A1A1A]">
                 Rooted In Tradition, <br />
                 Crafted For <span className="text-gold-gradient italic">Generations.</span>
@@ -55,7 +55,7 @@ export default function About() {
                   { icon: GiIndianPalace, label: "Made in India" },
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center lg:items-start gap-3 group">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl border border-amber-900/10 flex items-center justify-center text-[#C9A84C] group-hover:bg-[#C9A84C] group-hover:text-black transition-all duration-500">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl border border-amber-900/10 flex items-center justify-center text-[#1A1A1A] group-hover:bg-[#C9A84C] group-hover:text-black transition-all duration-500">
                       <item.icon size={18} className="sm:w-5 sm:h-5" />
                     </div>
                     <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-tight text-black/40">{item.label}</p>
@@ -90,7 +90,7 @@ export default function About() {
               { icon: FiGlobe, value: "20+", label: "Countries Served" },
             ].map((stat, i) => (
               <div key={i} className="flex flex-col sm:flex-row items-center sm:items-center gap-3 sm:gap-6 group text-center sm:text-left">
-                <div className="text-amber-500 group-hover:scale-110 transition-transform duration-500">
+                <div className="text-[#1A1A1A] group-hover:scale-110 transition-transform duration-500">
                   <stat.icon size={28} className="sm:w-9 sm:h-9" />
                 </div>
                 <div>
@@ -103,7 +103,7 @@ export default function About() {
 
           {/* Our Promise Section */}
           <div className="text-center mb-16 sm:mb-32">
-            <p className="text-amber-600 text-[9px] sm:text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Our Promise</p>
+            <p className="text-[#1A1A1A] text-[9px] sm:text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Our Promise</p>
             <h2 className="font-luxury text-4xl sm:text-6xl text-[#1A1A1A] mb-6 sm:mb-8">Quality You Can Trust</h2>
             <p className="text-black/50 text-sm sm:text-lg max-w-2xl mx-auto mb-10 sm:mb-16 leading-relaxed">
               We are committed to providing authentic, high-quality rugs that bring elegance and warmth to your space.
@@ -118,7 +118,7 @@ export default function About() {
               ].map((item, i) => (
                 <div key={i} className="bg-white border border-amber-900/10 p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] hover:border-amber-500/30 transition-all duration-500 group text-left shadow-sm">
                   <div className="flex items-center gap-4 sm:gap-6">
-                    <div className="text-[#C9A84C] group-hover:rotate-[360deg] transition-transform duration-700">
+                    <div className="text-[#1A1A1A] group-hover:rotate-[360deg] transition-transform duration-700">
                       <item.icon size={24} className="sm:w-7 sm:h-7" />
                     </div>
                     <div>

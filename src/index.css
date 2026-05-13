@@ -52,12 +52,9 @@ body {
 /* Luxury font */
 .font-luxury { font-family: 'Cormorant Garamond', serif; }
 
-/* Gold gradient text */
+/* Charcoal Luxury text (previously gold gradient) */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #C9A84C 0%, #E8C96A 50%, #9B7B2E 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--black-luxury);
 }
 
 /* Gold border */
@@ -106,8 +103,8 @@ body {
 
 .btn-outline-gold {
   background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold);
+  border: 1px solid var(--black-luxury);
+  color: var(--black-luxury);
   font-weight: 500;
   letter-spacing: 0.05em;
   transition: all 0.3s ease;

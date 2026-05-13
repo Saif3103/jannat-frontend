@@ -75,7 +75,7 @@ export default function AdminCategories() {
               <div className="p-5 flex items-center justify-between">
                 <p className="text-gray-400 text-xs font-medium line-clamp-1 flex-1 pr-4">{cat.description || 'No description'}</p>
                 <div className="flex gap-1">
-                  <button onClick={() => openEdit(cat)} className="p-2 text-gray-400 hover:text-[#C9A84C] hover:bg-[#FFF9E6] rounded-full transition-all"><FiEdit2 size={16} /></button>
+                  <button onClick={() => openEdit(cat)} className="p-2 text-gray-400 hover:text-[#1A1A1A] hover:bg-[#FFF9E6] rounded-full transition-all"><FiEdit2 size={16} /></button>
                   <button onClick={() => del(cat._id)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"><FiTrash2 size={16} /></button>
                 </div>
               </div>
@@ -124,7 +124,7 @@ export default function AdminCategories() {
                       />
                     ) : (
                       <div className="text-center">
-                        <FiUpload size={24} className="text-gray-300 mx-auto mb-2 group-hover:text-[#C9A84C] transition-colors" />
+                        <FiUpload size={24} className="text-gray-300 mx-auto mb-2 group-hover:text-[#1A1A1A] transition-colors" />
                         <span className="text-gray-400 text-xs font-medium">Click to upload image</span>
                       </div>
                     )}

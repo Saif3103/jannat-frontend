@@ -89,7 +89,7 @@ export default function Header() {
         <div className="flex-1 flex items-center justify-start gap-4">
            {/* Mobile Menu Button (Left aligned on mobile) */}
            <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} id="mobile-menu-btn"
-            className="lg:hidden p-2 -ml-2 text-amber-100/70 hover:text-amber-400 transition-colors z-[110]">
+            className="lg:hidden p-2 -ml-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors z-[110]">
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
 
@@ -113,7 +113,7 @@ export default function Header() {
               key={link.path}
               to={link.path}
               className={`text-[11px] tracking-[0.2em] uppercase font-bold transition-all duration-300 ${
-                location.pathname === link.path ? 'text-amber-600' : 'text-black/80 hover:text-black'
+                location.pathname === link.path ? 'text-[#1A1A1A]' : 'text-black/80 hover:text-black'
               }`}
             >
               {link.label}
@@ -125,17 +125,17 @@ export default function Header() {
         <div className="flex-1 flex items-center justify-end gap-2 md:gap-4">
           {/* Search */}
           <button onClick={() => setSearchOpen(!isSearchOpen)} id="search-toggle"
-            className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors">
+            className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors">
             <FiSearch size={20} />
           </button>
 
           {/* Wishlist */}
-          <Link to="/wishlist" id="wishlist-btn" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors hidden md:flex">
+          <Link to="/wishlist" id="wishlist-btn" className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors hidden md:flex">
             <FiHeart size={20} />
           </Link>
 
           {/* Cart */}
-          <Link to="/cart" id="cart-btn" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors relative">
+          <Link to="/cart" id="cart-btn" className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors relative">
             <FiShoppingCart size={20} />
             {cartCount > 0 && (
               <span className="absolute top-1 right-1 bg-[#C9A84C] text-black text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
@@ -150,17 +150,17 @@ export default function Header() {
           <div className="relative">
             {user ? (
               <button onClick={() => setShowUserMenu(!showUserMenu)} id="user-menu-btn"
-                className="flex items-center gap-2 p-1 text-amber-100/70 hover:text-amber-400 transition-colors border border-amber-900/20 rounded-full">
+                className="flex items-center gap-2 p-1 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/20 rounded-full">
                 {user.avatar ? (
                   <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400 text-xs font-bold">
+                  <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-[#1A1A1A] text-xs font-bold">
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
                 )}
               </button>
             ) : (
-              <Link to="/login" className="p-2 text-black/70 hover:text-amber-600 transition-colors border border-amber-900/10 rounded-full flex items-center justify-center">
+              <Link to="/login" className="p-2 text-black/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/10 rounded-full flex items-center justify-center">
                 <FiUser size={20} />
               </Link>
             )}
@@ -173,13 +173,13 @@ export default function Header() {
                 >
                   <div className="p-4 border-b border-amber-900/10">
                     <p className="text-white font-bold text-sm">{user.name}</p>
-                    <p className="text-amber-100/40 text-[10px] truncate">{user.email}</p>
+                    <p className="text-[#1A1A1A]/40 text-[10px] truncate">{user.email}</p>
                   </div>
                   <div className="p-2">
                     {user.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-amber-400 hover:bg-amber-500/10 text-xs font-bold transition-all rounded-xl"><FiSettings size={14} /> Admin Panel</Link>
+                      <Link to="/admin" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-[#1A1A1A] hover:bg-amber-500/10 text-xs font-bold transition-all rounded-xl"><FiSettings size={14} /> Admin Panel</Link>
                     )}
-                    <Link to="/dashboard" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-amber-100/70 hover:bg-white/5 text-xs font-bold transition-all rounded-xl"><FiUser size={14} /> My Profile</Link>
+                    <Link to="/dashboard" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-[#1A1A1A]/70 hover:bg-white/5 text-xs font-bold transition-all rounded-xl"><FiUser size={14} /> My Profile</Link>
                     <button onClick={() => { logout(); setShowUserMenu(false); }} className="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all rounded-xl w-full"><FiLogOut size={14} /> Logout</button>
                   </div>
                 </motion.div>
@@ -209,7 +209,7 @@ export default function Header() {
                   autoFocus
                   id="search-input"
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-400">
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1A1A1A]">
                   <FiSearch size={20} />
                 </button>
               </form>
@@ -231,8 +231,8 @@ export default function Header() {
                         <img src={s.images?.[0] || '/placeholder.jpg'} alt={s.name}
                           className="w-10 h-10 rounded object-cover" />
                         <div>
-                          <p className="text-amber-100 text-sm">{s.name}</p>
-                          <p className="text-amber-400 text-xs">₹{(s.discountPrice || s.price).toLocaleString()}</p>
+                          <p className="text-[#1A1A1A] text-sm">{s.name}</p>
+                          <p className="text-[#1A1A1A] text-xs">₹{(s.discountPrice || s.price).toLocaleString()}</p>
                         </div>
                       </Link>
                     ))}
@@ -259,7 +259,7 @@ export default function Header() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg text-amber-100/80 hover:text-amber-400 transition-colors py-3 border-b border-amber-900/10 font-luxury tracking-wider"
+                  className="text-lg text-[#1A1A1A]/80 hover:text-[#1A1A1A] transition-colors py-3 border-b border-amber-900/10 font-luxury tracking-wider"
                 >
                   {link.label}
                 </Link>

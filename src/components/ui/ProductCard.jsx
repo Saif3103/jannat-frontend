@@ -77,16 +77,16 @@ export default function ProductCard({ product, index = 0 }) {
              </button>
 
              {/* Category */}
-             <p className="text-[#C9A84C] text-[9px] font-bold uppercase tracking-[0.4em] mb-2">{product.category?.name || 'Modern Collection'}</p>
+             <p className="text-[#1A1A1A] text-[9px] font-bold uppercase tracking-[0.4em] mb-2">{product.category?.name || 'Modern Collection'}</p>
              
              {/* Title */}
              <Link to={`/product/${product._id}`}>
-                <h3 className="text-[#1A1A1A] font-bold text-xl sm:text-2xl mb-3 leading-tight group-hover/card:text-[#C9A84C] transition-colors">{product.name}</h3>
+                <h3 className="text-[#1A1A1A] font-bold text-xl sm:text-2xl mb-3 leading-tight group-hover/card:text-[#1A1A1A] transition-colors">{product.name}</h3>
              </Link>
              
              {/* Rating */}
              <div className="flex items-center gap-2 mb-5">
-                <div className="flex text-amber-500">
+                <div className="flex text-[#1A1A1A]">
                    {[...Array(5)].map((_, i) => <FiStar key={i} size={12} fill="currentColor" />)}
                 </div>
                 <span className="text-[11px] text-black/60 font-bold">4.8 (128)</span>
@@ -101,19 +101,19 @@ export default function ProductCard({ product, index = 0 }) {
              {/* Detailed Specs Icons */}
              <div className="grid grid-cols-4 gap-1 mb-8 pt-4 border-t border-black/5">
                 <div className="flex flex-col items-center">
-                   <div className="text-[#C9A84C] mb-1.5"><FiGrid size={14}/></div>
+                   <div className="text-[#1A1A1A] mb-1.5"><FiGrid size={14}/></div>
                    <span className="text-[7px] text-black/40 uppercase font-medium text-center leading-tight">Hand Knotted</span>
                 </div>
                 <div className="flex flex-col items-center">
-                   <div className="text-[#C9A84C] mb-1.5"><FiFeather size={14}/></div>
+                   <div className="text-[#1A1A1A] mb-1.5"><FiFeather size={14}/></div>
                    <span className="text-[7px] text-black/40 uppercase font-medium text-center leading-tight">Premium Wool</span>
                 </div>
                 <div className="flex flex-col items-center">
-                   <div className="text-[#C9A84C] mb-1.5"><FiShield size={14}/></div>
+                   <div className="text-[#1A1A1A] mb-1.5"><FiShield size={14}/></div>
                    <span className="text-[7px] text-black/40 uppercase font-medium text-center leading-tight">Secure Payment</span>
                 </div>
                 <div className="flex flex-col items-center">
-                   <div className="text-[#C9A84C] mb-1.5"><FiClock size={14}/></div>
+                   <div className="text-[#1A1A1A] mb-1.5"><FiClock size={14}/></div>
                    <span className="text-[7px] text-black/40 uppercase font-medium text-center leading-tight">7-Day Return</span>
                 </div>
              </div>
@@ -121,7 +121,7 @@ export default function ProductCard({ product, index = 0 }) {
              {/* Redesigned Offer Box */}
              <div className="mt-auto border border-[#E31E24]/30 rounded-2xl p-4 flex items-center justify-between bg-[#E31E24]/10">
                 <div>
-                   <p className="text-[8px] text-[#B69640] font-extrabold uppercase tracking-[0.2em] mb-1">Limited Time Offer</p>
+                   <p className="text-[8px] text-[#1A1A1A] font-extrabold uppercase tracking-[0.2em] mb-1">Limited Time Offer</p>
                    <p className="text-[#E31E24] text-sm font-black uppercase">Flat {discount || '15'}% OFF</p>
                 </div>
                 <div className="bg-[#E31E24] text-white px-4 py-2.5 rounded-xl text-[9px] font-bold tracking-widest uppercase shadow-lg shadow-red-900/10 active:scale-95 transition-transform cursor-pointer">

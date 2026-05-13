@@ -29,14 +29,14 @@ export default function Offers() {
       </Helmet>
       <div className="pt-20 min-h-screen">
         <div className="py-16 text-center" style={{ background: 'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-          <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-2">Limited Time Deals</p>
+          <p className="text-[#1A1A1A] text-xs tracking-[0.4em] uppercase mb-2">Limited Time Deals</p>
           <h1 className="font-luxury text-5xl text-white mb-3">Exclusive Offers</h1>
           <div className="divider-gold" />
         </div>
 
         <div className="max-w-5xl mx-auto px-4 py-16">
           {loading ? (
-            <div className="text-center py-12 text-amber-100/30">Loading offers...</div>
+            <div className="text-center py-12 text-[#1A1A1A]/30">Loading offers...</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {displayOffers.map((offer, i) => (
@@ -49,18 +49,18 @@ export default function Offers() {
                     <div className="badge-gold pulse-gold inline-block mb-4">{offer.discountPercent}% OFF</div>
                   )}
                   <h3 className="font-luxury text-2xl text-white mb-2">{offer.title}</h3>
-                  <p className="text-amber-100/50 text-sm leading-relaxed mb-5">{offer.description}</p>
+                  <p className="text-[#1A1A1A]/50 text-sm leading-relaxed mb-5">{offer.description}</p>
                   {offer.couponCode && (
                     <div className="flex items-center gap-3 mb-5">
-                      <FiTag size={16} className="text-amber-400" />
-                      <span className="text-amber-100/50 text-sm">Use code:</span>
-                      <code className="bg-amber-900/30 text-amber-400 px-3 py-1 rounded text-sm font-mono border border-amber-800/30">
+                      <FiTag size={16} className="text-[#1A1A1A]" />
+                      <span className="text-[#1A1A1A]/50 text-sm">Use code:</span>
+                      <code className="bg-amber-900/30 text-[#1A1A1A] px-3 py-1 rounded text-sm font-mono border border-amber-800/30">
                         {offer.couponCode}
                       </code>
                     </div>
                   )}
                   {offer.validUntil && (
-                    <div className="flex items-center gap-2 text-xs text-amber-100/30 mb-5">
+                    <div className="flex items-center gap-2 text-xs text-[#1A1A1A]/30 mb-5">
                       <FiClock size={12} /> Valid until {new Date(offer.validUntil).toLocaleDateString()}
                     </div>
                   )}

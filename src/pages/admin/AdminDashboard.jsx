@@ -58,14 +58,14 @@ export default function AdminDashboard() {
           <div className="lg:col-span-7 bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-[#222] font-bold text-lg tracking-tight">Recent Orders</h2>
-              <Link to="/admin/orders" className="text-xs text-[#C9A84C] font-bold hover:underline flex items-center gap-1 transition-all">View All <FiArrowRight /></Link>
+              <Link to="/admin/orders" className="text-xs text-[#1A1A1A] font-bold hover:underline flex items-center gap-1 transition-all">View All <FiArrowRight /></Link>
             </div>
             <div className="space-y-6">
               {loading ? [...Array(5)].map((_, i) => <div key={i} className="h-16 bg-gray-50 rounded-xl shimmer" />) :
                 analytics?.recentOrders?.map(order => (
                   <div key={order._id} className="flex items-center justify-between group py-1">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-[#C9A84C] border border-gray-100 group-hover:bg-[#FFF9E6] transition-all">
+                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-[#1A1A1A] border border-gray-100 group-hover:bg-[#FFF9E6] transition-all">
                         <FiShoppingBag size={18} />
                       </div>
                       <div>
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
                       <p className="text-[#222] text-sm font-bold truncate tracking-tight">{p.name}</p>
                       <p className="text-gray-400 text-[10px] font-bold mt-0.5 uppercase tracking-widest">{p.numReviews} reviews</p>
                     </div>
-                    <span className="text-[#C9A84C] text-sm font-bold">₹{p.price?.toLocaleString()}</span>
+                    <span className="text-[#1A1A1A] text-sm font-bold">₹{p.price?.toLocaleString()}</span>
                   </div>
                 ))}
               </div>
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
               <div className="w-10 h-10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: l.bg }}>
                 <l.icon size={20} style={{ color: l.color }} />
               </div>
-              <span className="text-[#222] text-sm font-bold tracking-tight group-hover:text-[#C9A84C] transition-colors">{l.label}</span>
+              <span className="text-[#222] text-sm font-bold tracking-tight group-hover:text-[#1A1A1A] transition-colors">{l.label}</span>
             </Link>
           ))}
         </div>

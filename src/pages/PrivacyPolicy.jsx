@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet-async';
 function PolicySection({ title, children }) {
   return (
     <div className="mb-8">
-      <h2 className="font-luxury text-2xl text-amber-400 mb-3">{title}</h2>
-      <div className="text-amber-100/60 leading-relaxed space-y-2 text-sm">{children}</div>
+      <h2 className="font-luxury text-2xl text-[#1A1A1A] mb-3">{title}</h2>
+      <div className="text-[#1A1A1A]/60 leading-relaxed space-y-2 text-sm">{children}</div>
     </div>
   );
 }
@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
       <Helmet><title>Privacy Policy | Jannat Rugs Co.</title></Helmet>
       <div className="pt-24 min-h-screen max-w-3xl mx-auto px-4 py-8">
         <h1 className="font-luxury text-4xl text-white mb-2">Privacy Policy</h1>
-        <p className="text-amber-100/40 text-sm mb-10">Last updated: January 2025</p>
+        <p className="text-[#1A1A1A]/40 text-sm mb-10">Last updated: January 2025</p>
         <PolicySection title="Information We Collect">
           <p>We collect information you provide directly, such as name, email, phone number, and delivery addresses when you register or place an order. We also collect payment information (processed securely by our payment partners) and usage data to improve your experience.</p>
         </PolicySection>

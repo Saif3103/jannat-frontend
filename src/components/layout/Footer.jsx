@@ -52,7 +52,7 @@ export default function Footer() {
         </div>
         
         <div className="relative z-10 text-center px-4 max-w-4xl">
-          <p className="text-amber-400 text-xs tracking-[0.5em] uppercase mb-6 font-medium">Begin Your Journey</p>
+          <p className="text-[#1A1A1A] text-xs tracking-[0.5em] uppercase mb-6 font-medium">Begin Your Journey</p>
           <h2 className="font-luxury text-5xl md:text-7xl text-black mb-6 leading-tight">Ready to Transform<br />Your Space?</h2>
           <p className="text-black/60 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
             Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
@@ -61,7 +61,7 @@ export default function Footer() {
             <Link to="/shop" className="btn-gold px-10 py-4 flex items-center gap-3 group">
               SHOP COLLECTION <FiArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link to="/contact" className="text-amber-400 text-xs tracking-widest uppercase font-bold hover:text-amber-300 transition-colors border-b border-amber-400/30 pb-1">
+            <Link to="/contact" className="text-[#1A1A1A] text-xs tracking-widest uppercase font-bold hover:text-[#1A1A1A] transition-colors border-b border-amber-400/30 pb-1">
               Request a Consultation
             </Link>
           </div>
@@ -96,13 +96,13 @@ export default function Footer() {
           
           {/* Quick Links */}
           <div className="space-y-8">
-            <h4 className="text-amber-400 text-[10px] tracking-[0.4em] uppercase font-bold">Quick Links</h4>
+            <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Quick Links</h4>
             <div className="grid grid-cols-2 gap-4">
               {links.map(link => (
                 <Link 
                   key={link.path} 
                   to={link.path} 
-                  className="text-black/60 hover:text-amber-600 text-sm tracking-wider uppercase transition-colors"
+                  className="text-black/60 hover:text-[#1A1A1A] text-sm tracking-wider uppercase transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -112,12 +112,12 @@ export default function Footer() {
 
           {/* Contact & Socials */}
           <div className="space-y-8 flex flex-col items-start md:items-end md:text-right">
-            <h4 className="text-amber-400 text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
+            <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
             <div className="space-y-4">
-              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-amber-600 transition-colors justify-end text-sm">
+              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors justify-end text-sm">
                 <FiMail /> jannatrugs786@gmail.com
               </a>
-              <a href="tel:+919235508422" className="flex items-center gap-3 text-black/60 hover:text-amber-600 transition-colors justify-end text-sm">
+              <a href="tel:+919235508422" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors justify-end text-sm">
                 <FiPhone /> +91 9235508422
               </a>
             </div>
@@ -134,7 +134,7 @@ export default function Footer() {
                   href={href} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="w-10 h-10 rounded-full border border-amber-900/20 flex items-center justify-center text-black/60 hover:border-amber-600 hover:text-amber-600 transition-all duration-300 shadow-sm bg-white"
+                  className="w-10 h-10 rounded-full border border-amber-900/20 flex items-center justify-center text-black/60 hover:border-amber-600 hover:text-[#1A1A1A] transition-all duration-300 shadow-sm bg-white"
                 >
                   <Icon size={16} />
                 </a>

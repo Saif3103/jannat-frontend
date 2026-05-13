@@ -188,16 +188,16 @@ export default function ProductDetail() {
           {/* RIGHT COLUMN */}
           <div className="space-y-10">
             <div>
-              <p className="text-[#C9A84C] text-[11px] font-bold tracking-[0.3em] uppercase mb-4">{product.category?.name || 'Collection'}</p>
+              <p className="text-[#1A1A1A] text-[11px] font-bold tracking-[0.3em] uppercase mb-4">{product.category?.name || 'Collection'}</p>
               <h1 className="font-luxury text-5xl sm:text-6xl text-[#1A1A1A] mb-6 leading-tight">{product.name}</h1>
               
               <div className="flex items-center gap-4 mb-8">
-                 <div className="flex text-amber-400">
+                 <div className="flex text-[#1A1A1A]">
                     {[...Array(5)].map((_, i) => <FiStar key={i} size={16} fill="currentColor" />)}
                  </div>
                  <span className="text-sm text-gray-400">(128 Reviews)</span>
                  <span className="text-gray-300">|</span>
-                 <span className="flex items-center gap-2 text-sm font-bold">4.8 <FiStar size={14} className="fill-amber-400 text-amber-400" /></span>
+                 <span className="flex items-center gap-2 text-sm font-bold">4.8 <FiStar size={14} className="fill-amber-400 text-[#1A1A1A]" /></span>
               </div>
 
               <div className="space-y-1">
@@ -232,7 +232,7 @@ export default function ProductDetail() {
                     <button 
                       key={i} 
                       onClick={() => setSelectedSize(s)}
-                      className={`py-4 rounded-xl border text-sm font-bold transition-all ${selectedSize?.label === s.label ? 'border-[#C9A84C] bg-[#FAF7F2] text-[#C9A84C] ring-1 ring-[#C9A84C]' : 'border-gray-200 hover:border-gray-400'}`}>
+                      className={`py-4 rounded-xl border text-sm font-bold transition-all ${selectedSize?.label === s.label ? 'border-[#C9A84C] bg-[#FAF7F2] text-[#1A1A1A] ring-1 ring-[#C9A84C]' : 'border-gray-200 hover:border-gray-400'}`}>
                       {s.label}
                     </button>
                   ))}
@@ -263,7 +263,7 @@ export default function ProductDetail() {
             {/* "Why You'll Love It" Section */}
             <div className="bg-[#FAF7F2] p-8 rounded-[2rem] border border-[#C9A84C]/20 relative">
                <div className="flex items-center gap-3 mb-4">
-                  <FiHeart className="text-[#C9A84C]" />
+                  <FiHeart className="text-[#1A1A1A]" />
                   <h4 className="font-luxury text-xl">Why You'll Love It</h4>
                </div>
                <p className="font-luxury text-lg leading-relaxed text-[#1A1A1A]/70">
@@ -291,7 +291,7 @@ export default function ProductDetail() {
         {related.length > 0 && (
           <div className="mt-40 pt-20 border-t border-gray-100">
             <div className="text-center mb-16">
-              <p className="text-[#C9A84C] text-[11px] font-bold tracking-[0.4em] uppercase mb-4">You May Also Like</p>
+              <p className="text-[#1A1A1A] text-[11px] font-bold tracking-[0.4em] uppercase mb-4">You May Also Like</p>
               <h2 className="font-luxury text-5xl">Related Masterpieces</h2>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

@@ -44,7 +44,7 @@ export default function AdminSettings() {
 
   const TABS = ['general', 'chatbot', 'testimonials', 'messages'];
 
-  if (loading) return <AdminLayout><div className="text-amber-100/30 text-center py-20">Loading...</div></AdminLayout>;
+  if (loading) return <AdminLayout><div className="text-[#1A1A1A]/30 text-center py-20">Loading...</div></AdminLayout>;
 
   return (
     <AdminLayout>

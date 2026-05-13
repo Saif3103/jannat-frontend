@@ -37,9 +37,9 @@ export default function Cart() {
 
         {items.length === 0 ? (
           <div className="text-center py-20 sm:py-24">
-            <FiShoppingCart size={48} className="text-amber-900/30 mx-auto mb-6 sm:w-16 sm:h-16" />
-            <h2 className="font-luxury text-2xl sm:text-3xl text-amber-100/30 mb-4">Your Cart is Empty</h2>
-            <p className="text-amber-100/20 text-sm mb-8">Discover our luxury carpet collection today.</p>
+            <FiShoppingCart size={48} className="text-[#1A1A1A]/30 mx-auto mb-6 sm:w-16 sm:h-16" />
+            <h2 className="font-luxury text-2xl sm:text-3xl text-[#1A1A1A]/30 mb-4">Your Cart is Empty</h2>
+            <p className="text-[#1A1A1A]/20 text-sm mb-8">Discover our luxury carpet collection today.</p>
             <Link to="/shop" className="btn-gold inline-flex items-center gap-2 py-3 px-6 text-xs sm:text-sm">
               <FiArrowLeft size={14} /> Browse Collection
             </Link>
@@ -58,22 +58,22 @@ export default function Cart() {
                   </Link>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start">
-                      <Link to={`/product/${item._id}`} className="font-luxury text-amber-100 hover:text-amber-400 transition-colors text-sm sm:text-lg block truncate pr-4">{item.name}</Link>
+                      <Link to={`/product/${item._id}`} className="font-luxury text-[#1A1A1A] hover:text-[#1A1A1A] transition-colors text-sm sm:text-lg block truncate pr-4">{item.name}</Link>
                       <button onClick={() => removeFromCart(item._id, item.size, item.color)} className="text-red-400/60 hover:text-red-400 transition-colors shrink-0">
                         <FiTrash2 size={14} className="sm:w-4 sm:h-4" />
                       </button>
                     </div>
                     <div className="flex flex-wrap gap-2 sm:gap-3 mt-1 mb-2 sm:mb-3">
-                      {item.size && <span className="text-[10px] sm:text-xs text-amber-100/40 uppercase tracking-wider">Size: {item.size}</span>}
-                      {item.color && <span className="text-[10px] sm:text-xs text-amber-100/40 uppercase tracking-wider">Color: {item.color}</span>}
+                      {item.size && <span className="text-[10px] sm:text-xs text-[#1A1A1A]/40 uppercase tracking-wider">Size: {item.size}</span>}
+                      {item.color && <span className="text-[10px] sm:text-xs text-[#1A1A1A]/40 uppercase tracking-wider">Color: {item.color}</span>}
                     </div>
                     <div className="flex items-center justify-between flex-wrap gap-2">
                       <div className="flex items-center border border-amber-900/30 rounded overflow-hidden h-8 sm:h-10">
-                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity - 1)} className="px-2.5 sm:px-3 text-amber-400 hover:bg-amber-500/10 transition-colors">−</button>
-                        <span className="px-2 sm:px-3 text-amber-100 text-xs sm:text-sm min-w-[28px] sm:min-w-[32px] text-center font-bold">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity + 1)} className="px-2.5 sm:px-3 text-amber-400 hover:bg-amber-500/10 transition-colors">+</button>
+                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity - 1)} className="px-2.5 sm:px-3 text-[#1A1A1A] hover:bg-amber-500/10 transition-colors">−</button>
+                        <span className="px-2 sm:px-3 text-[#1A1A1A] text-xs sm:text-sm min-w-[28px] sm:min-w-[32px] text-center font-bold">{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item._id, item.size, item.color, item.quantity + 1)} className="px-2.5 sm:px-3 text-[#1A1A1A] hover:bg-amber-500/10 transition-colors">+</button>
                       </div>
-                      <span className="text-amber-400 font-bold text-base sm:text-lg">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
+                      <span className="text-[#1A1A1A] font-bold text-base sm:text-lg">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -84,13 +84,13 @@ export default function Cart() {
             <div className="glass-card p-5 sm:p-6 h-fit lg:sticky lg:top-24 mt-4 lg:mt-0">
               <h3 className="font-luxury text-xl sm:text-2xl text-white mb-5 sm:mb-6">Order Summary</h3>
               <div className="space-y-2.5 sm:space-y-3 mb-5 sm:mb-6">
-                <div className="flex justify-between text-xs sm:text-sm"><span className="text-amber-100/60 uppercase tracking-widest text-[10px] sm:text-xs">Subtotal</span><span className="text-amber-100 font-bold">₹{subtotal.toLocaleString()}</span></div>
-                <div className="flex justify-between text-xs sm:text-sm"><span className="text-amber-100/60 uppercase tracking-widest text-[10px] sm:text-xs">Shipping</span><span className={shipping === 0 ? 'text-emerald-400 font-bold' : 'text-amber-100 font-bold'}>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span></div>
-                <div className="flex justify-between text-xs sm:text-sm"><span className="text-amber-100/60 uppercase tracking-widest text-[10px] sm:text-xs">Tax (5%)</span><span className="text-amber-100 font-bold">₹{tax.toLocaleString()}</span></div>
-                {shipping > 0 && <p className="text-[9px] sm:text-[10px] text-amber-100/30 uppercase tracking-wider">Add ₹{(5000 - subtotal).toLocaleString()} for free delivery</p>}
+                <div className="flex justify-between text-xs sm:text-sm"><span className="text-[#1A1A1A]/60 uppercase tracking-widest text-[10px] sm:text-xs">Subtotal</span><span className="text-[#1A1A1A] font-bold">₹{subtotal.toLocaleString()}</span></div>
+                <div className="flex justify-between text-xs sm:text-sm"><span className="text-[#1A1A1A]/60 uppercase tracking-widest text-[10px] sm:text-xs">Shipping</span><span className={shipping === 0 ? 'text-emerald-400 font-bold' : 'text-[#1A1A1A] font-bold'}>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span></div>
+                <div className="flex justify-between text-xs sm:text-sm"><span className="text-[#1A1A1A]/60 uppercase tracking-widest text-[10px] sm:text-xs">Tax (5%)</span><span className="text-[#1A1A1A] font-bold">₹{tax.toLocaleString()}</span></div>
+                {shipping > 0 && <p className="text-[9px] sm:text-[10px] text-[#1A1A1A]/30 uppercase tracking-wider">Add ₹{(5000 - subtotal).toLocaleString()} for free delivery</p>}
               </div>
               <div className="border-t border-amber-900/20 pt-4 mb-6 sm:mb-8">
-                <div className="flex justify-between items-center"><span className="font-luxury text-lg text-amber-100 uppercase tracking-widest">Total</span><span className="font-luxury text-2xl sm:text-3xl text-amber-400">₹{total.toLocaleString()}</span></div>
+                <div className="flex justify-between items-center"><span className="font-luxury text-lg text-[#1A1A1A] uppercase tracking-widest">Total</span><span className="font-luxury text-2xl sm:text-3xl text-[#1A1A1A]">₹{total.toLocaleString()}</span></div>
               </div>
               {user ? (
                 <Link to="/checkout" className="btn-gold w-full flex items-center justify-center gap-2 py-3.5 sm:py-4 text-xs font-bold tracking-[0.2em]">
