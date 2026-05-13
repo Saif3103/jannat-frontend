@@ -350,31 +350,35 @@ export default function ProductDetail() {
                   
                   {/* Left: Product Info (Desktop Only) */}
                   <div className="hidden md:flex items-center gap-5">
-                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
                       <img src={getImageUrl(images[0])} alt={product.name} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <h4 className="font-heading font-semibold text-[#111827] text-base truncate max-w-[200px]">{product.name}</h4>
-                      <div className="flex items-center gap-3 text-[13px] text-gray-500 font-medium">
-                        <span>\uD83D\uDE9A Free Shipping</span>
-                        <span>\u2022</span>
-                        <span>\uD83D\uDD12 Secure Checkout</span>
+                      <h4 className="font-heading font-bold text-[#111827] text-base truncate max-w-[240px] tracking-tight">{product.name}</h4>
+                      <div className="flex items-center gap-3 text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1 opacity-70">
+                        <span className="flex items-center gap-1.5"><FiTruck size={14} className="text-[#C9A84C]" /> Free Shipping</span>
+                        <span className="text-gray-200">|</span>
+                        <span className="flex items-center gap-1.5"><FiShield size={14} className="text-[#C9A84C]" /> Secure Checkout</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Middle/Left: Price Section */}
-                  <div className="flex-1 md:flex-none flex flex-col md:items-end">
+                  <div className="flex-1 md:flex-none flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:gap-0">
                     <div className="flex items-center gap-3">
-                      <span className="text-xl md:text-2xl font-bold text-[#111827]">\u20B9{priceDisplay?.toLocaleString()}</span>
+                      <span className="text-xl md:text-3xl font-black text-[#111827] tracking-tight">\u20B9{priceDisplay?.toLocaleString()}</span>
                       {hasDiscount && (
-                        <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">{discountPercent}% OFF</span>
+                        <span className="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg text-[10px] font-black tracking-tighter">
+                          {discountPercent}% OFF
+                        </span>
                       )}
                     </div>
                     {hasDiscount && (
-                      <span className="text-[10px] md:text-xs text-gray-400 line-through md:mt-0.5">\u20B9{originalPrice?.toLocaleString()}</span>
+                      <span className="text-[10px] md:text-xs text-gray-400 line-through font-medium md:mt-1 tracking-wider">
+                        \u20B9{originalPrice?.toLocaleString()}
+                      </span>
                     )}
-                    <span className="text-[9px] text-gray-400 md:hidden">Inclusive of taxes</span>
+                    <span className="text-[8px] text-gray-300 font-bold uppercase tracking-[0.2em] md:hidden">Inc. Taxes</span>
                   </div>
 
                   {/* Right: Actions */}
