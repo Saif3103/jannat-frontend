@@ -111,8 +111,8 @@ export default function Home() {
           >
             <source src={settings?.heroVideo ? getImageUrl(settings.heroVideo) : "https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4"} type="video/mp4" />
           </video>
-          {/* Theme Overlay (Keeps the exact same luxury dark aesthetic) */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.4) 50%, rgba(13,13,13,0.85) 100%)' }} />
+          {/* Theme Overlay (Luxury Light Aesthetic) */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(250,247,242,0.6) 0%, rgba(250,247,242,0.3) 50%, rgba(250,247,242,0.85) 100%)' }} />
         </div>
               <div className="relative z-10 px-4 max-w-5xl mx-auto flex flex-col items-center justify-center text-center w-full mt-8 md:mt-16">
           <motion.div
@@ -147,11 +147,11 @@ export default function Home() {
 
       {/* OFFERS SLIDER SECTION */}
       {offers.length > 0 && (
-        <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden">
+        <section className="py-12 sm:py-20 px-4 bg-[#FAF7F2] relative overflow-hidden">
           <div className="max-w-[1400px] mx-auto">
             <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-              <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Limited Time Offers</p>
-              <h2 className="font-luxury text-3xl md:text-5xl text-white mb-4 sm:6">Exclusive Promotions</h2>
+              <p className="text-amber-600 text-[10px] tracking-[0.5em] uppercase mb-4">Limited Time Offers</p>
+              <h2 className="font-luxury text-3xl md:text-5xl text-black mb-4 sm:6">Exclusive Promotions</h2>
               <div className="divider-gold w-20 sm:w-24" />
             </div>
 
@@ -217,11 +217,11 @@ export default function Home() {
       )}
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
-      <section className="py-16 sm:py-24 border-y border-amber-900/10" style={{ background: '#050505' }}>
+      <section className="py-16 sm:py-24 border-y border-amber-900/10" style={{ background: '#FAF7F2' }}>
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 text-center md:text-left">
           <div className="md:w-1/2">
-            <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-white leading-snug">
-              A Heritage of <br/><span className="text-amber-400">Hand-Knotted Perfection.</span>
+            <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-black leading-snug">
+              A Heritage of <br/><span className="text-amber-600">Hand-Knotted Perfection.</span>
             </h2>
           </div>
           <div className="md:w-1/2 flex flex-wrap justify-center md:justify-end gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8">
@@ -231,8 +231,8 @@ export default function Home() {
               { label: 'Est. 1999', desc: 'Legacy of Trust' },
             ].map(item => (
               <div key={item.label} className="flex flex-col items-center md:items-start">
-                <span className="text-amber-100 text-base sm:text-lg font-medium tracking-wide uppercase">{item.label}</span>
-                <span className="text-amber-100/40 text-[10px] sm:text-xs tracking-widest uppercase mt-1">{item.desc}</span>
+                <span className="text-amber-900 text-base sm:text-lg font-medium tracking-wide uppercase">{item.label}</span>
+                <span className="text-amber-900/40 text-[10px] sm:text-xs tracking-widest uppercase mt-1">{item.desc}</span>
               </div>
             ))}
           </div>
@@ -242,10 +242,10 @@ export default function Home() {
       {/* FEATURED COLLECTION */}
       <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-          <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Curated For You</p>
-          <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-white mb-4">Featured Collection</h2>
+          <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Curated For You</p>
+          <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">Featured Collection</h2>
           <div className="divider-gold mb-4" />
-          <p className="text-amber-100/50 max-w-lg mx-auto text-xs sm:text-sm leading-relaxed">
+          <p className="text-black/50 max-w-lg mx-auto text-xs sm:text-sm leading-relaxed">
             Each carpet is a work of art, handcrafted by master artisans using centuries-old techniques.
           </p>
         </div>
@@ -314,12 +314,12 @@ export default function Home() {
               <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-transparent" />
             </div>
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-[#050505] text-center">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-[#FAF7F2] text-center">
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-md">
-                <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4">Collection</p>
-                <h3 className="font-luxury text-3xl md:text-5xl text-white mb-4 sm:mb-6">{cat.name}</h3>
+                <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4">Collection</p>
+                <h3 className="font-luxury text-3xl md:text-5xl text-black mb-4 sm:mb-6">{cat.name}</h3>
                 <div className="divider-gold mx-auto mb-4 sm:mb-6" />
-                <p className="text-amber-100/50 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10">
+                <p className="text-black/50 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10">
                   Experience the pinnacle of craftsmanship with our authentic {cat.name.toLowerCase()} collection. Carefully hand-knotted by expert artisans using the finest materials.
                 </p>
                 <Link to={`/shop?search=${cat.name.split(' ')[0]}`} className="btn-outline-gold inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3 sm:py-4 text-[10px] sm:text-xs tracking-widest uppercase">
@@ -366,8 +366,8 @@ export default function Home() {
       {(bestSellers.length > 0 || loading) && (
         <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-            <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Customer Favorites</p>
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-white mb-4">Best Sellers</h2>
+            <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Customer Favorites</p>
+            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">Best Sellers</h2>
             <div className="divider-gold" />
           </div>
           {loading ? (
@@ -389,8 +389,8 @@ export default function Home() {
         <section className="py-16 sm:py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)' }}>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-              <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Fresh From The Loom</p>
-              <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-white mb-4">New Arrivals</h2>
+              <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Fresh From The Loom</p>
+              <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">New Arrivals</h2>
               <div className="divider-gold" />
             </div>
             {loading ? (
@@ -409,14 +409,14 @@ export default function Home() {
       )}
 
       {/* VIDEO CUSTOMER REVIEWS */}
-      <section className="py-16 sm:py-32 px-4 relative" style={{ background: '#000000' }}>
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-overlay pointer-events-none" />
+      <section className="py-16 sm:py-32 px-4 relative" style={{ background: '#FAF7F2' }}>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-            <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Real Stories</p>
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-white mb-4">Customer Video Reviews</h2>
+            <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Real Stories</p>
+            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">Customer Video Reviews</h2>
             <div className="divider-gold mb-6" />
-            <p className="text-amber-100/50 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed">
+            <p className="text-black/50 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed">
               Hear directly from our beloved clients about their experience with Jannat Rugs Co. and how our authentic hand-knotted carpets transformed their homes.
             </p>
           </div>
@@ -470,11 +470,11 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 sm:py-40 px-4" style={{ background: '#000000', borderTop: '1px solid rgba(201,168,76,0.05)' }}>
+      <section className="py-20 sm:py-40 px-4" style={{ background: '#FAF7F2', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
-            <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Common Questions</p>
-            <h2 className="font-luxury text-3xl sm:text-5xl text-white mb-6">Everything You Need To Know</h2>
+            <p className="text-amber-600 text-[10px] tracking-[0.5em] uppercase mb-4">Common Questions</p>
+            <h2 className="font-luxury text-3xl sm:text-5xl text-black mb-6">Everything You Need To Know</h2>
             <div className="divider-gold w-20 sm:w-24" />
           </div>
           <div className="space-y-4 sm:space-y-6">

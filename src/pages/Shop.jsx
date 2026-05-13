@@ -82,8 +82,8 @@ export default function Shop() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.4em] mb-4">Our Collection</p>
-              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4 font-luxury">Artisanal Masterpieces</h1>
-              <p className="text-amber-100/40 text-sm max-w-xl font-medium">Explore our curated gallery of hand-knotted treasures, each carrying a legacy of centuries-old craftsmanship.</p>
+              <h1 className="text-4xl md:text-5xl font-bold text-[#1A1A1A] tracking-tight mb-4 font-luxury">Artisanal Masterpieces</h1>
+              <p className="text-black/40 text-sm max-w-xl font-medium">Explore our curated gallery of hand-knotted treasures, each carrying a legacy of centuries-old craftsmanship.</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="hidden sm:block text-right">

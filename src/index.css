@@ -5,19 +5,19 @@
   --gold: #C9A84C;
   --gold-light: #E8C96A;
   --gold-dark: #9B7B2E;
-  --cream: #F5EDD8;
+  --cream: #FAF7F2;
   --beige: #E8D5B0;
   --brown: #3E2723;
   --brown-light: #6D4C41;
-  --black-luxury: #000000;
+  --black-luxury: #1A1A1A;
   --off-white: #FAF7F2;
-  --site-bg: var(--black-luxury);
-  --text-main: var(--cream);
+  --site-bg: var(--off-white);
+  --text-main: var(--black-luxury);
 }
 
 body.light-mode {
-  --site-bg: #000000;
-  --text-main: var(--cream);
+  --site-bg: #FAF7F2;
+  --text-main: #1A1A1A;
 }
 
 * {
@@ -42,7 +42,7 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #1a1a1a; }
+::-webkit-scrollbar-track { background: #FAF7F2; }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
 
@@ -72,9 +72,9 @@ body {
 }
 
 .glass-card-dark {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(201, 168, 76, 0.2);
   border-radius: 16px;
 }
 
@@ -184,9 +184,9 @@ body {
 
 /* Input luxury */
 .input-luxury {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  color: #F5EDD8;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: #1A1A1A;
   border-radius: 6px;
   padding: 12px 16px;
   width: 100%;
@@ -211,8 +211,8 @@ body {
 /* Sticky header */
 .header-blur {
   backdrop-filter: blur(20px);
-  background: rgba(13, 13, 13, 0.85);
-  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+  background: rgba(250, 247, 242, 0.85);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
 }
 
 /* Category card hover effect */

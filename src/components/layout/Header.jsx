@@ -113,7 +113,7 @@ export default function Header() {
               key={link.path}
               to={link.path}
               className={`text-[11px] tracking-[0.2em] uppercase font-bold transition-all duration-300 ${
-                location.pathname === link.path ? 'text-amber-400' : 'text-amber-100/60 hover:text-white'
+                location.pathname === link.path ? 'text-amber-600' : 'text-black/60 hover:text-black'
               }`}
             >
               {link.label}
@@ -138,7 +138,7 @@ export default function Header() {
           <Link to="/cart" id="cart-btn" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors relative">
             <FiShoppingCart size={20} />
             {cartCount > 0 && (
-              <span className="absolute top-1 right-1 bg-amber-500 text-black text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+              <span className="absolute top-1 right-1 bg-[#C9A84C] text-black text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                 {cartCount}
               </span>
             )}
@@ -160,7 +160,7 @@ export default function Header() {
                 )}
               </button>
             ) : (
-              <Link to="/login" className="p-2 text-amber-100/70 hover:text-amber-400 transition-colors border border-amber-900/20 rounded-full flex items-center justify-center">
+              <Link to="/login" className="p-2 text-black/70 hover:text-amber-600 transition-colors border border-amber-900/10 rounded-full flex items-center justify-center">
                 <FiUser size={20} />
               </Link>
             )}
@@ -196,7 +196,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-amber-900/30 bg-black/50 backdrop-blur-xl"
+            className="border-t border-amber-900/10 bg-[#FAF7F2]/95 backdrop-blur-xl"
           >
             <div className="max-w-2xl mx-auto px-4 py-4" ref={searchRef}>
               <form onSubmit={handleSearch} className="relative">
@@ -251,7 +251,7 @@ export default function Header() {
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-[90] lg:hidden bg-black/98 backdrop-blur-3xl flex flex-col pt-28"
+            className="fixed inset-0 z-[90] lg:hidden bg-[#FAF7F2] backdrop-blur-3xl flex flex-col pt-28"
           >
             <div className="flex flex-col p-6 gap-2">
               {navLinks.map(link => (
