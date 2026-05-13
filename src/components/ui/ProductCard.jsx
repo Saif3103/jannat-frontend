@@ -89,9 +89,14 @@ export default function ProductCard({ product, index = 0 }) {
            </div>
 
            {/* Price */}
-           <div className="mb-8 mt-auto">
-              <p className="text-[#1A1A1A] text-3xl font-bold tracking-tight">₹{price?.toLocaleString()}</p>
-              <p className="text-[9px] text-black/20 uppercase tracking-[0.2em] mt-1 font-bold">Inclusive of all taxes</p>
+           <div className="mb-8 mt-auto space-y-1">
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-[#1A1A1A] text-3xl font-black tracking-tighter">₹{price?.toLocaleString('en-IN')}</span>
+                {product.discountPrice && (
+                  <span className="text-sm text-black/30 line-through font-medium">₹{product.price?.toLocaleString('en-IN')}</span>
+                )}
+              </div>
+              <p className="text-[9px] text-black/20 uppercase tracking-[0.3em] font-bold">Inclusive of all taxes</p>
            </div>
 
            {/* Minimal Specs icons */}

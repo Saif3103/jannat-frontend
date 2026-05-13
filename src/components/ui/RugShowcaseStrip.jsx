@@ -77,12 +77,17 @@ export default function RugShowcaseStrip() {
                 {/* Product Details */}
                 <div className="space-y-1">
                   <h3 className="font-heading text-base font-semibold text-[#111827] truncate group-hover:text-[#C9A84C] transition-colors">{p.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <p className="text-lg font-bold text-[#111827]">₹{(p.discountPrice || p.price).toLocaleString()}</p>
-                    <div className="flex items-center gap-1 text-[11px] font-bold text-gray-400">
-                      <FiStar className="fill-amber-400 text-amber-400" size={12} />
-                      <span>4.9</span>
+                  <div className="flex flex-col">
+                    <div className="flex items-center justify-between">
+                      <p className="text-lg font-black text-[#111827] tracking-tight">₹{(p.discountPrice || p.price).toLocaleString('en-IN')}</p>
+                      <div className="flex items-center gap-1 text-[11px] font-bold text-gray-400">
+                        <FiStar className="fill-amber-400 text-amber-400" size={12} />
+                        <span>4.9</span>
+                      </div>
                     </div>
+                    {p.discountPrice && (
+                      <p className="text-[10px] text-gray-400 line-through font-medium">₹{p.price.toLocaleString('en-IN')}</p>
+                    )}
                   </div>
                   <div className="pt-3 flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
                     View Details <FiArrowRight />
