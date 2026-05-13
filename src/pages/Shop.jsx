@@ -93,9 +93,9 @@ export default function Shop() {
               <select 
                 value={sort} 
                 onChange={e => setParam('sort', e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm font-bold text-white focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
+                className="bg-black/5 border border-amber-900/10 rounded-xl px-4 py-2.5 text-sm font-bold text-[#1A1A1A] focus:outline-none focus:ring-4 focus:ring-[#C9A84C]/10 transition-all outline-none"
               >
-                {SORT_OPTIONS.map(o => <option key={o.value} value={o.value} className="bg-black text-white">{o.label}</option>)}
+                {SORT_OPTIONS.map(o => <option key={o.value} value={o.value} className="bg-white text-black">{o.label}</option>)}
               </select>
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function Shop() {
                     <div className="flex flex-col gap-3 pt-2">
                       <button 
                          onClick={() => setParam('category', '')}
-                         className={`text-left text-sm font-bold transition-all ${!category ? 'text-[#1A1A1A]' : 'text-[#1A1A1A]/40 hover:text-white'}`}
+                         className={`text-left text-sm font-bold transition-all ${!category ? 'text-[#C9A84C]' : 'text-[#1A1A1A]/40 hover:text-black'}`}
                       >
                         All Categories
                       </button>
@@ -158,7 +158,7 @@ export default function Shop() {
                         <button 
                           key={c._id}
                           onClick={() => setParam('category', c._id)}
-                          className={`text-left text-sm font-bold transition-all ${category === c._id ? 'text-[#1A1A1A]' : 'text-[#1A1A1A]/40 hover:text-white'}`}
+                          className={`text-left text-sm font-bold transition-all ${category === c._id ? 'text-[#C9A84C]' : 'text-[#1A1A1A]/40 hover:text-black'}`}
                         >
                           {c.name}
                         </button>
@@ -175,7 +175,7 @@ export default function Shop() {
                           placeholder="Min" 
                           value={minPrice} 
                           onChange={e => setParam('minPrice', e.target.value)}
-                          className="w-full bg-black/40 border border-amber-900/10 rounded-xl pl-6 pr-2 py-2 text-xs font-bold text-white outline-none focus:border-[#C9A84C]/50"
+                          className="w-full bg-black/5 border border-amber-900/10 rounded-xl pl-6 pr-2 py-2 text-xs font-bold text-[#1A1A1A] outline-none focus:border-[#C9A84C]/50"
                         />
                       </div>
                       <div className="relative flex-1">
@@ -185,7 +185,7 @@ export default function Shop() {
                           placeholder="Max" 
                           value={maxPrice} 
                           onChange={e => setParam('maxPrice', e.target.value)}
-                          className="w-full bg-black/40 border border-amber-900/10 rounded-xl pl-6 pr-2 py-2 text-xs font-bold text-white outline-none focus:border-[#C9A84C]/50"
+                          className="w-full bg-black/5 border border-amber-900/10 rounded-xl pl-6 pr-2 py-2 text-xs font-bold text-[#1A1A1A] outline-none focus:border-[#C9A84C]/50"
                         />
                       </div>
                     </div>
@@ -197,7 +197,7 @@ export default function Shop() {
                         <button 
                           key={c}
                           onClick={() => setParam('color', color === c ? '' : c)}
-                          className={`px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase transition-all ${color === c ? 'bg-[#C9A84C] text-black' : 'bg-black/40 text-[#1A1A1A]/40 border border-amber-900/10 hover:border-amber-900/30'}`}
+                          className={`px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase transition-all ${color === c ? 'bg-[#C9A84C] text-black' : 'bg-black/5 text-[#1A1A1A]/40 border border-amber-900/10 hover:border-amber-900/30'}`}
                         >
                           {c}
                         </button>
@@ -213,9 +213,9 @@ export default function Shop() {
                             type="checkbox" 
                             checked={type === t} 
                             onChange={() => setParam('type', type === t ? '' : t)}
-                            className="w-4 h-4 rounded border-amber-900/30 bg-black text-[#1A1A1A] focus:ring-[#C9A84C]" 
+                            className="w-4 h-4 rounded border-amber-900/30 bg-black/5 text-[#C9A84C] focus:ring-[#C9A84C]" 
                           />
-                          <span className={`text-sm font-bold transition-all ${type === t ? 'text-white' : 'text-[#1A1A1A]/40 group-hover:text-[#1A1A1A]/60'}`}>{t}</span>
+                          <span className={`text-sm font-bold transition-all ${type === t ? 'text-[#C9A84C]' : 'text-[#1A1A1A]/40 group-hover:text-[#1A1A1A]/60'}`}>{t}</span>
                         </label>
                       ))}
                     </div>
@@ -240,7 +240,7 @@ export default function Shop() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
                   {products.map((p, i) => (
                     <ProductCard key={p._id} product={p} index={i} />
                   ))}
@@ -253,7 +253,7 @@ export default function Shop() {
                       <button 
                         key={i} 
                         onClick={() => setParam('page', i + 1)}
-                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-[#C9A84C] text-black shadow-xl shadow-[#C9A84C]/20' : 'bg-white/5 text-[#1A1A1A]/40 hover:bg-white/10'}`}
+                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-[#C9A84C] text-black shadow-xl shadow-[#C9A84C]/20' : 'bg-black/5 text-[#1A1A1A]/40 hover:bg-black/10'}`}
                       >
                         {i + 1}
                       </button>
