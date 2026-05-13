@@ -14,6 +14,7 @@ import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
 import RugQuiz from '../components/ui/RugQuiz';
 import OfferPill from '../components/ui/OfferPill';
+import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80';
@@ -268,6 +269,9 @@ export default function Home() {
 
       <RugQuiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
       <OfferPill />
+
+      {/* RUG SHOWCASE STRIP */}
+      <RugShowcaseStrip />
 
       {/* FEATURED COLLECTION */}
       <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
