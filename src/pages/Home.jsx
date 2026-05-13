@@ -103,6 +103,11 @@ export default function Home() {
       </Helmet>
 
       <div className="bg-transparent">
+        {/* VIDEO HERO WITH TIME-BASED GREETING */}
+        <DynamicHero 
+          videoUrl={settings?.heroVideo ? getImageUrl(settings.heroVideo) : null} 
+          logo="/logo.png" 
+        />
 
       {/* OFFERS SLIDER SECTION */}
       {/* FESTIVE OFFER BANNER - Restored High Impact Layout */}
