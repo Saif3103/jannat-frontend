@@ -30,6 +30,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Global Mobile Optimizations */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .glass-card, .header-blur, .bg-white\/92, .bg-white\/88 {
+    backdrop-filter: blur(8px) !important; /* Lighter blur for mobile GPU */
+  }
+
+  .product-card:hover {
+    transform: none !important; /* Disable hover lifts on mobile to prevent stutter */
+  }
+}
+
+.hardware-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
 body {
   font-family: 'Jost', sans-serif;
   background-color: var(--site-bg);
@@ -38,6 +60,8 @@ body {
   text-align: center;
   line-height: 1.8;
   letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Scrollbar */

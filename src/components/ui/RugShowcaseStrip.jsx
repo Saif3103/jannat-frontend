@@ -36,18 +36,18 @@ export default function RugShowcaseStrip() {
 
       <div className="relative">
         <motion.div
-          className="flex gap-6 px-4"
+          className="flex gap-4 sm:gap-6 px-4 will-change-transform hardware-accelerated"
           initial={{ x: 0 }}
           animate={{ x: isPaused ? undefined : "-50%" }}
           transition={{
-            duration: 35, // Faster but still premium
+            duration: 35,
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop"
           }}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          style={{ width: "fit-content" }}
+          style={{ width: "fit-content", transform: "translateZ(0)" }}
         >
           {products.map((p, i) => (
             <Link 

@@ -49,7 +49,8 @@ export default function OfferPill() {
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}
-          className="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[998] flex items-end pointer-events-none"
+          className="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[998] flex items-end pointer-events-none hardware-accelerated"
+          style={{ transform: "translateZ(0)" }}
         >
           <div className="relative pointer-events-auto">
             {/* Close Button (only when expanded) */}
