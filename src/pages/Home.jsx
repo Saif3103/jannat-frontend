@@ -101,54 +101,8 @@ export default function Home() {
       </Helmet>
 
       <div className="bg-transparent">
-        {/* HERO SECTION */}
-        <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
-        {/* Background Video */}
-        <div className="absolute inset-0 z-0">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            key={settings?.heroVideo}
-            className="w-full h-full object-cover"
-          >
-            <source src={settings?.heroVideo ? getImageUrl(settings.heroVideo) : "https://cdn.shopify.com/videos/c/o/v/e4f8cd624bcb4347b9970e005d0bb736.mp4"} type="video/mp4" />
-          </video>
-          {/* High Definition Overlay for Video Clarity */}
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-        </div>
-              <div className="relative z-10 px-4 max-w-5xl mx-auto flex flex-col items-center justify-center text-center w-full mt-8 md:mt-16">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            className="flex flex-col items-center justify-center w-full"
-          >
-            {/* Massive Logo */}
-            <img src="/logo.png" alt="Jannat Rugs Logo" className="w-48 sm:w-64 md:w-80 lg:w-96 aspect-square rounded-full object-cover mb-6 md:mb-8 filter drop-shadow-2xl border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.15)]" />
-            
-            {/* Massive Firm Name */}
-            <h1 className="font-luxury text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] text-gold-gradient font-bold tracking-widest leading-none mb-2 sm:mb-4 text-center" style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.15))' }}>
-              JANNAT
-            </h1>
-            <h2 className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-gold-gradient font-bold tracking-[0.3em] leading-none mb-6 sm:mb-10 text-center" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.1))' }}>
-              RUGS CO.
-            </h2>
-            
-            <Link to="/shop" className="btn-gold flex items-center justify-center gap-2 px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-lg mt-4 sm:mt-8 shadow-2xl">
-              Explore The Collection <FiArrowRight size={20} />
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 hidden sm:block">
-          <motion.div animate={{ y: [0, 15, 0] }} transition={{ repeat: Infinity, duration: 2 }}
-            className="w-px h-20 bg-gradient-to-b from-amber-400 to-transparent mx-auto" />
-        </div>
-      </section>
+        {/* DYNAMIC SMART HERO BANNER */}
+        <SmartHero logo="/logo.png" />
 
       {/* OFFERS SLIDER SECTION */}
       {/* FESTIVE OFFER BANNER - Restored High Impact Layout */}
