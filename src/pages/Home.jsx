@@ -125,10 +125,10 @@ export default function Home() {
             <img src="/logo.png" alt="Jannat Rugs Logo" className="w-48 sm:w-64 md:w-80 lg:w-96 aspect-square rounded-full object-cover mb-6 md:mb-8 filter drop-shadow-2xl border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.15)]" />
             
             {/* Massive Firm Name */}
-            <h1 className="font-luxury text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] text-gold-gradient font-bold tracking-widest leading-none mb-2 sm:mb-4 text-center" style={{ textShadow: '0 4px 30px rgba(0,0,0,0.6)' }}>
+            <h1 className="font-luxury text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] text-gold-gradient font-bold tracking-widest leading-none mb-2 sm:mb-4 text-center" style={{ filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.15))' }}>
               JANNAT
             </h1>
-            <h2 className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-gold-gradient font-bold tracking-[0.3em] leading-none mb-6 sm:mb-10 text-center" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+            <h2 className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-gold-gradient font-bold tracking-[0.3em] leading-none mb-6 sm:mb-10 text-center" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.1))' }}>
               RUGS CO.
             </h2>
             
@@ -147,11 +147,11 @@ export default function Home() {
 
       {/* OFFERS SLIDER SECTION */}
       {offers.length > 0 && (
-        <section className="py-12 sm:py-20 px-4 bg-[#FAF7F2] relative overflow-hidden">
+        <section className="py-12 sm:py-24 px-4 section-alt relative overflow-hidden border-y border-black/5">
           <div className="max-w-[1400px] mx-auto">
             <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-              <p className="text-amber-600 text-[10px] tracking-[0.5em] uppercase mb-4">Limited Time Offers</p>
-              <h2 className="font-luxury text-3xl md:text-5xl text-black mb-4 sm:6">Exclusive Promotions</h2>
+              <p className="text-[#B69640] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Limited Time Offers</p>
+              <h2 className="font-luxury text-3xl md:text-5xl text-[#1A1A1A] mb-4 sm:6">Exclusive Promotions</h2>
               <div className="divider-gold w-20 sm:w-24" />
             </div>
 
@@ -217,11 +217,11 @@ export default function Home() {
       )}
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
-      <section className="py-16 sm:py-24 border-y border-amber-900/10" style={{ background: '#FAF7F2' }}>
+      <section className="py-16 sm:py-24 border-y border-amber-900/5" style={{ background: '#FFFFFF' }}>
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 text-center md:text-left">
           <div className="md:w-1/2">
-            <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-black leading-snug">
-              A Heritage of <br/><span className="text-amber-600">Hand-Knotted Perfection.</span>
+            <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-[#1A1A1A] leading-snug">
+              A Heritage of <br/><span className="text-[#B69640]">Hand-Knotted Perfection.</span>
             </h2>
           </div>
           <div className="md:w-1/2 flex flex-wrap justify-center md:justify-end gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8">
@@ -231,8 +231,8 @@ export default function Home() {
               { label: 'Est. 1999', desc: 'Legacy of Trust' },
             ].map(item => (
               <div key={item.label} className="flex flex-col items-center md:items-start">
-                <span className="text-amber-900 text-base sm:text-lg font-medium tracking-wide uppercase">{item.label}</span>
-                <span className="text-amber-900/40 text-[10px] sm:text-xs tracking-widest uppercase mt-1">{item.desc}</span>
+                <span className="text-[#1A1A1A] text-base sm:text-lg font-bold tracking-wide uppercase">{item.label}</span>
+                <span className="text-black/30 text-[10px] sm:text-xs tracking-widest uppercase mt-1">{item.desc}</span>
               </div>
             ))}
           </div>
@@ -242,10 +242,10 @@ export default function Home() {
       {/* FEATURED COLLECTION */}
       <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-          <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Curated For You</p>
-          <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">Featured Collection</h2>
+          <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
+          <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Featured Collection</h2>
           <div className="divider-gold mb-4" />
-          <p className="text-black/50 max-w-lg mx-auto text-xs sm:text-sm leading-relaxed">
+          <p className="text-black/40 max-w-lg mx-auto text-xs sm:text-sm leading-relaxed font-medium">
             Each carpet is a work of art, handcrafted by master artisans using centuries-old techniques.
           </p>
         </div>
@@ -314,12 +314,12 @@ export default function Home() {
               <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-transparent" />
             </div>
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-[#FAF7F2] text-center">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white text-center">
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-md">
-                <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4">Collection</p>
-                <h3 className="font-luxury text-3xl md:text-5xl text-black mb-4 sm:mb-6">{cat.name}</h3>
+                <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">Collection</p>
+                <h3 className="font-luxury text-3xl md:text-5xl text-[#1A1A1A] mb-4 sm:mb-6">{cat.name}</h3>
                 <div className="divider-gold mx-auto mb-4 sm:mb-6" />
-                <p className="text-black/50 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10">
+                <p className="text-black/40 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10 font-medium">
                   Experience the pinnacle of craftsmanship with our authentic {cat.name.toLowerCase()} collection. Carefully hand-knotted by expert artisans using the finest materials.
                 </p>
                 <Link to={`/shop?search=${cat.name.split(' ')[0]}`} className="btn-outline-gold inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3 sm:py-4 text-[10px] sm:text-xs tracking-widest uppercase">
@@ -345,14 +345,14 @@ export default function Home() {
           </video>
           <div className="absolute inset-0 bg-black/30" />
         </div>
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-[#0a0a0a]">
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 section-alt">
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="max-w-xl text-center lg:text-left">
-            <p className="text-amber-400 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4">The Bespoke Experience</p>
-            <h2 className="font-luxury text-3xl md:text-6xl text-white mb-4 sm:mb-6 leading-tight">
-              Custom Rugs <br /><span className="text-gold-gradient">Made For You</span>
+            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">The Bespoke Experience</p>
+            <h2 className="font-luxury text-3xl md:text-6xl text-[#1A1A1A] mb-4 sm:mb-6 leading-tight">
+              Custom Rugs <br /><span className="text-[#B69640]">Made For You</span>
             </h2>
-            <div className="w-10 sm:w-12 h-px bg-amber-400/50 mb-4 sm:mb-6 mx-auto lg:mx-0" />
-            <p className="text-amber-100/50 text-sm sm:text-base leading-relaxed mb-8 sm:mb-10">
+            <div className="w-10 sm:w-12 h-px bg-[#B69640]/50 mb-4 sm:mb-6 mx-auto lg:mx-0" />
+            <p className="text-[#1A1A1A]/60 text-sm sm:text-base leading-relaxed mb-8 sm:mb-10 font-medium">
               Create a masterpiece that reflects your unique style. From selecting the finest hand-spun wool and pure silk to choosing custom colors and dimensions, our master weavers bring your vision to life perfectly.
             </p>
             <a href="https://wa.me/919235508422?text=I%20want%20to%20inquire%20about%20a%20custom%20rug" target="_blank" rel="noreferrer" className="btn-gold inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3 sm:py-4 uppercase tracking-widest text-[10px] sm:text-xs">
@@ -366,8 +366,8 @@ export default function Home() {
       {(bestSellers.length > 0 || loading) && (
         <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-            <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Customer Favorites</p>
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">Best Sellers</h2>
+            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Customer Favorites</p>
+            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Best Sellers</h2>
             <div className="divider-gold" />
           </div>
           {loading ? (
@@ -389,8 +389,8 @@ export default function Home() {
         <section className="py-16 sm:py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)' }}>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-              <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Fresh From The Loom</p>
-              <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">New Arrivals</h2>
+              <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Fresh From The Loom</p>
+              <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">New Arrivals</h2>
               <div className="divider-gold" />
             </div>
             {loading ? (
@@ -409,14 +409,14 @@ export default function Home() {
       )}
 
       {/* VIDEO CUSTOMER REVIEWS */}
-      <section className="py-16 sm:py-32 px-4 relative" style={{ background: '#FAF7F2' }}>
+      <section className="py-16 sm:py-32 px-4 relative section-alt border-y border-black/5">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-            <p className="text-amber-600 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3">Real Stories</p>
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-black mb-4">Customer Video Reviews</h2>
+            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Real Stories</p>
+            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Customer Video Reviews</h2>
             <div className="divider-gold mb-6" />
-            <p className="text-black/50 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed">
+            <p className="text-black/50 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
               Hear directly from our beloved clients about their experience with Jannat Rugs Co. and how our authentic hand-knotted carpets transformed their homes.
             </p>
           </div>
@@ -470,11 +470,11 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 sm:py-40 px-4" style={{ background: '#FAF7F2', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
+      <section className="py-20 sm:py-40 px-4 section-alt" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
-            <p className="text-amber-600 text-[10px] tracking-[0.5em] uppercase mb-4">Common Questions</p>
-            <h2 className="font-luxury text-3xl sm:text-5xl text-black mb-6">Everything You Need To Know</h2>
+            <p className="text-[#B69640] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Common Questions</p>
+            <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Everything You Need To Know</h2>
             <div className="divider-gold w-20 sm:w-24" />
           </div>
           <div className="space-y-4 sm:space-y-6">
@@ -492,7 +492,7 @@ export default function Home() {
       </section>
 
       {/* GET TO KNOW US / TEAM (Split Layout like Carpet Couture) */}
-      <section className="py-20 sm:py-40 px-4" style={{ background: '#000000' }}>
+      <section className="py-20 sm:py-40 px-4" style={{ background: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 sm:gap-32">
           {/* Image Side */}
           <div className="w-full lg:w-1/2">

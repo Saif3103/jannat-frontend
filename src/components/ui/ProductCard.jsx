@@ -45,7 +45,7 @@ export default function ProductCard({ product, index = 0 }) {
       transition={{ delay: index * 0.05, duration: 0.4 }}
       className="group relative"
     >
-      <div className="bg-white rounded-[2rem] overflow-hidden border border-black/5 shadow-xl transition-all duration-500 flex flex-col group/card h-full">
+      <div className="bg-white rounded-[2rem] overflow-hidden border border-black/10 shadow-2xl transition-all duration-500 flex flex-col group/card h-full">
         {/* Horizontal Split */}
         <div className="flex flex-col sm:flex-row flex-1">
           {/* Left Side: Image Area */}
@@ -119,9 +119,9 @@ export default function ProductCard({ product, index = 0 }) {
              </div>
 
              {/* Redesigned Offer Box */}
-             <div className="mt-auto border border-[#E31E24]/20 rounded-2xl p-4 flex items-center justify-between bg-[#E31E24]/5">
+             <div className="mt-auto border border-[#E31E24]/30 rounded-2xl p-4 flex items-center justify-between bg-[#E31E24]/10">
                 <div>
-                   <p className="text-[8px] text-[#C9A84C] font-bold uppercase tracking-[0.2em] mb-1">Limited Time Offer</p>
+                   <p className="text-[8px] text-[#B69640] font-extrabold uppercase tracking-[0.2em] mb-1">Limited Time Offer</p>
                    <p className="text-[#E31E24] text-sm font-black uppercase">Flat {discount || '15'}% OFF</p>
                 </div>
                 <div className="bg-[#E31E24] text-white px-4 py-2.5 rounded-xl text-[9px] font-bold tracking-widest uppercase shadow-lg shadow-red-900/10 active:scale-95 transition-transform cursor-pointer">

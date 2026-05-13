@@ -134,7 +134,7 @@ export default function Footer() {
                   href={href} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="w-10 h-10 rounded-full border border-amber-900/10 flex items-center justify-center text-black/40 hover:border-amber-600 hover:text-amber-600 transition-all duration-300"
+                  className="w-10 h-10 rounded-full border border-amber-900/20 flex items-center justify-center text-black/60 hover:border-amber-600 hover:text-amber-600 transition-all duration-300 shadow-sm bg-white"
                 >
                   <Icon size={16} />
                 </a>

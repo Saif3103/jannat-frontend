@@ -93,15 +93,15 @@ export default function Header() {
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
 
-          <Link to="/" className="flex items-center gap-3 md:gap-4">
+          <Link to="/" className="flex items-center gap-3 md:gap-4 group">
             <img
               src="/logo.png"
               alt="Jannat Rugs Co."
-              className="h-10 w-10 md:h-12 md:w-12 aspect-square rounded-full object-cover border border-amber-500/20 shadow-[0_0_15px_rgba(201,168,76,0.15)]"
+              className="h-10 w-10 md:h-12 md:w-12 aspect-square rounded-full object-cover border border-[#C9A84C]/20 shadow-md group-hover:scale-105 transition-transform"
             />
             <div className="flex flex-col">
               <span className="font-luxury text-sm md:text-2xl text-gold-gradient tracking-[0.1em] font-bold leading-tight">JANNAT RUGS CO.</span>
-              <span className="text-[7px] md:text-[9px] text-amber-100/40 tracking-[0.4em] uppercase font-bold">Handmade Luxury Rugs</span>
+              <span className="text-[7px] md:text-[9px] text-black/60 tracking-[0.4em] uppercase font-bold">Handmade Luxury Rugs</span>
             </div>
           </Link>
         </div>
@@ -113,7 +113,7 @@ export default function Header() {
               key={link.path}
               to={link.path}
               className={`text-[11px] tracking-[0.2em] uppercase font-bold transition-all duration-300 ${
-                location.pathname === link.path ? 'text-amber-600' : 'text-black/60 hover:text-black'
+                location.pathname === link.path ? 'text-amber-600' : 'text-black/80 hover:text-black'
               }`}
             >
               {link.label}
