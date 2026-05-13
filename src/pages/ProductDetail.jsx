@@ -63,11 +63,30 @@ export default function ProductDetail() {
     navigate('/checkout');
   };
 
+  const [showSticky, setShowSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show sticky bar after scrolling down 600px
+      if (window.scrollY > 600) {
+        setShowSticky(true);
+      } else {
+        setShowSticky(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   if (loading) return <div className="pt-24"><Loader fullscreen /></div>;
   if (!product) return <div className="pt-24 text-center text-gray-400 py-20 font-luxury text-2xl">Product not found</div>;
 
   const basePrice = product.discountPrice || product.price;
-  const price = selectedSize?.price || basePrice;
+  const priceDisplay = selectedSize?.price || basePrice;
+  const originalPrice = product.price;
+  const hasDiscount = product.discountPrice && product.discountPrice < product.price;
+  const discountPercent = hasDiscount ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0;
+  
   const images = product.images?.length ? product.images : ['https://images.unsplash.com/photo-1600166898405-da9535204843?w=800'];
 
   return (
@@ -146,7 +165,7 @@ export default function ProductDetail() {
             <div className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm">
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
                   {[
-                    { icon: FiTruck, title: 'Free Delivery', desc: 'On Orders Above ₹999' },
+                    { icon: FiTruck, title: 'Free Delivery', desc: 'On Orders Above \u20B9999' },
                     { icon: FiRefreshCw, title: '7-Day Returns', desc: 'Hassle-free exchanges' },
                     { icon: FiPackage, title: 'Authenticity', desc: 'Verified Masterpiece' },
                     { icon: FiCheckCircle, title: '100% Genuine', desc: 'Premium Craftsmanship' }
@@ -181,27 +200,35 @@ export default function ProductDetail() {
               </div>
 
               <div className="space-y-1">
-                 <p className="text-4xl sm:text-5xl font-bold tracking-tight">₹{price?.toLocaleString()}</p>
+                 <div className="flex items-baseline gap-4">
+                    <p className="text-4xl sm:text-5xl font-bold tracking-tight text-[#111827]">₹{priceDisplay?.toLocaleString()}</p>
+                    {hasDiscount && (
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg text-gray-400 line-through">₹{originalPrice?.toLocaleString()}</span>
+                        <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">{discountPercent}% OFF</span>
+                      </div>
+                    )}
+                 </div>
                  <p className="text-xs text-gray-400">Inclusive of all taxes</p>
               </div>
             </div>
 
             {/* Specs Grid */}
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Material', value: product.material || 'Wool', icon: LuRug },
-                { label: 'Weave', value: 'Hand Knotted', icon: FiGrid },
-                { label: 'Origin', value: 'Turkey', icon: FiMapPin },
-                { label: 'Pile Height', value: '8-10 mm', icon: FiArrowUp }
-              ].map((s, i) => (
-                <div key={i} className="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4">
-                   <div className="text-gray-400"><s.icon size={18} /></div>
-                   <div>
-                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{s.label}</p>
-                     <p className="text-xs font-bold mt-1">{s.value}</p>
-                   </div>
-                </div>
-              ))}
+               {[
+                 { label: 'Material', value: product.material || 'Wool', icon: LuRug },
+                 { label: 'Weave', value: 'Hand Knotted', icon: FiGrid },
+                 { label: 'Origin', value: 'Turkey', icon: FiMapPin },
+                 { label: 'Pile Height', value: '8-10 mm', icon: FiArrowUp }
+               ].map((s, i) => (
+                 <div key={i} className="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 transition-all hover:shadow-sm">
+                    <div className="text-gray-400"><s.icon size={18} /></div>
+                    <div>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{s.label}</p>
+                      <p className="text-xs font-bold mt-1">{s.value}</p>
+                    </div>
+                 </div>
+               ))}
             </div>
 
             {/* Size Selector */}
@@ -240,7 +267,7 @@ export default function ProductDetail() {
                </div>
             </div>
 
-            {/* "Why You'll Love It" Section */}
+            {/* Why You'll Love It Section */}
             <div className="bg-[#FAF7F2] p-8 rounded-[2rem] border border-[#C9A84C]/20 relative">
                <div className="flex items-center gap-3 mb-4">
                   <FiHeart className="text-[#1A1A1A]" />
@@ -252,16 +279,27 @@ export default function ProductDetail() {
             </div>
 
             {/* Actions */}
-            <div className="space-y-4">
-               <button onClick={handleAddToCart} className="w-full bg-[#C9A84C] text-white py-5 rounded-2xl font-bold tracking-[0.1em] hover:bg-[#B69640] transition-all flex items-center justify-center gap-3 shadow-lg shadow-amber-500/10">
-                  <FiShoppingCart size={20} /> ADD TO CART
-               </button>
-               <button onClick={handleBuyNow} className="w-full bg-[#1A1A1A] text-white py-5 rounded-2xl font-bold tracking-[0.1em] hover:bg-black transition-all shadow-xl">
+            <div className="space-y-4 pt-4">
+               <div className="flex items-center gap-4 mb-2">
+                 <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden h-14 bg-white">
+                    <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-12 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-100">
+                      <FiMinus size={14} />
+                    </button>
+                    <span className="w-14 text-center font-bold text-lg">{qty}</span>
+                    <button onClick={() => setQty(q => q + 1)} className="w-12 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-100">
+                      <FiPlus size={14} />
+                    </button>
+                 </div>
+                 <button onClick={handleAddToCart} className="flex-1 bg-white border border-gray-200 text-[#111827] h-14 rounded-xl font-bold tracking-[0.05em] hover:bg-gray-50 transition-all flex items-center justify-center gap-3">
+                   <FiShoppingCart size={18} /> ADD TO CART
+                 </button>
+               </div>
+               <button onClick={handleBuyNow} className="w-full bg-gradient-to-r from-[#111827] to-[#1F2937] text-white h-14 rounded-xl font-bold tracking-[0.1em] hover:scale-[1.01] active:scale-95 transition-all shadow-xl">
                   BUY NOW
                </button>
                <div className="flex items-center justify-center gap-6 pt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                   <span className="flex items-center gap-2"><FiShield /> Secure Payment</span>
-                  <span className="flex items-center gap-2">COD Available</span>
+                  <span className="flex items-center gap-2"><FiTruck /> Free Shipping</span>
                </div>
             </div>
           </div>
@@ -280,6 +318,83 @@ export default function ProductDetail() {
           </div>
         )}
       </div>
+
+      {/* STICKY ADD TO CART BAR */}
+      <AnimatePresence>
+        {showSticky && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="fixed bottom-0 md:bottom-8 left-0 right-0 z-[999] px-0 md:px-4 pointer-events-none"
+          >
+            <div className="max-w-[1200px] mx-auto w-full pointer-events-auto">
+               <div className="bg-white/92 backdrop-blur-[18px] border border-white/40 shadow-[0_10px_40px_rgba(0,0,0,0.12)] rounded-none md:rounded-[22px] px-4 md:px-8 py-3 md:py-4 flex items-center justify-between gap-4">
+                  
+                  {/* Left: Product Info (Desktop Only) */}
+                  <div className="hidden md:flex items-center gap-5">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100">
+                      <img src={getImageUrl(images[0])} alt={product.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <h4 className="font-heading font-semibold text-[#111827] text-base truncate max-w-[200px]">{product.name}</h4>
+                      <div className="flex items-center gap-3 text-[13px] text-gray-500 font-medium">
+                        <span>\uD83D\uDE9A Free Shipping</span>
+                        <span>\u2022</span>
+                        <span>\uD83D\uDD12 Secure Checkout</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Middle/Left: Price Section */}
+                  <div className="flex-1 md:flex-none flex flex-col md:items-end">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl md:text-2xl font-bold text-[#111827]">\u20B9{priceDisplay?.toLocaleString()}</span>
+                      {hasDiscount && (
+                        <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">{discountPercent}% OFF</span>
+                      )}
+                    </div>
+                    {hasDiscount && (
+                      <span className="text-[10px] md:text-xs text-gray-400 line-through md:mt-0.5">\u20B9{originalPrice?.toLocaleString()}</span>
+                    )}
+                    <span className="text-[9px] text-gray-400 md:hidden">Inclusive of taxes</span>
+                  </div>
+
+                  {/* Right: Actions */}
+                  <div className="flex items-center gap-2 md:gap-4">
+                    {/* Qty Selector (Desktop Only) */}
+                    <div className="hidden lg:flex items-center border border-gray-200 rounded-xl overflow-hidden h-12 bg-white">
+                      <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-10 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-100">
+                        <FiMinus size={12} />
+                      </button>
+                      <span className="w-10 text-center font-bold text-sm">{qty}</span>
+                      <button onClick={() => setQty(q => q + 1)} className="w-10 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-100">
+                        <FiPlus size={12} />
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-2 w-full md:w-auto">
+                      <button 
+                        onClick={handleAddToCart}
+                        className="bg-white border border-gray-200 text-[#111827] h-12 md:h-14 px-4 md:px-8 rounded-xl font-bold text-[11px] md:text-sm tracking-wide hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+                      >
+                        <FiShoppingCart size={16} className="hidden md:block" /> ADD
+                      </button>
+                      <button 
+                        onClick={handleBuyNow}
+                        className="bg-gradient-to-r from-[#111827] to-[#1F2937] text-white h-12 md:h-14 px-5 md:px-10 rounded-xl font-bold text-[11px] md:text-sm tracking-wide hover:scale-[1.02] active:scale-95 transition-all shadow-lg flex items-center justify-center"
+                      >
+                        BUY NOW
+                      </button>
+                    </div>
+                  </div>
+
+               </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -288,3 +403,5 @@ export default function ProductDetail() {
 const FiGrid = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
 const FiMapPin = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>;
 const FiArrowUp = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>;
+const FiMinus = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
+const FiPlus = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
