@@ -35,12 +35,12 @@ export default function About() {
               className="text-center lg:text-left"
             >
               <p className="text-amber-500 text-[9px] sm:text-[11px] font-bold tracking-[0.4em] uppercase mb-4 sm:mb-6">About Us</p>
-              <h1 className="font-luxury text-4xl sm:text-7xl lg:text-8xl leading-[1.2] sm:leading-[1.1] mb-6 sm:mb-8 text-white">
+              <h1 className="font-luxury text-4xl sm:text-7xl lg:text-8xl leading-[1.2] sm:leading-[1.1] mb-6 sm:mb-8 text-[#1A1A1A]">
                 Rooted In Tradition, <br />
                 Crafted For <span className="text-gold-gradient italic">Generations.</span>
               </h1>
-              <div className="w-16 sm:w-20 h-1 bg-amber-500 mb-6 sm:mb-8 mx-auto lg:ml-0" />
-              <p className="text-gray-400 text-sm sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-xl mx-auto lg:ml-0">
+              <div className="w-16 sm:w-20 h-1 bg-[#C9A84C] mb-6 sm:mb-8 mx-auto lg:ml-0" />
+              <p className="text-black/50 text-sm sm:text-lg leading-relaxed mb-8 sm:mb-12 max-w-xl mx-auto lg:ml-0">
                 At Jannat Rugs Co., we believe a rug is more than just a decor piece—it's a story, a legacy, and a work of art. 
                 From timeless hand-knotted masterpieces to modern designs, every rug we create reflects our passion for 
                 preserving India's rich weaving heritage.
@@ -55,10 +55,10 @@ export default function About() {
                   { icon: GiIndianPalace, label: "Made in India" },
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center lg:items-start gap-3 group">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl border border-amber-900/30 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-black transition-all duration-500">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl border border-amber-900/10 flex items-center justify-center text-[#C9A84C] group-hover:bg-[#C9A84C] group-hover:text-black transition-all duration-500">
                       <item.icon size={18} className="sm:w-5 sm:h-5" />
                     </div>
-                    <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-tight text-gray-300">{item.label}</p>
+                    <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-tight text-black/40">{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -81,7 +81,7 @@ export default function About() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-12 py-8 sm:py-16 px-6 sm:px-12 rounded-[1.5rem] sm:rounded-[2.5rem] bg-[#121212] border border-amber-900/10 mb-20 sm:mb-32 shadow-2xl"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-12 py-8 sm:py-16 px-6 sm:px-12 rounded-[1.5rem] sm:rounded-[2.5rem] bg-white border border-amber-900/10 mb-20 sm:mb-32 shadow-xl"
           >
             {[
               { icon: FiUsers, value: "10K+", label: "Happy Customers" },
@@ -94,8 +94,8 @@ export default function About() {
                   <stat.icon size={28} className="sm:w-9 sm:h-9" />
                 </div>
                 <div>
-                  <p className="text-2xl sm:text-4xl font-luxury text-white font-bold">{stat.value}</p>
-                  <p className="text-[8px] sm:text-[10px] uppercase tracking-widest text-gray-500 font-bold">{stat.label}</p>
+                  <p className="text-2xl sm:text-4xl font-luxury text-[#1A1A1A] font-bold">{stat.value}</p>
+                  <p className="text-[8px] sm:text-[10px] uppercase tracking-widest text-black/40 font-bold">{stat.label}</p>
                 </div>
               </div>
             ))}
@@ -103,9 +103,9 @@ export default function About() {
 
           {/* Our Promise Section */}
           <div className="text-center mb-16 sm:mb-32">
-            <p className="text-amber-500 text-[9px] sm:text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Our Promise</p>
-            <h2 className="font-luxury text-4xl sm:text-6xl text-white mb-6 sm:mb-8">Quality You Can Trust</h2>
-            <p className="text-gray-400 text-sm sm:text-lg max-w-2xl mx-auto mb-10 sm:mb-16 leading-relaxed">
+            <p className="text-amber-600 text-[9px] sm:text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Our Promise</p>
+            <h2 className="font-luxury text-4xl sm:text-6xl text-[#1A1A1A] mb-6 sm:mb-8">Quality You Can Trust</h2>
+            <p className="text-black/50 text-sm sm:text-lg max-w-2xl mx-auto mb-10 sm:mb-16 leading-relaxed">
               We are committed to providing authentic, high-quality rugs that bring elegance and warmth to your space.
             </p>
 
@@ -116,14 +116,14 @@ export default function About() {
                 { icon: FiRefreshCw, title: "7-Day Returns", desc: "Hassle-free" },
                 { icon: FiHeadphones, title: "Dedicated Support", desc: "Expert guidance" },
               ].map((item, i) => (
-                <div key={i} className="bg-[#121212] border border-amber-900/10 p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] hover:border-amber-500/30 transition-all duration-500 group text-left">
+                <div key={i} className="bg-white border border-amber-900/10 p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] hover:border-amber-500/30 transition-all duration-500 group text-left shadow-sm">
                   <div className="flex items-center gap-4 sm:gap-6">
-                    <div className="text-amber-500 group-hover:rotate-[360deg] transition-transform duration-700">
+                    <div className="text-[#C9A84C] group-hover:rotate-[360deg] transition-transform duration-700">
                       <item.icon size={24} className="sm:w-7 sm:h-7" />
                     </div>
                     <div>
-                      <p className="text-white font-bold text-xs sm:text-sm tracking-wide mb-0.5 sm:mb-1 uppercase">{item.title}</p>
-                      <p className="text-gray-500 text-[8px] sm:text-[10px] font-medium tracking-wider uppercase">{item.desc}</p>
+                      <p className="text-[#1A1A1A] font-bold text-xs sm:text-sm tracking-wide mb-0.5 sm:mb-1 uppercase">{item.title}</p>
+                      <p className="text-black/40 text-[8px] sm:text-[10px] font-medium tracking-wider uppercase">{item.desc}</p>
                     </div>
                   </div>
                 </div>

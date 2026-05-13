@@ -30,10 +30,10 @@ export default function Categories() {
       </Helmet>
       <div className="pt-20 min-h-screen">
         <div className="py-20 px-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, transparent 100%)', borderBottom: '1px solid rgba(201,168,76,0.1)' }}>
-          <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-3">Find Your Style</p>
-          <h1 className="font-luxury text-5xl md:text-6xl text-white mb-4">All Categories</h1>
+          <p className="text-amber-600 text-xs tracking-[0.4em] uppercase mb-3">Find Your Style</p>
+          <h1 className="font-luxury text-5xl md:text-6xl text-[#1A1A1A] mb-4">All Categories</h1>
           <div className="divider-gold mx-auto mb-4" />
-          <p className="text-amber-100/50 max-w-lg mx-auto text-sm leading-relaxed">
+          <p className="text-black/50 max-w-lg mx-auto text-sm leading-relaxed">
             Explore our curated collections of luxury handmade carpets, crafted to transform any space into a masterpiece.
           </p>
         </div>
