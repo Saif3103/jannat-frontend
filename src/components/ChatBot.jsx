@@ -23,10 +23,10 @@ export default function ChatBot() {
   const { isChatOpen, setChatOpen } = useUIStore();
 
   const quickReplies = [
-    { text: 'How are carpets made?', icon: FiGrid },
-    { text: 'Who is the owner?', icon: FiUser },
-    { text: 'Your address?', icon: FiMapPin },
-    { text: 'Show me collections', icon: FiGrid }
+    { text: 'How are your rugs made?', icon: LuRug },
+    { text: 'Exclusive offers & discounts', icon: FiGrid },
+    { text: 'Help me choose a rug', icon: FiGrid },
+    { text: 'Track my luxury order', icon: FiMapPin }
   ];
 
   useEffect(() => {
