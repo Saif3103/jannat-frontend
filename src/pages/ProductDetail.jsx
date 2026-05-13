@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiStar, FiHeart, FiShoppingCart, FiTruck, FiShield, 
   FiRefreshCw, FiChevronLeft, FiChevronRight, FiShoppingBag,
-  FiCheckCircle, FiEdit3, FiPackage
+  FiCheckCircle, FiEdit3, FiPackage, FiMaximize
 } from 'react-icons/fi';
 import { GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { TbCircleCheckFilled } from 'react-icons/tb';
