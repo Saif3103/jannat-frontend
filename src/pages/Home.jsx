@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiUsers } from 'react-icons/fi';
-import { GiQueenCrown } from 'react-icons/gi';
+import { GiQueenCrown, GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import 'swiper/css';
@@ -12,6 +12,7 @@ import 'swiper/css/effect-fade';
 import api, { BASE_URL } from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
+import RugQuiz from '../components/ui/RugQuiz';
 
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80';
@@ -55,6 +56,7 @@ export default function Home() {
   const [bestSellers, setBestSellers] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [settings, setSettings] = useState(null);
   const [offers, setOffers] = useState([]);
@@ -219,6 +221,51 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* QUIZ ENTRY SECTION */}
+      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-[3rem] p-10 sm:p-20 shadow-[0_20px_80px_rgba(0,0,0,0.04)] border border-white relative overflow-hidden group hover:shadow-[0_40px_100px_rgba(201,168,76,0.1)] transition-all duration-700"
+          >
+            {/* Decorative Patterns */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#C9A84C]/5 to-transparent rounded-full -mr-20 -mt-20 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-[#C9A84C]/5 to-transparent rounded-full -ml-20 -mb-20 blur-3xl" />
+            
+            <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-20 relative z-10">
+               <div className="w-full lg:w-[45%] flex justify-center">
+                  <div className="relative">
+                    <div className="w-48 h-48 sm:w-64 sm:h-64 bg-[#FAF7F2] rounded-[3rem] rotate-12 flex items-center justify-center border border-[#C9A84C]/10 group-hover:rotate-6 transition-transform duration-700">
+                       <LuRug size={80} className="text-[#C9A84C] -rotate-12 group-hover:-rotate-6 transition-transform duration-700" />
+                    </div>
+                    <div className="absolute -top-4 -right-4 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center animate-bounce">
+                       <span className="text-3xl">✨</span>
+                    </div>
+                  </div>
+               </div>
+               
+               <div className="w-full lg:w-[55%] text-center lg:text-left">
+                  <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Personalized Discovery</p>
+                  <h2 className="font-heading text-4xl sm:text-6xl text-[#1A1A1A] mb-8 leading-tight">Find Your <span className="italic font-luxury">Perfect</span> Rug</h2>
+                  <p className="text-[#64748B] text-base sm:text-xl leading-relaxed mb-12 max-w-xl mx-auto lg:mx-0">
+                    Not sure which rug fits your space? Answer 5 quick questions and our smart collection engine will curate a personalized selection just for you.
+                  </p>
+                  <button 
+                    onClick={() => setIsQuizOpen(true)}
+                    className="btn-gold inline-flex items-center justify-center gap-4 px-12 py-5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-widest shadow-2xl hover:shadow-[#C9A84C]/20"
+                  >
+                    Start The Quiz <FiArrowRight size={20} />
+                  </button>
+               </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <RugQuiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
 
       {/* FEATURED COLLECTION */}
       <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
