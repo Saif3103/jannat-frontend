@@ -40,7 +40,7 @@ export default function RugShowcaseStrip() {
           initial={{ x: 0 }}
           animate={{ x: isPaused ? undefined : "-50%" }}
           transition={{
-            duration: 60, // Slow premium speed
+            duration: 35, // Faster but still premium
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop"
