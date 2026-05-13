@@ -155,3 +155,38 @@ export const useUIStore = create((set, get) => ({
   setChatOpen: (val) => set({ isChatOpen: val }),
   setSearchOpen: (val) => set({ isSearchOpen: val }),
 }));
+
+// RECOMMENDATION STORE
+export const useRecommendationStore = create(
+  persist(
+    (set, get) => ({
+      recentlyViewed: [],
+      preferences: {
+        styles: [],
+        colors: [],
+        categories: [],
+        maxPrice: 0
+      },
+
+      addViewedProduct: (product) => {
+        if (!product || !product._id) return;
+        const current = get().recentlyViewed;
+        const filtered = current.filter(p => p._id !== product._id);
+        const updated = [product, ...filtered].slice(0, 10);
+        
+        // Update preferences based on this product
+        const prefs = { ...get().preferences };
+        if (product.category && !prefs.categories.includes(product.category)) {
+          prefs.categories = [product.category, ...prefs.categories].slice(0, 5);
+        }
+        const productPrice = product.discountPrice || product.price;
+        if (productPrice > prefs.maxPrice) prefs.maxPrice = productPrice;
+        
+        set({ recentlyViewed: updated, preferences: prefs });
+      },
+
+      clearRecentlyViewed: () => set({ recentlyViewed: [] }),
+    }),
+    { name: 'jannat_recommendations' }
+  )
+);

@@ -4,6 +4,7 @@ import { FiShoppingCart, FiTrash2, FiArrowLeft, FiArrowRight } from 'react-icons
 import { Helmet } from 'react-helmet-async';
 import { useCartStore, useAuthStore } from '../store';
 import { BASE_URL } from '../api/axios';
+import SmartRecommendations from '../components/ui/SmartRecommendations';
 
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=200';
@@ -107,6 +108,11 @@ export default function Cart() {
             </div>
           </div>
         )}
+      </div>
+      
+      {/* SMART RECOMMENDATIONS */}
+      <div className="max-w-7xl mx-auto px-4">
+        <SmartRecommendations title="Handpicked For Your Space" />
       </div>
     </>
   );

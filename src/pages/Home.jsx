@@ -15,6 +15,7 @@ import Loader from '../components/ui/Loader';
 import RugQuiz from '../components/ui/RugQuiz';
 import OfferPill from '../components/ui/OfferPill';
 import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
+import SmartRecommendations from '../components/ui/SmartRecommendations';
 
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80';
@@ -528,6 +529,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* SMART RECOMMENDATIONS */}
+      <SmartRecommendations title="Luxury Styles You May Love" />
 
       {/* CTA BANNER (Cinematic Full Width) */}
       <section className="relative py-24 sm:py-40 px-4 flex items-center justify-center overflow-hidden border-t border-amber-900/20">

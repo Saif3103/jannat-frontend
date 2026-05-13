@@ -6,6 +6,7 @@ import { useAuthStore, useWishlistStore } from '../store';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
+import SmartRecommendations from '../components/ui/SmartRecommendations';
 
 export default function Wishlist() {
   const { user } = useAuthStore();
@@ -41,6 +42,11 @@ export default function Wishlist() {
             {products.map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
           </div>
         )}
+      </div>
+
+      {/* SMART RECOMMENDATIONS */}
+      <div className="max-w-7xl mx-auto px-4">
+        <SmartRecommendations title="Luxury Styles You May Love" />
       </div>
     </>
   );

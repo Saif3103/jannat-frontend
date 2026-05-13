@@ -10,10 +10,11 @@ import {
 import { GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { TbCircleCheckFilled } from 'react-icons/tb';
 import api, { BASE_URL } from '../api/axios';
-import { useCartStore, useAuthStore, useWishlistStore } from '../store';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
 import RoomVisualizer from '../components/ui/RoomVisualizer';
+import SmartRecommendations from '../components/ui/SmartRecommendations';
+import { useCartStore, useAuthStore, useWishlistStore, useRecommendationStore } from '../store';
 import toast from 'react-hot-toast';
 
 const getImageUrl = (url) => {
@@ -42,6 +43,7 @@ export default function ProductDetail() {
     window.scrollTo(0, 0);
     api.get(`/products/${id}`).then(r => {
       setProduct(r.data.product);
+      useRecommendationStore.getState().addViewedProduct(r.data.product);
       setActiveImg(0);
       if (r.data.product.sizes?.length) setSelectedSize(r.data.product.sizes[0]);
       
@@ -321,18 +323,8 @@ export default function ProductDetail() {
           product={product} 
         />
 
-        {/* RELATED PRODUCTS */}
-        {related.length > 0 && (
-          <div className="mt-40 pt-20 border-t border-gray-100">
-            <div className="text-center mb-16">
-              <p className="text-[#1A1A1A] text-[11px] font-bold tracking-[0.4em] uppercase mb-4">You May Also Like</p>
-              <h2 className="font-luxury text-5xl">Related Masterpieces</h2>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {related.map((p, i) => <ProductCard key={p._id} product={p} index={i} />)}
-            </div>
-          </div>
-        )}
+        {/* SMART RECOMMENDATIONS */}
+        <SmartRecommendations currentProduct={product} title="Perfect Matches For Your Space" />
       </div>
 
       {/* STICKY ADD TO CART BAR */}
