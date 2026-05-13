@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { FiShoppingBag } from 'react-icons/fi';
 
 const STATUS_OPTIONS = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned'];
 const STATUS_COLORS = { Pending: '#C9A84C', Confirmed: '#3b82f6', Processing: '#8b5cf6', Shipped: '#f97316', Delivered: '#22c55e', Cancelled: '#ef4444', Returned: '#6b7280' };
