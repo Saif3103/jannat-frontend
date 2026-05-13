@@ -125,62 +125,42 @@ export default function ProductDetail() {
               </button>
             </div>
 
-            {/* Feature Icons Grid */}
-            <div className="grid grid-cols-4 gap-4 py-10 border-t border-gray-100/50">
+            {/* Feature Icons Grid - Clean Unified Layout */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-12 border-t border-b border-gray-100/50">
                {[
-                 { icon: LuRug, label: '100% Wool' },
-                 { icon: FiGrid, label: 'Hand Knotted' },
+                 { icon: LuRug, label: '100% Premium Wool' },
+                 { icon: FiGrid, label: 'Traditional Hand Knotted' },
                  { icon: FiShield, label: 'Durable & Long Lasting' },
                  { icon: FiStar, label: 'Rich Colors & Design' }
                ].map((f, i) => (
-                 <div key={i} className="flex flex-col items-center text-center">
-                   <f.icon size={24} className="text-[#1A1A1A] mb-3 opacity-80" />
-                   <p className="text-[10px] font-bold text-[#1A1A1A]/60 uppercase tracking-widest leading-tight">{f.label}</p>
+                 <div key={i} className="flex flex-col items-center text-center group">
+                   <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] flex items-center justify-center text-[#1A1A1A] mb-4 transition-all group-hover:bg-[#C9A84C] group-hover:text-white">
+                     <f.icon size={20} />
+                   </div>
+                   <p className="text-[10px] font-bold text-[#1A1A1A]/80 uppercase tracking-widest leading-tight px-2">{f.label}</p>
                  </div>
                ))}
             </div>
 
-            {/* Policy Info */}
-            <div className="bg-white rounded-[2rem] p-8 border border-gray-100 grid grid-cols-2 gap-y-6 gap-x-10">
-               <div className="flex items-start gap-4">
-                 <FiTruck size={20} className="text-[#1A1A1A] mt-1" />
-                 <div>
-                   <p className="text-xs font-bold">Free Delivery</p>
-                   <p className="text-[10px] text-gray-400">On Orders Above ₹999</p>
-                 </div>
-               </div>
-               <div className="flex items-start gap-4">
-                 <FiRefreshCw size={20} className="text-[#1A1A1A] mt-1" />
-                 <div>
-                   <p className="text-xs font-bold">7-Day Return Policy</p>
-                 </div>
-               </div>
-               <div className="flex items-start gap-4">
-                 <FiPackage size={20} className="text-[#1A1A1A] mt-1" />
-                 <div>
-                   <p className="text-xs font-bold">Authenticity</p>
-                 </div>
-               </div>
-               <div className="flex items-start gap-4">
-                 <FiCheckCircle size={20} className="text-[#1A1A1A] mt-1" />
-                 <div>
-                   <p className="text-xs font-bold">100% Genuine Product</p>
-                 </div>
-               </div>
-            </div>
-
-            {/* Social Notification Mockup */}
-            <div className="hidden lg:flex items-center gap-4 bg-white/60 backdrop-blur-md p-4 rounded-2xl border border-white/20 w-max shadow-sm">
-               <div className="w-12 h-12 rounded-lg overflow-hidden">
-                 <img src={getImageUrl(images[0])} alt="" className="w-full h-full object-cover" />
-               </div>
-               <div>
-                 <p className="text-[10px] text-gray-400">Someone in Delhi just added</p>
-                 <p className="text-[11px] font-bold">{product.name} to cart</p>
-                 <p className="text-[9px] text-gray-400">2 mins ago</p>
-               </div>
-               <div className="ml-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-[#1A1A1A]">
-                 <FiShoppingCart size={14} />
+            {/* Policy Info - Premium Organized Layout */}
+            <div className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
+                  {[
+                    { icon: FiTruck, title: 'Free Delivery', desc: 'On Orders Above ₹999' },
+                    { icon: FiRefreshCw, title: '7-Day Returns', desc: 'Hassle-free exchanges' },
+                    { icon: FiPackage, title: 'Authenticity', desc: 'Verified Masterpiece' },
+                    { icon: FiCheckCircle, title: '100% Genuine', desc: 'Premium Craftsmanship' }
+                  ].map((p, i) => (
+                    <div key={i} className="flex items-center gap-5">
+                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-[#1A1A1A]/60 border border-gray-100">
+                         <p.icon size={18} />
+                       </div>
+                       <div>
+                         <p className="text-xs font-bold text-[#1A1A1A]">{p.title}</p>
+                         <p className="text-[10px] text-gray-400 mt-0.5">{p.desc}</p>
+                       </div>
+                    </div>
+                  ))}
                </div>
             </div>
           </div>
