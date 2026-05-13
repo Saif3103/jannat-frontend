@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiPackage, FiUsers } from 'react-icons/fi';
+import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward } from 'react-icons/fi';
 import { GiQueenCrown } from 'react-icons/gi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
@@ -145,96 +145,76 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FESTIVE OFFER BANNER (100% EXACT MATCH) */}
-      <section className="py-12 sm:py-24 px-4 bg-[#000000] relative overflow-hidden">
-        {/* Cinematic Background Elements */}
-        <div className="absolute inset-0 opacity-40 pointer-events-none">
-          {/* Gold Sparkles */}
-          {[...Array(30)].map((_, i) => (
-            <motion.div 
-              key={i}
-              animate={{ 
-                y: [0, -40, 0], 
-                opacity: [0, 0.8, 0],
-                scale: [0.5, 1.2, 0.5]
-              }}
-              transition={{ 
-                duration: Math.random() * 4 + 4, 
-                repeat: Infinity,
-                delay: Math.random() * 5
-              }}
-              className="absolute w-1 h-1 bg-[#C9A84C] rounded-full"
-              style={{ 
-                left: `${Math.random() * 100}%`, 
-                top: `${Math.random() * 100}%`,
-                boxShadow: '0 0 8px #C9A84C'
-              }}
-            />
-          ))}
-          
-          {/* Gift Box Decors (Mockups using icons/shapes for "Same to Same" feel) */}
-          <div className="absolute left-10 bottom-10 opacity-30 rotate-12 scale-150"><FiPackage size={40} className="text-[#C9A84C]"/></div>
-          <div className="absolute right-10 top-10 opacity-30 -rotate-12 scale-150"><FiPackage size={40} className="text-[#C9A84C]"/></div>
-        </div>
-
-        <div className="max-w-[1400px] mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 bg-[#000000] p-10 sm:p-20 rounded-[3rem] border border-white/5 shadow-[0_0_100px_rgba(201,168,76,0.05)] relative overflow-hidden">
-            
-            {/* Left: Premium Sunburst Seal */}
-            <div className="flex-shrink-0 relative">
-               <motion.div 
-                 animate={{ rotate: 360 }}
-                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                 className="w-48 h-48 sm:w-56 sm:h-56 relative flex items-center justify-center"
-               >
-                 {/* Sunburst SVG Shape */}
-                 <svg viewBox="0 0 100 100" className="absolute w-full h-full text-[#C9A84C]">
-                    <path fill="currentColor" d="M50 0 L54 10 L64 5 L65 15 L75 14 L73 24 L83 26 L78 36 L87 40 L80 48 L88 54 L79 60 L85 68 L74 71 L78 81 L67 80 L68 90 L58 87 L55 97 L46 91 L41 100 L34 92 L27 99 L23 89 L14 93 L13 83 L3 83 L7 73 L0 68 L8 61 L2 52 L10 48 L5 38 L14 36 L13 26 L23 27 L25 17 L35 20 L38 10 L47 14 Z" />
-                 </svg>
-                 <div className="relative z-10 flex flex-col items-center justify-center text-black text-center font-luxury">
-                    <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1">Limited Time</p>
-                    <p className="text-2xl sm:text-3xl font-black uppercase leading-tight">Offer</p>
-                    <div className="w-10 h-0.5 bg-black/20 my-1" />
-                 </div>
-               </motion.div>
+      {/* OFFERS SLIDER SECTION */}
+      {offers.length > 0 && (
+        <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
+              <p className="text-amber-400 text-[10px] tracking-[0.5em] uppercase mb-4">Limited Time Offers</p>
+              <h2 className="font-luxury text-3xl md:text-5xl text-white mb-4 sm:6">Exclusive Promotions</h2>
+              <div className="divider-gold w-20 sm:w-24" />
             </div>
 
-            {/* Center: Hero Promo Text */}
-            <div className="flex-1 text-center lg:text-left px-4">
-               <p className="text-[#C9A84C] text-sm sm:text-base font-bold uppercase tracking-[0.5em] mb-6">Festive Offer</p>
-               <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white leading-none mb-6 tracking-tight">UP TO 20% OFF</h2>
-               <p className="text-white/60 text-xl sm:text-2xl font-bold tracking-[0.3em] uppercase">On Handpicked Rugs</p>
-            </div>
-
-            {/* Right: Trust Icons & Shop CTA */}
-            <div className="flex flex-col items-center lg:items-end gap-10">
-               {/* Trust Badges Grid */}
-               <div className="flex gap-8 sm:gap-12">
-                  <div className="flex flex-col items-center">
-                     <div className="text-white mb-3"><FiShield size={28}/></div>
-                     <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Premium<br/>Quality</p>
+            <Swiper
+              modules={[Autoplay, Pagination, EffectFade]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              pagination={{ clickable: true }}
+              className="rounded-[24px] sm:rounded-[40px] overflow-hidden border border-amber-900/20 shadow-[0_0_80px_rgba(201,168,76,0.1)]"
+            >
+              {offers.map((offer, i) => (
+                <SwiperSlide key={offer._id}>
+                  <div className="relative h-[350px] md:h-[550px] lg:h-[650px] w-full group">
+                    <img 
+                      src={getImageUrl(offer.image)} 
+                      alt={offer.title} 
+                      className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex items-center p-6 md:p-20">
+                      <div className="max-w-2xl">
+                        <motion.p 
+                          initial={{ opacity: 0, x: -30 }} 
+                          whileInView={{ opacity: 1, x: 0 }}
+                          className="text-amber-400 font-bold tracking-[0.3em] uppercase text-[10px] sm:text-xs mb-4 sm:6"
+                        >
+                          {offer.subtitle || 'Flash Sale'}
+                        </motion.p>
+                        <motion.h3 
+                          initial={{ opacity: 0, x: -30 }} 
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-6 sm:8 leading-tight"
+                        >
+                          {offer.title}
+                        </motion.h3>
+                        <motion.div 
+                          initial={{ opacity: 0, x: -30 }} 
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:6"
+                        >
+                          {offer.link && (
+                            <Link to={offer.link} className="btn-gold px-8 sm:px-12 py-3 sm:py-5 text-xs sm:text-sm uppercase tracking-widest">
+                              Claim Offer
+                            </Link>
+                          )}
+                          {offer.code && (
+                            <div className="px-4 sm:px-6 py-2 sm:py-4 border border-amber-500/30 rounded-lg sm:rounded-xl bg-amber-500/5 backdrop-blur-md">
+                              <p className="text-[8px] sm:text-[10px] text-amber-100/40 uppercase mb-0 sm:1">Use Code</p>
+                              <p className="text-amber-400 font-bold tracking-widest text-base sm:text-lg">{offer.code}</p>
+                            </div>
+                          )}
+                        </motion.div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col items-center">
-                     <div className="text-white mb-3"><FiAward size={28}/></div>
-                     <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Timeless<br/>Designs</p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                     <div className="text-white mb-3"><FiUsers size={28}/></div>
-                     <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Trusted by<br/>Thousands</p>
-                  </div>
-               </div>
-
-               {/* CTA Button */}
-               <div className="text-center lg:text-right">
-                  <Link to="/shop" className="group flex items-center gap-4 bg-gradient-to-r from-[#C9A84C] to-[#E5C266] text-black px-12 py-5 rounded-xl font-black text-sm tracking-[0.2em] uppercase hover:scale-105 transition-all shadow-[0_15px_30px_rgba(201,168,76,0.3)]">
-                     Shop Now <FiArrowRight className="group-hover:translate-x-2 transition-transform" strokeWidth={3} />
-                  </Link>
-                  <p className="text-[11px] text-white/30 mt-6 uppercase tracking-[0.2em] font-medium">Offer valid till 31st May 2024</p>
-               </div>
-            </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
       <section className="py-16 sm:py-24 border-y border-amber-900/10" style={{ background: '#050505' }}>
@@ -275,7 +255,7 @@ export default function Home() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {featuredProducts.length > 0 ? featuredProducts.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               )) : (
@@ -395,7 +375,7 @@ export default function Home() {
               {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {bestSellers.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               ))}
@@ -418,7 +398,7 @@ export default function Home() {
                 {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {newArrivals.map((p, i) => (
                   <ProductCard key={p._id} product={p} index={i} />
                 ))}
