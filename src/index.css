@@ -30,6 +30,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto !important; /* Native fast scroll for mobile */
+  }
+}
+
 /* Global Mobile Optimizations */
 @media (max-width: 768px) {
   * {
@@ -37,11 +43,21 @@ html {
   }
   
   .glass-card, .header-blur, .bg-white\/92, .bg-white\/88 {
-    backdrop-filter: blur(8px) !important; /* Lighter blur for mobile GPU */
+    backdrop-filter: none !important; /* Disable blur on mobile for max speed */
+    background-color: rgba(255, 255, 255, 0.98) !important;
   }
 
   .product-card:hover {
-    transform: none !important; /* Disable hover lifts on mobile to prevent stutter */
+    transform: none !important;
+  }
+  
+  .parallax-bg {
+    background-attachment: scroll !important; /* Disable parallax on mobile */
+  }
+
+  section {
+    content-visibility: auto; /* Skip rendering off-screen sections */
+    contain-intrinsic-size: 0 500px;
   }
 }
 
