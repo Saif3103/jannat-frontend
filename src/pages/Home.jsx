@@ -147,75 +147,55 @@ export default function Home() {
       </section>
 
       {/* OFFERS SLIDER SECTION */}
-      {offers.length > 0 && (
-        <section className="py-12 sm:py-24 px-4 section-alt relative overflow-hidden border-y border-black/5">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-              <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Limited Time Offers</p>
-              <h2 className="font-luxury text-3xl md:text-5xl text-[#1A1A1A] mb-4 sm:6">Exclusive Promotions</h2>
-              <div className="divider-gold w-20 sm:w-24" />
-            </div>
-
-            <Swiper
-              modules={[Autoplay, Pagination, EffectFade]}
-              effect="fade"
-              fadeEffect={{ crossFade: true }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              pagination={{ clickable: true }}
-              className="rounded-[24px] sm:rounded-[40px] overflow-hidden border border-amber-900/20 shadow-[0_0_80px_rgba(201,168,76,0.1)]"
-            >
-              {offers.map((offer, i) => (
-                <SwiperSlide key={offer._id}>
-                  <div className="relative h-[350px] md:h-[550px] lg:h-[650px] w-full group">
-                    <img 
-                      src={getImageUrl(offer.image)} 
-                      alt={offer.title} 
-                      className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex items-center p-6 md:p-20">
-                      <div className="max-w-2xl">
-                        <motion.p 
-                          initial={{ opacity: 0, x: -30 }} 
-                          whileInView={{ opacity: 1, x: 0 }}
-                          className="text-[#1A1A1A] font-bold tracking-[0.3em] uppercase text-[10px] sm:text-xs mb-4 sm:6"
-                        >
-                          {offer.subtitle || 'Flash Sale'}
-                        </motion.p>
-                        <motion.h3 
-                          initial={{ opacity: 0, x: -30 }} 
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.1 }}
-                          className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-6 sm:8 leading-tight"
-                        >
-                          {offer.title}
-                        </motion.h3>
-                        <motion.div 
-                          initial={{ opacity: 0, x: -30 }} 
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.2 }}
-                          className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:6"
-                        >
-                          {offer.link && (
-                            <Link to={offer.link} className="btn-gold px-8 sm:px-12 py-3 sm:py-5 text-xs sm:text-sm uppercase tracking-widest">
-                              Claim Offer
-                            </Link>
-                          )}
-                          {offer.code && (
-                            <div className="px-4 sm:px-6 py-2 sm:py-4 border border-amber-500/30 rounded-lg sm:rounded-xl bg-amber-500/5 backdrop-blur-md">
-                              <p className="text-[8px] sm:text-[10px] text-[#1A1A1A]/40 uppercase mb-0 sm:1">Use Code</p>
-                              <p className="text-[#1A1A1A] font-bold tracking-widest text-base sm:text-lg">{offer.code}</p>
-                            </div>
-                          )}
-                        </motion.div>
+      {/* FESTIVE OFFER BANNER - Restored High Impact Layout */}
+      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-amber-500/10 to-transparent pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 sm:gap-20">
+             <div className="max-w-3xl text-center lg:text-left">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+                   <p className="text-amber-500 font-black tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-6 flex items-center justify-center lg:justify-start gap-3">
+                      <span className="w-8 h-px bg-amber-500" /> Limited Time Exclusive
+                   </p>
+                   <h2 className="font-luxury text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-10 leading-[1.05]">
+                      Festive Luxury <br />
+                      <span className="text-gold-gradient italic">Collection 2024</span>
+                   </h2>
+                   <p className="text-white/60 text-base sm:text-xl font-medium leading-relaxed mb-12 max-w-2xl mx-auto lg:mx-0">
+                      Celebrate the season with handcrafted masterpieces. Get up to <span className="text-white font-black text-2xl sm:text-3xl mx-1 underline decoration-amber-500 underline-offset-8">50% OFF</span> on our most exclusive hand-knotted rugs.
+                   </p>
+                   
+                   {/* Trust Badges Grid */}
+                   <div className="flex flex-wrap justify-center lg:justify-start gap-8 sm:gap-12">
+                      <div className="flex flex-col items-center">
+                         <div className="text-[#C9A84C] mb-3"><FiShield size={28}/></div>
+                         <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Premium<br/>Quality</p>
                       </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+                      <div className="flex flex-col items-center">
+                         <div className="text-[#C9A84C] mb-3"><FiAward size={28}/></div>
+                         <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Timeless<br/>Designs</p>
+                      </div>
+                      <div className="flex flex-col items-center">
+                         <div className="text-[#C9A84C] mb-3"><FiUsers size={28}/></div>
+                         <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Trusted by<br/>Thousands</p>
+                      </div>
+                   </div>
+                </motion.div>
+             </div>
+
+             {/* CTA Button */}
+             <div className="text-center lg:text-right">
+                <Link to="/shop" className="group flex items-center gap-4 bg-gradient-to-r from-[#C9A84C] to-[#E5C266] text-black px-12 py-5 rounded-xl font-black text-sm tracking-[0.2em] uppercase hover:scale-105 transition-all shadow-[0_15px_30px_rgba(201,168,76,0.3)]">
+                   Shop Now <FiArrowRight className="group-hover:translate-x-2 transition-transform" strokeWidth={3} />
+                </Link>
+                <p className="text-[11px] text-white/30 mt-6 uppercase tracking-[0.2em] font-medium">Exclusive Season Offers</p>
+             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
       <section className="py-16 sm:py-24 border-y border-amber-900/5" style={{ background: '#FFFFFF' }}>
