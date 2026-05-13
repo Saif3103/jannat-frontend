@@ -46,10 +46,10 @@ export default function OfferPill() {
     <>
       <AnimatePresence>
         <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[998] flex items-end pointer-events-none"
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          className="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[998] flex items-end pointer-events-none"
         >
           <div className="relative pointer-events-auto">
             {/* Close Button (only when expanded) */}
