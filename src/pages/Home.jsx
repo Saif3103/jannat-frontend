@@ -103,8 +103,6 @@ export default function Home() {
       </Helmet>
 
       <div className="bg-transparent">
-        {/* DYNAMIC SMART HERO BANNER */}
-        <DynamicHero logo="/logo.png" />
 
       {/* OFFERS SLIDER SECTION */}
       {/* FESTIVE OFFER BANNER - Restored High Impact Layout */}
