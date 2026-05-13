@@ -47,17 +47,6 @@ export default function SmartHero({ videoUrl, logo }) {
           transition={{ duration: 1.2 }}
           className="flex flex-col items-center"
         >
-          {/* Brand Logo */}
-          {logo && (
-             <motion.img 
-               src={logo} 
-               alt="Jannat Rugs Logo" 
-               className="w-44 h-44 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full object-cover mb-12 border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.2)]"
-               whileHover={{ scale: 1.05 }}
-               transition={{ duration: 0.5 }}
-             />
-          )}
-
           {/* Dynamic Time-Based Greeting */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -73,15 +62,26 @@ export default function SmartHero({ videoUrl, logo }) {
                  {greeting.icon} {greeting.text}
                  <span className="w-8 h-px bg-amber-500/30" />
                </p>
-               
-               <h1 className="font-luxury text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] text-gold-gradient font-bold tracking-widest leading-none mb-4" style={{ filter: 'drop-shadow(0 4px 15px rgba(0,0,0,0.3))' }}>
-                 JANNAT
-               </h1>
-               <h2 className="font-luxury text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-gold-gradient font-bold tracking-[0.3em] leading-none mb-12" style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.2))' }}>
-                 RUGS CO.
-               </h2>
             </motion.div>
           </AnimatePresence>
+
+          {/* Brand Logo */}
+          {logo && (
+             <motion.img 
+               src={logo} 
+               alt="Jannat Rugs Logo" 
+               className="w-44 h-44 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full object-cover mb-12 border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.2)]"
+               whileHover={{ scale: 1.05 }}
+               transition={{ duration: 0.5 }}
+             />
+          )}
+
+          <h1 className="font-luxury text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] text-gold-gradient font-bold tracking-widest leading-none mb-4" style={{ filter: 'drop-shadow(0 4px 15px rgba(0,0,0,0.3))' }}>
+            JANNAT
+          </h1>
+          <h2 className="font-luxury text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-gold-gradient font-bold tracking-[0.3em] leading-none mb-12" style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.2))' }}>
+            RUGS CO.
+          </h2>
 
           <Link to="/shop" className="btn-gold flex items-center justify-center gap-3 px-10 sm:px-14 py-4 sm:py-6 text-sm sm:text-xl shadow-[0_20px_50px_rgba(201,168,76,0.3)] group">
             Explore Collection <FiArrowRight className="group-hover:translate-x-2 transition-transform" strokeWidth={3} />
