@@ -9,6 +9,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
+import AIStylist from './components/AIStylist';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -97,6 +98,7 @@ export default function App() {
         </AnimatePresence>
       </main>
       {!isAdminPage && <Footer />}
+      {!isAdminPage && <AIStylist />}
       {!isAdminPage && <ChatBot />}
       {!isAdminPage && <WhatsAppButton />}
     </div>

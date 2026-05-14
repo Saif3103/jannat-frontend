@@ -71,8 +71,14 @@ export default function SmartHero({ videoUrl, logo }) {
                src={logo} 
                alt="Jannat Rugs Logo" 
                className="w-44 h-44 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full object-cover mb-12 border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.2)]"
+               initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+               animate={{ opacity: 1, scale: 1, rotate: 0 }}
                whileHover={{ scale: 1.05 }}
-               transition={{ duration: 0.5 }}
+               transition={{ 
+                 duration: 1.5, 
+                 ease: "easeOut",
+                 scale: { type: "spring", stiffness: 100 }
+               }}
              />
           )}
 
