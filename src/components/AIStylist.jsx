@@ -5,33 +5,31 @@ import {
   FiChevronRight, FiChevronLeft, FiHeart, FiShoppingCart, 
   FiMessageCircle, FiGrid, FiLayout, FiLayers, FiCheckCircle,
   FiInfo, FiStar, FiShare2, FiZap, FiTarget, FiHome, FiSettings,
-  FiActivity, FiShield, FiTrendingUp, FiArrowRight, FiRotateCcw
+  FiActivity, FiShield, FiTrendingUp
 } from 'react-icons/fi';
-import { LuPaintbrush, LuLayoutTemplate, LuArrowRightLeft, LuSparkles, LuBox, LuWaves, LuChevronLeft } from 'react-icons/lu';
+import { LuPaintbrush, LuLayoutTemplate, LuArrowRightLeft, LuSparkles, LuBox } from 'react-icons/lu';
 import { useCartStore, useWishlistStore, useAuthStore, useUIStore } from '../store';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
-// --- Styled Components & Constants ---
-
-const LUXURY_GOLD = "#C8A96A";
+// --- Sub-components ---
 
 const FeatureCard = ({ icon: Icon, title, description, onClick }) => (
   <motion.button
-    whileHover={{ scale: 1.02, backgroundColor: "rgba(200, 169, 106, 0.05)" }}
+    whileHover={{ y: -5, scale: 1.02, backgroundColor: 'rgba(200, 169, 106, 0.08)' }}
     whileTap={{ scale: 0.98 }}
     onClick={onClick}
-    className="relative w-full flex items-center gap-5 p-6 rounded-[28px] bg-white/[0.02] border border-white/5 hover:border-[#C8A96A]/30 transition-all duration-300 group text-left overflow-hidden shadow-sm"
+    className="w-full flex items-center gap-5 p-6 rounded-[28px] bg-white/5 border border-white/10 hover:border-[#C8A96A]/50 transition-all group text-left"
   >
-    <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-white/5 flex items-center justify-center text-[#C8A96A] group-hover:bg-[#C8A96A] group-hover:text-black transition-all duration-300">
+    <div className="w-14 h-14 rounded-2xl bg-[#C8A96A]/10 flex items-center justify-center text-[#C8A96A] group-hover:bg-[#C8A96A] group-hover:text-black transition-all duration-500 shadow-lg shadow-[#C8A96A]/5">
       <Icon size={24} />
     </div>
     <div className="flex-1">
-      <h4 className="text-white font-bold text-lg leading-tight group-hover:text-[#C8A96A] transition-colors">{title}</h4>
-      <p className="text-white/40 text-[11px] mt-1 font-medium tracking-tight line-clamp-1">{description}</p>
+      <h4 className="text-white font-semibold text-lg leading-tight group-hover:text-[#C8A96A] transition-colors">{title}</h4>
+      <p className="text-white/40 text-xs mt-1.5 leading-relaxed font-light">{description}</p>
     </div>
-    <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:bg-[#C8A96A] group-hover:text-black transition-all">
-      <FiChevronRight />
+    <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center group-hover:border-[#C8A96A]/30 group-hover:bg-[#C8A96A]/5 transition-all">
+      <FiChevronRight className="text-white/20 group-hover:text-[#C8A96A]" size={14} />
     </div>
   </motion.button>
 );
@@ -43,32 +41,52 @@ const RecommendedProduct = ({ product }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="bg-[#111] border border-white/5 rounded-3xl overflow-hidden group hover:border-[#C8A96A]/20 transition-all"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-[#121212] border border-white/5 rounded-[24px] overflow-hidden group hover:border-[#C8A96A]/20 transition-all shadow-xl"
     >
-      <div className="relative aspect-[1/1.2] overflow-hidden">
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#1a1a1a]">
         <img 
-          src={product.images?.[0] || 'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?q=80&w=300'} 
+          src={product.images?.[0] || 'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?q=80&w=300&h=300&auto=format&fit=crop'} 
           alt={product.name} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         />
-        <button 
-          onClick={(e) => { e.stopPropagation(); toggleWishlist(product._id, !!user); }}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-[#C8A96A] transition-colors"
-        >
-          <FiHeart size={14} fill={isInWishlist(product._id) ? LUXURY_GOLD : 'none'} className={isInWishlist(product._id) ? 'text-[#C8A96A]' : ''} />
-        </button>
+        <div className="absolute top-3 right-3">
+          <button 
+            onClick={(e) => { e.stopPropagation(); toggleWishlist(product._id, !!user); }}
+            className={`p-2.5 rounded-full backdrop-blur-md transition-all ${isInWishlist(product._id) ? 'bg-red-500 text-white' : 'bg-black/40 text-white/70 hover:bg-[#C8A96A] hover:text-black'}`}
+          >
+            <FiHeart size={14} fill={isInWishlist(product._id) ? 'currentColor' : 'none'} />
+          </button>
+        </div>
+        <div className="absolute top-3 left-3">
+          <div className="bg-[#C8A96A] text-black text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-[#C8A96A]/20">
+            95% Match
+          </div>
+        </div>
       </div>
-      <div className="p-4 space-y-3">
-        <h5 className="text-white text-xs font-bold truncate tracking-tight">{product.name}</h5>
-        <div className="flex items-center justify-between">
-          <p className="text-[#C8A96A] font-black text-sm">₹{product.price?.toLocaleString()}</p>
+      <div className="p-5 space-y-3 text-left">
+        <div>
+          <h5 className="text-white text-sm font-semibold line-clamp-1 mb-1 tracking-tight">{product.name}</h5>
+          <p className="text-[#C8A96A] font-bold text-base">₹{product.price?.toLocaleString()}</p>
+        </div>
+        
+        <p className="text-[10px] text-white/40 leading-relaxed font-light border-l border-[#C8A96A]/30 pl-3">
+          "Matches your room's warm beige tones perfectly."
+        </p>
+
+        <div className="flex gap-2">
+          <button 
+             onClick={() => (window.location.href = `/product/${product._id}`)}
+             className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest transition-all"
+          >
+            View
+          </button>
           <button 
             onClick={() => addToCart(product)}
-            className="w-8 h-8 rounded-lg bg-[#C8A96A] text-black flex items-center justify-center hover:scale-110 transition-all"
+            className="w-12 h-10 rounded-xl bg-[#C8A96A] hover:bg-[#D4B97E] text-black flex items-center justify-center transition-all shadow-lg shadow-[#C8A96A]/10"
           >
-            <FiShoppingCart size={14} />
+            <FiShoppingCart size={16} />
           </button>
         </div>
       </div>
@@ -76,20 +94,60 @@ const RecommendedProduct = ({ product }) => {
   );
 };
 
+const ComparisonCard = ({ products }) => (
+  <motion.div 
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="bg-white/5 border border-white/10 rounded-[32px] overflow-hidden"
+  >
+    <div className="p-6 bg-gradient-to-r from-[#C8A96A]/20 to-transparent flex items-center gap-3 border-b border-white/5">
+      <LuArrowRightLeft className="text-[#C8A96A]" size={20} />
+      <span className="text-white font-bold text-xs uppercase tracking-widest">Intelligent Comparison</span>
+    </div>
+    <div className="grid grid-cols-2 divide-x divide-white/5">
+      {products.map((p, idx) => (
+        <div key={idx} className="p-6 space-y-6">
+          <div className="aspect-square rounded-2xl overflow-hidden mb-4 border border-white/5">
+             <img src={p.images?.[0]} className="w-full h-full object-cover" alt="" />
+          </div>
+          <div className="space-y-4">
+            <div>
+              <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold mb-1">Material</p>
+              <p className="text-white text-sm font-medium">{p.material || 'Premium Silk & Wool'}</p>
+            </div>
+            <div>
+              <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold mb-1">Luxury Feel</p>
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map(s => <FiStar key={s} size={10} className={s <= 4 ? "text-[#C8A96A] fill-[#C8A96A]" : "text-white/10"} />)}
+              </div>
+            </div>
+            <div>
+              <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold mb-1">Best For</p>
+              <p className="text-[#C8A96A] text-xs font-semibold">{idx === 0 ? 'High-end Living Rooms' : 'Minimalist Bedrooms'}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div className="p-6 bg-[#C8A96A]/5 border-t border-white/5 text-center">
+       <p className="text-white/60 text-xs italic">"Winner: {products[0].name} is the best overall match for your room size and lighting."</p>
+    </div>
+  </motion.div>
+);
+
 // --- Main Assistant Component ---
 
 export default function AIStylist() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeFeature, setActiveFeature] = useState('home'); 
+  const [activeFeature, setActiveFeature] = useState('home'); // home, stylist, dream, compare, match
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState('');
-  const [stylistStep, setStylistStep] = useState(0); 
+  const [stylistStep, setStylistStep] = useState(0); // For the wizard
   const [stylistData, setStylistData] = useState({});
   const [recommendations, setRecommendations] = useState([]);
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [comparisonItems, setComparisonItems] = useState([]);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
   
   const { isChatOpen, setChatOpen } = useUIStore();
 
@@ -99,7 +157,7 @@ export default function AIStylist() {
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
-    if (isChatOpen) setChatOpen(false); 
+    if (isChatOpen) setChatOpen(false); // Close old chat if opening new one
   };
 
   const handleReset = () => {
@@ -108,7 +166,7 @@ export default function AIStylist() {
     setStylistStep(0);
     setStylistData({});
     setRecommendations([]);
-    setUploadedImage(null);
+    setComparisonItems([]);
   };
 
   const addBotMessage = (text, delay = 1000) => {
@@ -122,33 +180,19 @@ export default function AIStylist() {
   const handleFeatureSelect = (feature) => {
     setActiveFeature(feature);
     if (feature === 'stylist') {
-      setMessages([{ role: 'bot', content: "Welcome! I'm your Rug Stylist. Which room are we styling today?", timestamp: new Date() }]);
+      setMessages([{ role: 'bot', content: "Welcome to the Jannat Rug Stylist. Let's find your perfect masterpiece. Which room are we styling today?", timestamp: new Date() }]);
       setStylistStep(1);
     } else if (feature === 'dream') {
-      setMessages([{ role: 'bot', content: "Let's build your dream room. Describe the look you're going for!", timestamp: new Date() }]);
+      setMessages([{ role: 'bot', content: "Describe your dream room or upload an inspiration image, and I'll curate the perfect luxury look for you.", timestamp: new Date() }]);
+    } else if (feature === 'compare') {
+      setMessages([{ role: 'bot', content: "Comparing our top selections for your aesthetic. Here is an intelligent breakdown of their characteristics.", timestamp: new Date() }]);
+      // Mock comparison
+      setComparisonItems([
+        { _id: '1', name: 'Royal Persian Silk', price: 45000, images: ['https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=300'], material: '100% Hand-tufted Silk' },
+        { _id: '2', name: 'Modern Minimal Ivory', price: 18500, images: ['https://images.unsplash.com/photo-1615529328331-f8917597711f?q=80&w=300'], material: 'Organic Bamboo Silk & Wool' },
+      ]);
     } else if (feature === 'match') {
-      setMessages([{ role: 'bot', content: "Upload a photo of your room, and I'll find the perfect rug match for you.", timestamp: new Date() }]);
-    }
-  };
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setUploadedImage(event.target.result);
-        setMessages(prev => [...prev, { role: 'user', content: "Uploaded a room photo.", type: 'image', image: event.target.result, timestamp: new Date() }]);
-        setIsTyping(true);
-        setTimeout(() => {
-          setIsTyping(false);
-          addBotMessage("Great! I've analyzed your space. I suggest a neutral tone rug to complement your natural lighting.");
-          setRecommendations([
-            { _id: '1', name: 'Royal Persian Silk', price: 45000, images: ['https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400'] },
-            { _id: '2', name: 'Modern Ivory', price: 18500, images: ['https://images.unsplash.com/photo-1615529328331-f8917597711f?w=400'] },
-          ]);
-        }, 1500);
-      };
-      reader.readAsDataURL(file);
+      setMessages([{ role: 'bot', content: "Upload a photo of your room, and my AI will analyze its architecture, lighting, and tones to suggest the ideal rug.", timestamp: new Date() }]);
     }
   };
 
@@ -159,22 +203,23 @@ export default function AIStylist() {
 
     if (stylistStep === 1) {
       setStylistStep(2);
-      addBotMessage("Got it. And what style do you prefer?");
+      addBotMessage("Exquisite choice. And what style aesthetic defines this space?");
     } else if (stylistStep === 2) {
       setStylistStep(3);
-      addBotMessage("Nice! What's your budget range?");
+      addBotMessage("Understood. What is the investment range you have in mind for this masterpiece?");
     } else if (stylistStep === 3) {
       setStylistStep(4);
-      addBotMessage("And finally, any specific color preference?");
+      addBotMessage("Finally, which color palette should we prioritize?");
     } else if (stylistStep === 4) {
       setStylistStep(5);
       setIsTyping(true);
       setTimeout(() => {
         setRecommendations([
-          { _id: '1', name: 'Royal Persian Silk', price: 45000, images: ['https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400'] },
-          { _id: '2', name: 'Modern Minimal', price: 18500, images: ['https://images.unsplash.com/photo-1615529328331-f8917597711f?w=400'] },
+          { _id: '1', name: 'Royal Persian Silk', price: 45000, images: ['https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=300'] },
+          { _id: '2', name: 'Modern Minimal Ivory', price: 18500, images: ['https://images.unsplash.com/photo-1615529328331-f8917597711f?q=80&w=300'] },
+          { _id: '3', name: 'Vintage Gold Medallion', price: 32000, images: ['https://images.unsplash.com/photo-1600166898405-da9535204843?q=80&w=300'] },
         ]);
-        addBotMessage("Excellent choice. Based on your preferences, I've curated these perfect rugs for you.");
+        addBotMessage(`Based on your luxury ${newData.color || ''} ${newData.room || ''} style, these rugs will create a warm and elegant atmosphere.`);
         setIsTyping(false);
       }, 1500);
     }
@@ -190,175 +235,179 @@ export default function AIStylist() {
     setTimeout(() => {
       setIsTyping(false);
       if (activeFeature === 'dream') {
-        addBotMessage("Beautiful vision. I recommend focusing on earthy tones and wool textures for that specific look.");
+        addBotMessage("✨ Analyzing your vision... That sounds like a 'Warm Modern Luxury' aesthetic. Here are some elements to recreate this look: \n\n✔ Neutral tones\n✔ Soft ambient lighting\n✔ Natural textures\n\nI recommend starting with these base pieces:");
         setRecommendations([
-          { _id: '4', name: 'Natural Wool Textures', price: 12000, images: ['https://images.unsplash.com/photo-1594020429108-59207558605c?w=400'] },
+          { _id: '4', name: 'Neutral Wool Textures', price: 12000, images: ['https://images.unsplash.com/photo-1594020429108-59207558605c?q=80&w=300'] },
+          { _id: '5', name: 'Abstract Charcoal Silk', price: 55000, images: ['https://images.unsplash.com/photo-1534889156217-d34a09b4543d?q=80&w=300'] },
         ]);
+      } else if (msg.toLowerCase().includes('support') || msg.toLowerCase().includes('help')) {
+        addBotMessage("I am connecting you with our human concierge for specialized support. One moment...");
+        setTimeout(() => { setIsOpen(false); setChatOpen(true); }, 2000);
       } else {
-        addBotMessage("I understand. To create a luxurious feel, silk rugs are usually the best choice. Would you like to see some?");
+        addBotMessage("As your luxury stylist, I suggest focusing on materials like hand-tufted silk for that premium feel. Would you like to see our latest royal collection?");
       }
-    }, 1200);
+    }, 1500);
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] font-['Inter',_sans-serif]">
-      {/* Hidden File Input */}
-      <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
-
-      {/* Improved Floating Button (User Friendly & Elegant) */}
+    <div className="fixed bottom-[18px] right-[18px] sm:bottom-[24px] sm:right-[24px] z-[9999] font-['Inter',_sans-serif]">
+      {/* Floating Button */}
       {!isOpen && (
         <motion.button
           onClick={toggleOpen}
-          initial={{ scale: 0, y: 50 }}
+          initial={{ scale: 0, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-3 bg-[#111] border border-white/10 p-2 pr-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] group"
+          className="flex items-center gap-3 px-7 py-4.5 rounded-full bg-white/90 backdrop-blur-[20px] border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.15)] group relative overflow-hidden"
         >
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#C8A96A] to-[#B69640] flex items-center justify-center text-black shadow-lg">
-             <LuSparkles size={24} className="group-hover:rotate-12 transition-transform" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C8A96A]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+          <div className="relative flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C8A96A] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C8A96A]"></span>
           </div>
-          <div className="text-left">
-            <p className="text-[10px] font-black uppercase tracking-widest text-[#C8A96A]">Jannat AI</p>
-            <p className="text-white text-xs font-bold">Ask Stylist</p>
-          </div>
+          <span className="text-[#111827] font-bold text-sm tracking-tight">✨ Style My Room</span>
         </motion.button>
       )}
 
-      {/* Assistant Side Panel */}
+      {/* Side Panel Modal */}
       <AnimatePresence>
         {isOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={toggleOpen}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm -z-10"
+              className="fixed inset-0 bg-black/40 backdrop-blur-md -z-10"
             />
             
             <motion.div
               initial={{ x: '100%', opacity: 0.5 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0.5 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-[#0A0A0A] border-l border-white/5 shadow-2xl flex flex-col overflow-hidden"
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="fixed top-0 right-0 h-[100dvh] w-full sm:w-[520px] bg-[#0A0A0A] border-l border-white/10 shadow-[-20px_0_60px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
             >
               {/* Header */}
-              <div className="p-6 bg-[#111] border-b border-white/5 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {activeFeature !== 'home' && (
-                    <button onClick={handleReset} className="text-white/40 hover:text-white p-2">
-                      <LuChevronLeft size={24} />
-                    </button>
-                  )}
+              <div className="p-8 border-b border-white/5 bg-gradient-to-br from-[#121212] to-transparent relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#C8A96A]/5 blur-[100px] -z-10" />
+                <div className="flex items-center justify-between relative z-10">
                   <div>
-                    <h3 className="text-white font-bold text-xl flex items-center gap-2">
-                      Jannat <span className="text-[#C8A96A]">AI</span>
-                    </h3>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest">Active Stylist</span>
+                    <div className="flex items-center gap-3 mb-1.5">
+                      <div className="p-2 rounded-xl bg-[#C8A96A]/10 text-[#C8A96A]">
+                        <LuSparkles size={22} />
+                      </div>
+                      <h2 className="text-white font-bold text-2xl tracking-tight font-['Poppins']">Jannat AI</h2>
                     </div>
+                    <p className="text-white/40 text-[13px] font-light tracking-wide uppercase tracking-[0.1em]">Premium Interior Stylist</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    {activeFeature !== 'home' && (
+                      <button onClick={handleReset} className="p-3 rounded-2xl bg-white/5 text-white/40 hover:text-[#C8A96A] hover:bg-[#C8A96A]/10 transition-all border border-white/5"><FiHome size={20} /></button>
+                    )}
+                    <button onClick={toggleOpen} className="p-3 rounded-2xl bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-all border border-white/5"><FiX size={20} /></button>
                   </div>
                 </div>
-                <button onClick={toggleOpen} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-all">
-                  <FiX size={20} />
-                </button>
               </div>
 
               {/* Content Area */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-hide">
+              <div className="flex-1 overflow-y-auto p-8 space-y-10 scrollbar-hide">
                 {activeFeature === 'home' ? (
                   <div className="space-y-8">
-                    {/* Welcome Section */}
-                    <div className="bg-gradient-to-br from-[#111] to-[#0A0A0A] p-6 rounded-3xl border border-white/5">
-                      <h4 className="text-white font-bold text-2xl mb-2">Hello! How can I help?</h4>
-                      <p className="text-white/40 text-sm">I'm your AI Interior Stylist, here to help you find the perfect rug for your home.</p>
+                    <div className="space-y-4">
+                      <h3 className="text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">Select an Experience</h3>
+                      <div className="grid grid-cols-1 gap-4">
+                        <FeatureCard icon={LuPaintbrush} title="AI Rug Stylist" description="Curated recommendations for your specific room." onClick={() => handleFeatureSelect('stylist')} />
+                        <FeatureCard icon={LuLayoutTemplate} title="Build My Dream Room" description="Full interior concept creation from your vision." onClick={() => handleFeatureSelect('dream')} />
+                        <FeatureCard icon={LuArrowRightLeft} title="Compare For Me" description="Intelligent technical breakdown of rug choices." onClick={() => handleFeatureSelect('compare')} />
+                        <FeatureCard icon={FiMaximize2} title="Room Match AI" description="Analyze your space from a single photograph." onClick={() => handleFeatureSelect('match')} />
+                      </div>
                     </div>
 
-                    {/* Features Grid */}
-                    <div className="grid grid-cols-1 gap-4">
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 px-2">Choose a Service</p>
-                      <FeatureCard icon={LuPaintbrush} title="AI Rug Stylist" description="Personalized rug recommendations." onClick={() => handleFeatureSelect('stylist')} />
-                      <FeatureCard icon={LuLayoutTemplate} title="Dream Studio" description="Visualize your room concept." onClick={() => handleFeatureSelect('dream')} />
-                      <FeatureCard icon={FiMaximize2} title="Spatial Match" description="Match rug to your room photo." onClick={() => handleFeatureSelect('match')} />
-                    </div>
-
-                    {/* Quick Insight */}
-                    <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5">
-                       <div className="flex items-center gap-3 mb-3 text-[#C8A96A]">
-                          <FiTrendingUp size={18} />
-                          <span className="text-[10px] font-black uppercase tracking-widest">Trending Insight</span>
-                       </div>
-                       <p className="text-white/60 text-xs leading-relaxed italic">"Neutral tones and silk textures are currently popular for modern living spaces."</p>
+                    <div className="relative p-8 rounded-[32px] bg-gradient-to-br from-[#121212] to-black border border-white/5 overflow-hidden group">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8A96A]/10 blur-[50px] group-hover:bg-[#C8A96A]/20 transition-all" />
+                      <div className="flex items-center gap-3 mb-4 text-[#C8A96A]">
+                        <div className="w-8 h-8 rounded-lg bg-[#C8A96A]/10 flex items-center justify-center"><FiTrendingUp size={16} /></div>
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">Smart Insights</span>
+                      </div>
+                      <p className="text-white/70 text-[15px] leading-relaxed mb-6 font-light">
+                        "Your saved collection suggests a preference for <span className="text-[#C8A96A] font-medium">Beige Persian</span> aesthetics. Would you like to see how these look in your living room?"
+                      </p>
+                      <button className="px-6 py-3 rounded-xl bg-white/5 hover:bg-[#C8A96A] text-white hover:text-black transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                        Try Room Preview <FiChevronRight />
+                      </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col min-h-full">
-                    <div className="flex-1 space-y-6">
+                  <div className="flex flex-col min-h-full pb-10">
+                    <div className="flex-1 space-y-8">
                       {messages.map((msg, i) => (
                         <motion.div 
                           key={i} 
-                          initial={{ opacity: 0, y: 10 }}
+                          initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
                           className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
-                          <div className={`max-w-[85%] p-4 rounded-2xl text-[14px] leading-relaxed ${
+                          <div className={`max-w-[88%] p-5 rounded-[24px] text-[15px] leading-relaxed shadow-2xl ${
                             msg.role === 'user' 
-                              ? 'bg-[#C8A96A] text-black font-bold rounded-tr-none' 
-                              : 'bg-white/5 text-white/90 rounded-tl-none border border-white/5'
+                              ? 'bg-[#C8A96A] text-black font-semibold rounded-tr-none shadow-[#C8A96A]/10' 
+                              : 'bg-white/5 border border-white/10 text-white/90 rounded-tl-none font-light'
                           }`}>
-                            {msg.type === 'image' ? (
-                              <div className="space-y-3">
-                                <img src={msg.image} className="rounded-xl w-full" alt="Uploaded" />
-                                <p className="text-xs">{msg.content}</p>
-                              </div>
-                            ) : msg.content}
+                            {msg.content}
                           </div>
                         </motion.div>
                       ))}
 
-                      {/* Options for Stylist */}
+                      {/* Feature: Stylist Steps */}
                       {activeFeature === 'stylist' && !isTyping && stylistStep < 5 && (
-                        <div className="flex flex-wrap gap-2 pt-4">
-                          {stylistStep === 1 && ['Living Room', 'Bedroom', 'Office'].map(opt => (
-                            <button key={opt} onClick={() => handleStylistChoice('room', opt)} className="px-5 py-2.5 rounded-full border border-[#C8A96A]/20 bg-[#C8A96A]/5 text-[#C8A96A] text-[11px] font-bold hover:bg-[#C8A96A] hover:text-black transition-all uppercase tracking-widest">{opt}</button>
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-wrap gap-3 pt-4">
+                          {stylistStep === 1 && ['Living Room', 'Bedroom', 'Dining', 'Office'].map(opt => (
+                            <button key={opt} onClick={() => handleStylistChoice('room', opt)} className="px-6 py-3 rounded-2xl border border-white/5 bg-white/5 text-white/60 hover:bg-[#C8A96A] hover:text-black hover:border-transparent transition-all text-xs font-bold uppercase tracking-widest">{opt}</button>
                           ))}
-                          {stylistStep === 2 && ['Modern', 'Classic', 'Minimal'].map(opt => (
-                            <button key={opt} onClick={() => handleStylistChoice('style', opt)} className="px-5 py-2.5 rounded-full border border-[#C8A96A]/20 bg-[#C8A96A]/5 text-[#C8A96A] text-[11px] font-bold hover:bg-[#C8A96A] hover:text-black transition-all uppercase tracking-widest">{opt}</button>
+                          {stylistStep === 2 && ['Modern', 'Persian', 'Minimal', 'Royal Luxury', 'Contemporary'].map(opt => (
+                            <button key={opt} onClick={() => handleStylistChoice('style', opt)} className="px-6 py-3 rounded-2xl border border-white/5 bg-white/5 text-white/60 hover:bg-[#C8A96A] hover:text-black hover:border-transparent transition-all text-xs font-bold uppercase tracking-widest">{opt}</button>
                           ))}
-                          {stylistStep === 3 && ['₹10k-25k', '₹25k-50k', '₹50k+'].map(opt => (
-                            <button key={opt} onClick={() => handleStylistChoice('budget', opt)} className="px-5 py-2.5 rounded-full border border-[#C8A96A]/20 bg-[#C8A96A]/5 text-[#C8A96A] text-[11px] font-bold hover:bg-[#C8A96A] hover:text-black transition-all uppercase tracking-widest">{opt}</button>
+                          {stylistStep === 3 && ['Under ₹10k', '₹10k–₹25k', '₹25k–₹50k', '₹50k+'].map(opt => (
+                            <button key={opt} onClick={() => handleStylistChoice('budget', opt)} className="px-6 py-3 rounded-2xl border border-white/5 bg-white/5 text-white/60 hover:bg-[#C8A96A] hover:text-black hover:border-transparent transition-all text-xs font-bold uppercase tracking-widest">{opt}</button>
                           ))}
-                        </div>
+                          {stylistStep === 4 && ['Beige', 'Ivory', 'Black Luxury', 'Neutral', 'Royal Gold'].map(opt => (
+                            <button key={opt} onClick={() => handleStylistChoice('color', opt)} className="px-6 py-3 rounded-2xl border border-white/5 bg-white/5 text-white/60 hover:bg-[#C8A96A] hover:text-black hover:border-transparent transition-all text-xs font-bold uppercase tracking-widest">{opt}</button>
+                          ))}
+                        </motion.div>
+                      )}
+
+                      {/* Feature: Comparison */}
+                      {activeFeature === 'compare' && comparisonItems.length > 0 && (
+                        <ComparisonCard products={comparisonItems} />
                       )}
 
                       {isTyping && (
-                        <div className="flex gap-2 p-3 bg-white/5 rounded-2xl w-16">
-                          <div className="w-1.5 h-1.5 bg-[#C8A96A] rounded-full animate-bounce" />
-                          <div className="w-1.5 h-1.5 bg-[#C8A96A] rounded-full animate-bounce [animation-delay:0.2s]" />
-                          <div className="w-1.5 h-1.5 bg-[#C8A96A] rounded-full animate-bounce [animation-delay:0.4s]" />
+                        <div className="flex gap-2.5 p-5 bg-white/5 border border-white/10 rounded-[24px] rounded-tl-none w-20 shadow-xl">
+                          <motion.div animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 1, delay: 0 }} className="w-1.5 h-1.5 bg-[#C8A96A] rounded-full" />
+                          <motion.div animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-1.5 h-1.5 bg-[#C8A96A] rounded-full" />
+                          <motion.div animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="w-1.5 h-1.5 bg-[#C8A96A] rounded-full" />
                         </div>
                       )}
 
                       {recommendations.length > 0 && (
-                        <div className="grid grid-cols-2 gap-4 pt-4">
+                        <div className="grid grid-cols-2 gap-5 mt-4">
                           {recommendations.map(p => <RecommendedProduct key={p._id} product={p} />)}
                         </div>
                       )}
 
-                      {activeFeature === 'match' && !uploadedImage && (
-                        <div 
-                          onClick={() => fileInputRef.current.click()}
-                          className="mt-4 border-2 border-dashed border-white/10 rounded-3xl p-10 flex flex-col items-center justify-center text-center gap-4 hover:border-[#C8A96A]/40 hover:bg-white/[0.02] cursor-pointer transition-all"
+                      {activeFeature === 'match' && recommendations.length === 0 && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                          className="mt-4 border-2 border-dashed border-white/10 rounded-[40px] p-16 flex flex-col items-center justify-center text-center space-y-6 hover:border-[#C8A96A]/40 hover:bg-[#C8A96A]/5 transition-all group cursor-pointer shadow-inner"
                         >
-                          <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-[#C8A96A]">
-                            <FiCamera size={32} />
+                          <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-white/20 group-hover:text-[#C8A96A] group-hover:bg-[#C8A96A]/10 transition-all duration-500 transform group-hover:rotate-12">
+                            <FiCamera size={40} />
                           </div>
                           <div>
-                            <p className="text-white font-bold">Snap or Upload</p>
-                            <p className="text-white/20 text-[10px] uppercase tracking-widest mt-1">Room Photo Analysis</p>
+                            <p className="text-white font-bold text-lg tracking-tight">Visualize In Your Room</p>
+                            <p className="text-white/30 text-xs mt-2 font-light tracking-wide uppercase">Camera • Gallery • Drag & Drop</p>
                           </div>
-                        </div>
+                          <button className="px-8 py-3.5 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:scale-105 transition-all">Select Image</button>
+                        </motion.div>
                       )}
 
                       <div ref={messagesEndRef} />
@@ -369,22 +418,24 @@ export default function AIStylist() {
 
               {/* Input Area */}
               {activeFeature !== 'home' && (
-                <div className="p-6 bg-[#111] border-t border-white/5">
-                  <div className="flex items-center gap-3 bg-white/[0.03] rounded-2xl p-2 border border-white/5 focus-within:border-[#C8A96A]/50 transition-all">
-                    <button onClick={() => fileInputRef.current.click()} className="w-10 h-10 flex items-center justify-center text-white/20 hover:text-[#C8A96A] transition-all">
-                      <FiCamera size={20} />
-                    </button>
+                <div className="p-8 bg-[#0D0D0D] border-t border-white/5 relative">
+                  <div className="flex items-center gap-4 bg-white/5 rounded-[28px] p-2.5 pr-5 border border-white/10 focus-within:border-[#C8A96A]/50 transition-all shadow-2xl">
+                    <button className="p-4 rounded-full text-white/30 hover:text-[#C8A96A] transition-all"><FiCamera size={22} /></button>
                     <input 
                       type="text" value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSend()}
-                      placeholder="Type a message..." 
-                      className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-white/20 h-10"
+                      placeholder="Consult Jannat AI..." 
+                      className="flex-1 bg-transparent border-none outline-none text-white text-[15px] placeholder:text-white/10 h-14 font-light"
                     />
                     <button 
                       onClick={handleSend} disabled={!input.trim()}
-                      className="w-10 h-10 rounded-xl bg-[#C8A96A] text-black flex items-center justify-center disabled:opacity-20 transition-all shadow-lg active:scale-90"
+                      className="w-12 h-12 rounded-2xl bg-[#C8A96A] text-black flex items-center justify-center disabled:opacity-20 disabled:grayscale transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[#C8A96A]/20"
                     >
-                      <FiSend size={18} />
+                      <FiSend size={20} />
                     </button>
+                  </div>
+                  <div className="flex items-center justify-center gap-3 mt-6">
+                    <FiShield className="text-white/10" size={12} />
+                    <span className="text-[9px] text-white/20 font-black uppercase tracking-[0.3em]">Premium Data Privacy • AI Secured</span>
                   </div>
                 </div>
               )}

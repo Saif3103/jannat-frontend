@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
 
@@ -40,22 +41,38 @@ export default function SmartHero({ videoUrl, logo }) {
       </div>
 
       <div className="relative z-10 px-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center w-full">
-        <div className="flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+          className="flex flex-col items-center"
+        >
           {/* Dynamic Time-Based Greeting */}
-          <div className="flex flex-col items-center">
-             <p className="text-amber-500 font-black tracking-[0.6em] uppercase text-[10px] sm:text-xs mb-6 flex items-center gap-4">
-               <span className="w-8 h-px bg-amber-500/30" />
-               {greeting.icon} {greeting.text}
-               <span className="w-8 h-px bg-amber-500/30" />
-             </p>
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={greeting.text}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col items-center"
+            >
+               <p className="text-amber-500 font-black tracking-[0.6em] uppercase text-[10px] sm:text-xs mb-6 flex items-center gap-4">
+                 <span className="w-8 h-px bg-amber-500/30" />
+                 {greeting.icon} {greeting.text}
+                 <span className="w-8 h-px bg-amber-500/30" />
+               </p>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Brand Logo */}
           {logo && (
-             <img 
+             <motion.img 
                src={logo} 
                alt="Jannat Rugs Logo" 
                className="w-44 h-44 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full object-cover mb-12 border-2 border-amber-500/20 shadow-[0_0_50px_rgba(201,168,76,0.2)]"
+               whileHover={{ scale: 1.05 }}
+               transition={{ duration: 0.5 }}
              />
           )}
 
@@ -69,15 +86,19 @@ export default function SmartHero({ videoUrl, logo }) {
           <Link to="/shop" className="btn-gold flex items-center justify-center gap-3 px-10 sm:px-14 py-4 sm:py-6 text-sm sm:text-xl shadow-[0_20px_50px_rgba(201,168,76,0.3)] group">
             Explore Collection <FiArrowRight className="group-hover:translate-x-2 transition-transform" strokeWidth={3} />
           </Link>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Scroll indicator - Static */}
+      {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 hidden md:block">
-        <div className="flex flex-col items-center gap-4">
+        <motion.div 
+          animate={{ y: [0, 15, 0] }} 
+          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-4"
+        >
           <span className="text-[10px] text-white/30 uppercase tracking-[0.4em] font-bold">Explore</span>
           <div className="w-px h-20 bg-gradient-to-b from-amber-400 to-transparent" />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

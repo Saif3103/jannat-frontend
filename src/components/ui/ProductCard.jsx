@@ -33,7 +33,13 @@ export default function ProductCard({ product, index = 0 }) {
   const inWishlist = isInWishlist(product._id);
 
   return (
-    <div className="group h-full">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05, duration: 0.5 }}
+      className="group h-full"
+    >
       <div className="bg-white rounded-[2rem] overflow-hidden border border-black/[0.08] shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full relative group/card">
         
         {/* Image Area - Vertical Layout */}
@@ -124,7 +130,7 @@ export default function ProductCard({ product, index = 0 }) {
            </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

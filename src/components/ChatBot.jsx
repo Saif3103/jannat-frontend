@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiX, FiSend, FiMic, FiMicOff, FiRefreshCw, FiUser, FiMapPin, FiMessageCircle, FiGrid, FiChevronDown, FiShield } from 'react-icons/fi';
+import { FiX, FiSend, FiMic, FiMicOff, FiRefreshCw, FiUser, FiMapPin, FiMessageCircle, FiGrid, FiChevronDown, FiShield, FiHome, FiCamera, FiStar, FiHeart, FiShoppingCart } from 'react-icons/fi';
 import { GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { TbRobot } from 'react-icons/tb';
+import { LuPaintbrush, LuLayoutTemplate, LuArrowRightLeft, LuSparkles } from 'react-icons/lu';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { useUIStore } from '../store';
+import { useUIStore, useCartStore, useWishlistStore, useAuthStore } from '../store';
 
 const initialMessage = {
   from: 'bot',
@@ -17,10 +18,13 @@ export default function ChatBot() {
   const [messages, setMessages] = useState([initialMessage]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   const [showQuickQuestions, setShowQuickQuestions] = useState(true);
+  const [activeMode, setActiveMode] = useState('chat'); // chat, stylist, dream, compare, match
   const messagesEndRef = useRef(null);
   const { isChatOpen, setChatOpen } = useUIStore();
+  const { addToCart } = useCartStore();
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { user } = useAuthStore();
 
   const quickReplies = [
     { text: 'How are your rugs made?', icon: LuRug },
@@ -60,6 +64,7 @@ export default function ChatBot() {
 
   const resetChat = () => {
     setMessages([initialMessage]);
+    setActiveMode('chat');
     toast.success('Conversation reset');
   };
 
@@ -82,15 +87,15 @@ export default function ChatBot() {
                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0D0D0D]" />
                 </div>
                 <div>
-                  <h3 className="font-luxury text-xl text-[#1A1A1A]/90 tracking-wide">Jannat AI Assistant</h3>
+                  <h3 className="font-luxury text-xl text-white/90 tracking-wide">Jannat AI Stylist</h3>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span className="text-[10px] font-medium text-white/40 tracking-wider">Online • Always here for you</span>
+                    <span className="text-[10px] font-medium text-white/40 tracking-wider">Premium Assistant Online</span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={resetChat} className="p-2.5 rounded-full bg-white/5 text-white/40 hover:text-[#1A1A1A] transition-all border border-white/5">
+                <button onClick={resetChat} className="p-2.5 rounded-full bg-white/5 text-white/40 hover:text-white transition-all border border-white/5">
                   <FiRefreshCw size={16} />
                 </button>
                 <button onClick={() => setChatOpen(false)} className="p-2.5 rounded-full bg-white/5 text-white/40 hover:text-white transition-all border border-white/5">
@@ -99,36 +104,54 @@ export default function ChatBot() {
               </div>
             </div>
 
-            {/* Messages */}
+            {/* AI Stylist Modes Selector */}
+            <div className="px-6 py-3 border-b border-white/5 bg-white/5 flex gap-2 overflow-x-auto scrollbar-hide">
+               <button onClick={() => setActiveMode('chat')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${activeMode === 'chat' ? 'bg-amber-500 text-black' : 'bg-white/5 text-white/40'}`}>Chat</button>
+               <button onClick={() => setActiveMode('stylist')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${activeMode === 'stylist' ? 'bg-amber-500 text-black' : 'bg-white/5 text-white/40'}`}>Stylist</button>
+               <button onClick={() => setActiveMode('dream')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${activeMode === 'dream' ? 'bg-amber-500 text-black' : 'bg-white/5 text-white/40'}`}>Dream Room</button>
+               <button onClick={() => setActiveMode('compare')} className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${activeMode === 'compare' ? 'bg-amber-500 text-black' : 'bg-white/5 text-white/40'}`}>Compare</button>
+            </div>
+
+            {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-hide">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex gap-4 ${msg.from === 'user' ? 'flex-row-reverse' : ''}`}>
-                  {msg.from === 'bot' && (
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-[#1A1A1A]/50">
-                      <TbRobot size={22} />
-                    </div>
-                  )}
-                  <div className={`flex flex-col gap-2 max-w-[80%] ${msg.from === 'user' ? 'items-end' : ''}`}>
-                    <div className={`px-5 py-4 rounded-3xl text-sm leading-relaxed ${
-                      msg.from === 'user' 
-                        ? 'bg-amber-500 text-black font-bold' 
-                        : 'bg-[#1A1A1A] text-amber-50/90 border border-white/5'
-                    }`}>
-                      {msg.from === 'bot' && i === 0 ? (
-                        <div className="space-y-4">
-                          <p className="font-luxury text-xl text-[#1A1A1A] leading-tight">Welcome to Jannat Rugs Co. Luxury Experience. ✨</p>
-                          <p>I am your Personal Concierge. How may I assist you in finding the perfect masterpiece for your home today?</p>
+              {activeMode === 'chat' ? (
+                <>
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`flex gap-4 ${msg.from === 'user' ? 'flex-row-reverse' : ''}`}>
+                      {msg.from === 'bot' && (
+                        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shrink-0 text-white/50">
+                          <TbRobot size={22} />
                         </div>
-                      ) : msg.text}
+                      )}
+                      <div className={`flex flex-col gap-2 max-w-[80%] ${msg.from === 'user' ? 'items-end' : ''}`}>
+                        <div className={`px-5 py-4 rounded-3xl text-sm leading-relaxed ${
+                          msg.from === 'user' 
+                            ? 'bg-amber-500 text-black font-bold' 
+                            : 'bg-[#1A1A1A] text-amber-50/90 border border-white/5'
+                        }`}>
+                          {msg.text}
+                        </div>
+                        <span className="text-[9px] text-white/20 font-bold uppercase tracking-widest px-2">{msg.time}</span>
+                      </div>
                     </div>
-                    <span className="text-[9px] text-white/20 font-bold uppercase tracking-widest px-2">{msg.time}</span>
-                  </div>
+                  ))}
+                </>
+              ) : (
+                <div className="space-y-6 text-center py-10">
+                   <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto text-amber-500">
+                      {activeMode === 'stylist' && <LuPaintbrush size={40} />}
+                      {activeMode === 'dream' && <LuLayoutTemplate size={40} />}
+                      {activeMode === 'compare' && <LuArrowRightLeft size={40} />}
+                   </div>
+                   <h4 className="text-white font-luxury text-2xl uppercase tracking-widest">{activeMode} AI Mode</h4>
+                   <p className="text-white/40 text-sm">This premium AI feature is being integrated into our unified concierge. Use the chat for now or explore our shop for recommendations.</p>
+                   <button onClick={() => setActiveMode('chat')} className="btn-gold px-8 py-3 text-[10px]">Back to Chat</button>
                 </div>
-              ))}
+              )}
               {isTyping && (
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
-                    <TbRobot size={20} className="text-[#1A1A1A]/50 animate-pulse" />
+                    <TbRobot size={20} className="text-white/50 animate-pulse" />
                   </div>
                   <div className="bg-[#1A1A1A] px-5 py-4 rounded-3xl border border-white/5">
                     <div className="flex gap-1.5">
@@ -143,43 +166,44 @@ export default function ChatBot() {
             </div>
 
             {/* Quick Questions */}
-            <div className="border-t border-white/5 bg-[#121212]/50 px-6 py-4">
-              <button 
-                onClick={() => setShowQuickQuestions(!showQuickQuestions)}
-                className="w-full flex items-center justify-between text-[11px] font-bold text-[#1A1A1A]/40 uppercase tracking-[0.2em] mb-4 group"
-              >
-                <span className="flex items-center gap-2">Quick Questions ✨</span>
-                <FiChevronDown className={`transition-transform duration-300 ${showQuickQuestions ? 'rotate-180' : ''}`} />
-              </button>
-              
-              <AnimatePresence>
-                {showQuickQuestions && (
-                  <motion.div 
-                    initial={{ height: 0, opacity: 0 }} 
-                    animate={{ height: 'auto', opacity: 1 }} 
-                    exit={{ height: 0, opacity: 0 }}
-                    className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
-                  >
-                    {quickReplies.map((qr, i) => (
-                      <button 
-                        key={i} 
-                        onClick={() => sendMessage(qr.text)}
-                        className="flex items-center gap-3 bg-white/5 border border-white/5 hover:border-amber-500/30 px-5 py-3.5 rounded-2xl transition-all shrink-0 hover:bg-amber-500/5 group text-left max-w-[160px]"
-                      >
-                        <qr.icon size={18} className="text-[#1A1A1A]/40 group-hover:text-[#1A1A1A] transition-colors shrink-0" />
-                        <span className="text-[11px] text-white/60 font-medium group-hover:text-white leading-tight">{qr.text}</span>
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {activeMode === 'chat' && (
+              <div className="border-t border-white/5 bg-[#121212]/50 px-6 py-4">
+                <button 
+                  onClick={() => setShowQuickQuestions(!showQuickQuestions)}
+                  className="w-full flex items-center justify-between text-[11px] font-bold text-white/40 uppercase tracking-[0.2em] mb-4 group"
+                >
+                  <span className="flex items-center gap-2">Quick Assistance ✨</span>
+                  <FiChevronDown className={`transition-transform duration-300 ${showQuickQuestions ? 'rotate-180' : ''}`} />
+                </button>
+                
+                <AnimatePresence>
+                  {showQuickQuestions && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }} 
+                      animate={{ height: 'auto', opacity: 1 }} 
+                      exit={{ height: 0, opacity: 0 }}
+                      className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
+                    >
+                      {quickReplies.map((qr, i) => (
+                        <button 
+                          key={i} 
+                          onClick={() => sendMessage(qr.text)}
+                          className="flex items-center gap-3 bg-white/5 border border-white/5 hover:border-amber-500/30 px-5 py-3.5 rounded-2xl transition-all shrink-0 hover:bg-amber-500/5 group text-left max-w-[160px]"
+                        >
+                          <qr.icon size={18} className="text-white/40 group-hover:text-amber-500 transition-colors shrink-0" />
+                          <span className="text-[11px] text-white/60 font-medium group-hover:text-white leading-tight">{qr.text}</span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
 
             {/* Input */}
             <div className="p-6 bg-[#0D0D0D] space-y-4">
               <div className="flex items-center gap-4">
                 <button 
-                  onClick={() => {}}
                   className="w-14 h-14 rounded-2xl bg-[#C9A84C] text-black flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20 active:scale-95 transition-transform"
                 >
                   <FiMic size={24} />
@@ -195,7 +219,7 @@ export default function ChatBot() {
                   <button 
                     onClick={() => sendMessage()}
                     disabled={!input.trim()}
-                    className={`absolute right-4 p-2 transition-all ${input.trim() ? 'text-[#1A1A1A]' : 'text-white/10'}`}
+                    className={`absolute right-4 p-2 transition-all ${input.trim() ? 'text-amber-500' : 'text-white/10'}`}
                   >
                     <FiSend size={24} />
                   </button>
@@ -216,7 +240,7 @@ export default function ChatBot() {
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-28 right-6 sm:bottom-32 sm:right-8 z-[100] w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/20 backdrop-blur-md text-amber-500 flex items-center justify-center border border-amber-500/30 group overflow-hidden"
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[100] w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500 text-black flex items-center justify-center shadow-[0_20px_50px_rgba(201,168,76,0.3)] group overflow-hidden"
       >
         <AnimatePresence mode="wait">
           {isChatOpen ? <FiX key="x" size={28} /> : <FiMessageCircle key="m" size={28} />}
@@ -226,4 +250,3 @@ export default function ChatBot() {
     </>
   );
 }
-

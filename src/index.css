@@ -27,7 +27,7 @@ body.light-mode {
 }
 
 html {
-  scroll-behavior: auto !important;
+  scroll-behavior: smooth;
 }
 
 @media (max-width: 768px) {
