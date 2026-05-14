@@ -15,7 +15,6 @@ import toast from 'react-hot-toast';
 // --- Styled Components & Constants ---
 
 const LUXURY_GOLD = "#C8A96A";
-const DARK_BG = "#080808";
 
 const FeatureCard = ({ icon: Icon, title, description, onClick }) => (
   <motion.button
@@ -156,7 +155,9 @@ export default function AIStylist() {
   const [stylistData, setStylistData] = useState({});
   const [recommendations, setRecommendations] = useState([]);
   const [comparisonItems, setComparisonItems] = useState([]);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
   
   const { isChatOpen, setChatOpen } = useUIStore();
 
@@ -176,6 +177,7 @@ export default function AIStylist() {
     setStylistData({});
     setRecommendations([]);
     setComparisonItems([]);
+    setUploadedImage(null);
   };
 
   const addBotMessage = (text, delay = 1200) => {
@@ -201,6 +203,27 @@ export default function AIStylist() {
       ]);
     } else if (feature === 'match') {
       setMessages([{ role: 'bot', content: "Please share a high-resolution photograph of your space. I will analyze the architecture, lighting vectors, and material palette to suggest the optimal rug.", timestamp: new Date() }]);
+    }
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUploadedImage(event.target.result);
+        setMessages(prev => [...prev, { role: 'user', content: "Uploaded a room photo.", type: 'image', image: event.target.result, timestamp: new Date() }]);
+        setIsTyping(true);
+        setTimeout(() => {
+          setIsTyping(false);
+          addBotMessage("Analysis complete. Your space features high natural light and neutral architectural tones. I suggest a rug with subtle warmth to anchor the room.");
+          setRecommendations([
+            { _id: '1', name: 'Royal Persian Silk', price: 45000, images: ['https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=300'] },
+            { _id: '2', name: 'Modern Minimal Ivory', price: 18500, images: ['https://images.unsplash.com/photo-1615529328331-f8917597711f?q=80&w=300'] },
+          ]);
+        }, 2000);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -256,7 +279,16 @@ export default function AIStylist() {
 
   return (
     <div className="fixed bottom-[20px] right-[20px] sm:bottom-[30px] sm:right-[30px] z-[9999] font-['Inter',_sans-serif]">
-      {/* Premium Floating Button */}
+      {/* Hidden File Input */}
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        onChange={handleFileUpload} 
+        accept="image/*" 
+        className="hidden" 
+      />
+
+      {/* Premium Floating Button (Now Square/Box like WhatsApp) */}
       {!isOpen && (
         <motion.button
           onClick={toggleOpen}
@@ -264,16 +296,14 @@ export default function AIStylist() {
           animate={{ scale: 1, y: 0, rotate: 0 }}
           whileHover={{ scale: 1.08, y: -5 }}
           whileTap={{ scale: 0.92 }}
-          className="relative group p-[2px] rounded-full bg-gradient-to-br from-white/40 via-white/10 to-transparent shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden"
+          className="relative group p-[2px] rounded-3xl bg-gradient-to-br from-white/40 via-white/10 to-transparent shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden w-16 h-16 sm:w-20 sm:h-20"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-[#C8A96A]/20 via-transparent to-white/10 animate-pulse" />
-          <div className="relative px-8 py-5 rounded-full bg-black/90 backdrop-blur-[30px] flex items-center gap-4 border border-white/5">
-            <div className="relative w-10 h-10 rounded-full bg-[#C8A96A]/10 flex items-center justify-center text-[#C8A96A] overflow-hidden">
-               <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 8, ease: "linear" }} className="absolute inset-0 border-2 border-dashed border-[#C8A96A]/30 rounded-full" />
-               <LuSparkles size={18} />
+          <div className="relative w-full h-full rounded-[22px] sm:rounded-[28px] bg-black/90 backdrop-blur-[30px] flex flex-col items-center justify-center border border-white/5 gap-1 sm:gap-2">
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#C8A96A]/10 flex items-center justify-center text-[#C8A96A]">
+               <LuSparkles size={22} className="group-hover:scale-125 transition-transform duration-500" />
             </div>
-            <span className="text-white font-black text-sm tracking-[0.1em] uppercase group-hover:text-[#C8A96A] transition-colors">Style Assistant</span>
-            <div className="w-1.5 h-1.5 rounded-full bg-[#C8A96A] animate-ping" />
+            <span className="text-white font-black text-[8px] sm:text-[10px] tracking-widest uppercase opacity-60 group-hover:opacity-100 transition-opacity">AI Stylist</span>
           </div>
         </motion.button>
       )}
@@ -367,7 +397,14 @@ export default function AIStylist() {
                               ? 'bg-gradient-to-br from-[#C8A96A] to-[#B69640] text-black font-bold rounded-tr-none shadow-[#C8A96A]/20' 
                               : 'bg-white/[0.03] border border-white/5 text-white/90 rounded-tl-none font-light backdrop-blur-md'
                           }`}>
-                            {msg.content}
+                            {msg.type === 'image' ? (
+                              <div className="space-y-4">
+                                <img src={msg.image} alt="Uploaded" className="rounded-2xl w-full max-h-[300px] object-cover border border-white/10" />
+                                <p className="text-sm font-bold uppercase tracking-widest">{msg.content}</p>
+                              </div>
+                            ) : (
+                              msg.content
+                            )}
                           </div>
                         </motion.div>
                       ))}
@@ -409,9 +446,10 @@ export default function AIStylist() {
                         </div>
                       )}
 
-                      {activeFeature === 'match' && recommendations.length === 0 && (
+                      {activeFeature === 'match' && !uploadedImage && (
                         <motion.div 
                           initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
+                          onClick={() => fileInputRef.current.click()}
                           className="mt-8 border-2 border-dashed border-white/10 rounded-[60px] p-24 flex flex-col items-center justify-center text-center space-y-8 hover:border-[#C8A96A]/50 hover:bg-[#C8A96A]/5 transition-all group cursor-pointer shadow-3xl relative overflow-hidden"
                         >
                           <div className="absolute inset-0 bg-gradient-to-br from-[#C8A96A]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -436,7 +474,12 @@ export default function AIStylist() {
               {activeFeature !== 'home' && (
                 <div className="p-10 bg-gradient-to-t from-black to-transparent border-t border-white/[0.03] relative z-20">
                   <div className="flex items-center gap-6 bg-white/[0.03] rounded-[36px] p-3 pr-6 border border-white/5 focus-within:border-[#C8A96A]/50 transition-all shadow-4xl backdrop-blur-2xl">
-                    <button className="w-14 h-14 rounded-full text-white/20 hover:text-[#C8A96A] transition-all flex items-center justify-center hover:bg-white/5"><FiCamera size={26} /></button>
+                    <button 
+                      onClick={() => fileInputRef.current.click()}
+                      className="w-14 h-14 rounded-full text-white/20 hover:text-[#C8A96A] transition-all flex items-center justify-center hover:bg-white/5"
+                    >
+                      <FiCamera size={26} />
+                    </button>
                     <input 
                       type="text" value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSend()}
                       placeholder="Consult the AI Stylist..." 
