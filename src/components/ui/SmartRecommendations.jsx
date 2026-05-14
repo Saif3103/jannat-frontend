@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiEye, FiStar, FiChevronRight } from 'react-icons/fi';
 import api from '../../api/axios';
@@ -80,14 +79,10 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-2xl">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }} 
-              whileInView={{ opacity: 1, x: 0 }} 
-              className="flex items-center gap-4 text-amber-600 mb-6"
-            >
+            <div className="flex items-center gap-4 text-amber-600 mb-6">
               <div className="w-12 h-px bg-amber-600/30" />
               <span className="text-[11px] font-black uppercase tracking-[0.4em]">Curated Intelligence</span>
-            </motion.div>
+            </div>
             <h2 className="font-serif text-5xl sm:text-6xl text-[#1A1A1A] leading-tight mb-4">{title}</h2>
             <p className="text-gray-400 text-lg font-light">Handpicked masterpieces based on your unique aesthetic preferences.</p>
           </div>
@@ -98,19 +93,15 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {recommendations.map((p, i) => (
-            <motion.div
+            <div
               key={p._id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.8 }}
-              viewport={{ once: true }}
               className="group"
             >
               <div className="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-white hover:shadow-[0_40px_100px_rgba(201,168,76,0.12)] transition-all duration-700 h-full flex flex-col relative overflow-hidden">
                 
                 {/* Match Score Badge */}
                 <div className="absolute top-6 left-6 z-20 bg-black/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-white/10 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
                   <span className="text-[11px] font-black text-white tracking-widest">{p.matchScore}% MATCH</span>
                 </div>
 
@@ -161,7 +152,7 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
                   View Masterpiece <FiEye size={20} />
                 </Link>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
