@@ -216,7 +216,7 @@ export default function ChatBot() {
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[100] w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500 text-black flex items-center justify-center shadow-[0_20px_50px_rgba(201,168,76,0.3)] group overflow-hidden"
+        className="fixed bottom-28 right-6 sm:bottom-32 sm:right-8 z-[100] w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/20 backdrop-blur-md text-amber-500 flex items-center justify-center border border-amber-500/30 group overflow-hidden"
       >
         <AnimatePresence mode="wait">
           {isChatOpen ? <FiX key="x" size={28} /> : <FiMessageCircle key="m" size={28} />}
