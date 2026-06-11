@@ -5,6 +5,7 @@ import { useSettingsStore, useAuthStore, useUIStore } from './store';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
+import WhatsAppButton from './components/WhatsAppButton';
 import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -98,6 +99,7 @@ export default function App() {
       </main>
       {!isAdminPage && <Footer />}
       {!isAdminPage && <AIStylist />}
+      {!isAdminPage && <WhatsAppButton />}
     </div>
   );
 }
