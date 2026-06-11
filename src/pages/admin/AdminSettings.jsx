@@ -156,46 +156,56 @@ export default function AdminSettings() {
 
             <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm">
               <h2 className="text-lg font-bold text-gray-900 mb-6">Leadership Asset Management</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                <div className="space-y-4 text-center">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block mb-2">Azeem Ansari (Founder)</label>
-                  <label className="relative mx-auto w-48 aspect-square rounded-[2rem] border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+
+                {/* Azeem Ansari */}
+                <div className="space-y-3 text-center">
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Azeem Ansari<br/><span className="text-gray-300 font-normal normal-case">Founder</span></label>
+                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
                     {settings.founderImage ? (
-                      <>
-                        <img src={settings.founderImage} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity backdrop-blur-[2px]">
-                          <FiUpload className="text-white" size={24} />
-                        </div>
-                      </>
-                    ) : (
-                      <div className="flex flex-col items-center gap-2">
-                        <FiUpload className="text-gray-300" size={32} />
-                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Select Photo</span>
-                      </div>
-                    )}
+                      <><img src={settings.founderImage} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
                     <input name="founderImage" type="file" accept="image/*" className="hidden" />
                   </label>
                 </div>
 
-                <div className="space-y-4 text-center">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block mb-2">Sazid Ali (Co-Founder)</label>
-                  <label className="relative mx-auto w-48 aspect-square rounded-[2rem] border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+                {/* Sazid Ali */}
+                <div className="space-y-3 text-center">
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Sazid Ali<br/><span className="text-gray-300 font-normal normal-case">Co-Founder</span></label>
+                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
                     {settings.coFounderImage ? (
-                      <>
-                        <img src={settings.coFounderImage} alt="Co-Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity backdrop-blur-[2px]">
-                          <FiUpload className="text-white" size={24} />
-                        </div>
-                      </>
-                    ) : (
-                      <div className="flex flex-col items-center gap-2">
-                        <FiUpload className="text-gray-300" size={32} />
-                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Select Photo</span>
-                      </div>
-                    )}
+                      <><img src={settings.coFounderImage} alt="Co-Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
                     <input name="coFounderImage" type="file" accept="image/*" className="hidden" />
                   </label>
                 </div>
+
+                {/* Sahana Ansari */}
+                <div className="space-y-3 text-center">
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Sahana Ansari<br/><span className="text-gray-300 font-normal normal-case">Co-Founder</span></label>
+                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-pink-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+                    {settings.sahanaImage ? (
+                      <><img src={settings.sahanaImage} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
+                    <input name="sahanaImage" type="file" accept="image/*" className="hidden" />
+                  </label>
+                </div>
+
+                {/* Saif Ali */}
+                <div className="space-y-3 text-center">
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Saif Ali<br/><span className="text-gray-300 font-normal normal-case">Developer & Marketing</span></label>
+                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+                    {settings.saifImage ? (
+                      <><img src={settings.saifImage} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
+                    <input name="saifImage" type="file" accept="image/*" className="hidden" />
+                  </label>
+                </div>
+
               </div>
             </div>
 
