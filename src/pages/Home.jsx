@@ -86,6 +86,7 @@ export default function Home() {
       icon: GiQueenCrown,
       color: '#B69640',
       image: getTeamImageUrl(settings?.founderImage),
+      bio: 'Founded Jannat Rugs Co. with a passion for preserving India\'s rich weaving heritage. Leads the company with vision, blending tradition with modern luxury.',
     },
     {
       name: 'Sahana Ansari',
@@ -95,6 +96,7 @@ export default function Home() {
       icon: FaHandshake,
       color: '#B69640',
       image: getTeamImageUrl(settings?.sahanaImage, PLACEHOLDER_F),
+      bio: 'The creative force behind Jannat Rugs\' brand identity. Drives the aesthetic direction and customer experience — ensuring every touchpoint reflects luxury.',
     },
     {
       name: 'Saif Ali',
@@ -104,6 +106,7 @@ export default function Home() {
       icon: FaRocket,
       color: '#B69640',
       image: getTeamImageUrl(settings?.saifImage, PLACEHOLDER),
+      bio: 'Powers the digital side — from building the online store to running marketing campaigns. His tech expertise brings Jannat Rugs to customers worldwide.',
     },
   ];
 
@@ -598,34 +601,36 @@ export default function Home() {
                   className="group bg-[#030303]/60 border border-[#B69640]/30 p-5 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.15)] hover:border-[#B69640] transition-all duration-500 flex flex-col h-full items-center text-center"
                 >
                   {/* Photo Frame with Radial Gold Backlight */}
-                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-visible bg-[#0A0A0A] border border-[#B69640]/20 mb-10 flex items-center justify-center">
-                    {/* Rounded mask for the image itself to stay inside the border */}
-                    <div className="absolute inset-0 rounded-xl overflow-hidden z-10">
-                      {/* Golden Glow Behind Head/Shoulder */}
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(182,150,64,0.35)_0%,transparent_65%)] z-0 pointer-events-none" />
-                      
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="relative z-10 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                      />
-                      
-                      {/* Shadow overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-20 pointer-events-none" />
-                    </div>
+                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-[#0A0A0A] border border-[#B69640]/20 mb-6 flex items-center justify-center">
+                    {/* Golden Glow Behind Head/Shoulder */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(182,150,64,0.35)_0%,transparent_65%)] z-0 pointer-events-none" />
                     
-                    {/* Overlapping Bottom Circular Badge */}
-                    <div className="absolute bottom-[-24px] left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#030303] border border-[#B69640] flex items-center justify-center text-[#B69640] shadow-[0_4px_12px_rgba(0,0,0,0.5)] z-30 transition-transform duration-500 group-hover:scale-110">
-                      <Icon size={22} />
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="relative z-10 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    />
+                    
+                    {/* Shadow overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-20 pointer-events-none" />
+                    
+                    {/* Icon Badge — Top Left Corner */}
+                    <div className="absolute top-3 left-3 w-10 h-10 rounded-xl bg-[#030303]/80 backdrop-blur-sm border border-[#B69640]/60 flex items-center justify-center text-[#B69640] shadow-[0_4px_12px_rgba(0,0,0,0.5)] z-30 transition-transform duration-500 group-hover:scale-110">
+                      <Icon size={20} />
                     </div>
                   </div>
 
                   {/* Text Details */}
-                  <div className="w-full flex-1 flex flex-col items-center px-2 mt-6">
+                  <div className="w-full flex-1 flex flex-col items-center px-2">
                     {/* Role in Gold */}
-                    <p className="text-[#B69640] text-sm font-semibold tracking-[0.2em] uppercase font-serif mb-3 text-center">
+                    <p className="text-[#B69640] text-[11px] font-semibold tracking-[0.25em] uppercase font-serif mb-2 text-center">
                       {member.role}
                     </p>
+
+                    {/* Member Name */}
+                    <h3 className="text-white text-xl sm:text-2xl font-serif font-medium tracking-wide mb-3 transition-colors duration-300 group-hover:text-[#B69640]">
+                      {member.name}
+                    </h3>
 
                     {/* Miniature ornamental line separator */}
                     <div className="flex items-center justify-center gap-2 mb-4">
@@ -634,11 +639,10 @@ export default function Home() {
                       <div className="h-[1px] w-8 bg-[#B69640]/40" />
                     </div>
 
-                    {/* Taglines */}
-                    <div className="text-white/80 font-sans text-xs tracking-wide space-y-1.5 leading-relaxed text-center flex-1">
-                      <p>{member.tagline1}</p>
-                      <p>{member.tagline2}</p>
-                    </div>
+                    {/* Bio / About */}
+                    <p className="text-white/50 font-sans text-xs leading-relaxed tracking-wide text-center flex-1 mb-2">
+                      {member.bio}
+                    </p>
                   </div>
                 </motion.div>
               );
