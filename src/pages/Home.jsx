@@ -243,12 +243,12 @@ export default function Home() {
           </p>
         </div>
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            {[...Array(4)].map((_, i) => <div key={i} className="aspect-[3/4] bg-gray-100 rounded-2xl animate-pulse" />)}
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {featuredProducts.length > 0 ? featuredProducts.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               )) : (
@@ -364,11 +364,11 @@ export default function Home() {
             <div className="divider-gold" />
           </div>
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+              {[...Array(4)].map((_, i) => <div key={i} className="aspect-[3/4] bg-gray-100 rounded-2xl animate-pulse" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
               {bestSellers.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               ))}
@@ -387,11 +387,11 @@ export default function Home() {
               <div className="divider-gold" />
             </div>
             {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                {[...Array(4)].map((_, i) => <div key={i} className="aspect-[4/5] bg-white/5 rounded-2xl animate-pulse" />)}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+                {[...Array(4)].map((_, i) => <div key={i} className="aspect-[3/4] bg-gray-100 rounded-2xl animate-pulse" />)}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
                 {newArrivals.map((p, i) => (
                   <ProductCard key={p._id} product={p} index={i} />
                 ))}

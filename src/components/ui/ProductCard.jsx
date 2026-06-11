@@ -34,107 +34,103 @@ export default function ProductCard({ product, index = 0 }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.05, duration: 0.5 }}
+      transition={{ delay: index * 0.05, duration: 0.45 }}
       className="group h-full"
     >
-      <div className="bg-white rounded-[2rem] overflow-hidden border border-black/[0.08] shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full relative group/card">
+      <div className="bg-white rounded-2xl overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
         
-        {/* Image Area - Vertical Layout */}
-        <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
-           <Link to={`/product/${product._id}`} className="h-full block">
-              <img
-                src={getImageUrl(product.images?.[0])}
-                alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110"
-              />
-           </Link>
-           
-           {/* Floating Badges */}
-           <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-              {product.isBestSeller && (
-                 <span className="bg-black text-white text-[8px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Best Seller</span>
-              )}
-              {discount > 0 && (
-                <span className="bg-[#E31E24] text-white text-[8px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">-{discount}% OFF</span>
-              )}
-           </div>
+        {/* Image */}
+        <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 flex-shrink-0">
+          <Link to={`/product/${product._id}`} className="block h-full">
+            <img
+              src={getImageUrl(product.images?.[0])}
+              alt={product.name}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+          </Link>
 
-           {/* Wishlist Button */}
-           <button 
-              onClick={(e) => { e.preventDefault(); toggleWishlist(product._id, !!user); }}
-              className={`absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow-md ${inWishlist ? 'text-red-500' : 'text-black/30 hover:text-black'}`}>
-              <FiHeart size={18} fill={inWishlist ? 'currentColor' : 'none'} />
-           </button>
+          {/* Badges */}
+          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
+            {product.isBestSeller && (
+              <span className="bg-black text-white text-[7px] sm:text-[8px] font-bold px-2 py-1 rounded-full uppercase tracking-widest shadow">
+                Best Seller
+              </span>
+            )}
+            {discount > 0 && (
+              <span className="bg-[#E31E24] text-white text-[7px] sm:text-[8px] font-bold px-2 py-1 rounded-full uppercase tracking-widest shadow">
+                -{discount}% OFF
+              </span>
+            )}
+          </div>
+
+          {/* Wishlist */}
+          <button
+            onClick={(e) => { e.preventDefault(); toggleWishlist(product._id, !!user); }}
+            className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow ${inWishlist ? 'text-red-500' : 'text-black/30 hover:text-black'}`}
+          >
+            <FiHeart size={15} fill={inWishlist ? 'currentColor' : 'none'} />
+          </button>
         </div>
 
-        {/* Content Area */}
-        <div className="p-6 sm:p-8 flex flex-col flex-1 text-center">
-           {/* Category */}
-           <p className="text-black/40 text-[9px] font-bold uppercase tracking-[0.3em] mb-3">{product.category?.name || 'Modern Collection'}</p>
-           
-           {/* Title */}
-           <Link to={`/product/${product._id}`}>
-              <h3 className="font-luxury text-xl sm:text-2xl text-[#1A1A1A] mb-3 leading-tight group-hover/card:text-black transition-colors">{product.name}</h3>
-           </Link>
-           
-           {/* Rating */}
-           <div className="flex items-center justify-center gap-2 mb-6">
-              <div className="flex text-amber-500">
-                 {[...Array(5)].map((_, i) => <FiStar key={i} size={12} fill="currentColor" />)}
-              </div>
-              <span className="text-[10px] text-black/30 font-bold uppercase tracking-widest">4.8 (128)</span>
-           </div>
+        {/* Content */}
+        <div className="p-4 sm:p-5 flex flex-col flex-1">
+          {/* Category */}
+          <p className="text-black/35 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.25em] mb-1.5">
+            {product.category?.name || 'Collection'}
+          </p>
 
-           {/* Price */}
-           <div className="mb-8 mt-auto space-y-1">
-              <div className="flex items-center justify-center gap-3">
-                <span className="text-[#1A1A1A] text-3xl font-black tracking-tighter">₹{price?.toLocaleString('en-IN')}</span>
-                {product.discountPrice && (
-                  <span className="text-sm text-black/30 line-through font-medium">₹{product.price?.toLocaleString('en-IN')}</span>
-                )}
-              </div>
-              <p className="text-[9px] text-black/20 uppercase tracking-[0.3em] font-bold">Inclusive of all taxes</p>
-           </div>
+          {/* Title */}
+          <Link to={`/product/${product._id}`}>
+            <h3 className="font-serif text-sm sm:text-base text-[#1A1A1A] mb-2 leading-snug line-clamp-2 hover:text-black transition-colors">
+              {product.name}
+            </h3>
+          </Link>
 
-           {/* Minimal Specs icons */}
-           <div className="flex items-center justify-center gap-6 mb-8 pt-6 border-t border-black/[0.05]">
-              <div className="group/spec relative cursor-help">
-                 <FiGrid size={16} className="text-black/30 group-hover/spec:text-black transition-colors" />
-                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover/spec:opacity-100 transition-opacity whitespace-nowrap">Hand Knotted</span>
-              </div>
-              <div className="group/spec relative cursor-help">
-                 <FiFeather size={16} className="text-black/30 group-hover/spec:text-black transition-colors" />
-                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover/spec:opacity-100 transition-opacity whitespace-nowrap">Premium Wool</span>
-              </div>
-              <div className="group/spec relative cursor-help">
-                 <FiShield size={16} className="text-black/30 group-hover/spec:text-black transition-colors" />
-                 <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover/spec:opacity-100 transition-opacity whitespace-nowrap">100% Genuine</span>
-              </div>
-           </div>
+          {/* Rating */}
+          <div className="flex items-center gap-1.5 mb-3">
+            <div className="flex text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <FiStar key={i} size={10} fill="currentColor" />
+              ))}
+            </div>
+            <span className="text-[9px] text-black/30 font-semibold">(128)</span>
+          </div>
 
-           {/* Buttons Area */}
-           <div className="grid grid-cols-1 gap-3 mt-auto">
-              <button 
-                onClick={handleBuyNow}
-                className="w-full bg-[#1A1A1A] text-white py-4 rounded-xl flex items-center justify-center gap-3 font-bold text-[11px] tracking-[0.2em] hover:bg-black transition-all shadow-lg active:scale-95 uppercase">
-                BUY NOW <FiArrowRight size={16}/>
-              </button>
-              <button 
+          {/* Price */}
+          <div className="mt-auto pt-3 border-t border-black/[0.05]">
+            <div className="flex items-baseline gap-2 mb-3">
+              <span className="text-[#1A1A1A] text-lg sm:text-xl font-black tracking-tight">
+                ₹{price?.toLocaleString('en-IN')}
+              </span>
+              {product.discountPrice && (
+                <span className="text-xs text-black/30 line-through font-medium">
+                  ₹{product.price?.toLocaleString('en-IN')}
+                </span>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <button
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); toast.success('Added to bag'); }}
-                className="w-full bg-white text-black py-4 rounded-xl flex items-center justify-center gap-3 font-bold text-[11px] tracking-[0.2em] border border-black/10 hover:bg-black/5 transition-all uppercase">
-                <FiShoppingCart size={16}/> Add to Bag
+                className="flex-1 bg-[#1A1A1A] text-white py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-[10px] sm:text-[11px] tracking-widest hover:bg-black transition-all active:scale-95 uppercase"
+              >
+                <FiShoppingCart size={13} /> Add
               </button>
-           </div>
+              <button
+                onClick={handleBuyNow}
+                className="flex-1 bg-white text-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-[10px] sm:text-[11px] tracking-widest border border-black/10 hover:bg-black/5 transition-all active:scale-95 uppercase"
+              >
+                Buy Now
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
   );
 }
-
-// Icon Helpers
-const FiGrid = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
-const FiFeather = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>;
-const FiShield = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
