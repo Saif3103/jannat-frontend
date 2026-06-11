@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiUsers, FiTrendingUp, FiCode } from 'react-icons/fi';
+import { FaHandshake, FaRocket } from 'react-icons/fa';
 import { GiQueenCrown, GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
@@ -79,27 +80,30 @@ export default function Home() {
   const TEAM = [
     {
       name: 'Azeem Ansari',
-      role: 'Founder & Creative Director',
+      role: 'FOUNDER',
+      tagline1: 'Visionary Leader',
+      tagline2: 'Driving the Future',
       icon: GiQueenCrown,
-      color: '#C9A84C',
+      color: '#B69640',
       image: getTeamImageUrl(settings?.founderImage),
-      bio: "Founded Jannat Rugs Co. from a passion for preserving India's rich weaving heritage. With decades of expertise, Azeem leads with vision, blending tradition with modern aesthetics to create timeless masterpieces.",
     },
     {
       name: 'Sahana Ansari',
-      role: 'Co-Founder & Brand Strategist',
-      icon: FiTrendingUp,
-      color: '#C96B8A',
+      role: 'CO-FOUNDER',
+      tagline1: 'Strategic Mind',
+      tagline2: 'Building Together',
+      icon: FaHandshake,
+      color: '#B69640',
       image: getTeamImageUrl(settings?.sahanaImage, PLACEHOLDER_F),
-      bio: "Sahana is the creative force behind Jannat Rugs' brand identity. As Co-Founder, she drives the brand vision, aesthetic direction, and customer experience — ensuring every touchpoint reflects luxury and trust.",
     },
     {
       name: 'Saif Ali',
-      role: 'Developer & Marketing Team',
-      icon: FiCode,
-      color: '#3B82F6',
+      role: 'DEVELOPER & MARKETING',
+      tagline1: 'Code. Connect. Convert.',
+      tagline2: 'Building & Promoting Digital Success',
+      icon: FaRocket,
+      color: '#B69640',
       image: getTeamImageUrl(settings?.saifImage, PLACEHOLDER),
-      bio: "Saif powers the digital side of Jannat Rugs — from building the online store to running digital marketing campaigns. His tech expertise and creative marketing strategies are what bring Jannat Rugs to customers worldwide.",
     },
   ];
 
@@ -522,22 +526,40 @@ export default function Home() {
       </section>
 
       {/* MEET OUR TEAM SECTION */}
-      <section className="py-20 sm:py-32 px-4" style={{ background: '#FFFFFF' }}>
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 sm:py-32 px-4 relative overflow-hidden" style={{ background: '#000000' }}>
+        {/* Subtle decorative background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B69640]/5 rounded-full blur-[120px] pointer-events-none z-0" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
           {/* Section Header */}
-          <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
-            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.5em] uppercase mb-4 font-bold">The People Behind the Craft</p>
-            <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">
-              Meet Our <span className="text-[#B69640] italic">Leaders</span>
+          <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
+            {/* Top Ornamental Separator with Icons */}
+            <div className="flex items-center justify-center gap-4 mb-3">
+              <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-[#B69640]" />
+              <FiUsers className="text-[#B69640]" size={20} />
+              <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-[#B69640]" />
+            </div>
+
+            <h2 className="font-luxury text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-[0.25em] font-medium leading-none">
+              Meet Our <span className="text-[#B69640] font-light italic">Team</span>
             </h2>
-            <div className="divider-gold w-20 sm:w-24 mb-6" />
-            <p className="text-black/60 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
-              A team of visionaries and innovators dedicated to preserving India's rich weaving heritage and bringing luxury rugs to homes worldwide.
+
+            {/* Bottom Ornamental Separator with diamond */}
+            <div className="flex items-center justify-center gap-4 mt-4 mb-6">
+              <div className="h-[1px] w-24 sm:w-40 bg-gradient-to-r from-transparent via-[#B69640] to-[#B69640]/20" />
+              <div className="w-2.5 h-2.5 rotate-45 border border-[#B69640] bg-[#B69640] relative">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4.5 h-4.5 rotate-45 border border-[#B69640]/45 pointer-events-none" />
+              </div>
+              <div className="h-[1px] w-24 sm:w-40 bg-gradient-to-l from-transparent via-[#B69640] to-[#B69640]/20" />
+            </div>
+
+            <p className="text-white/60 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-light font-sans tracking-wide">
+              Dedicated visionaries preserving our heritage and bringing premium handmade luxury rugs to your home.
             </p>
           </div>
 
           {/* Team Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 lg:gap-16">
             {TEAM.map((member, idx) => {
               const Icon = member.icon;
               return (
@@ -547,43 +569,61 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.15, duration: 0.6 }}
-                  className="group bg-[#FAF7F2] border border-[#E5DDCB]/60 p-4 sm:p-5 rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(182,150,64,0.08)] hover:border-[#B69640]/40 transition-all duration-500 flex flex-col h-full"
+                  className="group bg-[#0A0A0A] border border-[#B69640]/25 p-4 sm:p-5 rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_40px_rgba(182,150,64,0.15)] hover:border-[#B69640]/60 transition-all duration-500 flex flex-col h-full items-center text-center"
                 >
-                  {/* Photo Frame */}
-                  <div className="relative aspect-[4/5] rounded-[1.5rem] overflow-hidden bg-gray-100 border border-black/5 mb-6 group-hover:shadow-lg transition-all duration-500">
+                  {/* Photo Frame with Radial Gold Backlight */}
+                  <div className="relative w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden bg-black border border-white/5 mb-10 flex items-center justify-center">
+                    {/* Golden Glow Behind Head/Shoulder */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(182,150,64,0.35)_0%,transparent_70%)] z-0 pointer-events-none" />
+                    
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                      className="relative z-10 w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#FAF7F2]/90 via-transparent to-transparent opacity-60 mix-blend-multiply" />
                     
-                    {/* Role badge */}
-                    <div
-                      className="absolute top-4 left-4 w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md"
-                      style={{ backgroundColor: member.color }}
-                    >
-                      <Icon size={18} />
+                    {/* Shadow overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 z-10 pointer-events-none" />
+                    
+                    {/* Overlapping Bottom Circular Badge */}
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#0A0A0A] border-2 border-[#B69640] flex items-center justify-center text-[#B69640] shadow-[0_4px_15px_rgba(0,0,0,0.6)] z-20 transition-transform duration-500 group-hover:scale-110">
+                      <Icon size={20} />
                     </div>
                   </div>
 
                   {/* Text Details */}
-                  <div className="flex-1 flex flex-col text-center px-2">
-                    <p className="text-[#B69640] text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-bold mb-1">{member.role}</p>
-                    <h3 className="text-xl sm:text-2xl font-serif text-[#1A1A1A] mb-3 font-semibold group-hover:text-[#B69640] transition-colors duration-300">
+                  <div className="w-full flex-1 flex flex-col items-center px-2">
+                    {/* Role in Gold */}
+                    <p className="text-[#B69640] text-xs sm:text-sm uppercase tracking-[0.25em] font-bold mt-4 font-serif">
+                      {member.role}
+                    </p>
+
+                    {/* Miniature ornamental line separator */}
+                    <div className="flex items-center justify-center gap-2 my-4 w-full">
+                      <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#B69640]/50" />
+                      <div className="w-1.5 h-1.5 rotate-45 border border-[#B69640] bg-transparent" />
+                      <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#B69640]/50" />
+                    </div>
+
+                    {/* Member Name */}
+                    <h3 className="text-xl sm:text-2xl font-serif text-white mb-3 font-medium tracking-wide transition-colors duration-300 group-hover:text-[#B69640]">
                       {member.name}
                     </h3>
-                    <p className="text-[#1A1A1A]/70 text-xs sm:text-sm leading-relaxed font-light mb-4 flex-1">
-                      {member.bio}
-                    </p>
+
+                    {/* Taglines */}
+                    <div className="space-y-1 font-sans text-[11px] sm:text-xs text-white/50 leading-relaxed font-light tracking-wide flex-1">
+                      <p>{member.tagline1}</p>
+                      <p>{member.tagline2}</p>
+                    </div>
                   </div>
                 </motion.div>
               );
             })}
           </div>
 
-          <div className="text-center mt-12 sm:mt-16">
-            <Link to="/team" className="btn-gold inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase">
+          {/* Golden outline button */}
+          <div className="text-center mt-16 sm:mt-20">
+            <Link to="/team" className="border border-[#B69640] text-white hover:bg-[#B69640] hover:text-black inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase transition-all duration-300 rounded-lg shadow-lg">
               Meet Our Team <FiArrowRight size={16} />
             </Link>
           </div>
