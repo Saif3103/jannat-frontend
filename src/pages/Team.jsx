@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { FiPlus, FiMinus, FiTruck, FiShield, FiRotateCcw, FiHeadphones, FiCode, FiTrendingUp, FiStar } from 'react-icons/fi';
+import { FiPlus, FiMinus, FiTruck, FiShield, FiRotateCcw, FiHeadphones, FiCode, FiTrendingUp } from 'react-icons/fi';
 import { GiQueenCrown } from 'react-icons/gi';
 import { useSettingsStore } from '../store';
 import { BASE_URL } from '../api/axios';
@@ -27,14 +27,6 @@ export default function Team() {
       color: '#C9A84C',
       image: getImageUrl(settings?.founderImage),
       bio: 'Founded Jannat Rugs Co. from a passion for preserving India\'s rich weaving heritage. With decades of expertise, Azeem leads with vision, blending tradition with modern aesthetics to create timeless masterpieces.',
-    },
-    {
-      name: 'Sazid Ali',
-      role: 'Co-Founder & Operations',
-      icon: FiStar,
-      color: '#7C6FAB',
-      image: getImageUrl(settings?.coFounderImage, PLACEHOLDER),
-      bio: 'Co-founder and operations head, Sazid ensures that every order, from raw material to delivery, meets the highest standards of quality. His eye for detail keeps Jannat Rugs running seamlessly.',
     },
     {
       name: 'Sahana Ansari',
@@ -85,7 +77,7 @@ export default function Team() {
 
         {/* ── TEAM GRID ── */}
         <div className="max-w-7xl mx-auto px-4 mb-32">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {TEAM.map((member, i) => (
               <motion.div
                 key={member.name}
