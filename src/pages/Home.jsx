@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiUsers } from 'react-icons/fi';
+import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiUsers, FiTrendingUp, FiCode } from 'react-icons/fi';
 import { GiQueenCrown, GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
@@ -55,6 +55,9 @@ const TESTIMONIALS = [
   { name: "Vikram Mehta", location: "Bangalore", rating: 5, comment: "Ordered a custom silk carpet. The artisans are true masters. My home feels like a palace now!" },
 ];
 
+const PLACEHOLDER = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80';
+const PLACEHOLDER_F = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80';
+
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
@@ -65,6 +68,40 @@ export default function Home() {
   const [settings, setSettings] = useState(null);
   const [offers, setOffers] = useState([]);
   const [videoReviews, setVideoReviews] = useState([]);
+
+  const getTeamImageUrl = (url, fallback = PLACEHOLDER) => {
+    if (!url) return fallback;
+    if (typeof url !== 'string') return url;
+    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    return `${BASE_URL}/${url}`;
+  };
+
+  const TEAM = [
+    {
+      name: 'Azeem Ansari',
+      role: 'Founder & Creative Director',
+      icon: GiQueenCrown,
+      color: '#C9A84C',
+      image: getTeamImageUrl(settings?.founderImage),
+      bio: "Founded Jannat Rugs Co. from a passion for preserving India's rich weaving heritage. With decades of expertise, Azeem leads with vision, blending tradition with modern aesthetics to create timeless masterpieces.",
+    },
+    {
+      name: 'Sahana Ansari',
+      role: 'Co-Founder & Brand Strategist',
+      icon: FiTrendingUp,
+      color: '#C96B8A',
+      image: getTeamImageUrl(settings?.sahanaImage, PLACEHOLDER_F),
+      bio: "Sahana is the creative force behind Jannat Rugs' brand identity. As Co-Founder, she drives the brand vision, aesthetic direction, and customer experience — ensuring every touchpoint reflects luxury and trust.",
+    },
+    {
+      name: 'Saif Ali',
+      role: 'Developer & Marketing Team',
+      icon: FiCode,
+      color: '#3B82F6',
+      image: getTeamImageUrl(settings?.saifImage, PLACEHOLDER),
+      bio: "Saif powers the digital side of Jannat Rugs — from building the online store to running digital marketing campaigns. His tech expertise and creative marketing strategies are what bring Jannat Rugs to customers worldwide.",
+    },
+  ];
 
   useEffect(() => {
     const load = async () => {
@@ -484,52 +521,71 @@ export default function Home() {
         </div>
       </section>
 
-      {/* GET TO KNOW US / TEAM (Split Layout like Carpet Couture) */}
-      <section className="py-20 sm:py-40 px-4" style={{ background: '#FFFFFF' }}>
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 sm:gap-32">
-          {/* Image Side */}
-          <div className="w-full lg:w-1/2">
-            <div className="relative group max-w-[320px] sm:max-w-lg mx-auto">
-              <div className="aspect-[4/5] overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] border border-amber-900/20 relative shadow-2xl">
-                <img 
-                  src={getImageUrl(settings?.founderImage) || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"} 
-                  alt="Founder Azeem Ansari" 
-                  className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80" />
-                <div className="absolute bottom-6 sm:bottom-8 left-6 sm:left-8">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#C9A84C] rounded-lg flex items-center justify-center text-black">
-                      <GiQueenCrown size={14} sm:size={18} />
-                    </div>
-                    <p className="text-[#1A1A1A] text-[10px] sm:text-xs uppercase tracking-[0.3em] font-bold">The Visionary</p>
-                  </div>
-                  <p className="text-white text-xl sm:text-2xl font-serif">Azeem Ansari</p>
-                </div>
-              </div>
-              {/* Decorative Accent */}
-              <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-24 h-24 sm:w-32 sm:h-32 border-b-2 border-r-2 border-[#C9A84C]/30 rounded-br-[2rem] sm:rounded-br-[3rem] pointer-events-none" />
-            </div>
+      {/* MEET OUR TEAM SECTION */}
+      <section className="py-20 sm:py-32 px-4" style={{ background: '#FFFFFF' }}>
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.5em] uppercase mb-4 font-bold">The People Behind the Craft</p>
+            <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">
+              Meet Our <span className="text-[#B69640] italic">Leaders</span>
+            </h2>
+            <div className="divider-gold w-20 sm:w-24 mb-6" />
+            <p className="text-black/60 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
+              A team of visionaries and innovators dedicated to preserving India's rich weaving heritage and bringing luxury rugs to homes worldwide.
+            </p>
           </div>
 
-          {/* Text Side */}
-          <div className="w-full lg:w-1/2 text-center lg:text-left mt-8 lg:mt-0">
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <p className="text-[#1A1A1A] text-xs sm:text-sm tracking-[0.5em] uppercase mb-4 sm:mb-6 font-medium">Get To Know Us</p>
-              <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl text-white mb-6 sm:mb-8 leading-tight">
-                The <span className="text-[#C9A84C] italic">Visionary</span> <br className="hidden md:block" /> Behind <span className="text-[#C9A84C] italic">Jannat Rugs</span>
-              </h2>
-              <div className="w-16 sm:w-20 h-px bg-[#C9A84C]/30 mb-8 sm:mb-10 mx-auto lg:mx-0" />
-              <p className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 font-light italic">
-                "We don't just sell carpets; we preserve stories of human craftsmanship that have been whispered through centuries."
-              </p>
-              <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-10 sm:mb-12">
-                Azeem Ansari founded Jannat Rugs with a singular mission: to bring the authentic, soulful art of Indian weaving to the world's most discerning homes. Every knot is a testament to our heritage.
-              </p>
-              <Link to="/team" className="btn-gold inline-flex items-center justify-center gap-3 px-10 sm:px-12 py-4 sm:py-5 uppercase tracking-widest text-xs sm:text-sm shadow-xl hover:shadow-amber-500/20">
-                Meet Our Team <FiArrowRight size={18} />
-              </Link>
-            </motion.div>
+          {/* Team Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
+            {TEAM.map((member, idx) => {
+              const Icon = member.icon;
+              return (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.15, duration: 0.6 }}
+                  className="group bg-[#FAF7F2] border border-[#E5DDCB]/60 p-4 sm:p-5 rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(182,150,64,0.08)] hover:border-[#B69640]/40 transition-all duration-500 flex flex-col h-full"
+                >
+                  {/* Photo Frame */}
+                  <div className="relative aspect-[4/5] rounded-[1.5rem] overflow-hidden bg-gray-100 border border-black/5 mb-6 group-hover:shadow-lg transition-all duration-500">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#FAF7F2]/90 via-transparent to-transparent opacity-60 mix-blend-multiply" />
+                    
+                    {/* Role badge */}
+                    <div
+                      className="absolute top-4 left-4 w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-md"
+                      style={{ backgroundColor: member.color }}
+                    >
+                      <Icon size={18} />
+                    </div>
+                  </div>
+
+                  {/* Text Details */}
+                  <div className="flex-1 flex flex-col text-center px-2">
+                    <p className="text-[#B69640] text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-bold mb-1">{member.role}</p>
+                    <h3 className="text-xl sm:text-2xl font-serif text-[#1A1A1A] mb-3 font-semibold group-hover:text-[#B69640] transition-colors duration-300">
+                      {member.name}
+                    </h3>
+                    <p className="text-[#1A1A1A]/70 text-xs sm:text-sm leading-relaxed font-light mb-4 flex-1">
+                      {member.bio}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-12 sm:mt-16">
+            <Link to="/team" className="btn-gold inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase">
+              Meet Our Team <FiArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>
