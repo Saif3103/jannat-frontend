@@ -257,16 +257,17 @@ export default function AIStylist() {
           onClick={toggleOpen}
           initial={{ scale: 0, y: 20 }}
           animate={{ scale: 1, y: 0 }}
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-3 px-7 py-4.5 rounded-full bg-white/90 backdrop-blur-[20px] border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.15)] group relative overflow-hidden"
+          whileHover={{ scale: 1.04, y: -3 }}
+          whileTap={{ scale: 0.96 }}
+          className="flex items-center gap-3 px-5 py-3 rounded-full bg-[#111827] border border-[#C8A96A]/30 shadow-[0_8px_32px_rgba(0,0,0,0.35),0_0_0_1px_rgba(200,169,106,0.1)] group relative overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C8A96A]/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-          <div className="relative flex h-3.5 w-3.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C8A96A] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C8A96A]"></span>
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C8A96A]/8 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+          {/* Gold icon */}
+          <div className="w-7 h-7 rounded-full bg-[#C8A96A]/15 flex items-center justify-center border border-[#C8A96A]/30 flex-shrink-0">
+            <LuSparkles size={14} className="text-[#C8A96A]" />
           </div>
-          <span className="text-[#111827] font-bold text-sm tracking-tight">✨ Style My Room</span>
+          <span className="text-white font-semibold text-[13px] tracking-wide pr-1">Style My Room</span>
         </motion.button>
       )}
 

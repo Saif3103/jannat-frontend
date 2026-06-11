@@ -13,7 +13,7 @@ import api, { BASE_URL } from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
 import RugQuiz from '../components/ui/RugQuiz';
-import OfferPill from '../components/ui/OfferPill';
+
 import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
 import DynamicHero from '../components/ui/SmartHero.jsx';
@@ -227,7 +227,7 @@ export default function Home() {
       </section>
 
       <RugQuiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
-      <OfferPill />
+
 
       {/* RUG SHOWCASE STRIP */}
       <RugShowcaseStrip />
