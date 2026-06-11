@@ -66,27 +66,27 @@ export default function Login() {
           </Link>
 
           {/* LOGIN GLASS CARD */}
-          <div className="bg-white/95 backdrop-blur-3xl rounded-[4rem] p-12 sm:p-16 shadow-[0_50px_100px_rgba(0,0,0,0.3)] border border-white/20 w-full relative overflow-hidden">
+          <div className="bg-white/95 backdrop-blur-3xl rounded-[4rem] p-14 sm:p-20 shadow-[0_50px_100px_rgba(0,0,0,0.35)] border border-white/20 w-full relative overflow-hidden">
             
             {/* Subtle Texture Overlay */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
             {/* TITLES */}
-            <div className="text-center mb-12">
-              <h1 className="font-serif text-5xl text-[#111827] mb-4">Welcome Back</h1>
-              <p className="text-[#C9A84C] text-[10px] font-black uppercase tracking-[0.4em]">The Art of Living Begins Here</p>
+            <div className="text-center mb-16">
+              <h1 className="font-serif text-5xl text-[#111827] mb-6">Welcome Back</h1>
+              <p className="text-[#C9A84C] text-[11px] font-black uppercase tracking-[0.5em] leading-relaxed">The Art of Living Begins Here</p>
               
-              <div className="flex items-center justify-center gap-4 mt-8">
-                <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
-                <div className="w-2 h-2 rotate-45 border border-[#C9A84C] bg-white" />
-                <div className="h-px w-10 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
+              <div className="flex items-center justify-center gap-4 mt-10">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
+                <div className="w-2.5 h-2.5 rotate-45 border border-[#C9A84C] bg-white shadow-sm" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
               </div>
             </div>
 
             {/* FORM */}
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-10">
               <div className="relative group">
-                <div className="absolute left-7 top-1/2 -translate-y-1/2 text-[#C9A84C] transition-transform group-focus-within:scale-110">
+                <div className="absolute left-7 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 transition-all group-focus-within:text-[#C9A84C] group-focus-within:scale-110">
                   <FiMail size={20} />
                 </div>
                 <input 
@@ -95,13 +95,13 @@ export default function Login() {
                   autoFocus
                   value={form.email} 
                   onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full bg-white border border-gray-100 rounded-[2rem] pl-16 pr-6 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" 
+                  className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-16 pr-6 py-6 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" 
                   placeholder="Email address"
                 />
               </div>
 
               <div className="relative group">
-                <div className="absolute left-7 top-1/2 -translate-y-1/2 text-[#C9A84C] transition-transform group-focus-within:scale-110">
+                <div className="absolute left-7 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 transition-all group-focus-within:text-[#C9A84C] group-focus-within:scale-110">
                   <FiLock size={20} />
                 </div>
                 <input 
@@ -109,7 +109,7 @@ export default function Login() {
                   required 
                   value={form.password} 
                   onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                  className="w-full bg-white border border-gray-100 rounded-[2rem] pl-16 pr-16 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" 
+                  className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-16 pr-16 py-6 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" 
                   placeholder="Password"
                 />
                 <button 
@@ -124,27 +124,27 @@ export default function Login() {
               <button 
                 type="submit" 
                 disabled={isLoading}
-                className="w-full h-18 bg-gradient-to-r from-[#111827] to-[#1F2937] text-white rounded-[2rem] font-bold tracking-[0.2em] text-[11px] shadow-2xl hover:translate-y-[-2px] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group disabled:opacity-50 mt-10"
+                className="w-full h-20 bg-gradient-to-r from-[#111827] to-[#1F2937] text-white rounded-[2.5rem] font-bold tracking-[0.25em] text-[11px] shadow-2xl hover:translate-y-[-2px] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group disabled:opacity-50 mt-12 cursor-pointer"
               >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    SIGN IN <FiArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    SIGN IN <FiArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" />
                   </>
                 )}
               </button>
             </form>
 
-            <div className="mt-10 text-center">
-              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest">
+            <div className="mt-14 text-center">
+              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-[0.15em] leading-relaxed">
                 Don't have an account?{' '}
-                <Link to="/register" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors ml-1">Join the family</Link>
+                <Link to="/register" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors ml-1 font-black underline underline-offset-4 decoration-amber-500/30 hover:decoration-amber-500">Join the family</Link>
               </p>
             </div>
 
             {/* ADMIN ACCESS SECTION */}
-            <div className="mt-16 pt-12 border-t border-gray-50">
+            <div className="mt-24 pt-16 border-t border-gray-100/60">
               <button 
                 onClick={async () => {
                   setForm({ email: 'admin@jannatrugs.com', password: 'admin123456' });
@@ -153,13 +153,13 @@ export default function Login() {
                     if (user.role === 'admin') navigate('/admin');
                   } catch (e) {}
                 }}
-                className="w-full h-16 bg-[#FAF7F2] border border-gray-100 rounded-[2rem] text-[#1A1A1A]/60 text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:bg-[#F3EFE9] flex items-center justify-center gap-4 group"
+                className="w-full h-18 bg-[#FAF7F2] border border-gray-100 rounded-[2.5rem] text-[#1A1A1A]/60 text-[10px] font-black uppercase tracking-[0.25em] transition-all hover:bg-[#F3EFE9] hover:text-[#1A1A1A] flex items-center justify-center gap-4 group cursor-pointer"
               >
-                <FiShield className="text-[#C9A84C]" size={20} />
+                <FiShield className="text-[#C9A84C] group-hover:scale-110 transition-transform" size={20} />
                 Administrator Access
               </button>
               
-              <p className="text-[9px] text-gray-300 text-center font-bold uppercase tracking-[0.3em] mt-8">
+              <p className="text-[9px] text-gray-300 text-center font-bold uppercase tracking-[0.35em] mt-10">
                 Official Jannat Rugs Co. Internal System
               </p>
             </div>

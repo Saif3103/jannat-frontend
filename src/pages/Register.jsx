@@ -62,79 +62,79 @@ export default function Register() {
           </Link>
 
           {/* REGISTER GLASS CARD */}
-          <div className="bg-white/95 backdrop-blur-3xl rounded-[4rem] p-10 sm:p-16 shadow-[0_50px_100px_rgba(0,0,0,0.3)] border border-white/20 w-full relative overflow-hidden">
+          <div className="bg-white/95 backdrop-blur-3xl rounded-[4rem] p-14 sm:p-20 shadow-[0_50px_100px_rgba(0,0,0,0.35)] border border-white/20 w-full relative overflow-hidden">
             
             {/* Subtle Texture Overlay */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
             {/* TITLES */}
-            <div className="text-center mb-10">
-              <h1 className="font-serif text-4xl sm:text-5xl text-[#111827] mb-4">Create Account</h1>
-              <p className="text-[#C9A84C] text-[10px] font-black uppercase tracking-[0.4em]">Become Part of the Artisanal Heritage</p>
+            <div className="text-center mb-16">
+              <h1 className="font-serif text-5xl text-[#111827] mb-6">Create Account</h1>
+              <p className="text-[#C9A84C] text-[11px] font-black uppercase tracking-[0.5em] leading-relaxed">Become Part of the Artisanal Heritage</p>
               
-              <div className="flex items-center justify-center gap-4 mt-8">
-                <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
-                <div className="w-2 h-2 rotate-45 border border-[#C9A84C] bg-white" />
-                <div className="h-px w-10 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
+              <div className="flex items-center justify-center gap-4 mt-10">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
+                <div className="w-2.5 h-2.5 rotate-45 border border-[#C9A84C] bg-white shadow-sm" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
               </div>
             </div>
 
             {/* FORM */}
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <form onSubmit={handleSubmit} className="space-y-9">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10">
                  <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C] group-focus-within:scale-110 transition-transform"><FiUser size={18} /></div>
+                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiUser size={18} /></div>
                     <input type="text" required autoFocus value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2rem] pl-14 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" placeholder="Full Name" />
+                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-5 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Full Name" />
                  </div>
                  <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C] group-focus-within:scale-110 transition-transform"><FiPhone size={18} /></div>
+                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiPhone size={18} /></div>
                     <input type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2rem] pl-14 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" placeholder="Phone Number" />
+                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-5 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Phone Number" />
                  </div>
               </div>
 
               <div className="relative group">
-                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C] group-focus-within:scale-110 transition-transform"><FiMail size={18} /></div>
+                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiMail size={18} /></div>
                 <input type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full bg-white border border-gray-100 rounded-[2rem] pl-14 pr-6 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" placeholder="Email Address" />
+                  className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-6 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Email Address" />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10">
                  <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C] group-focus-within:scale-110 transition-transform"><FiLock size={18} /></div>
+                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiLock size={18} /></div>
                     <input type={showPw ? 'text' : 'password'} required minLength={6} value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2rem] pl-14 pr-12 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" placeholder="Password" />
+                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-12 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Password" />
                     <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-[#1A1A1A] transition-colors">
                       {showPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                     </button>
                  </div>
                  <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C] group-focus-within:scale-110 transition-transform"><FiLock size={18} /></div>
+                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiLock size={18} /></div>
                     <input type="password" required value={form.confirm} onChange={e => setForm(p => ({ ...p, confirm: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2rem] pl-14 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm" placeholder="Confirm Password" />
+                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-5 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Confirm Password" />
                  </div>
               </div>
 
               <button 
                 type="submit" 
                 disabled={isLoading}
-                className="w-full h-18 bg-gradient-to-r from-[#111827] to-[#1F2937] text-white rounded-[2rem] font-bold tracking-[0.2em] text-[11px] shadow-2xl hover:translate-y-[-2px] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group disabled:opacity-50 mt-8"
+                className="w-full h-20 bg-gradient-to-r from-[#111827] to-[#1F2937] text-white rounded-[2.5rem] font-bold tracking-[0.25em] text-[11px] shadow-2xl hover:translate-y-[-2px] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group disabled:opacity-50 mt-12 cursor-pointer"
               >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    JOIN THE FAMILY <FiArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    JOIN THE FAMILY <FiArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" />
                   </>
                 )}
               </button>
             </form>
 
-            <div className="mt-10 text-center">
-              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest">
+            <div className="mt-14 text-center">
+              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-[0.15em] leading-relaxed">
                 Already have an account?{' '}
-                <Link to="/login" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors ml-1">Sign in here</Link>
+                <Link to="/login" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors ml-1 font-black underline underline-offset-4 decoration-amber-500/30 hover:decoration-amber-500">Sign in here</Link>
               </p>
             </div>
           </div>
