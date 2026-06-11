@@ -53,11 +53,19 @@ export default function AdminSettings() {
   const save = async (data) => {
     setSaving(true);
     try {
-      // Use FormData if data is an instance of FormData, otherwise just the object
-      await api.put('/settings', data);
+      const isFormData = data instanceof FormData;
+      await api.put('/settings', data, {
+        headers: isFormData
+          ? { 'Content-Type': 'multipart/form-data' }
+          : { 'Content-Type': 'application/json' },
+        timeout: 120000,
+      });
       toast.success('Settings saved!');
       api.get('/settings').then(r => setSettings(r.data.settings));
-    } catch { toast.error('Failed to save'); }
+    } catch (err) {
+      console.error('Settings save error:', err?.response?.data || err);
+      toast.error(err?.response?.data?.message || 'Failed to save settings');
+    }
     finally { setSaving(false); }
   };
 
