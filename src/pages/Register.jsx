@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { FiMail, FiLock, FiUser, FiPhone, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiPhone, FiEye, FiEyeOff, FiArrowRight, FiChevronLeft } from 'react-icons/fi';
 import { useAuthStore } from '../store';
 import toast from 'react-hot-toast';
 
@@ -23,122 +23,265 @@ export default function Register() {
 
   return (
     <>
-      <Helmet><title>Join the Family | Jannat Rugs Co.</title></Helmet>
-      
-      {/* LUXURY RUG BACKGROUND */}
-      <div className="min-h-screen flex items-center justify-center px-4 py-24 relative overflow-hidden bg-[#FAF7F2]">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1594051663162-8173ef89d2d8?w=1600&q=80" 
-            alt="Hand-woven Rug Background" 
-            className="w-full h-full object-cover"
+      <Helmet><title>Create Account | Jannat Rugs Co.</title></Helmet>
+
+      <div className="min-h-screen flex bg-[#FAF7F2]">
+
+        {/* ─── LEFT PANEL: Brand ─── */}
+        <div className="hidden lg:flex lg:w-[45%] relative overflow-hidden flex-col">
+          {/* Background image */}
+          <img
+            src="https://images.unsplash.com/photo-1594051663162-8173ef89d2d8?w=1200&q=80"
+            alt="Jannat Rugs"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/70 via-transparent to-[#1A1A1A]/80" />
-        </div>
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#111827]/92 via-[#111827]/75 to-[#C9A84C]/25" />
 
-        {/* BACK TO HOME */}
-        <Link 
-          to="/" 
-          className="absolute top-10 left-10 z-30 flex items-center gap-3 text-white/60 hover:text-white transition-all font-bold text-[11px] uppercase tracking-[0.3em]"
-        >
-          <FiArrowRight className="rotate-180" /> Back to Home
-        </Link>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-[620px] relative z-10 flex flex-col items-center"
-        >
-          {/* LOGO (Positioned Above Card) */}
-          <Link to="/" className="mb-12 group">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="w-32 h-32 bg-[#1A1A1A] rounded-[2.5rem] p-1 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border-2 border-[#C9A84C]/50 flex items-center justify-center overflow-hidden"
-            >
-               <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
-            </motion.div>
-          </Link>
-
-          {/* REGISTER GLASS CARD */}
-          <div className="bg-white/95 backdrop-blur-3xl rounded-[4rem] p-14 sm:p-20 shadow-[0_50px_100px_rgba(0,0,0,0.35)] border border-white/20 w-full relative overflow-hidden">
-            
-            {/* Subtle Texture Overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-
-            {/* TITLES */}
-            <div className="text-center mb-16">
-              <h1 className="font-serif text-5xl text-[#111827] mb-6">Create Account</h1>
-              <p className="text-[#C9A84C] text-[11px] font-black uppercase tracking-[0.5em] leading-relaxed">Become Part of the Artisanal Heritage</p>
-              
-              <div className="flex items-center justify-center gap-4 mt-10">
-                <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#C9A84C]/40" />
-                <div className="w-2.5 h-2.5 rotate-45 border border-[#C9A84C] bg-white shadow-sm" />
-                <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#C9A84C]/40" />
+          {/* Content */}
+          <div className="relative z-10 flex flex-col h-full px-16 py-14">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-4 group w-fit">
+              <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden flex items-center justify-center shadow-lg">
+                <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
               </div>
+              <span className="text-white font-serif text-xl tracking-wide">Jannat Rugs Co.</span>
+            </Link>
+
+            {/* Center text */}
+            <div className="flex-1 flex flex-col justify-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.9, delay: 0.2 }}
+              >
+                <div className="w-12 h-1 bg-[#C9A84C] rounded-full mb-10" />
+                <h2 className="font-serif text-5xl text-white leading-snug mb-6">
+                  Join Our<br />Artisanal<br />Heritage
+                </h2>
+                <p className="text-white/50 text-sm leading-relaxed max-w-xs">
+                  Become part of a community that cherishes timeless craftsmanship and the beauty of handmade rugs.
+                </p>
+
+                {/* Features */}
+                <div className="mt-12 space-y-4">
+                  {[
+                    'Exclusive member discounts',
+                    'Early access to new collections',
+                    'Dedicated customer support',
+                  ].map((f, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/40 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]" />
+                      </div>
+                      <span className="text-white/60 text-sm">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
 
-            {/* FORM */}
-            <form onSubmit={handleSubmit} className="space-y-9">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10">
-                 <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiUser size={18} /></div>
-                    <input type="text" required autoFocus value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-5 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Full Name" />
-                 </div>
-                 <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiPhone size={18} /></div>
-                    <input type="tel" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-5 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Phone Number" />
-                 </div>
-              </div>
-
-              <div className="relative group">
-                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiMail size={18} /></div>
-                <input type="email" required value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-6 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Email Address" />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10">
-                 <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiLock size={18} /></div>
-                    <input type={showPw ? 'text' : 'password'} required minLength={6} value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-12 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Password" />
-                    <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-[#1A1A1A] transition-colors">
-                      {showPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
-                    </button>
-                 </div>
-                 <div className="relative group">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#C9A84C]/80 group-focus-within:text-[#C9A84C] group-focus-within:scale-110 transition-all"><FiLock size={18} /></div>
-                    <input type="password" required value={form.confirm} onChange={e => setForm(p => ({ ...p, confirm: e.target.value }))}
-                      className="w-full bg-white border border-gray-100 rounded-[2.5rem] pl-14 pr-5 py-5 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-8 focus:ring-[#C9A84C]/5 outline-none transition-all font-medium shadow-sm hover:border-gray-200" placeholder="Confirm Password" />
-                 </div>
-              </div>
-
-              <button 
-                type="submit" 
-                disabled={isLoading}
-                className="w-full h-20 bg-gradient-to-r from-[#111827] to-[#1F2937] text-white rounded-[2.5rem] font-bold tracking-[0.25em] text-[11px] shadow-2xl hover:translate-y-[-2px] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group disabled:opacity-50 mt-12 cursor-pointer"
-              >
-                {isLoading ? (
-                  <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    JOIN THE FAMILY <FiArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" />
-                  </>
-                )}
-              </button>
-            </form>
-
-            <div className="mt-14 text-center">
-              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-[0.15em] leading-relaxed">
-                Already have an account?{' '}
-                <Link to="/login" className="text-[#C9A84C] hover:text-[#B08D3E] transition-colors ml-1 font-black underline underline-offset-4 decoration-amber-500/30 hover:decoration-amber-500">Sign in here</Link>
+            {/* Bottom */}
+            <div className="border-t border-white/10 pt-8">
+              <p className="text-[#C9A84C] text-xs font-bold uppercase tracking-[0.3em]">
+                Est. 2005 · Lahore, Pakistan
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
+
+        {/* ─── RIGHT PANEL: Form ─── */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6 sm:px-12 lg:px-20 py-16 relative overflow-y-auto">
+
+          {/* Back to home */}
+          <Link
+            to="/"
+            className="absolute top-8 left-8 flex items-center gap-2 text-[#888] hover:text-[#1A1A1A] transition-colors text-xs font-semibold uppercase tracking-widest group"
+          >
+            <FiChevronLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
+            Back to Home
+          </Link>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="w-full max-w-[480px]"
+          >
+            {/* Logo (mobile only) */}
+            <div className="flex lg:hidden justify-center mb-10">
+              <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-[#C9A84C]/30 shadow-lg">
+                <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
+              </div>
+            </div>
+
+            {/* Header */}
+            <div className="mb-10">
+              <h1 className="font-serif text-4xl text-[#111827] mb-3">Create your account</h1>
+              <p className="text-[#888] text-sm leading-relaxed">
+                Join thousands of customers who love our handcrafted rugs.
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+
+              {/* Full Name */}
+              <div>
+                <label className="block text-xs font-semibold text-[#444] uppercase tracking-widest mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]">
+                    <FiUser size={17} />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    autoFocus
+                    value={form.name}
+                    onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all text-sm shadow-sm"
+                    placeholder="Your full name"
+                  />
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-xs font-semibold text-[#444] uppercase tracking-widest mb-2">
+                  Phone Number <span className="normal-case font-normal text-gray-300">(optional)</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]">
+                    <FiPhone size={17} />
+                  </div>
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all text-sm shadow-sm"
+                    placeholder="+92 300 000 0000"
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-xs font-semibold text-[#444] uppercase tracking-widest mb-2">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]">
+                    <FiMail size={17} />
+                  </div>
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all text-sm shadow-sm"
+                    placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+
+              {/* Password */}
+              <div>
+                <label className="block text-xs font-semibold text-[#444] uppercase tracking-widest mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]">
+                    <FiLock size={17} />
+                  </div>
+                  <input
+                    type={showPw ? 'text' : 'password'}
+                    required
+                    minLength={6}
+                    value={form.password}
+                    onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all text-sm shadow-sm"
+                    placeholder="Min. 6 characters"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw(!showPw)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1A1A1A] transition-colors"
+                  >
+                    {showPw ? <FiEyeOff size={17} /> : <FiEye size={17} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm Password */}
+              <div>
+                <label className="block text-xs font-semibold text-[#444] uppercase tracking-widest mb-2">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]">
+                    <FiLock size={17} />
+                  </div>
+                  <input
+                    type="password"
+                    required
+                    value={form.confirm}
+                    onChange={e => setForm(p => ({ ...p, confirm: e.target.value }))}
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-5 py-4 text-[#1A1A1A] placeholder:text-gray-300 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all text-sm shadow-sm"
+                    placeholder="Repeat your password"
+                  />
+                </div>
+              </div>
+
+              {/* Submit */}
+              <div className="pt-3">
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-4 bg-[#111827] text-white rounded-xl font-semibold text-sm tracking-widest uppercase shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-3 group disabled:opacity-60 cursor-pointer"
+                >
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      Create Account
+                      <FiArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+
+            {/* Divider */}
+            <div className="flex items-center gap-4 my-8">
+              <div className="flex-1 h-px bg-gray-100" />
+              <span className="text-gray-300 text-xs font-semibold uppercase tracking-widest">or</span>
+              <div className="flex-1 h-px bg-gray-100" />
+            </div>
+
+            {/* Login link */}
+            <div className="text-center">
+              <p className="text-[#888] text-sm">
+                Already have an account?{' '}
+                <Link
+                  to="/login"
+                  className="text-[#C9A84C] font-semibold hover:text-[#B08D3E] transition-colors"
+                >
+                  Sign in here
+                </Link>
+              </p>
+            </div>
+
+            {/* Terms note */}
+            <p className="text-center text-xs text-gray-300 mt-8 leading-relaxed">
+              By creating an account, you agree to our{' '}
+              <span className="text-gray-400 font-semibold">Terms of Service</span>{' '}
+              and{' '}
+              <span className="text-gray-400 font-semibold">Privacy Policy</span>.
+            </p>
+          </motion.div>
+        </div>
       </div>
     </>
   );
