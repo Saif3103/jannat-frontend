@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FiUpload, FiPlus, FiTrash2 } from 'react-icons/fi';
-import api from '../../api/axios';
+import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
 
@@ -13,6 +13,37 @@ export default function AdminSettings() {
   const [contacts, setContacts] = useState([]);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' });
   const [newTestimonial, setNewTestimonial] = useState({ name: '', location: '', rating: 5, comment: '' });
+  const [previews, setPreviews] = useState({});
+
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    return `${BASE_URL}/${url}`;
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      setPreviews(prev => ({
+        ...prev,
+        [name]: URL.createObjectURL(files[0])
+      }));
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const fileFields = ['heroVideo', 'adVideo', 'founderImage', 'coFounderImage', 'sahanaImage', 'saifImage'];
+    fileFields.forEach(field => {
+      const file = fd.get(field);
+      if (file && file instanceof File && file.size === 0) {
+        fd.delete(field);
+      }
+    });
+    await save(fd);
+    setPreviews({});
+  };
 
   useEffect(() => {
     api.get('/settings').then(r => setSettings(r.data.settings)).finally(() => setLoading(false));
@@ -67,7 +98,7 @@ export default function AdminSettings() {
       <div className="max-w-4xl">
         {/* GENERAL */}
         {activeTab === 'general' && settings && (
-          <form onSubmit={e => { e.preventDefault(); const fd = new FormData(e.target); save(fd); }} className="space-y-8">
+          <form onSubmit={handleFormSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-2">Company Information</h2>
@@ -118,18 +149,18 @@ export default function AdminSettings() {
                <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-2">Hero Video Asset</h2>
                 <div className="space-y-4">
-                  {settings.heroVideo && (
+                  {(previews.heroVideo || settings.heroVideo) && (
                     <div className="aspect-video w-full rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 shadow-inner">
-                      <video src={settings.heroVideo} className="w-full h-full object-cover" muted />
+                      <video src={previews.heroVideo || getImageUrl(settings.heroVideo)} className="w-full h-full object-cover" muted controls />
                     </div>
                   )}
                   <label className="flex items-center gap-4 px-6 py-5 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all group">
                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-600 shadow-sm transition-all"><FiUpload size={20} /></div>
                     <div className="flex-1">
-                      <p className="text-xs font-bold text-gray-900 uppercase tracking-widest">{settings.heroVideo ? 'Replace Asset' : 'Upload Hero Video'}</p>
+                      <p className="text-xs font-bold text-gray-900 uppercase tracking-widest">{(previews.heroVideo || settings.heroVideo) ? 'Replace Asset' : 'Upload Hero Video'}</p>
                       <p className="text-[10px] text-gray-400 mt-0.5 font-medium">MP4 format recommended</p>
                     </div>
-                    <input name="heroVideo" type="file" accept="video/*" className="hidden" />
+                    <input name="heroVideo" type="file" accept="video/*" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
               </div>
@@ -137,18 +168,18 @@ export default function AdminSettings() {
               <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-2">Ad Section Video</h2>
                 <div className="space-y-4">
-                  {settings.adVideo && (
+                  {(previews.adVideo || settings.adVideo) && (
                     <div className="aspect-video w-full rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 shadow-inner">
-                      <video src={settings.adVideo} className="w-full h-full object-cover" muted />
+                      <video src={previews.adVideo || getImageUrl(settings.adVideo)} className="w-full h-full object-cover" muted controls />
                     </div>
                   )}
                   <label className="flex items-center gap-4 px-6 py-5 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all group">
                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-600 shadow-sm transition-all"><FiUpload size={20} /></div>
                     <div className="flex-1">
-                      <p className="text-xs font-bold text-gray-900 uppercase tracking-widest">{settings.adVideo ? 'Replace Asset' : 'Upload Ad Video'}</p>
+                      <p className="text-xs font-bold text-gray-900 uppercase tracking-widest">{(previews.adVideo || settings.adVideo) ? 'Replace Asset' : 'Upload Ad Video'}</p>
                       <p className="text-[10px] text-gray-400 mt-0.5 font-medium">MP4 format recommended</p>
                     </div>
-                    <input name="adVideo" type="file" accept="video/*" className="hidden" />
+                    <input name="adVideo" type="file" accept="video/*" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
               </div>
@@ -156,29 +187,17 @@ export default function AdminSettings() {
 
             <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm">
               <h2 className="text-lg font-bold text-gray-900 mb-6">Leadership Asset Management</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
                 {/* Azeem Ansari */}
                 <div className="space-y-3 text-center">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Azeem Ansari<br/><span className="text-gray-300 font-normal normal-case">Founder</span></label>
                   <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {settings.founderImage ? (
-                      <><img src={settings.founderImage} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    {(previews.founderImage || settings.founderImage) ? (
+                      <><img src={previews.founderImage || getImageUrl(settings.founderImage)} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="founderImage" type="file" accept="image/*" className="hidden" />
-                  </label>
-                </div>
-
-                {/* Sazid Ali */}
-                <div className="space-y-3 text-center">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Sazid Ali<br/><span className="text-gray-300 font-normal normal-case">Co-Founder</span></label>
-                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {settings.coFounderImage ? (
-                      <><img src={settings.coFounderImage} alt="Co-Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="coFounderImage" type="file" accept="image/*" className="hidden" />
+                    <input name="founderImage" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
 
@@ -186,11 +205,11 @@ export default function AdminSettings() {
                 <div className="space-y-3 text-center">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Sahana Ansari<br/><span className="text-gray-300 font-normal normal-case">Co-Founder</span></label>
                   <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-pink-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {settings.sahanaImage ? (
-                      <><img src={settings.sahanaImage} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    {(previews.sahanaImage || settings.sahanaImage) ? (
+                      <><img src={previews.sahanaImage || getImageUrl(settings.sahanaImage)} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="sahanaImage" type="file" accept="image/*" className="hidden" />
+                    <input name="sahanaImage" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
 
@@ -198,11 +217,11 @@ export default function AdminSettings() {
                 <div className="space-y-3 text-center">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Saif Ali<br/><span className="text-gray-300 font-normal normal-case">Developer & Marketing</span></label>
                   <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {settings.saifImage ? (
-                      <><img src={settings.saifImage} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    {(previews.saifImage || settings.saifImage) ? (
+                      <><img src={previews.saifImage || getImageUrl(settings.saifImage)} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="saifImage" type="file" accept="image/*" className="hidden" />
+                    <input name="saifImage" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
 

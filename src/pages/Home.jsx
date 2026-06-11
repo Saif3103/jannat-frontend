@@ -530,32 +530,58 @@ export default function Home() {
         {/* Subtle decorative background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B69640]/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
+        {/* Decorative Background Waves */}
+        {/* Top-Left Waves */}
+        <div className="absolute top-0 left-0 w-80 h-80 opacity-40 pointer-events-none z-0">
+          <svg viewBox="0 0 100 100" fill="none" stroke="url(#goldGradient)" strokeWidth="0.25" className="w-full h-full">
+            <defs>
+              <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#B69640" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#B69640" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+            <path d="M-10,30 Q20,10 50,40 T110,20" />
+            <path d="M-10,40 Q20,20 50,50 T110,30" />
+            <path d="M-10,50 Q20,30 50,60 T110,40" />
+            <path d="M-10,60 Q20,40 50,70 T110,50" />
+          </svg>
+        </div>
+
+        {/* Bottom-Right Waves */}
+        <div className="absolute bottom-0 right-0 w-80 h-80 opacity-40 pointer-events-none z-0">
+          <svg viewBox="0 0 100 100" fill="none" stroke="url(#goldGradient)" strokeWidth="0.25" className="w-full h-full rotate-180">
+            <path d="M-10,30 Q20,10 50,40 T110,20" />
+            <path d="M-10,40 Q20,20 50,50 T110,30" />
+            <path d="M-10,50 Q20,30 50,60 T110,40" />
+            <path d="M-10,60 Q20,40 50,70 T110,50" />
+          </svg>
+        </div>
+
+        {/* Golden Bottom Glow */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#B69640]/5 via-transparent to-transparent pointer-events-none z-0" />
+
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Section Header */}
-          <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
+          <div className="flex flex-col items-center text-center mb-20">
             {/* Top Ornamental Separator with Icons */}
-            <div className="flex items-center justify-center gap-4 mb-3">
+            <div className="flex items-center justify-center gap-4 mb-4">
               <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-[#B69640]" />
-              <FiUsers className="text-[#B69640]" size={20} />
+              <FiUsers className="text-[#B69640]" size={24} />
               <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-[#B69640]" />
             </div>
 
-            <h2 className="font-luxury text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-[0.25em] font-medium leading-none">
-              Meet Our <span className="text-[#B69640] font-light italic">Team</span>
+            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#B69640] uppercase tracking-[0.2em] font-medium leading-none mb-4">
+              MEET OUR TEAM
             </h2>
 
             {/* Bottom Ornamental Separator with diamond */}
-            <div className="flex items-center justify-center gap-4 mt-4 mb-6">
-              <div className="h-[1px] w-24 sm:w-40 bg-gradient-to-r from-transparent via-[#B69640] to-[#B69640]/20" />
-              <div className="w-2.5 h-2.5 rotate-45 border border-[#B69640] bg-[#B69640] relative">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4.5 h-4.5 rotate-45 border border-[#B69640]/45 pointer-events-none" />
+            <div className="flex items-center justify-center gap-4">
+              <div className="h-[1px] w-24 sm:w-40 bg-[#B69640]/60" />
+              <div className="w-2 h-2 rotate-45 bg-[#B69640] relative">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4.5 h-4.5 rotate-45 border border-[#B69640]/50" />
               </div>
-              <div className="h-[1px] w-24 sm:w-40 bg-gradient-to-l from-transparent via-[#B69640] to-[#B69640]/20" />
+              <div className="h-[1px] w-24 sm:w-40 bg-[#B69640]/60" />
             </div>
-
-            <p className="text-white/60 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-light font-sans tracking-wide">
-              Dedicated visionaries preserving our heritage and bringing premium handmade luxury rugs to your home.
-            </p>
           </div>
 
           {/* Team Grid */}
@@ -569,49 +595,47 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.15, duration: 0.6 }}
-                  className="group bg-[#0A0A0A] border border-[#B69640]/25 p-4 sm:p-5 rounded-[2rem] shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_40px_rgba(182,150,64,0.15)] hover:border-[#B69640]/60 transition-all duration-500 flex flex-col h-full items-center text-center"
+                  className="group bg-[#030303]/60 border border-[#B69640]/30 p-5 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.15)] hover:border-[#B69640] transition-all duration-500 flex flex-col h-full items-center text-center"
                 >
                   {/* Photo Frame with Radial Gold Backlight */}
-                  <div className="relative w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden bg-black border border-white/5 mb-10 flex items-center justify-center">
-                    {/* Golden Glow Behind Head/Shoulder */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(182,150,64,0.35)_0%,transparent_70%)] z-0 pointer-events-none" />
-                    
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="relative z-10 w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
-                    />
-                    
-                    {/* Shadow overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 z-10 pointer-events-none" />
+                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-visible bg-[#0A0A0A] border border-[#B69640]/20 mb-10 flex items-center justify-center">
+                    {/* Rounded mask for the image itself to stay inside the border */}
+                    <div className="absolute inset-0 rounded-xl overflow-hidden z-10">
+                      {/* Golden Glow Behind Head/Shoulder */}
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(182,150,64,0.35)_0%,transparent_65%)] z-0 pointer-events-none" />
+                      
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="relative z-10 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      />
+                      
+                      {/* Shadow overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-20 pointer-events-none" />
+                    </div>
                     
                     {/* Overlapping Bottom Circular Badge */}
-                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#0A0A0A] border-2 border-[#B69640] flex items-center justify-center text-[#B69640] shadow-[0_4px_15px_rgba(0,0,0,0.6)] z-20 transition-transform duration-500 group-hover:scale-110">
-                      <Icon size={20} />
+                    <div className="absolute bottom-[-24px] left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#030303] border border-[#B69640] flex items-center justify-center text-[#B69640] shadow-[0_4px_12px_rgba(0,0,0,0.5)] z-30 transition-transform duration-500 group-hover:scale-110">
+                      <Icon size={22} />
                     </div>
                   </div>
 
                   {/* Text Details */}
-                  <div className="w-full flex-1 flex flex-col items-center px-2">
+                  <div className="w-full flex-1 flex flex-col items-center px-2 mt-6">
                     {/* Role in Gold */}
-                    <p className="text-[#B69640] text-xs sm:text-sm uppercase tracking-[0.25em] font-bold mt-4 font-serif">
+                    <p className="text-[#B69640] text-sm font-semibold tracking-[0.2em] uppercase font-serif mb-3 text-center">
                       {member.role}
                     </p>
 
                     {/* Miniature ornamental line separator */}
-                    <div className="flex items-center justify-center gap-2 my-4 w-full">
-                      <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#B69640]/50" />
-                      <div className="w-1.5 h-1.5 rotate-45 border border-[#B69640] bg-transparent" />
-                      <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-[#B69640]/50" />
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <div className="h-[1px] w-8 bg-[#B69640]/40" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#B69640]" />
+                      <div className="h-[1px] w-8 bg-[#B69640]/40" />
                     </div>
 
-                    {/* Member Name */}
-                    <h3 className="text-xl sm:text-2xl font-serif text-white mb-3 font-medium tracking-wide transition-colors duration-300 group-hover:text-[#B69640]">
-                      {member.name}
-                    </h3>
-
                     {/* Taglines */}
-                    <div className="space-y-1 font-sans text-[11px] sm:text-xs text-white/50 leading-relaxed font-light tracking-wide flex-1">
+                    <div className="text-white/80 font-sans text-xs tracking-wide space-y-1.5 leading-relaxed text-center flex-1">
                       <p>{member.tagline1}</p>
                       <p>{member.tagline2}</p>
                     </div>
@@ -629,6 +653,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* SMART RECOMMENDATIONS */}
       <SmartRecommendations title="Luxury Styles You May Love" />
