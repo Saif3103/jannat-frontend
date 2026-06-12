@@ -618,17 +618,22 @@ export default function Home() {
                   {/* Shadow overlay for premium feel */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20 transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
                   
-                  {/* Text details (Name and Role only) */}
-                  <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 z-30 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-center gap-3 mb-2">
-                       <Icon size={18} className="text-[#B69640]" />
-                       <p className="text-[#B69640] text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase font-serif">
+                  {/* Text details (Name, Role, and Bio on Hover) */}
+                  <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8 z-30 translate-y-8 sm:translate-y-12 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                       <Icon size={16} className="text-[#B69640]" />
+                       <p className="text-[#B69640] text-[9px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase font-serif">
                          {member.role}
                        </p>
                     </div>
-                    <h3 className="text-white text-xl sm:text-3xl font-serif font-medium tracking-wide">
+                    <h3 className="text-white text-lg sm:text-3xl font-serif font-medium tracking-wide mb-2 sm:mb-3">
                       {member.name}
                     </h3>
+                    <div className="h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75">
+                      <p className="text-gray-300 text-[9px] sm:text-xs leading-relaxed font-medium pb-2">
+                        {member.bio}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
               );
