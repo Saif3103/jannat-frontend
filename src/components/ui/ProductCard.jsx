@@ -5,10 +5,19 @@ import { useCartStore, useAuthStore, useWishlistStore } from '../../store';
 import { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 
+const optimizeCloudinaryUrl = (url, width = 600) => {
+  if (url && url.includes('cloudinary.com/dnxzzzy/image/upload/')) {
+    if (url.includes('/upload/v')) {
+      return url.replace('/upload/v', `/upload/q_auto,f_auto,w_${width}/v`);
+    }
+  }
+  return url;
+};
+
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400';
   if (typeof url !== 'string') return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=400';
-  if (url.startsWith('http')) return url;
+  if (url.startsWith('http')) return optimizeCloudinaryUrl(url);
   return `${BASE_URL}/${url}`;
 };
 

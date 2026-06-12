@@ -19,10 +19,19 @@ import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
 import DynamicHero from '../components/ui/SmartHero.jsx';
 
+const optimizeCloudinaryUrl = (url, width = 800) => {
+  if (url && url.includes('cloudinary.com/dnxzzzy/image/upload/')) {
+    if (url.includes('/upload/v')) {
+      return url.replace('/upload/v', `/upload/q_auto,f_auto,w_${width}/v`);
+    }
+  }
+  return url;
+};
+
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=600&q=80';
   if (typeof url !== 'string') return url;
-  if (url.startsWith('http')) return url;
+  if (url.startsWith('http')) return optimizeCloudinaryUrl(url);
   return `${BASE_URL}/${url}`;
 };
 
@@ -73,7 +82,7 @@ export default function Home() {
   const getTeamImageUrl = (url, fallback = PLACEHOLDER) => {
     if (!url) return fallback;
     if (typeof url !== 'string') return url;
-    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    if (url.startsWith('http') || url.startsWith('blob:')) return optimizeCloudinaryUrl(url, 400);
     return `${BASE_URL}/${url}`;
   };
 
@@ -598,7 +607,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.15, duration: 0.6 }}
-                  className="group relative w-full aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden bg-[#0A0A0A] border border-[#B69640]/20 shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.3)] transition-all duration-700"
+                  className="group relative w-[70%] max-w-[240px] sm:w-full sm:max-w-none mx-auto aspect-square sm:aspect-[4/5] rounded-[2rem] sm:rounded-3xl overflow-hidden bg-[#0A0A0A] border border-[#B69640]/20 shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.3)] transition-all duration-700"
                 >
                   <img
                     src={member.image}
