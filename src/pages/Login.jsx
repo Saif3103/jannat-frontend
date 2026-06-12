@@ -60,7 +60,7 @@ export default function Login() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-md relative z-10"
+            className="w-full max-w-lg relative z-10"
           >
             {/* Logo */}
             <div className="mb-12 flex flex-col items-center md:items-start text-center md:text-left">
@@ -78,14 +78,11 @@ export default function Login() {
               <div>
                 <label className="block text-[10px] sm:text-xs font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-2">Email Address</label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiMail size={18} className="text-gray-400 group-focus-within:text-[#C9A84C] transition-colors" />
-                  </div>
                   <input
                     type="email" required autoFocus
                     value={form.email}
                     onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                    className="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-12 pr-4 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    className="w-full bg-gray-50/50 border border-gray-200 rounded-xl px-5 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -95,17 +92,14 @@ export default function Login() {
               <div>
                 <label className="block text-[10px] sm:text-xs font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-2">Password</label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiLock size={18} className="text-gray-400 group-focus-within:text-[#C9A84C] transition-colors" />
-                  </div>
                   <input
                     type={showPw ? 'text' : 'password'} required
                     value={form.password}
                     onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                    className="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-12 pr-12 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    className="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-5 pr-12 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
                     placeholder="Enter your password"
                   />
-                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#C9A84C] transition-colors">
+                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 hover:text-[#C9A84C] transition-colors">
                     {showPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
                   </button>
                 </div>
