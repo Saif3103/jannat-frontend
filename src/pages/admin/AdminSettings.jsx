@@ -41,6 +41,16 @@ export default function AdminSettings() {
         fd.delete(field);
       }
     });
+
+    const socialLinks = {
+      facebook: fd.get('facebook') || '',
+      instagram: fd.get('instagram') || '',
+      youtube: fd.get('youtube') || '',
+      whatsapp: fd.get('whatsapp') || ''
+    };
+    fd.append('socialLinks', JSON.stringify(socialLinks));
+    ['facebook', 'instagram', 'youtube', 'whatsapp'].forEach(k => fd.delete(k));
+
     await save(fd);
     setPreviews({});
   };
@@ -53,20 +63,18 @@ export default function AdminSettings() {
   const save = async (data) => {
     setSaving(true);
     try {
-      const isFormData = data instanceof FormData;
-      await api.put('/settings', data, {
-        headers: isFormData
-          ? { 'Content-Type': 'multipart/form-data' }
-          : { 'Content-Type': 'application/json' },
-        timeout: 120000,
-      });
+      // IMPORTANT: Do NOT set Content-Type manually for FormData.
+      // The browser must auto-set it with the multipart boundary string.
+      // Manually setting 'multipart/form-data' WITHOUT boundary causes multer to fail.
+      await api.put('/settings', data, { timeout: 120000 });
       toast.success('Settings saved!');
       api.get('/settings').then(r => setSettings(r.data.settings));
     } catch (err) {
       console.error('Settings save error:', err?.response?.data || err);
       toast.error(err?.response?.data?.message || 'Failed to save settings');
+    } finally {
+      setSaving(false);
     }
-    finally { setSaving(false); }
   };
 
   const addFaq = async () => {

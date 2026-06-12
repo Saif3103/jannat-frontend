@@ -529,7 +529,7 @@ export default function Home() {
       </section>
 
       {/* MEET OUR TEAM SECTION */}
-      <section className="py-24 sm:py-32 px-4 relative overflow-hidden" style={{ background: '#000000' }}>
+      <section className="py-16 sm:py-24 md:py-32 px-4 relative overflow-hidden" style={{ background: '#000000' }}>
         {/* Subtle decorative background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B69640]/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
@@ -587,8 +587,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Team Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-10">
+          {/* Team Grid (Pictures Only as requested) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10">
             {TEAM.map((member, idx) => {
               const Icon = member.icon;
               return (
@@ -598,52 +598,28 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.15, duration: 0.6 }}
-                  className="group bg-[#030303]/60 border border-[#B69640]/30 p-3 sm:p-5 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.15)] hover:border-[#B69640] transition-all duration-500 flex flex-col h-full items-center text-center"
+                  className="group relative w-full aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden bg-[#0A0A0A] border border-[#B69640]/20 shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.3)] transition-all duration-700"
                 >
-                  {/* Photo Frame with Radial Gold Backlight */}
-                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-[#0A0A0A] border border-[#B69640]/20 mb-6 flex items-center justify-center">
-                    {/* Golden Glow Behind Head/Shoulder */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(182,150,64,0.35)_0%,transparent_65%)] z-0 pointer-events-none" />
-                    
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="relative z-10 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    />
-                    
-                    {/* Shadow overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-20 pointer-events-none" />
-                    
-                    {/* Icon Badge — Top Left Corner */}
-                    <div className="absolute top-2 left-2 w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#030303]/80 backdrop-blur-sm border border-[#B69640]/60 flex items-center justify-center text-[#B69640] shadow-[0_4px_12px_rgba(0,0,0,0.5)] z-30 transition-transform duration-500 group-hover:scale-110">
-                      <Icon size={14} className="sm:hidden" />
-                      <Icon size={20} className="hidden sm:block" />
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="relative z-10 w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  
+                  {/* Shadow overlay for premium feel */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20 transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
+                  
+                  {/* Text details (Name and Role only) */}
+                  <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 z-30 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex items-center gap-3 mb-2">
+                       <Icon size={18} className="text-[#B69640]" />
+                       <p className="text-[#B69640] text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase font-serif">
+                         {member.role}
+                       </p>
                     </div>
-                  </div>
-
-                  {/* Text Details */}
-                  <div className="w-full flex-1 flex flex-col items-center px-2">
-                    {/* Role in Gold */}
-                    <p className="text-[#B69640] text-[9px] sm:text-[11px] font-semibold tracking-[0.15em] sm:tracking-[0.25em] uppercase font-serif mb-1 sm:mb-2 text-center">
-                      {member.role}
-                    </p>
-
-                    {/* Member Name */}
-                    <h3 className="text-white text-base sm:text-xl md:text-2xl font-serif font-medium tracking-wide mb-2 sm:mb-3 transition-colors duration-300 group-hover:text-[#B69640]">
+                    <h3 className="text-white text-xl sm:text-3xl font-serif font-medium tracking-wide">
                       {member.name}
                     </h3>
-
-                    {/* Miniature ornamental line separator */}
-                    <div className="hidden sm:flex items-center justify-center gap-2 mb-3">
-                      <div className="h-[1px] w-6 bg-[#B69640]/40" />
-                      <div className="w-1 h-1 rounded-full bg-[#B69640]" />
-                      <div className="h-[1px] w-6 bg-[#B69640]/40" />
-                    </div>
-
-                    {/* Bio / About */}
-                    <p className="text-white/50 font-sans text-[10px] sm:text-xs leading-relaxed tracking-wide text-center flex-1 mb-1 sm:mb-2">
-                      {member.bio}
-                    </p>
                   </div>
                 </motion.div>
               );
