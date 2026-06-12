@@ -71,7 +71,9 @@ export default function AdminSettings() {
       api.get('/settings').then(r => setSettings(r.data.settings));
     } catch (err) {
       console.error('Settings save error:', err?.response?.data || err);
-      toast.error(err?.response?.data?.message || 'Failed to save settings');
+      const errMsg = err?.response?.data?.message || err.message || 'Failed to save settings';
+      toast.error(errMsg);
+      alert('Upload Error Details: ' + errMsg + '\n\nPlease tell Antigravity this exact error message!');
     } finally {
       setSaving(false);
     }
