@@ -4,6 +4,7 @@ import { FiUpload, FiPlus, FiTrash2 } from 'react-icons/fi';
 import api, { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { useSettingsStore } from '../../store';
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState(null);
@@ -68,7 +69,10 @@ export default function AdminSettings() {
       // Manually setting 'multipart/form-data' WITHOUT boundary causes multer to fail.
       await api.put('/settings', data, { timeout: 120000 });
       toast.success('Settings saved!');
-      api.get('/settings').then(r => setSettings(r.data.settings));
+      api.get('/settings').then(r => {
+        setSettings(r.data.settings);
+        useSettingsStore.getState().fetchSettings();
+      });
     } catch (err) {
       console.error('Settings save error:', err?.response?.data || err);
       const errMsg = err?.response?.data?.message || err.message || 'Failed to save settings';
