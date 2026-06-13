@@ -625,48 +625,117 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Team Grid (Pictures Only as requested) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-10">
-            {TEAM.map((member, idx) => {
-              const Icon = member.icon;
-              return (
+          {/* Team Grid - Unified Bento Box Frame */}
+          <div className="max-w-6xl mx-auto p-4 sm:p-6 rounded-[2rem] sm:rounded-[3rem] bg-gradient-to-b from-[#1A1A1A] to-[#0A0A0A] border border-[#B69640]/30 shadow-[0_30px_60px_rgba(0,0,0,0.9)] relative overflow-hidden">
+            {/* Subtle Inner Glow for the Frame */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#B69640]/5 to-transparent pointer-events-none" />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 h-auto lg:h-[700px] relative z-10">
+              
+              {/* FOUNDER (Large - Left Side) */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="lg:col-span-8 h-[450px] sm:h-[600px] lg:h-full group relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden bg-black border border-[#B69640]/10 hover:border-[#B69640]/40 transition-colors"
+              >
+                <img
+                  src={TEAM[0].image}
+                  alt={TEAM[0].name}
+                  className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="absolute bottom-0 left-0 w-full p-6 sm:p-10 translate-y-8 sm:translate-y-10 group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="flex items-center gap-3 mb-3">
+                    <TEAM[0].icon size={20} className="text-[#B69640]" />
+                    <p className="text-[#B69640] text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase font-serif">
+                      {TEAM[0].role}
+                    </p>
+                  </div>
+                  <h3 className="text-white text-2xl sm:text-4xl font-serif font-medium tracking-wide mb-3">
+                    {TEAM[0].name}
+                  </h3>
+                  <div className="h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed font-medium pb-2 max-w-xl">
+                      {TEAM[0].bio}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* RIGHT SIDE (Co-Founder & Developer Stacked) */}
+              <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 grid-rows-1 lg:grid-rows-2 gap-4 sm:gap-6 h-[250px] sm:h-[350px] lg:h-full">
+                
+                {/* CO-FOUNDER (Top Right) */}
                 <motion.div
-                  key={member.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.15, duration: 0.6 }}
-                  className="group relative w-[70%] max-w-[240px] sm:w-full sm:max-w-none mx-auto aspect-square sm:aspect-[4/5] rounded-[2rem] sm:rounded-3xl overflow-hidden bg-[#0A0A0A] border border-[#B69640]/20 shadow-[0_15px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_50px_rgba(182,150,64,0.3)] transition-all duration-700"
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  className="group relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden bg-black border border-[#B69640]/10 hover:border-[#B69640]/40 transition-colors"
                 >
                   <img
-                    src={member.image}
-                    alt={member.name}
-                    className="relative z-10 w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                    src={TEAM[1].image}
+                    alt={TEAM[1].name}
+                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  {/* Shadow overlay for premium feel */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20 transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
-                  
-                  {/* Text details (Name, Role, and Bio on Hover) */}
-                  <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8 z-30 translate-y-8 sm:translate-y-12 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                       <Icon size={16} className="text-[#B69640]" />
-                       <p className="text-[#B69640] text-[9px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase font-serif">
-                         {member.role}
-                       </p>
+                  <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 lg:translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TEAM[1].icon size={14} className="text-[#B69640]" />
+                      <p className="text-[#B69640] text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase font-serif">
+                        {TEAM[1].role}
+                      </p>
                     </div>
-                    <h3 className="text-white text-lg sm:text-3xl font-serif font-medium tracking-wide mb-2 sm:mb-3">
-                      {member.name}
+                    <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-wide mb-2">
+                      {TEAM[1].name}
                     </h3>
-                    <div className="h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75">
-                      <p className="text-gray-300 text-[9px] sm:text-xs leading-relaxed font-medium pb-2">
-                        {member.bio}
+                    <div className="hidden sm:block h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                      <p className="text-gray-300 text-[10px] leading-relaxed font-medium pb-1">
+                        {TEAM[1].bio}
                       </p>
                     </div>
                   </div>
                 </motion.div>
-              );
-            })}
+
+                {/* DEVELOPER (Bottom Right) */}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="group relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden bg-black border border-[#B69640]/10 hover:border-[#B69640]/40 transition-colors"
+                >
+                  <img
+                    src={TEAM[2].image}
+                    alt={TEAM[2].name}
+                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 lg:translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TEAM[2].icon size={14} className="text-[#B69640]" />
+                      <p className="text-[#B69640] text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase font-serif">
+                        {TEAM[2].role}
+                      </p>
+                    </div>
+                    <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-wide mb-2">
+                      {TEAM[2].name}
+                    </h3>
+                    <div className="hidden sm:block h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                      <p className="text-gray-300 text-[10px] leading-relaxed font-medium pb-1">
+                        {TEAM[2].bio}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
+              </div>
+            </div>
           </div>
 
           {/* Golden outline button */}
