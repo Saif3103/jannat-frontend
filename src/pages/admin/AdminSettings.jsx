@@ -39,14 +39,15 @@ export default function AdminSettings() {
     setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
     try {
       const fd = new FormData();
-      fd.append(fieldName, file);
-      const res = await api.put('/settings', fd, { timeout: 120000 });
+      fd.append('image', file);      // always field name = 'image' (matches upload.single('image'))
+      fd.append('field', fieldName); // tells backend which settings field to update
+      const res = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
       setSettings(res.data.settings);
       useSettingsStore.getState().fetchSettings();
-      toast.success('Image uploaded successfully!');
+      toast.success('Photo uploaded successfully! ✅');
     } catch (err) {
       const errMsg = err?.response?.data?.message || err.message || 'Upload failed';
-      toast.error('Upload Error: ' + errMsg);
+      toast.error('Upload failed: ' + errMsg);
     } finally {
       setUploadingTeam(prev => ({ ...prev, [fieldName]: false }));
     }

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FiMail, FiPhone, FiInstagram, FiFacebook, FiYoutube, FiSend, FiMessageCircle, FiArrowRight } from 'react-icons/fi';
+import { FiMail, FiPhone, FiInstagram, FiFacebook, FiYoutube, FiSend, FiArrowRight } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import ChatBot from '../ChatBot';
 import api from '../../api/axios';
@@ -36,66 +35,66 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-20 font-sans">
+    <footer className="relative font-sans">
       
       {/* 1. CTA SECTION: READY TO TRANSFORM YOUR SPACE */}
-      <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
+      <div className="relative h-[480px] sm:h-[520px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1600&q=80" 
             alt="Luxury Space" 
             className="w-full h-full object-cover grayscale-[0.3]"
           />
-          {/* Light Overlay with Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#FAF7F2]/90 via-[#FAF7F2]/40 to-[#FAF7F2]/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#FAF7F2]/95 via-[#FAF7F2]/50 to-[#FAF7F2]/80" />
         </div>
         
-        <div className="relative z-10 text-center px-4 max-w-4xl">
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <p className="text-[#1A1A1A] text-xs tracking-[0.5em] uppercase mb-6 font-medium">Begin Your Journey</p>
-          <h2 className="font-luxury text-5xl md:text-7xl text-black mb-6 leading-tight">Ready to Transform<br />Your Space?</h2>
+          <h2 className="font-luxury text-4xl sm:text-6xl md:text-7xl text-black mb-6 leading-tight">Ready to Transform<br />Your Space?</h2>
           <p className="text-black/60 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
             Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-            <Link to="/shop" className="btn-gold px-10 py-4 flex items-center gap-3 group">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+            <Link to="/shop" className="btn-gold px-10 py-4 flex items-center gap-3 group w-full sm:w-auto justify-center">
               SHOP COLLECTION <FiArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link to="/contact" className="text-[#1A1A1A] text-xs tracking-widest uppercase font-bold hover:text-[#1A1A1A] transition-colors border-b border-amber-400/30 pb-1">
+            <Link to="/contact" className="text-[#1A1A1A] text-xs tracking-widest uppercase font-bold hover:text-[#B69640] transition-colors border-b border-amber-400/30 pb-1">
               Request a Consultation
             </Link>
           </div>
         </div>
       </div>
 
-      {/* 2. NEWSLETTER SECTION */}
-      <div className="bg-[#FAF7F2] border-y border-amber-900/10 py-16 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-          <div className="text-center md:text-left">
-            <h3 className="font-luxury text-3xl text-gold-gradient mb-2">Stay In The Loop</h3>
-            <p className="text-black/40 text-xs tracking-wider uppercase">Subscribe for exclusive offers, new collections & carpet care tips.</p>
-          </div>
-          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-md">
+      {/* 2. NEWSLETTER SECTION - BIGGER */}
+      <div className="bg-[#1A1A1A] py-20 sm:py-24 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-[#C9A84C] text-[10px] tracking-[0.5em] uppercase font-bold mb-4">Exclusive Access</p>
+          <h3 className="font-luxury text-3xl sm:text-5xl text-white mb-4">Stay In The Loop</h3>
+          <div className="w-12 h-[1px] bg-[#C9A84C] mx-auto mb-6" />
+          <p className="text-white/50 text-sm sm:text-base tracking-wide mb-10 max-w-xl mx-auto">
+            Subscribe for exclusive offers, new collections &amp; carpet care tips delivered to your inbox.
+          </p>
+          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-2xl mx-auto shadow-2xl">
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="Your email address"
-              className="bg-black/5 border border-amber-900/20 px-6 py-4 text-sm text-black outline-none focus:bg-black/10 w-full rounded-l-xl"
+              placeholder="Enter your email address"
+              className="flex-1 bg-white/10 border border-white/20 px-6 py-5 text-sm text-white placeholder-white/40 outline-none focus:bg-white/20 focus:border-[#C9A84C] transition-all rounded-t-xl sm:rounded-t-none sm:rounded-l-xl"
             />
-            <button type="submit" disabled={loading} className="btn-gold whitespace-nowrap px-8 rounded-l-none rounded-r-xl flex items-center gap-2">
-              <FiSend /> SUBSCRIBE
+            <button type="submit" disabled={loading} className="bg-gradient-to-r from-[#C9A84C] to-[#B69640] text-black font-black whitespace-nowrap px-10 py-5 rounded-b-xl sm:rounded-b-none sm:rounded-r-xl flex items-center justify-center gap-3 text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
+              <FiSend size={16} /> Subscribe
             </button>
           </form>
         </div>
       </div>
 
       {/* 3. MAIN FOOTER */}
-      <div className="bg-[#FAF7F2] py-20 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+      <div className="bg-[#FAF7F2] py-16 sm:py-20 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16">
           
           {/* Quick Links */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-center md:text-left">
             <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Quick Links</h4>
             <div className="grid grid-cols-2 gap-4">
               {links.map(link => (
@@ -110,19 +109,19 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact & Socials */}
-          <div className="space-y-8 flex flex-col items-start md:items-end md:text-right">
+          {/* Contact & Socials — centered on mobile */}
+          <div className="space-y-8 flex flex-col items-center md:items-end text-center md:text-right">
             <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
             <div className="space-y-4">
-              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors justify-end text-sm">
+              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center md:justify-end">
                 <FiMail /> jannatrugs786@gmail.com
               </a>
-              <a href="tel:+919235508422" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors justify-end text-sm">
+              <a href="tel:+919235508422" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center md:justify-end">
                 <FiPhone /> +91 9235508422
               </a>
             </div>
             
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 pt-2 justify-center md:justify-end">
               {[
                 { icon: FiInstagram, href: '#' },
                 { icon: FiFacebook, href: '#' },
@@ -144,10 +143,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* 4. COPYRIGHT */}
-      <div className="bg-[#FAF7F2] border-t border-amber-900/10 py-10 px-4">
+      {/* 4. COPYRIGHT - BOTTOM */}
+      <div className="bg-[#1A1A1A] py-6 px-4">
         <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-2">
-          <p className="text-black/20 text-[10px] tracking-[0.3em] uppercase">
+          <p className="text-white/30 text-[10px] tracking-[0.3em] uppercase text-center">
             © {new Date().getFullYear()} Jannat Rugs Co. All Rights Reserved.
           </p>
         </div>

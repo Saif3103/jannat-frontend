@@ -636,36 +636,6 @@ export default function Home() {
       </section>
 
 
-      {/* SMART RECOMMENDATIONS */}
-      <SmartRecommendations title="Luxury Styles You May Love" />
-
-      {/* CTA BANNER (Cinematic Full Width) */}
-      <section className="relative py-20 sm:py-32 px-4 flex items-center justify-center overflow-hidden border-t border-amber-900/20">
-        <div className="absolute inset-0 z-0">
-          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80" alt="Luxury Interior" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/75" />
-        </div>
-        <div className="relative z-10 max-w-3xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.5em] uppercase mb-6">Begin Your Journey</p>
-            <h2 className="font-luxury text-3xl sm:text-5xl md:text-7xl text-white mb-6 sm:mb-8 leading-tight">
-              Ready to Transform <br />Your Space?
-            </h2>
-            <div className="w-12 sm:w-16 h-px bg-amber-400/50 mb-6 sm:mb-8 mx-auto" />
-            <p className="text-[#1A1A1A]/70 mb-10 sm:mb-12 text-sm sm:text-lg max-w-xl mx-auto leading-relaxed">
-              Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-              <Link to="/shop" className="btn-gold inline-flex items-center gap-3 px-10 sm:px-12 py-4 sm:py-5 text-xs sm:text-sm tracking-widest uppercase">
-                Shop Collection <FiArrowRight size={16} />
-              </Link>
-              <Link to="/contact" className="text-[#1A1A1A] hover:text-[#1A1A1A] transition-colors uppercase tracking-widest text-[10px] sm:text-xs border-b border-amber-400/30 hover:border-amber-400 pb-1">
-                Request a Consultation
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
       </div>
     </>
   );
