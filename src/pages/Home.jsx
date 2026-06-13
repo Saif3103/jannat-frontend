@@ -383,29 +383,28 @@ export default function Home() {
         </section>
       )}
 
-      {/* COLLECTIONS / CATEGORIES (Carpet Couture Style Split Layout) */}
-      <section className="py-0">
-        {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => (
-          <div key={cat.name} className={`flex flex-col ${i % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} min-h-[450px] lg:min-h-[600px] group border-b border-amber-900/10`}>
-            <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-auto overflow-hidden">
-              <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-transparent" />
-            </div>
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white text-center">
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-md">
-                <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">Collection</p>
-                <h3 className="font-luxury text-3xl md:text-5xl text-[#1A1A1A] mb-4 sm:mb-6">{cat.name}</h3>
-                <div className="divider-gold mx-auto mb-4 sm:mb-6" />
-                <p className="text-black/40 text-xs sm:text-sm leading-relaxed mb-8 sm:mb-10 font-medium">
-                  Experience the pinnacle of craftsmanship with our authentic {cat.name.toLowerCase()} collection. Carefully hand-knotted by expert artisans using the finest materials.
-                </p>
-                <Link to={`/shop?search=${cat.name.split(' ')[0]}`} className="btn-outline-gold inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3 sm:py-4 text-[10px] sm:text-xs tracking-widest uppercase">
-                  Explore Collection <FiArrowRight size={14} />
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        ))}
+      {/* COLLECTIONS / CATEGORIES (Elegant Grid Layout) */}
+      <section className="py-20 sm:py-32 px-4 max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
+          <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">Curated Selection</p>
+          <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Our Collections</h2>
+          <div className="divider-gold w-20" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => (
+            <Link key={cat.name} to={`/shop?search=${cat.name.split(' ')[0]}`} className="group relative h-[450px] sm:h-[550px] rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-black/5">
+              <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+              
+              <div className="absolute inset-0 p-8 sm:p-10 flex flex-col justify-end">
+                <p className="text-[#C9A84C] text-[9px] font-bold tracking-[0.3em] uppercase mb-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">Discover</p>
+                <h3 className="font-luxury text-3xl text-white mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{cat.name}</h3>
+                <div className="w-0 h-[2px] bg-[#C9A84C] group-hover:w-16 transition-all duration-700 delay-100" />
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* BESPOKE SERVICE (Custom Rugs Video Split Layout) */}
@@ -569,181 +568,60 @@ export default function Home() {
       </section>
 
       {/* MEET OUR TEAM SECTION */}
-      <section className="py-16 sm:py-24 md:py-32 px-4 relative overflow-hidden" style={{ background: '#000000' }}>
-        {/* Subtle decorative background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B69640]/5 rounded-full blur-[120px] pointer-events-none z-0" />
-
-        {/* Decorative Background Waves */}
-        {/* Top-Left Waves */}
-        <div className="absolute top-0 left-0 w-80 h-80 opacity-40 pointer-events-none z-0">
-          <svg viewBox="0 0 100 100" fill="none" stroke="url(#goldGradient)" strokeWidth="0.25" className="w-full h-full">
-            <defs>
-              <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#B69640" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#B69640" stopOpacity="0.1" />
-              </linearGradient>
-            </defs>
-            <path d="M-10,30 Q20,10 50,40 T110,20" />
-            <path d="M-10,40 Q20,20 50,50 T110,30" />
-            <path d="M-10,50 Q20,30 50,60 T110,40" />
-            <path d="M-10,60 Q20,40 50,70 T110,50" />
-          </svg>
-        </div>
-
-        {/* Bottom-Right Waves */}
-        <div className="absolute bottom-0 right-0 w-80 h-80 opacity-40 pointer-events-none z-0">
-          <svg viewBox="0 0 100 100" fill="none" stroke="url(#goldGradient)" strokeWidth="0.25" className="w-full h-full rotate-180">
-            <path d="M-10,30 Q20,10 50,40 T110,20" />
-            <path d="M-10,40 Q20,20 50,50 T110,30" />
-            <path d="M-10,50 Q20,30 50,60 T110,40" />
-            <path d="M-10,60 Q20,40 50,70 T110,50" />
-          </svg>
-        </div>
-
-        {/* Golden Bottom Glow */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#B69640]/5 via-transparent to-transparent pointer-events-none z-0" />
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Section Header */}
-          <div className="flex flex-col items-center text-center mb-20">
-            {/* Top Ornamental Separator with Icons */}
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-[#B69640]" />
-              <FiUsers className="text-[#B69640]" size={24} />
-              <div className="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-[#B69640]" />
-            </div>
-
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#B69640] uppercase tracking-[0.2em] font-medium leading-none mb-4">
-              MEET OUR TEAM
-            </h2>
-
-            {/* Bottom Ornamental Separator with diamond */}
-            <div className="flex items-center justify-center gap-4">
-              <div className="h-[1px] w-24 sm:w-40 bg-[#B69640]/60" />
-              <div className="w-2 h-2 rotate-45 bg-[#B69640] relative">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4.5 h-4.5 rotate-45 border border-[#B69640]/50" />
-              </div>
-              <div className="h-[1px] w-24 sm:w-40 bg-[#B69640]/60" />
-            </div>
+      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-[#FDFBF7]">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex flex-col items-center text-center mb-20 sm:mb-32">
+            <p className="text-[#B69640] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">The Artisans Behind The Brand</p>
+            <h2 className="font-luxury text-4xl sm:text-6xl text-[#1A1A1A] mb-6">Meet Our Team</h2>
+            <div className="w-20 h-[1px] bg-[#B69640]" />
           </div>
 
-          {/* Team Grid - Unified Bento Box Frame */}
-          <div className="max-w-6xl mx-auto p-4 sm:p-6 rounded-[2rem] sm:rounded-[3rem] bg-gradient-to-b from-[#1A1A1A] to-[#0A0A0A] border border-[#B69640]/30 shadow-[0_30px_60px_rgba(0,0,0,0.9)] relative overflow-hidden">
-            {/* Subtle Inner Glow for the Frame */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#B69640]/5 to-transparent pointer-events-none" />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 h-auto lg:h-[700px] relative z-10">
-              
-              {/* FOUNDER (Large - Left Side) */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="lg:col-span-8 h-[450px] sm:h-[600px] lg:h-full group relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden bg-black border border-[#B69640]/10 hover:border-[#B69640]/40 transition-colors"
-              >
-                <img
-                  src={TEAM[0].image}
-                  alt={TEAM[0].name}
-                  className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="absolute bottom-0 left-0 w-full p-6 sm:p-10 translate-y-8 sm:translate-y-10 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-3 mb-3">
-                    <FounderIcon size={20} className="text-[#B69640]" />
-                    <p className="text-[#B69640] text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase font-serif">
-                      {TEAM[0].role}
+          <div className="space-y-24 sm:space-y-40">
+            {TEAM.map((member, i) => {
+              const Icon = member.icon;
+              return (
+                <div key={member.name} className={`flex flex-col ${i % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-20`}>
+                  {/* Image */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: i % 2 !== 0 ? 30 : -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="w-full md:w-5/12 flex justify-center"
+                  >
+                    <div className="relative w-64 h-80 sm:w-80 sm:h-[400px] rounded-t-[10rem] rounded-b-[2rem] overflow-hidden shadow-2xl border border-black/5 group bg-white">
+                      <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
+                    </div>
+                  </motion.div>
+
+                  {/* Text */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: i % 2 !== 0 ? -30 : 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="w-full md:w-7/12 text-center md:text-left"
+                  >
+                    <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                      <Icon size={18} className="text-[#B69640]" />
+                      <p className="text-[#B69640] text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase font-serif">
+                        {member.role}
+                      </p>
+                    </div>
+                    <h3 className="text-3xl sm:text-5xl font-luxury text-[#1A1A1A] mb-6">{member.name}</h3>
+                    <p className="text-black/60 text-sm sm:text-base leading-relaxed max-w-lg mx-auto md:mx-0 font-medium">
+                      {member.bio}
                     </p>
-                  </div>
-                  <h3 className="text-white text-2xl sm:text-4xl font-serif font-medium tracking-wide mb-3">
-                    {TEAM[0].name}
-                  </h3>
-                  <div className="h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed font-medium pb-2 max-w-xl">
-                      {TEAM[0].bio}
-                    </p>
-                  </div>
+                  </motion.div>
                 </div>
-              </motion.div>
-
-              {/* RIGHT SIDE (Co-Founder & Developer Stacked) */}
-              <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 grid-rows-1 lg:grid-rows-2 gap-4 sm:gap-6 h-[250px] sm:h-[350px] lg:h-full">
-                
-                {/* CO-FOUNDER (Top Right) */}
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
-                  className="group relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden bg-black border border-[#B69640]/10 hover:border-[#B69640]/40 transition-colors"
-                >
-                  <img
-                    src={TEAM[1].image}
-                    alt={TEAM[1].name}
-                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 lg:translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CoFounderIcon size={14} className="text-[#B69640]" />
-                      <p className="text-[#B69640] text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase font-serif">
-                        {TEAM[1].role}
-                      </p>
-                    </div>
-                    <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-wide mb-2">
-                      {TEAM[1].name}
-                    </h3>
-                    <div className="hidden sm:block h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                      <p className="text-gray-300 text-[10px] leading-relaxed font-medium pb-1">
-                        {TEAM[1].bio}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* DEVELOPER (Bottom Right) */}
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                  className="group relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden bg-black border border-[#B69640]/10 hover:border-[#B69640]/40 transition-colors"
-                >
-                  <img
-                    src={TEAM[2].image}
-                    alt={TEAM[2].name}
-                    className="w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 lg:translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-center gap-2 mb-2">
-                      <DeveloperIcon size={14} className="text-[#B69640]" />
-                      <p className="text-[#B69640] text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase font-serif">
-                        {TEAM[2].role}
-                      </p>
-                    </div>
-                    <h3 className="text-white text-lg sm:text-xl font-serif font-medium tracking-wide mb-2">
-                      {TEAM[2].name}
-                    </h3>
-                    <div className="hidden sm:block h-0 group-hover:h-auto overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                      <p className="text-gray-300 text-[10px] leading-relaxed font-medium pb-1">
-                        {TEAM[2].bio}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-
-              </div>
-            </div>
+              );
+            })}
           </div>
 
-          {/* Golden outline button */}
-          <div className="text-center mt-16 sm:mt-20">
-            <Link to="/team" className="border border-[#B69640] text-white hover:bg-[#B69640] hover:text-black inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase transition-all duration-300 rounded-lg shadow-lg">
-              Meet Our Team <FiArrowRight size={16} />
+          <div className="text-center mt-24 sm:mt-32">
+            <Link to="/team" className="btn-outline-gold inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase rounded-lg">
+              View Full Team <FiArrowRight size={16} />
             </Link>
           </div>
         </div>
