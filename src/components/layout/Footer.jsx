@@ -55,9 +55,6 @@ export default function Footer() {
             Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-            <Link to="/shop" className="btn-gold px-10 py-4 flex items-center gap-3 group w-full sm:w-auto justify-center">
-              SHOP COLLECTION <FiArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
             <Link to="/contact" className="text-[#1A1A1A] text-xs tracking-widest uppercase font-bold hover:text-[#B69640] transition-colors border-b border-amber-400/30 pb-1">
               Request a Consultation
             </Link>
@@ -74,7 +71,7 @@ export default function Footer() {
           <p className="text-white/50 text-sm sm:text-base tracking-wide mb-10 max-w-xl mx-auto">
             Subscribe for exclusive offers, new collections &amp; carpet care tips delivered to your inbox.
           </p>
-          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-2xl mx-auto shadow-2xl">
+          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-3xl mx-auto shadow-2xl">
             <input
               type="email"
               value={email}
@@ -109,19 +106,19 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact & Socials — centered on mobile */}
-          <div className="space-y-8 flex flex-col items-center md:items-end text-center md:text-right">
+          {/* Contact & Socials — centered */}
+          <div className="space-y-8 flex flex-col items-center text-center -mt-2 sm:-mt-4">
             <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
             <div className="space-y-4">
-              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center md:justify-end">
+              <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center">
                 <FiMail /> jannatrugs786@gmail.com
               </a>
-              <a href="tel:+919235508422" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center md:justify-end">
+              <a href="tel:+919235508422" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center">
                 <FiPhone /> +91 9235508422
               </a>
             </div>
             
-            <div className="flex gap-4 pt-2 justify-center md:justify-end">
+            <div className="flex gap-4 pt-2 justify-center">
               {[
                 { icon: FiInstagram, href: '#' },
                 { icon: FiFacebook, href: '#' },
