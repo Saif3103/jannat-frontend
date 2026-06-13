@@ -193,9 +193,8 @@ export default function Home() {
           logo="/logo.png" 
         />
 
-      {/* OFFERS SLIDER SECTION */}
-      {/* FESTIVE OFFER BANNER - Restored High Impact Layout */}
-      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
+      {/* FESTIVE OFFER BANNER */}
+      <section className="py-16 sm:py-24 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-amber-500/10 to-transparent pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -245,7 +244,7 @@ export default function Home() {
       </section>
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
-      <section className="py-16 sm:py-24 border-y border-amber-900/5" style={{ background: '#FFFFFF' }}>
+      <section className="py-12 sm:py-16 border-y border-amber-900/5 bg-white">
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 text-center md:text-left">
           <div className="md:w-1/2">
             <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-[#1A1A1A] leading-snug">
@@ -268,7 +267,7 @@ export default function Home() {
       </section>
 
       {/* QUIZ ENTRY SECTION */}
-      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2]">
+      <section className="py-16 sm:py-24 px-4 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -317,7 +316,7 @@ export default function Home() {
       <RugShowcaseStrip />
 
       {/* FEATURED COLLECTION */}
-      <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
+      <section className="py-16 sm:py-24 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
           <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
           <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Featured Collection</h2>
@@ -355,7 +354,7 @@ export default function Home() {
 
       {/* BRAND AD VIDEO SECTION */}
       {settings?.adVideo && (
-        <section className="py-16 sm:py-24 px-4 bg-black relative overflow-hidden">
+        <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2" />
           <div className="max-w-4xl mx-auto relative z-10">
             <div className="flex flex-col items-center text-center mb-10 sm:mb-12">
@@ -384,7 +383,7 @@ export default function Home() {
       )}
 
       {/* COLLECTIONS / CATEGORIES (Elegant Grid Layout) */}
-      <section className="py-20 sm:py-32 px-4 max-w-7xl mx-auto">
+      <section className="py-16 sm:py-24 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
           <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">Curated Selection</p>
           <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Our Collections</h2>
@@ -408,7 +407,7 @@ export default function Home() {
       </section>
 
       {/* BESPOKE SERVICE (Custom Rugs Video Split Layout) */}
-      <section className="py-0 px-0 relative overflow-hidden flex flex-col lg:flex-row min-h-[450px] lg:min-h-[600px] border-b border-amber-900/20" style={{ background: '#0a0a0a' }}>
+      <section className="relative overflow-hidden flex flex-col lg:flex-row min-h-[400px] lg:min-h-[550px] border-y border-amber-900/20" style={{ background: '#0a0a0a' }}>
         <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-auto overflow-hidden">
           <video 
             autoPlay 
@@ -440,7 +439,8 @@ export default function Home() {
 
       {/* BEST SELLERS */}
       {(bestSellers.length > 0 || loading) && (
-        <section className="py-16 sm:py-32 px-4 max-w-7xl mx-auto">
+        <section className="py-16 sm:py-24 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
             <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Customer Favorites</p>
             <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Best Sellers</h2>
@@ -457,12 +457,13 @@ export default function Home() {
               ))}
             </div>
           )}
+          </div>
         </section>
       )}
 
       {/* NEW ARRIVALS */}
       {(newArrivals.length > 0 || loading) && (
-        <section className="py-16 sm:py-32 px-4" style={{ background: 'rgba(201,168,76,0.02)' }}>
+        <section className="py-16 sm:py-24 px-4" style={{ background: '#FAF7F2' }}>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
               <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Fresh From The Loom</p>
@@ -485,7 +486,7 @@ export default function Home() {
       )}
 
       {/* VIDEO CUSTOMER REVIEWS */}
-      <section className="py-16 sm:py-32 px-4 relative section-alt border-y border-black/5">
+      <section className="py-16 sm:py-24 px-4 relative bg-white border-y border-black/5">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
@@ -546,7 +547,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 sm:py-40 px-4 section-alt" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
+      <section className="py-16 sm:py-24 px-4 bg-[#FAF7F2]" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
             <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Common Questions</p>
@@ -568,15 +569,15 @@ export default function Home() {
       </section>
 
       {/* MEET OUR TEAM SECTION */}
-      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-[#FDFBF7]">
+      <section className="py-16 sm:py-24 px-4 relative overflow-hidden bg-white border-t border-black/5">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center mb-20 sm:mb-32">
+          <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
             <p className="text-[#B69640] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">The Artisans Behind The Brand</p>
             <h2 className="font-luxury text-4xl sm:text-6xl text-[#1A1A1A] mb-6">Meet Our Team</h2>
             <div className="w-20 h-[1px] bg-[#B69640]" />
           </div>
 
-          <div className="space-y-24 sm:space-y-40">
+          <div className="space-y-16 sm:space-y-24">
             {TEAM.map((member, i) => {
               const Icon = member.icon;
               return (
@@ -619,7 +620,7 @@ export default function Home() {
             })}
           </div>
 
-          <div className="text-center mt-24 sm:mt-32">
+          <div className="text-center mt-12 sm:mt-16">
             <Link to="/team" className="btn-outline-gold inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase rounded-lg">
               View Full Team <FiArrowRight size={16} />
             </Link>
@@ -632,7 +633,7 @@ export default function Home() {
       <SmartRecommendations title="Luxury Styles You May Love" />
 
       {/* CTA BANNER (Cinematic Full Width) */}
-      <section className="relative py-24 sm:py-40 px-4 flex items-center justify-center overflow-hidden border-t border-amber-900/20">
+      <section className="relative py-20 sm:py-32 px-4 flex items-center justify-center overflow-hidden border-t border-amber-900/20">
         <div className="absolute inset-0 z-0">
           <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80" alt="Luxury Interior" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/75" />
