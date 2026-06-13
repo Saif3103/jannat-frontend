@@ -175,6 +175,10 @@ export default function Home() {
     load();
   }, []);
 
+  const FounderIcon = TEAM[0].icon;
+  const CoFounderIcon = TEAM[1].icon;
+  const DeveloperIcon = TEAM[2].icon;
+
   return (
     <>
       <Helmet>
@@ -647,7 +651,7 @@ export default function Home() {
                 
                 <div className="absolute bottom-0 left-0 w-full p-6 sm:p-10 translate-y-8 sm:translate-y-10 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="flex items-center gap-3 mb-3">
-                    <TEAM[0].icon size={20} className="text-[#B69640]" />
+                    <FounderIcon size={20} className="text-[#B69640]" />
                     <p className="text-[#B69640] text-[10px] sm:text-xs font-semibold tracking-[0.3em] uppercase font-serif">
                       {TEAM[0].role}
                     </p>
@@ -683,7 +687,7 @@ export default function Home() {
                   
                   <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 lg:translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
                     <div className="flex items-center gap-2 mb-2">
-                      <TEAM[1].icon size={14} className="text-[#B69640]" />
+                      <CoFounderIcon size={14} className="text-[#B69640]" />
                       <p className="text-[#B69640] text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase font-serif">
                         {TEAM[1].role}
                       </p>
@@ -716,7 +720,7 @@ export default function Home() {
                   
                   <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 lg:translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
                     <div className="flex items-center gap-2 mb-2">
-                      <TEAM[2].icon size={14} className="text-[#B69640]" />
+                      <DeveloperIcon size={14} className="text-[#B69640]" />
                       <p className="text-[#B69640] text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase font-serif">
                         {TEAM[2].role}
                       </p>
