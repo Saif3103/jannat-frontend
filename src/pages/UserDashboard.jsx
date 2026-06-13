@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import api, { BASE_URL } from '../api/axios';
 import { useAuthStore } from '../store';
 import toast from 'react-hot-toast';
-import { FiUser, FiPackage, FiHeart, FiMapPin, FiLock, FiEdit2, FiStar, FiX, FiUpload, FiTruck, FiShield, FiSend } from 'react-icons/fi';
+import { FiUser, FiPackage, FiHeart, FiMapPin, FiLock, FiEdit2, FiStar, FiX, FiUpload, FiTruck, FiShield, FiSend, FiDownload } from 'react-icons/fi';
 import { AnimatePresence } from 'framer-motion';
 
 const getImageUrl = (url) => {
@@ -63,6 +63,21 @@ export default function UserDashboard() {
       toast.success('Profile updated!');
       setEditMode(false);
     } catch { toast.error('Failed to update'); }
+  };
+
+  const handleDownloadInvoice = async (orderId) => {
+    try {
+      const response = await api.get(`/invoices/order/${orderId}/download`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `invoice-${orderId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      toast.error('Invoice not generated yet or failed to download');
+    }
   };
 
   const handleReviewSubmit = async (e) => {
@@ -184,11 +199,14 @@ export default function UserDashboard() {
                           <p className="text-[#1A1A1A] font-medium text-sm">Order #{order._id.slice(-8).toUpperCase()}</p>
                           <p className="text-[#1A1A1A]/40 text-xs">{new Date(order.createdAt).toLocaleDateString()} • {order.orderItems?.length} item(s)</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex flex-col items-end">
                           <span className={`badge-gold text-xs ${order.orderStatus === 'Delivered' ? 'bg-emerald-900 text-emerald-300' : order.orderStatus === 'Cancelled' ? 'bg-red-900 text-red-300' : ''}`}>
                             {order.orderStatus}
                           </span>
-                          <p className="text-[#1A1A1A] font-bold mt-1">₹{order.totalPrice?.toLocaleString()}</p>
+                          <p className="text-[#1A1A1A] font-bold mt-1 mb-2">₹{order.totalPrice?.toLocaleString()}</p>
+                          <button onClick={() => handleDownloadInvoice(order._id)} className="text-[10px] uppercase font-bold tracking-widest text-[#1A1A1A] hover:text-amber-600 transition-colors flex items-center gap-1 border border-[#1A1A1A]/20 px-2 py-1 rounded">
+                            <FiDownload size={10} /> INVOICE
+                          </button>
                         </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-3">

@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiHome, FiTag, FiShoppingBag, FiUsers, FiGrid, FiSpeaker, FiSettings, FiLogOut, FiMenu, FiX, FiSearch, FiBell } from 'react-icons/fi';
+import { FiHome, FiTag, FiShoppingBag, FiUsers, FiGrid, FiSpeaker, FiSettings, FiLogOut, FiMenu, FiX, FiSearch, FiBell, FiFileText } from 'react-icons/fi';
 import { useState } from 'react';
 import { useAuthStore } from '../../store';
 
@@ -7,6 +7,7 @@ const navItems = [
   { label: 'Dashboard', path: '/admin', icon: FiHome },
   { label: 'Listings', path: '/admin/products', icon: FiTag },
   { label: 'Orders', path: '/admin/orders', icon: FiShoppingBag },
+  { label: 'Invoices', path: '/admin/invoices', icon: FiFileText },
   { label: 'Customers', path: '/admin/users', icon: FiUsers },
   { label: 'Categories', path: '/admin/categories', icon: FiGrid },
   { label: 'Marketing', path: '/admin/offers', icon: FiSpeaker },

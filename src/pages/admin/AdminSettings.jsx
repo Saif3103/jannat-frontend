@@ -33,32 +33,11 @@ export default function AdminSettings() {
     }
   };
 
-  // Upload a single team member image using dedicated endpoint with FormData and axios api
-  const handleTeamImageUpload = async (fieldName, file) => {
-    if (!file || file.size === 0) return;
-    setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
-    try {
-      const fd = new FormData();
-      fd.append('image', file);
-      fd.append('field', fieldName);
-
-      const response = await api.post('/settings/upload-team-image', fd);
-      setSettings(response.data.settings);
-      useSettingsStore.getState().fetchSettings();
-      toast.success('Photo uploaded successfully! ✅');
-    } catch (err) {
-      toast.error('Upload failed: ' + (err.response?.data?.message || err.message || 'Unknown error'));
-    } finally {
-      setUploadingTeam(prev => ({ ...prev, [fieldName]: false }));
-    }
-  };
+  // We now upload team images along with the rest of the form, matching the product listing approach.
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    // Remove all team image fields - they are uploaded separately
-    const teamImgFields = ['founderImage', 'sahanaImage', 'saifImage', 'coFounderImage'];
-    teamImgFields.forEach(f => fd.delete(f));
     // Remove empty video fields
     ['heroVideo', 'adVideo'].forEach(field => {
       const file = fd.get(field);
@@ -243,7 +222,7 @@ export default function AdminSettings() {
                       <><img src={previews.founderImage || getImageUrl(settings.founderImage)} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => { handleFileChange(e); if(e.target.files[0]) handleTeamImageUpload('founderImage', e.target.files[0]); }} className="hidden" />
+                    <input name="founderImage" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
 
@@ -257,7 +236,7 @@ export default function AdminSettings() {
                       <><img src={previews.sahanaImage || getImageUrl(settings.sahanaImage)} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => { handleFileChange(e); if(e.target.files[0]) handleTeamImageUpload('sahanaImage', e.target.files[0]); }} className="hidden" />
+                    <input name="sahanaImage" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
 
@@ -271,7 +250,7 @@ export default function AdminSettings() {
                       <><img src={previews.saifImage || getImageUrl(settings.saifImage)} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => { handleFileChange(e); if(e.target.files[0]) handleTeamImageUpload('saifImage', e.target.files[0]); }} className="hidden" />
+                    <input name="saifImage" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
                   </label>
                 </div>
 
