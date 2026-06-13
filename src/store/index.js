@@ -105,20 +105,25 @@ export const useCartStore = create(
 );
 
 // SETTINGS STORE
-export const useSettingsStore = create((set) => ({
-  settings: null,
-  isLoading: false,
+export const useSettingsStore = create(
+  persist(
+    (set) => ({
+      settings: null,
+      isLoading: false,
 
-  fetchSettings: async () => {
-    set({ isLoading: true });
-    try {
-      const { data } = await api.get('/settings');
-      set({ settings: data.settings, isLoading: false });
-    } catch (err) {
-      set({ isLoading: false });
-    }
-  },
-}));
+      fetchSettings: async () => {
+        set({ isLoading: true });
+        try {
+          const { data } = await api.get('/settings');
+          set({ settings: data.settings, isLoading: false });
+        } catch (err) {
+          set({ isLoading: false });
+        }
+      },
+    }),
+    { name: 'jannat_settings' }
+  )
+);
 
 // WISHLIST STORE (synced with auth)
 export const useWishlistStore = create((set, get) => ({

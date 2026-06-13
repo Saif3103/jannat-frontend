@@ -121,6 +121,22 @@ export default function Home() {
 
   useEffect(() => {
     const load = async () => {
+      // 1. FAST LOAD: Check Cache
+      const cached = localStorage.getItem('jannat_home_cache');
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (parsed.featured) setFeaturedProducts(parsed.featured);
+          if (parsed.best) setBestSellers(parsed.best);
+          if (parsed.newArr) setNewArrivals(parsed.newArr);
+          if (parsed.cats) setCategories(parsed.cats);
+          if (parsed.settings) setSettings(parsed.settings);
+          if (parsed.offers) setOffers(parsed.offers);
+          if (parsed.videoReviews) setVideoReviews(parsed.videoReviews);
+        } catch (e) { console.error('Cache parsing failed', e); }
+      }
+
+      // 2. BACKGROUND FETCH: Get Fresh Data
       try {
         const [featured, best, newArr, cats, setts, offs, vReviews] = await Promise.all([
           api.get('/products?featured=true&limit=8'),
@@ -132,13 +148,26 @@ export default function Home() {
           api.get('/video-reviews'),
         ]);
         
-        if (featured?.data?.products) setFeaturedProducts(featured.data.products);
-        if (best?.data?.products) setBestSellers(best.data.products);
-        if (newArr?.data?.products) setNewArrivals(newArr.data.products);
-        if (cats?.data?.categories) setCategories(cats.data.categories.slice(0, 6));
-        if (setts?.data?.settings) setSettings(setts.data.settings);
-        if (offs?.data?.offers) setOffers(offs.data.offers);
-        if (vReviews?.data?.reviews) setVideoReviews(vReviews.data.reviews.slice(0, 2));
+        const freshData = {
+          featured: featured?.data?.products || [],
+          best: best?.data?.products || [],
+          newArr: newArr?.data?.products || [],
+          cats: cats?.data?.categories?.slice(0, 6) || [],
+          settings: setts?.data?.settings || null,
+          offers: offs?.data?.offers || [],
+          videoReviews: vReviews?.data?.reviews?.slice(0, 2) || []
+        };
+
+        if (freshData.featured.length) setFeaturedProducts(freshData.featured);
+        if (freshData.best.length) setBestSellers(freshData.best);
+        if (freshData.newArr.length) setNewArrivals(freshData.newArr);
+        if (freshData.cats.length) setCategories(freshData.cats);
+        if (freshData.settings) setSettings(freshData.settings);
+        if (freshData.offers.length) setOffers(freshData.offers);
+        if (freshData.videoReviews.length) setVideoReviews(freshData.videoReviews);
+
+        // Update Cache
+        localStorage.setItem('jannat_home_cache', JSON.stringify(freshData));
       } catch (err) {
         console.error('Failed to load home data:', err);
       } finally {
