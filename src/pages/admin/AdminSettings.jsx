@@ -33,20 +33,20 @@ export default function AdminSettings() {
     }
   };
 
-  // Upload a single team member image using existing PUT /settings endpoint
+  // Upload a single team member image using dedicated endpoint
   const handleTeamImageUpload = async (fieldName, file) => {
     if (!file || file.size === 0) return;
     setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
     try {
-      // Send ONLY the image field — upload.any() on backend accepts any field name
       const fd = new FormData();
-      fd.append(fieldName, file);
-      // Use fetch directly to avoid any axios interceptor interference
+      fd.append('image', file);
+      fd.append('field', fieldName);
+      
       const token = localStorage.getItem('jannat_token');
       const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const baseClean = apiBase.replace(/\/$/, '').replace(/\/api$/, '');
-      const response = await fetch(`${baseClean}/api/settings`, {
-        method: 'PUT',
+      const response = await fetch(`${baseClean}/api/settings/upload-team-image`, {
+        method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
       });
