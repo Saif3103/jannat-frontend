@@ -33,37 +33,21 @@ export default function AdminSettings() {
     }
   };
 
-  // Upload a single team member image using dedicated endpoint with Base64 fallback
+  // Upload a single team member image using dedicated endpoint with FormData and axios api
   const handleTeamImageUpload = async (fieldName, file) => {
     if (!file || file.size === 0) return;
     setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
     try {
-      const reader = new FileReader();
-      const base64Promise = new Promise((resolve, reject) => {
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-      reader.readAsDataURL(file);
-      const base64 = await base64Promise;
+      const fd = new FormData();
+      fd.append('image', file);
+      fd.append('field', fieldName);
 
-      const token = localStorage.getItem('jannat_token');
-      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const baseClean = apiBase.replace(/\/$/, '').replace(/\/api$/, '');
-      const response = await fetch(`${baseClean}/api/settings/upload-team-image`, {
-        method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ field: fieldName, base64 }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Upload failed');
-      setSettings(data.settings);
+      const response = await api.post('/settings/upload-team-image', fd);
+      setSettings(response.data.settings);
       useSettingsStore.getState().fetchSettings();
       toast.success('Photo uploaded successfully! ✅');
     } catch (err) {
-      toast.error('Upload failed: ' + (err.message || 'Unknown error'));
+      toast.error('Upload failed: ' + (err.response?.data?.message || err.message || 'Unknown error'));
     } finally {
       setUploadingTeam(prev => ({ ...prev, [fieldName]: false }));
     }
