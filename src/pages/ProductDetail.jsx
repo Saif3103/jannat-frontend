@@ -165,27 +165,7 @@ export default function ProductDetail() {
                ))}
             </div>
 
-            {/* Policy Info - Premium Organized Layout */}
-            <div className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm">
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
-                  {[
-                    { icon: FiTruck, title: 'Free Delivery', desc: 'On Orders Above \u20B9999' },
-                    { icon: FiRefreshCw, title: '7-Day Returns', desc: 'Hassle-free exchanges' },
-                    { icon: FiPackage, title: 'Authenticity', desc: 'Verified Masterpiece' },
-                    { icon: FiCheckCircle, title: '100% Genuine', desc: 'Premium Craftsmanship' }
-                  ].map((p, i) => (
-                    <div key={i} className="flex items-center gap-5">
-                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-[#1A1A1A]/60 border border-gray-100">
-                         <p.icon size={18} />
-                       </div>
-                       <div>
-                         <p className="text-xs font-bold text-[#1A1A1A]">{p.title}</p>
-                         <p className="text-[10px] text-gray-400 mt-0.5">{p.desc}</p>
-                       </div>
-                    </div>
-                  ))}
-               </div>
-            </div>
+
           </div>
 
           {/* RIGHT COLUMN */}
