@@ -10,6 +10,7 @@ export default function AdminSettings() {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingTeam, setUploadingTeam] = useState({});
   const [activeTab, setActiveTab] = useState('general');
   const [contacts, setContacts] = useState([]);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' });
@@ -32,15 +33,35 @@ export default function AdminSettings() {
     }
   };
 
+  // Upload a single team member image independently to avoid unexpected field errors
+  const handleTeamImageUpload = async (fieldName, file) => {
+    if (!file || file.size === 0) return;
+    setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
+    try {
+      const fd = new FormData();
+      fd.append(fieldName, file);
+      const res = await api.put('/settings', fd, { timeout: 120000 });
+      setSettings(res.data.settings);
+      useSettingsStore.getState().fetchSettings();
+      toast.success('Image uploaded successfully!');
+    } catch (err) {
+      const errMsg = err?.response?.data?.message || err.message || 'Upload failed';
+      toast.error('Upload Error: ' + errMsg);
+    } finally {
+      setUploadingTeam(prev => ({ ...prev, [fieldName]: false }));
+    }
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    const fileFields = ['heroVideo', 'adVideo', 'founderImage', 'coFounderImage', 'sahanaImage', 'saifImage'];
-    fileFields.forEach(field => {
+    // Remove all team image fields - they are uploaded separately
+    const teamImgFields = ['founderImage', 'sahanaImage', 'saifImage', 'coFounderImage'];
+    teamImgFields.forEach(f => fd.delete(f));
+    // Remove empty video fields
+    ['heroVideo', 'adVideo'].forEach(field => {
       const file = fd.get(field);
-      if (file && file instanceof File && file.size === 0) {
-        fd.delete(field);
-      }
+      if (file && file instanceof File && file.size === 0) fd.delete(field);
     });
 
     const socialLinks = {
@@ -215,11 +236,13 @@ export default function AdminSettings() {
                 <div className="space-y-3 text-center">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Azeem Ansari<br/><span className="text-gray-300 font-normal normal-case">Founder</span></label>
                   <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {(previews.founderImage || settings.founderImage) ? (
+                    {uploadingTeam.founderImage ? (
+                      <div className="flex flex-col items-center gap-2"><div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" /><span className="text-[9px] text-blue-500 font-bold">Uploading...</span></div>
+                    ) : (previews.founderImage || settings.founderImage) ? (
                       <><img src={previews.founderImage || getImageUrl(settings.founderImage)} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="founderImage" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
+                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => { handleFileChange(e); if(e.target.files[0]) handleTeamImageUpload('founderImage', e.target.files[0]); }} className="hidden" />
                   </label>
                 </div>
 
@@ -227,11 +250,13 @@ export default function AdminSettings() {
                 <div className="space-y-3 text-center">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Sahana Ansari<br/><span className="text-gray-300 font-normal normal-case">Co-Founder</span></label>
                   <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-pink-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {(previews.sahanaImage || settings.sahanaImage) ? (
+                    {uploadingTeam.sahanaImage ? (
+                      <div className="flex flex-col items-center gap-2"><div className="w-8 h-8 border-2 border-pink-400 border-t-transparent rounded-full animate-spin" /><span className="text-[9px] text-pink-500 font-bold">Uploading...</span></div>
+                    ) : (previews.sahanaImage || settings.sahanaImage) ? (
                       <><img src={previews.sahanaImage || getImageUrl(settings.sahanaImage)} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="sahanaImage" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
+                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => { handleFileChange(e); if(e.target.files[0]) handleTeamImageUpload('sahanaImage', e.target.files[0]); }} className="hidden" />
                   </label>
                 </div>
 
@@ -239,11 +264,13 @@ export default function AdminSettings() {
                 <div className="space-y-3 text-center">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Saif Ali<br/><span className="text-gray-300 font-normal normal-case">Developer & Marketing</span></label>
                   <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
-                    {(previews.saifImage || settings.saifImage) ? (
+                    {uploadingTeam.saifImage ? (
+                      <div className="flex flex-col items-center gap-2"><div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" /><span className="text-[9px] text-blue-500 font-bold">Uploading...</span></div>
+                    ) : (previews.saifImage || settings.saifImage) ? (
                       <><img src={previews.saifImage || getImageUrl(settings.saifImage)} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Photo</span></div>)}
-                    <input name="saifImage" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
+                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => { handleFileChange(e); if(e.target.files[0]) handleTeamImageUpload('saifImage', e.target.files[0]); }} className="hidden" />
                   </label>
                 </div>
 

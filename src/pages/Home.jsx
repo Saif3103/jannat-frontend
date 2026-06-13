@@ -244,7 +244,7 @@ export default function Home() {
       </section>
 
       {/* BRAND HERITAGE BANNER (Minimalist) */}
-      <section className="py-12 sm:py-16 border-y border-amber-900/5 bg-white">
+      <section className="py-14 sm:py-20 bg-white border-y-4 border-[#FAF7F2]">
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 text-center md:text-left">
           <div className="md:w-1/2">
             <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-[#1A1A1A] leading-snug">
@@ -267,7 +267,7 @@ export default function Home() {
       </section>
 
       {/* QUIZ ENTRY SECTION */}
-      <section className="py-16 sm:py-24 px-4 bg-[#FAF7F2]">
+      <section className="py-16 sm:py-28 px-4 bg-[#FAF7F2] border-b-4 border-white">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -316,8 +316,8 @@ export default function Home() {
       <RugShowcaseStrip />
 
       {/* FEATURED COLLECTION */}
-      <section className="py-16 sm:py-24 px-4 max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
+      <section className="py-16 sm:py-28 px-4 max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
           <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
           <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Featured Collection</h2>
           <div className="divider-gold mb-4" />
@@ -383,8 +383,9 @@ export default function Home() {
       )}
 
       {/* COLLECTIONS / CATEGORIES (Elegant Grid Layout) */}
-      <section className="py-16 sm:py-24 px-4 max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
+      <section className="py-16 sm:py-28 px-4 bg-[#FAF7F2]">
+        <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
           <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">Curated Selection</p>
           <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Our Collections</h2>
           <div className="divider-gold w-20" />
@@ -392,17 +393,23 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => (
-            <Link key={cat.name} to={`/shop?search=${cat.name.split(' ')[0]}`} className="group relative h-[450px] sm:h-[550px] rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-black/5">
+            <Link key={cat.name} to={`/shop?search=${cat.name.split(' ')[0]}`} className="group relative h-[400px] sm:h-[500px] rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
               <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+              {/* Always visible gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               
-              <div className="absolute inset-0 p-8 sm:p-10 flex flex-col justify-end">
-                <p className="text-[#C9A84C] text-[9px] font-bold tracking-[0.3em] uppercase mb-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">Discover</p>
-                <h3 className="font-luxury text-3xl text-white mb-3 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{cat.name}</h3>
-                <div className="w-0 h-[2px] bg-[#C9A84C] group-hover:w-16 transition-all duration-700 delay-100" />
+              {/* Text always visible at bottom */}
+              <div className="absolute inset-0 p-7 sm:p-10 flex flex-col justify-end">
+                <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Explore Collection</p>
+                <h3 className="font-luxury text-2xl sm:text-3xl text-white mb-3">{cat.name}</h3>
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-[2px] bg-[#C9A84C]" />
+                  <span className="text-white/60 text-[11px] uppercase tracking-widest font-bold group-hover:text-white transition-colors">Shop Now</span>
+                </div>
               </div>
             </Link>
           ))}
+        </div>
         </div>
       </section>
 
