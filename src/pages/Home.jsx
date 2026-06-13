@@ -90,11 +90,9 @@ export default function Home() {
     {
       name: 'Azeem Ansari',
       role: 'FOUNDER',
-      tagline1: 'Visionary Leader',
-      tagline2: 'Driving the Future',
       icon: GiQueenCrown,
       color: '#B69640',
-      image: getTeamImageUrl(settings?.founderImage),
+      image: getTeamImageUrl(settings?.founderImage, PLACEHOLDER),
       bio: 'Founded Jannat Rugs Co. with a passion for preserving India\'s rich weaving heritage. Leads the company with vision, blending tradition with modern luxury.',
     },
     {

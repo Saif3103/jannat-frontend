@@ -132,7 +132,7 @@ export default function ProductCard({ product, index = 0 }) {
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-white text-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-[10px] sm:text-[11px] tracking-widest border border-black/10 hover:bg-black/5 transition-all active:scale-95 uppercase"
+                className="flex-1 bg-gradient-to-r from-[#C9A84C] to-[#B69640] text-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-bold text-[10px] sm:text-[11px] tracking-widest hover:shadow-[0_0_15px_rgba(201,168,76,0.4)] transition-all active:scale-95 uppercase border border-[#B69640]/20"
               >
                 Buy Now
               </button>
