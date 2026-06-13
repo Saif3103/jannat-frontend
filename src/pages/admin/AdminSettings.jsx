@@ -33,22 +33,29 @@ export default function AdminSettings() {
     }
   };
 
-  // Upload a single team member image using dedicated endpoint
+  // Upload a single team member image using dedicated endpoint with Base64 fallback
   const handleTeamImageUpload = async (fieldName, file) => {
     if (!file || file.size === 0) return;
     setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
     try {
-      const fd = new FormData();
-      fd.append('image', file);
-      fd.append('field', fieldName);
-      
+      const reader = new FileReader();
+      const base64Promise = new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+      reader.readAsDataURL(file);
+      const base64 = await base64Promise;
+
       const token = localStorage.getItem('jannat_token');
       const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const baseClean = apiBase.replace(/\/$/, '').replace(/\/api$/, '');
       const response = await fetch(`${baseClean}/api/settings/upload-team-image`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: fd,
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ field: fieldName, base64 }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Upload failed');
