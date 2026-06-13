@@ -228,7 +228,7 @@ export default function Shop() {
           {/* Product Grid */}
           <div className="flex-1">
             {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
                 {[...Array(6)].map((_, i) => <div key={i} className="h-[300px] sm:h-[400px] bg-white/5 rounded-2xl sm:rounded-[2.5rem] animate-pulse" />)}
               </div>
             ) : products.length === 0 ? (
@@ -240,7 +240,7 @@ export default function Shop() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
                   {products.map((p, i) => (
                     <ProductCard key={p._id} product={p} index={i} />
                   ))}
