@@ -33,21 +33,30 @@ export default function AdminSettings() {
     }
   };
 
-  // Upload a single team member image independently to avoid unexpected field errors
+  // Upload a single team member image using existing PUT /settings endpoint
   const handleTeamImageUpload = async (fieldName, file) => {
     if (!file || file.size === 0) return;
     setUploadingTeam(prev => ({ ...prev, [fieldName]: true }));
     try {
+      // Send ONLY the image field — upload.any() on backend accepts any field name
       const fd = new FormData();
-      fd.append('image', file);      // always field name = 'image' (matches upload.single('image'))
-      fd.append('field', fieldName); // tells backend which settings field to update
-      const res = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
-      setSettings(res.data.settings);
+      fd.append(fieldName, file);
+      // Use fetch directly to avoid any axios interceptor interference
+      const token = localStorage.getItem('jannat_token');
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const baseClean = apiBase.replace(/\/$/, '').replace(/\/api$/, '');
+      const response = await fetch(`${baseClean}/api/settings`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Upload failed');
+      setSettings(data.settings);
       useSettingsStore.getState().fetchSettings();
       toast.success('Photo uploaded successfully! ✅');
     } catch (err) {
-      const errMsg = err?.response?.data?.message || err.message || 'Upload failed';
-      toast.error('Upload failed: ' + errMsg);
+      toast.error('Upload failed: ' + (err.message || 'Unknown error'));
     } finally {
       setUploadingTeam(prev => ({ ...prev, [fieldName]: false }));
     }
