@@ -51,7 +51,7 @@ export default function Login() {
         </div>
 
         {/* Right Side - Login Form */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-10 lg:p-16 bg-white relative">
+        <div className="w-full md:w-1/2 flex items-center justify-center px-6 py-12 sm:px-12 sm:py-16 lg:px-20 lg:py-20 bg-white relative min-h-screen md:min-h-0">
           
           {/* Subtle Background Pattern */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/arabesque.png")' }} />
@@ -63,26 +63,26 @@ export default function Login() {
             className="w-full max-w-xl relative z-10"
           >
             {/* Logo */}
-            <div className="mb-12 flex flex-col items-center md:items-start text-center md:text-left">
+            <div className="mb-10 flex flex-col items-center md:items-start text-center md:text-left">
               <Link to="/" className="inline-block mb-6">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#C9A84C]/30 shadow-md">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden border border-[#C9A84C]/30 shadow-md">
                   <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
                 </div>
               </Link>
-              <h1 className="font-luxury text-3xl sm:text-4xl text-[#1A1A1A] mb-3">Welcome Back</h1>
-              <p className="text-[#888] text-xs sm:text-sm">Please enter your details to sign in.</p>
+              <h1 className="font-luxury text-4xl sm:text-5xl text-[#1A1A1A] mb-3">Welcome Back</h1>
+              <p className="text-[#888] text-sm sm:text-base">Please enter your details to sign in.</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-7">
               {/* Email */}
               <div>
-                <label className="block text-[10px] sm:text-xs font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-2">Email Address</label>
+                <label className="block text-xs sm:text-sm font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-3">Email Address</label>
                 <div className="relative group">
                   <input
                     type="email" required autoFocus
                     value={form.email}
                     onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                    className="w-full bg-gray-50/50 border border-gray-200 rounded-xl px-5 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -90,17 +90,17 @@ export default function Login() {
 
               {/* Password */}
               <div>
-                <label className="block text-[10px] sm:text-xs font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-2">Password</label>
+                <label className="block text-xs sm:text-sm font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-3">Password</label>
                 <div className="relative group">
                   <input
                     type={showPw ? 'text' : 'password'} required
                     value={form.password}
                     onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                    className="w-full bg-gray-50/50 border border-gray-200 rounded-xl pl-5 pr-12 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl px-6 pr-14 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
                     placeholder="Enter your password"
                   />
                   <button type="button" onClick={() => setShowPw(!showPw)} className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 hover:text-[#C9A84C] transition-colors">
-                    {showPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                    {showPw ? <FiEyeOff size={20} /> : <FiEye size={20} />}
                   </button>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function Login() {
               {/* Submit */}
               <button
                 type="submit" disabled={isLoading}
-                className="w-full mt-4 py-4 bg-[#1A1A1A] text-white rounded-xl font-bold text-xs tracking-[0.2em] uppercase shadow-xl shadow-black/10 hover:bg-black hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
+                className="w-full mt-2 py-5 bg-[#1A1A1A] text-white rounded-2xl font-bold text-sm tracking-[0.2em] uppercase shadow-xl shadow-black/10 hover:bg-black hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
               >
                 {isLoading
                   ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -116,8 +116,8 @@ export default function Login() {
               </button>
             </form>
 
-            <div className="mt-8 pt-8 border-t border-gray-100 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-xs text-[#888] font-medium">
+            <div className="mt-10 pt-8 border-t border-gray-100 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-[#888] font-medium">
                 New to Jannat Rugs?{' '}
                 <Link to="/register" className="text-[#C9A84C] font-bold hover:text-[#B08D3E] transition-colors underline underline-offset-4">
                   Create Account
@@ -134,8 +134,8 @@ export default function Login() {
               </button>
             </div>
             
-            <div className="mt-12 text-center md:text-left">
-              <Link to="/" className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-gray-900 transition-colors font-medium">
+            <div className="mt-10 text-center md:text-left">
+              <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-900 transition-colors font-medium">
                 ← Return to Home
               </Link>
             </div>
@@ -146,3 +146,4 @@ export default function Login() {
     </>
   );
 }
+
