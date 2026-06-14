@@ -168,19 +168,38 @@ export default function Header() {
             <AnimatePresence>
               {showUserMenu && user && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                  className="absolute right-0 top-full mt-4 w-56 glass-card-dark rounded-2xl overflow-hidden shadow-2xl border border-amber-900/20"
+                  initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 12, scale: 0.95 }}
+                  className="absolute right-0 top-full mt-4 w-72 bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 z-50 p-2"
                 >
-                  <div className="p-4 border-b border-amber-900/10">
-                    <p className="text-white font-bold text-sm">{user.name}</p>
-                    <p className="text-[#1A1A1A]/40 text-[10px] truncate">{user.email}</p>
+                  <div className="px-5 py-4 border-b border-gray-100 mb-1">
+                    <p className="text-gray-900 font-bold text-base font-sans tracking-wide leading-tight">{user.name}</p>
+                    <p className="text-gray-400 text-xs font-mono mt-1 break-all">{user.email}</p>
                   </div>
-                  <div className="p-2">
+                  <div className="space-y-1">
                     {user.role === 'admin' && (
-                      <Link to="/admin" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-[#1A1A1A] hover:bg-amber-500/10 text-xs font-bold transition-all rounded-xl"><FiSettings size={14} /> Admin Panel</Link>
+                      <Link 
+                        to="/admin" 
+                        onClick={() => setShowUserMenu(false)} 
+                        className="flex items-center gap-4 px-5 py-3.5 text-gray-800 hover:bg-[#C9A84C]/10 hover:text-[#C9A84C] text-sm font-bold tracking-wider uppercase transition-all duration-200 rounded-xl"
+                      >
+                        <FiSettings size={18} /> Admin Panel
+                      </Link>
                     )}
-                    <Link to="/dashboard" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-3 text-[#1A1A1A]/70 hover:bg-white/5 text-xs font-bold transition-all rounded-xl"><FiUser size={14} /> My Profile</Link>
-                    <button onClick={() => { logout(); setShowUserMenu(false); }} className="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all rounded-xl w-full"><FiLogOut size={14} /> Logout</button>
+                    <Link 
+                      to="/dashboard" 
+                      onClick={() => setShowUserMenu(false)} 
+                      className="flex items-center gap-4 px-5 py-3.5 text-gray-700 hover:bg-gray-50 text-sm font-bold tracking-wider uppercase transition-all duration-200 rounded-xl"
+                    >
+                      <FiUser size={18} /> My Profile
+                    </Link>
+                    <button 
+                      onClick={() => { logout(); setShowUserMenu(false); }} 
+                      className="flex items-center gap-4 px-5 py-3.5 text-red-500 hover:bg-red-50 hover:text-red-600 text-sm font-bold tracking-wider uppercase transition-all duration-200 rounded-xl w-full text-left"
+                    >
+                      <FiLogOut size={18} /> Logout
+                    </button>
                   </div>
                 </motion.div>
               )}
