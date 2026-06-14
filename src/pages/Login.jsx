@@ -43,12 +43,7 @@ export default function Login() {
             <div className="absolute -bottom-10 -left-10 w-44 h-44 rounded-full border border-[#C9A84C]/10" />
             <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full border border-[#C9A84C]/10" />
 
-            <Link to="/" className="absolute top-8 left-8 flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#C9A84C]/40">
-                <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
-              </div>
-              <span className="text-white/60 text-xs font-semibold tracking-widest uppercase">Jannat Rugs</span>
-            </Link>
+
 
             <div className="text-center relative z-10">
               <div className="w-14 h-px bg-[#C9A84C]/60 mx-auto mb-8" />
@@ -71,6 +66,16 @@ export default function Login() {
           <div className="flex-1 flex flex-col items-center justify-center px-10 sm:px-16 py-14">
             <div className="w-full max-w-sm">
 
+              {/* Logo above Sign In */}
+              <div className="flex flex-col items-center mb-8">
+                <Link to="/" className="flex flex-col items-center gap-3">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-[#C9A84C]/30 shadow-md">
+                    <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-[#1A1A1A]/50 text-xs font-bold tracking-[0.3em] uppercase">Jannat Rugs Co.</span>
+                </Link>
+              </div>
+
               <h1 className="font-luxury text-4xl sm:text-5xl text-[#1A1A1A] text-center mb-3">Sign In</h1>
               <p className="text-[#aaa] text-sm text-center mb-10 tracking-wide">Enter your credentials to continue</p>
 
@@ -79,7 +84,7 @@ export default function Login() {
                   type="email" required autoFocus
                   value={form.email}
                   onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                  className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-7 py-6 text-lg text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
                   placeholder="Email"
                 />
 
@@ -88,17 +93,17 @@ export default function Login() {
                     type={showPw ? 'text' : 'password'} required
                     value={form.password}
                     onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                    className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 pr-14 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-7 pr-16 py-6 text-lg text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
                     placeholder="Password"
                   />
                   <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C9A84C] transition-colors">
-                    {showPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                    {showPw ? <FiEyeOff size={20} /> : <FiEye size={20} />}
                   </button>
                 </div>
 
                 <button
                   type="submit" disabled={isLoading}
-                  className="w-full py-5 mt-2 bg-[#1A1A1A] text-white rounded-full font-bold text-sm tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
+                  className="w-full py-6 mt-2 bg-[#1A1A1A] text-white rounded-2xl font-bold text-base tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
                 >
                   {isLoading
                     ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
