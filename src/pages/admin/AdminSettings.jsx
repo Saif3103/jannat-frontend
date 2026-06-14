@@ -35,7 +35,7 @@ export default function AdminSettings() {
     }
   };
 
-  // Team images: instant upload using the same PUT /settings endpoint (upload.any()) that already works
+  // Team images: instant upload using the dedicated '/settings/upload-team-image' endpoint
   const handleTeamImageChange = async (e, field) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -47,11 +47,11 @@ export default function AdminSettings() {
     setUploadingTeam(prev => ({ ...prev, [field]: true }));
     try {
       const fd = new FormData();
-      fd.append(field, file); // Send with the correct field name (founderImage / sahanaImage / saifImage)
-      // Use same PUT /settings endpoint — upload.any() + updateSettings controller handles all team images
-      await api.put('/settings', fd, { timeout: 120000 });
+      fd.append('field', field); // specify field in body
+      fd.append(field, file);    // send file
+      
+      const r = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
       toast.success('Photo uploaded!');
-      const r = await api.get('/settings');
       setSettings(r.data.settings);
       useSettingsStore.getState().fetchSettings();
     } catch (err) {
