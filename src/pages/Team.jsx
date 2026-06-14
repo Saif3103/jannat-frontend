@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { FiPlus, FiMinus, FiTruck, FiShield, FiRotateCcw, FiHeadphones, FiCode, FiTrendingUp, FiArrowRight } from 'react-icons/fi';
@@ -11,8 +11,12 @@ const PLACEHOLDER   = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228
 const PLACEHOLDER_F = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80';
 
 export default function Team() {
-  const { settings } = useSettingsStore();
+  const { settings, fetchSettings } = useSettingsStore();
   const [openFaq, setOpenFaq] = useState(0);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
 
   const getImageUrl = (url, fallback = PLACEHOLDER) => {
     if (!url) return fallback;
