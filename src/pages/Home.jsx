@@ -20,12 +20,9 @@ import SmartRecommendations from '../components/ui/SmartRecommendations';
 import DynamicHero from '../components/ui/SmartHero.jsx';
 
 const optimizeCloudinaryUrl = (url, width = 800) => {
-  if (url && url.includes('cloudinary.com/dnxzzzy/image/upload/')) {
-    if (url.includes('/upload/v')) {
-      return url.replace('/upload/v', `/upload/q_auto,f_auto,w_${width}/v`);
-    }
-  }
-  return url;
+  if (!url || !url.includes('cloudinary.com')) return url;
+  if (url.includes('/upload/q_auto')) return url; // already optimized
+  return url.replace('/upload/', `/upload/q_auto:eco,f_auto,w_${width}/`);
 };
 
 const getImageUrl = (url) => {
