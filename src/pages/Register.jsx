@@ -42,13 +42,6 @@ export default function Register() {
             <div className="absolute -bottom-10 -right-10 w-44 h-44 rounded-full border border-[#C9A84C]/10" />
             <div className="absolute -top-10 -left-10 w-44 h-44 rounded-full border border-[#C9A84C]/10" />
 
-            <Link to="/" className="absolute top-8 right-8 flex items-center gap-2">
-              <span className="text-white/60 text-xs font-semibold tracking-widest uppercase">Jannat Rugs</span>
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#C9A84C]/40">
-                <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
-              </div>
-            </Link>
-
             <div className="text-center relative z-10">
               <div className="w-14 h-px bg-[#C9A84C]/60 mx-auto mb-8" />
               <h2 className="font-luxury text-5xl text-white mb-5 leading-tight">
@@ -69,6 +62,16 @@ export default function Register() {
           {/* ── LEFT PANEL (form) ── */}
           <div className="flex-1 flex flex-col items-center justify-center px-10 sm:px-16 py-12">
             <div className="w-full max-w-sm">
+
+              {/* Logo above Create Account heading */}
+              <div className="flex flex-col items-center mb-6">
+                <Link to="/" className="flex flex-col items-center gap-2">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden border border-[#C9A84C]/40 shadow-md">
+                    <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-[#1A1A1A] text-xs font-bold tracking-[0.25em] uppercase mt-2">Jannat Rugs Co.</span>
+                </Link>
+              </div>
 
               <h1 className="font-luxury text-4xl sm:text-5xl text-[#1A1A1A] text-center mb-3">Create Account</h1>
               <p className="text-[#aaa] text-sm text-center mb-10 tracking-wide">Join the Jannat family today</p>
@@ -121,7 +124,7 @@ export default function Register() {
 
                 <button
                   type="submit" disabled={isLoading}
-                  className="w-full py-5 mt-2 bg-[#1A1A1A] text-white rounded-full font-bold text-sm tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
+                  className="w-full py-6 mt-6 bg-[#1A1A1A] text-white rounded-2xl font-bold text-base tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
                 >
                   {isLoading
                     ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
