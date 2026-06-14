@@ -26,124 +26,121 @@ export default function Login() {
     <>
       <Helmet><title>Login | Jannat Rugs Co.</title></Helmet>
 
-      <div className="min-h-screen flex flex-col md:flex-row bg-[#FAF7F2]">
-        {/* Left Side - Image Showcase */}
-        <div className="hidden md:flex md:w-1/2 relative bg-black overflow-hidden">
-          <img 
-            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&q=80" 
-            alt="Luxury Interior" 
-            className="absolute inset-0 w-full h-full object-cover opacity-80"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
-          
-          <div className="absolute bottom-0 left-0 w-full p-16 z-10">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.8 }}>
-              <p className="text-[#C9A84C] text-[10px] sm:text-xs font-bold tracking-[0.4em] uppercase mb-4">Welcome to Excellence</p>
-              <h2 className="font-luxury text-4xl lg:text-6xl text-white mb-6 leading-tight">
-                Step Into <br/><span className="text-[#C9A84C] italic">Luxury.</span>
-              </h2>
-              <div className="w-16 h-px bg-[#C9A84C]/50 mb-6" />
-              <p className="text-white/60 text-sm leading-relaxed max-w-md font-medium">
-                Sign in to manage your orders, track your bespoke commissions, and access exclusive luxury collections reserved for our members.
-              </p>
-            </motion.div>
-          </div>
-        </div>
+      {/* Page Background */}
+      <div className="min-h-screen bg-[#F0EDE8] flex items-center justify-center p-4 sm:p-8">
 
-        {/* Right Side - Login Form */}
-        <div className="w-full md:w-1/2 flex items-center justify-center px-6 py-12 sm:px-12 sm:py-16 lg:px-20 lg:py-20 bg-white relative min-h-screen md:min-h-0">
-          
-          {/* Subtle Background Pattern */}
-          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/arabesque.png")' }} />
+        {/* Floating Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[580px]"
+        >
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-xl relative z-10"
-          >
+          {/* ── LEFT PANEL ── */}
+          <div className="relative md:w-[42%] bg-[#1A1A1A] flex flex-col items-center justify-center p-10 overflow-hidden">
+
+            {/* Decorative shapes */}
+            <div className="absolute top-6 right-6 w-10 h-10 rotate-45 border-2 border-[#C9A84C]/40 rounded-sm" />
+            <div className="absolute top-16 right-10 w-5 h-5 rotate-45 bg-[#C9A84C]/20 rounded-sm" />
+            <div className="absolute bottom-10 left-6 w-14 h-14 rotate-45 border-2 border-[#C9A84C]/30 rounded-sm" />
+            <div className="absolute bottom-24 left-12 w-6 h-6 rotate-45 bg-[#C9A84C]/15 rounded-sm" />
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full border border-[#C9A84C]/10" />
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full border border-[#C9A84C]/10" />
+
             {/* Logo */}
-            <div className="mb-10 flex flex-col items-center md:items-start text-center md:text-left">
-              <Link to="/" className="inline-block mb-6">
-                <div className="w-20 h-20 rounded-2xl overflow-hidden border border-[#C9A84C]/30 shadow-md">
-                  <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
-                </div>
-              </Link>
-              <h1 className="font-luxury text-4xl sm:text-5xl text-[#1A1A1A] mb-3">Welcome Back</h1>
-              <p className="text-[#888] text-sm sm:text-base">Please enter your details to sign in.</p>
-            </div>
+            <Link to="/" className="absolute top-8 left-8 flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl overflow-hidden border border-[#C9A84C]/40">
+                <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
+              </div>
+              <span className="text-white/70 text-xs font-semibold tracking-widest uppercase">Jannat Rugs</span>
+            </Link>
 
-            <form onSubmit={handleSubmit} className="space-y-7">
-              {/* Email */}
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-3">Email Address</label>
-                <div className="relative group">
+            {/* Text */}
+            <div className="text-center relative z-10">
+              <div className="w-12 h-px bg-[#C9A84C]/60 mx-auto mb-6" />
+              <h2 className="font-luxury text-4xl text-white mb-4 leading-tight">
+                Welcome<br />Back!
+              </h2>
+              <p className="text-white/50 text-sm leading-relaxed max-w-[200px] mx-auto mb-10">
+                Sign in with your personal info to stay connected with us.
+              </p>
+
+              {/* Switch to Register */}
+              <Link
+                to="/register"
+                className="inline-block border-2 border-white/30 text-white text-xs font-bold tracking-[0.25em] uppercase px-8 py-3 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all duration-300"
+              >
+                Create Account
+              </Link>
+            </div>
+          </div>
+
+          {/* ── RIGHT PANEL ── */}
+          <div className="flex-1 flex flex-col items-center justify-center px-8 sm:px-14 py-12">
+
+            <div className="w-full max-w-sm">
+              <h1 className="font-luxury text-3xl sm:text-4xl text-[#1A1A1A] text-center mb-2">Sign In</h1>
+              <p className="text-[#999] text-xs text-center mb-8 tracking-wide">Enter your credentials to continue</p>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email Input */}
+                <div className="relative">
+                  <FiMail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]" />
                   <input
                     type="email" required autoFocus
                     value={form.email}
                     onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                    className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                    placeholder="Enter your email"
+                    className="w-full bg-[#F7F5F2] border border-gray-200 rounded-xl pl-11 pr-4 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    placeholder="Email"
                   />
                 </div>
-              </div>
 
-              {/* Password */}
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-[#1A1A1A] uppercase tracking-[0.2em] mb-3">Password</label>
-                <div className="relative group">
+                {/* Password Input */}
+                <div className="relative">
+                  <FiLock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C9A84C]" />
                   <input
                     type={showPw ? 'text' : 'password'} required
                     value={form.password}
                     onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                    className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl px-6 pr-14 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:bg-white focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                    placeholder="Enter your password"
+                    className="w-full bg-[#F7F5F2] border border-gray-200 rounded-xl pl-11 pr-12 py-4 text-sm text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
+                    placeholder="Password"
                   />
-                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 hover:text-[#C9A84C] transition-colors">
-                    {showPw ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C9A84C] transition-colors">
+                    {showPw ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                   </button>
                 </div>
-              </div>
 
-              {/* Submit */}
-              <button
-                type="submit" disabled={isLoading}
-                className="w-full mt-2 py-5 bg-[#1A1A1A] text-white rounded-2xl font-bold text-sm tracking-[0.2em] uppercase shadow-xl shadow-black/10 hover:bg-black hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
-              >
-                {isLoading
-                  ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  : 'Sign In'}
-              </button>
-            </form>
+                {/* Sign In Button */}
+                <button
+                  type="submit" disabled={isLoading}
+                  className="w-full py-4 mt-2 bg-[#1A1A1A] text-white rounded-full font-bold text-xs tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg shadow-black/10 flex items-center justify-center disabled:opacity-60 cursor-pointer"
+                >
+                  {isLoading
+                    ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    : 'Sign In'}
+                </button>
+              </form>
 
-            <div className="mt-10 pt-8 border-t border-gray-100 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-sm text-[#888] font-medium">
-                New to Jannat Rugs?{' '}
-                <Link to="/register" className="text-[#C9A84C] font-bold hover:text-[#B08D3E] transition-colors underline underline-offset-4">
-                  Create Account
+              {/* Bottom Links */}
+              <div className="mt-8 flex flex-col items-center gap-3">
+                <button
+                  onClick={async () => {
+                    try { const u = await login('admin@jannatrugs.com', 'admin123456'); if (u.role === 'admin') navigate('/admin'); } catch (e) {}
+                  }}
+                  className="text-[10px] text-gray-400 hover:text-[#C9A84C] font-bold uppercase tracking-widest flex items-center gap-1.5 transition-colors"
+                >
+                  <FiShield size={11} /> Admin Access
+                </button>
+                <Link to="/" className="text-[10px] text-gray-400 hover:text-gray-700 transition-colors font-medium">
+                  ← Return to Home
                 </Link>
-              </p>
-              
-              <button
-                onClick={async () => {
-                  try { const u = await login('admin@jannatrugs.com', 'admin123456'); if (u.role === 'admin') navigate('/admin'); } catch (e) {}
-                }}
-                className="text-[10px] text-gray-400 hover:text-[#C9A84C] font-bold uppercase tracking-[0.1em] flex items-center gap-1.5 transition-colors"
-              >
-                <FiShield size={12} /> Admin Access
-              </button>
+              </div>
             </div>
-            
-            <div className="mt-10 text-center md:text-left">
-              <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-900 transition-colors font-medium">
-                ← Return to Home
-              </Link>
-            </div>
+          </div>
 
-          </motion.div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
 }
-
