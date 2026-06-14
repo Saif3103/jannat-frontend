@@ -103,7 +103,7 @@ export default function Login() {
 
                 <button
                   type="submit" disabled={isLoading}
-                  className="w-full py-6 mt-2 bg-[#1A1A1A] text-white rounded-2xl font-bold text-base tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
+                  className="w-full py-6 mt-8 bg-[#1A1A1A] text-white rounded-2xl font-bold text-base tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
                 >
                   {isLoading
                     ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
