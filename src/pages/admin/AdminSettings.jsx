@@ -35,7 +35,7 @@ export default function AdminSettings() {
     }
   };
 
-  // Team images upload instantly when selected (separate dedicated endpoint)
+  // Team images: instant upload using the same PUT /settings endpoint (upload.any()) that already works
   const handleTeamImageChange = async (e, field) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -44,27 +44,25 @@ export default function AdminSettings() {
     const previewUrl = URL.createObjectURL(file);
     setPreviews(prev => ({ ...prev, [field]: previewUrl }));
 
-    // Upload instantly
     setUploadingTeam(prev => ({ ...prev, [field]: true }));
     try {
       const fd = new FormData();
-      fd.append('image', file);
-      fd.append('field', field);
-      const res = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
-      if (res.data.success) {
-        toast.success('Image uploaded successfully!');
-        setSettings(prev => ({ ...prev, [field]: res.data.url }));
-        useSettingsStore.getState().fetchSettings();
-      }
+      fd.append(field, file); // Send with the correct field name (founderImage / sahanaImage / saifImage)
+      // Use same PUT /settings endpoint — upload.any() + updateSettings controller handles all team images
+      await api.put('/settings', fd, { timeout: 120000 });
+      toast.success('Photo uploaded!');
+      const r = await api.get('/settings');
+      setSettings(r.data.settings);
+      useSettingsStore.getState().fetchSettings();
     } catch (err) {
       console.error('Team image upload error:', err?.response?.data || err);
       toast.error(err?.response?.data?.message || 'Upload failed. Please try again.');
-      // Revert preview on error
       setPreviews(prev => ({ ...prev, [field]: null }));
     } finally {
       setUploadingTeam(prev => ({ ...prev, [field]: false }));
     }
   };
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
