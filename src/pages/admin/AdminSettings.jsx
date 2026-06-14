@@ -23,6 +23,8 @@ export default function AdminSettings() {
     return `${BASE_URL}/${url}`;
   };
 
+  const TEAM_FIELDS = ['founderImage', 'sahanaImage', 'saifImage', 'coFounderImage'];
+
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files && files[0]) {
@@ -33,7 +35,36 @@ export default function AdminSettings() {
     }
   };
 
-  // We now upload team images along with the rest of the form, matching the product listing approach.
+  // Team images upload instantly when selected (separate dedicated endpoint)
+  const handleTeamImageChange = async (e, field) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Show local preview immediately
+    const previewUrl = URL.createObjectURL(file);
+    setPreviews(prev => ({ ...prev, [field]: previewUrl }));
+
+    // Upload instantly
+    setUploadingTeam(prev => ({ ...prev, [field]: true }));
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+      fd.append('field', field);
+      const res = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
+      if (res.data.success) {
+        toast.success('Image uploaded successfully!');
+        setSettings(prev => ({ ...prev, [field]: res.data.url }));
+        useSettingsStore.getState().fetchSettings();
+      }
+    } catch (err) {
+      console.error('Team image upload error:', err?.response?.data || err);
+      toast.error(err?.response?.data?.message || 'Upload failed. Please try again.');
+      // Revert preview on error
+      setPreviews(prev => ({ ...prev, [field]: null }));
+    } finally {
+      setUploadingTeam(prev => ({ ...prev, [field]: false }));
+    }
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -43,6 +74,9 @@ export default function AdminSettings() {
       const file = fd.get(field);
       if (file && file instanceof File && file.size === 0) fd.delete(field);
     });
+
+    // Remove team image fields — they are handled by dedicated instant-upload
+    TEAM_FIELDS.forEach(f => fd.delete(f));
 
     const socialLinks = {
       facebook: fd.get('facebook') || '',
@@ -78,11 +112,11 @@ export default function AdminSettings() {
       console.error('Settings save error:', err?.response?.data || err);
       const errMsg = err?.response?.data?.message || err.message || 'Failed to save settings';
       toast.error(errMsg);
-      alert('Upload Error Details: ' + errMsg + '\n\nPlease tell Antigravity this exact error message!');
     } finally {
       setSaving(false);
     }
   };
+
 
   const addFaq = async () => {
     if (!newFaq.question || !newFaq.answer) return;
@@ -222,7 +256,7 @@ export default function AdminSettings() {
                       <><img src={previews.founderImage || getImageUrl(settings.founderImage)} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input name="founderImage" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
+                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => handleTeamImageChange(e, 'founderImage')} className="hidden" />
                   </label>
                 </div>
 
@@ -236,7 +270,7 @@ export default function AdminSettings() {
                       <><img src={previews.sahanaImage || getImageUrl(settings.sahanaImage)} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input name="sahanaImage" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
+                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => handleTeamImageChange(e, 'sahanaImage')} className="hidden" />
                   </label>
                 </div>
 
@@ -250,7 +284,7 @@ export default function AdminSettings() {
                       <><img src={previews.saifImage || getImageUrl(settings.saifImage)} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
                     ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input name="saifImage" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={handleFileChange} className="hidden" />
+                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => handleTeamImageChange(e, 'saifImage')} className="hidden" />
                   </label>
                 </div>
 

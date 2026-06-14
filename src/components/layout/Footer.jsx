@@ -55,9 +55,7 @@ export default function Footer() {
             Explore our exclusive collection of handmade luxury carpets and find the perfect masterpiece for your home.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-            <Link to="/contact" className="text-[#1A1A1A] text-xs tracking-widest uppercase font-bold hover:text-[#B69640] transition-colors border-b border-amber-400/30 pb-1">
-              Request a Consultation
-            </Link>
+            {/* CTA Button removed as requested */}
           </div>
         </div>
       </div>
@@ -71,7 +69,7 @@ export default function Footer() {
           <p className="text-white/50 text-sm sm:text-base tracking-wide mb-10 max-w-xl mx-auto">
             Subscribe for exclusive offers, new collections &amp; carpet care tips delivered to your inbox.
           </p>
-          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-3xl mx-auto shadow-2xl">
+          <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-0 w-full max-w-4xl mx-auto shadow-2xl">
             <input
               type="email"
               value={email}
@@ -107,7 +105,7 @@ export default function Footer() {
           </div>
 
           {/* Contact & Socials — centered */}
-          <div className="space-y-8 flex flex-col items-center text-center -mt-2 sm:-mt-4">
+          <div className="space-y-8 flex flex-col items-center text-center -mt-6 sm:-mt-8">
             <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Get In Touch</h4>
             <div className="space-y-4">
               <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-3 text-black/60 hover:text-[#1A1A1A] transition-colors text-sm justify-center">
