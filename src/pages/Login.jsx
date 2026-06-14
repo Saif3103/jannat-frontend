@@ -51,7 +51,7 @@ export default function Login() {
         </div>
 
         {/* Right Side - Login Form */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:p-24 bg-white relative">
+        <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-10 lg:p-16 bg-white relative">
           
           {/* Subtle Background Pattern */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/arabesque.png")' }} />
@@ -60,7 +60,7 @@ export default function Login() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-lg relative z-10"
+            className="w-full max-w-xl relative z-10"
           >
             {/* Logo */}
             <div className="mb-12 flex flex-col items-center md:items-start text-center md:text-left">

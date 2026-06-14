@@ -54,7 +54,7 @@ export default function Register() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-full max-w-sm bg-white rounded-3xl shadow-sm border border-gray-100 p-8"
+          className="w-full max-w-lg bg-white rounded-3xl shadow-sm border border-gray-100 p-10"
         >
           <h1 className="font-serif text-2xl text-[#111827] mb-1 text-center">Create Account</h1>
           <p className="text-[#aaa] text-xs text-center mb-8">Join the Jannat family today</p>
