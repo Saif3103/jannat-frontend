@@ -38,6 +38,13 @@ export default function SmartHero({ videoUrl, logo }) {
         {/* High Definition Overlays */}
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+        
+        {/* Mirzapur Red Scrolling Text Ticker */}
+        <div className="absolute bottom-24 left-0 right-0 w-full overflow-hidden whitespace-nowrap py-3 bg-black/10 backdrop-blur-[1px] pointer-events-none select-none z-10 border-y border-red-500/10">
+          <div className="inline-block animate-ticker text-red-600 font-luxury text-3xl sm:text-5xl md:text-6xl tracking-[0.4em] uppercase font-bold opacity-80">
+            Mirzapur &nbsp;&nbsp;&bull;&nbsp;&nbsp; Handcrafted Heritage &nbsp;&nbsp;&bull;&nbsp;&nbsp; Mirzapur &nbsp;&nbsp;&bull;&nbsp;&nbsp; Handcrafted Heritage &nbsp;&nbsp;&bull;&nbsp;&nbsp; Mirzapur &nbsp;&nbsp;&bull;&nbsp;&nbsp; Handcrafted Heritage &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+          </div>
+        </div>
       </div>
 
       <div className="relative z-10 px-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center w-full">

@@ -212,6 +212,18 @@ body {
   animation: shimmer 2s infinite;
 }
 
+/* Ticker Animation */
+@keyframes ticker-anim {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker-anim 20s linear infinite;
+}
+
 /* Badge */
 .badge-gold {
   background: linear-gradient(135deg, #C9A84C, #9B7B2E);
