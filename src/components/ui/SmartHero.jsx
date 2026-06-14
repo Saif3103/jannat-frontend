@@ -21,6 +21,7 @@ export default function SmartHero({ videoUrl, logo }) {
     return () => clearInterval(timer);
   }, []);
 
+  return (
     <div className="flex flex-col w-full bg-[#FAF7F2]">
       <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-black">
         {/* Background Video */}
