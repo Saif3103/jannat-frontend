@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiStar } from 'react-icons/fi';
@@ -21,7 +21,7 @@ const getImageUrl = (url) => {
   return `${BASE_URL}/${url}`;
 };
 
-export default function ProductCard({ product, index = 0 }) {
+export default memo(function ProductCard({ product, index = 0 }) {
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
@@ -148,4 +148,4 @@ export default function ProductCard({ product, index = 0 }) {
       </div>
     </motion.div>
   );
-}
+});

@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -18,6 +19,8 @@ import RugQuiz from '../components/ui/RugQuiz';
 import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
 import DynamicHero from '../components/ui/SmartHero.jsx';
+import TrustSection from '../components/ui/TrustSection';
+import Testimonials from '../components/ui/Testimonials';
 
 const optimizeCloudinaryUrl = (url, width = 800) => {
   if (!url || !url.includes('cloudinary.com')) return url;
@@ -71,6 +74,8 @@ export default function Home() {
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
+  const openQuiz = useCallback(() => setIsQuizOpen(true), []);
+  const closeQuiz = useCallback(() => setIsQuizOpen(false), []);
   const [categories, setCategories] = useState([]);
   const [settings, setSettings] = useState(null);
   const [offers, setOffers] = useState([]);
@@ -115,6 +120,7 @@ export default function Home() {
   ];
 
   useEffect(() => {
+    let isMounted = true;
     const load = async () => {
       // 1. FAST LOAD: Check Cache
       const cached = localStorage.getItem('jannat_home_cache');
@@ -131,45 +137,67 @@ export default function Home() {
         } catch (e) { console.error('Cache parsing failed', e); }
       }
 
-      // 2. BACKGROUND FETCH: Get Fresh Data
+      // 2. BACKGROUND FETCH: Phase 1 (Critical Data)
       try {
-        const [featured, best, newArr, cats, setts, offs, vReviews] = await Promise.all([
+        const [featured, newArr, cats, setts] = await Promise.all([
           api.get('/products?featured=true&limit=8'),
-          api.get('/products?bestSeller=true&limit=4'),
           api.get('/products?newArrival=true&limit=4'),
           api.get('/categories'),
           api.get('/settings'),
-          api.get('/offers'),
-          api.get('/video-reviews'),
         ]);
         
-        const freshData = {
+        if (!isMounted) return;
+
+        const criticalData = {
           featured: featured?.data?.products || [],
-          best: best?.data?.products || [],
           newArr: newArr?.data?.products || [],
           cats: cats?.data?.categories?.slice(0, 6) || [],
           settings: setts?.data?.settings || null,
-          offers: offs?.data?.offers || [],
-          videoReviews: vReviews?.data?.reviews?.slice(0, 2) || []
         };
 
-        if (freshData.featured.length) setFeaturedProducts(freshData.featured);
-        if (freshData.best.length) setBestSellers(freshData.best);
-        if (freshData.newArr.length) setNewArrivals(freshData.newArr);
-        if (freshData.cats.length) setCategories(freshData.cats);
-        if (freshData.settings) setSettings(freshData.settings);
-        if (freshData.offers.length) setOffers(freshData.offers);
-        if (freshData.videoReviews.length) setVideoReviews(freshData.videoReviews);
+        if (criticalData.featured.length) setFeaturedProducts(criticalData.featured);
+        if (criticalData.newArr.length) setNewArrivals(criticalData.newArr);
+        if (criticalData.cats.length) setCategories(criticalData.cats);
+        if (criticalData.settings) setSettings(criticalData.settings);
 
-        // Update Cache
-        localStorage.setItem('jannat_home_cache', JSON.stringify(freshData));
-      } catch (err) {
-        console.error('Failed to load home data:', err);
-      } finally {
         setLoading(false);
+
+        // 3. BACKGROUND FETCH: Phase 2 (Non-Critical Data)
+        // Defer execution to allow main thread to paint the UI
+        setTimeout(async () => {
+          try {
+            const [best, offs, vReviews] = await Promise.all([
+              api.get('/products?bestSeller=true&limit=4'),
+              api.get('/offers'),
+              api.get('/video-reviews'),
+            ]);
+            
+            if (!isMounted) return;
+
+            const nonCriticalData = {
+              best: best?.data?.products || [],
+              offers: offs?.data?.offers || [],
+              videoReviews: vReviews?.data?.reviews?.slice(0, 2) || []
+            };
+
+            if (nonCriticalData.best.length) setBestSellers(nonCriticalData.best);
+            if (nonCriticalData.offers.length) setOffers(nonCriticalData.offers);
+            if (nonCriticalData.videoReviews.length) setVideoReviews(nonCriticalData.videoReviews);
+
+            // Update Cache with full data
+            localStorage.setItem('jannat_home_cache', JSON.stringify({ ...criticalData, ...nonCriticalData }));
+          } catch (err) {
+            console.error('Failed to load non-critical home data:', err);
+          }
+        }, 1000); // 1s delay
+
+      } catch (err) {
+        console.error('Failed to load critical home data:', err);
+        if (isMounted) setLoading(false);
       }
     };
     load();
+    return () => { isMounted = false; };
   }, []);
 
   const FounderIcon = TEAM[0].icon;
@@ -189,6 +217,9 @@ export default function Home() {
           videoUrl={settings?.heroVideo ? getImageUrl(settings.heroVideo) : null} 
           logo="/logo.png" 
         />
+
+        {/* PREMIUM TRUST SECTION */}
+        <TrustSection />
 
       {/* FESTIVE OFFER BANNER */}
       <section className="py-16 sm:py-24 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
@@ -295,7 +326,7 @@ export default function Home() {
                     Not sure which rug fits your space? Answer 5 quick questions and our smart collection engine will curate a personalized selection just for you.
                   </p>
                   <button 
-                    onClick={() => setIsQuizOpen(true)}
+                    onClick={openQuiz}
                     className="btn-gold inline-flex items-center justify-center gap-4 px-12 py-5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-widest shadow-2xl hover:shadow-[#C9A84C]/20"
                   >
                     Start The Quiz <FiArrowRight size={20} />
@@ -306,7 +337,7 @@ export default function Home() {
         </div>
       </section>
 
-      <RugQuiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
+      <RugQuiz isOpen={isQuizOpen} onClose={closeQuiz} />
 
 
       {/* RUG SHOWCASE STRIP */}
@@ -349,8 +380,14 @@ export default function Home() {
         )}
       </section>
 
+      {/* CUSTOMER TESTIMONIALS */}
+      <LazySection minHeight="500px">
+        <Testimonials />
+      </LazySection>
+
       {/* BRAND AD VIDEO SECTION */}
       {settings?.adVideo && (
+        <LazySection minHeight="500px">
         <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2" />
           <div className="max-w-4xl mx-auto relative z-10">
@@ -377,6 +414,7 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
+        </LazySection>
       )}
 
       {/* COLLECTIONS / CATEGORIES (Elegant Grid Layout) */}
@@ -411,6 +449,7 @@ export default function Home() {
       </section>
 
       {/* BESPOKE SERVICE (Custom Rugs Video Split Layout) */}
+      <LazySection>
       <section className="relative overflow-hidden flex flex-col lg:flex-row min-h-[400px] lg:min-h-[550px] border-y border-amber-900/20" style={{ background: '#0a0a0a' }}>
         <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-auto overflow-hidden">
           <video 
@@ -440,6 +479,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      </LazySection>
 
       {/* BEST SELLERS */}
       {(bestSellers.length > 0 || loading) && (
@@ -490,6 +530,7 @@ export default function Home() {
       )}
 
       {/* VIDEO CUSTOMER REVIEWS */}
+      <LazySection>
       <section className="py-16 sm:py-24 px-4 relative bg-white border-y border-black/5">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
@@ -549,6 +590,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </LazySection>
 
       {/* FAQ */}
       <section className="py-16 sm:py-24 px-4 bg-[#FAF7F2]" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
@@ -655,6 +697,15 @@ function FAQItem({ question, answer }) {
           <p className="text-[#1A1A1A]/50 text-sm leading-relaxed border-t border-amber-900/10 pt-4">{answer}</p>
         </div>
       </motion.div>
+    </div>
+  );
+}
+
+function LazySection({ children, minHeight = "400px" }) {
+  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px 0px' });
+  return (
+    <div ref={ref} style={{ minHeight: inView ? 'auto' : minHeight }}>
+      {inView ? children : null}
     </div>
   );
 }
