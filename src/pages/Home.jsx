@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiUsers, FiTrendingUp, FiCode } from 'react-icons/fi';
+import { FiArrowRight, FiStar, FiShield, FiTruck, FiRefreshCw, FiAward, FiUsers, FiTrendingUp, FiCode, FiCheckCircle, FiHeart, FiPackage } from 'react-icons/fi';
 import { FaHandshake, FaRocket } from 'react-icons/fa';
 import { GiQueenCrown, GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -19,8 +19,6 @@ import RugQuiz from '../components/ui/RugQuiz';
 import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
 import DynamicHero from '../components/ui/SmartHero.jsx';
-import TrustSection from '../components/ui/TrustSection';
-import Testimonials from '../components/ui/Testimonials';
 
 const optimizeCloudinaryUrl = (url, width = 800) => {
   if (!url || !url.includes('cloudinary.com')) return url;
@@ -74,8 +72,6 @@ export default function Home() {
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
-  const openQuiz = useCallback(() => setIsQuizOpen(true), []);
-  const closeQuiz = useCallback(() => setIsQuizOpen(false), []);
   const [categories, setCategories] = useState([]);
   const [settings, setSettings] = useState(null);
   const [offers, setOffers] = useState([]);
@@ -218,11 +214,8 @@ export default function Home() {
           logo="/logo.png" 
         />
 
-        {/* PREMIUM TRUST SECTION */}
-        <TrustSection />
-
       {/* FESTIVE OFFER BANNER */}
-      <section className="py-16 sm:py-24 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
+      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-amber-500/10 to-transparent pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -271,31 +264,91 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BRAND HERITAGE BANNER (Minimalist) */}
-      <section className="py-14 sm:py-20 bg-white border-y-4 border-[#FAF7F2]">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 text-center md:text-left">
-          <div className="md:w-1/2">
-            <h2 className="font-luxury text-2xl sm:text-3xl md:text-4xl text-[#1A1A1A] leading-snug">
-              A Heritage of <br/><span className="text-[#1A1A1A]">Hand-Knotted Perfection.</span>
+      {/* WHY INDIA TRUSTS JANNAT RUGS */}
+      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2] relative overflow-hidden">
+        {/* Decorative Background */}
+        <div className="absolute top-0 left-0 w-72 h-72 bg-[#C9A84C]/5 rounded-full -ml-36 -mt-36 blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-72 h-72 bg-[#C9A84C]/5 rounded-full -mr-36 -mb-36 blur-[100px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Section Header */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }}
+            className="flex flex-col items-center text-center mb-14 sm:mb-20"
+          >
+            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">Trust & Heritage</p>
+            <h2 className="font-luxury text-3xl sm:text-5xl md:text-6xl text-[#1A1A1A] mb-6 leading-tight">
+              Why India Trusts <br className="hidden sm:block" /><span className="italic">Jannat Rugs</span>
             </h2>
-          </div>
-          <div className="md:w-1/2 flex flex-wrap justify-center md:justify-end gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8">
+            <div className="divider-gold w-20 sm:w-24 mb-6" />
+            <p className="text-black/50 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium">
+              For over a decade, we have been handcrafting premium rugs with authentic artisanship, trusted by homeowners and interior designers across India.
+            </p>
+          </motion.div>
+
+          {/* Trust Cards Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16 sm:mb-20">
             {[
-              { label: 'Craftsmanship', desc: '100% Authentic' },
-              { label: 'Worldwide', desc: 'Global Shipping' },
-              { label: 'Est. 1999', desc: 'Legacy of Trust' },
-            ].map(item => (
-              <div key={item.label} className="flex flex-col items-center md:items-start">
-                <span className="text-[#1A1A1A] text-base sm:text-lg font-bold tracking-wide uppercase">{item.label}</span>
-                <span className="text-black/30 text-[10px] sm:text-xs tracking-widest uppercase mt-1">{item.desc}</span>
-              </div>
-            ))}
+              { icon: FiShield, title: 'Premium Quality', desc: '100% handcrafted with the finest materials — no compromises' },
+              { icon: FiTruck, title: 'Secure Delivery', desc: 'Safe packaging & tracked delivery across India' },
+              { icon: FiCheckCircle, title: 'Authentic Craft', desc: 'Every rug is made by skilled artisans using age-old techniques' },
+              { icon: FiHeart, title: 'Customer Love', desc: 'Trusted by 500+ happy customers with 5-star reviews' },
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#B69640]/15 flex items-center justify-center mb-5 group-hover:bg-[#B69640]/10 transition-colors duration-500">
+                    <Icon size={22} className="text-[#B69640]" />
+                  </div>
+                  <h3 className="text-[#1A1A1A] text-sm sm:text-base font-bold mb-2 tracking-wide">{item.title}</h3>
+                  <p className="text-black/40 text-xs sm:text-sm leading-relaxed font-medium">{item.desc}</p>
+                </motion.div>
+              );
+            })}
           </div>
+
+          {/* Stats Row */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }}
+            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-8 sm:p-12"
+          >
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
+              {[
+                { number: '500+', label: 'Happy Customers' },
+                { number: '1000+', label: 'Rugs Delivered' },
+                { number: '10+', label: 'Years Experience' },
+                { number: '100%', label: 'Handcrafted Quality' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  className="text-center"
+                >
+                  <p className="font-luxury text-3xl sm:text-5xl text-[#B69640] mb-2 leading-none">{stat.number}</p>
+                  <p className="text-black/40 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* QUIZ ENTRY SECTION */}
-      <section className="py-16 sm:py-28 px-4 bg-[#FAF7F2] border-b-4 border-white">
+      <section className="py-20 sm:py-32 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -326,7 +379,7 @@ export default function Home() {
                     Not sure which rug fits your space? Answer 5 quick questions and our smart collection engine will curate a personalized selection just for you.
                   </p>
                   <button 
-                    onClick={openQuiz}
+                    onClick={() => setIsQuizOpen(true)}
                     className="btn-gold inline-flex items-center justify-center gap-4 px-12 py-5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-widest shadow-2xl hover:shadow-[#C9A84C]/20"
                   >
                     Start The Quiz <FiArrowRight size={20} />
@@ -337,14 +390,14 @@ export default function Home() {
         </div>
       </section>
 
-      <RugQuiz isOpen={isQuizOpen} onClose={closeQuiz} />
+      <RugQuiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
 
 
       {/* RUG SHOWCASE STRIP */}
       <RugShowcaseStrip />
 
       {/* FEATURED COLLECTION */}
-      <section className="py-16 sm:py-28 px-4 max-w-7xl mx-auto">
+      <section className="py-20 sm:py-32 px-4 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
           <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
           <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Featured Collection</h2>
@@ -380,11 +433,6 @@ export default function Home() {
         )}
       </section>
 
-      {/* CUSTOMER TESTIMONIALS */}
-      <LazySection minHeight="500px">
-        <Testimonials />
-      </LazySection>
-
       {/* BRAND AD VIDEO SECTION */}
       {settings?.adVideo && (
         <LazySection minHeight="500px">
@@ -418,7 +466,7 @@ export default function Home() {
       )}
 
       {/* COLLECTIONS / CATEGORIES (Elegant Grid Layout) */}
-      <section className="py-16 sm:py-28 px-4 bg-[#FAF7F2]">
+      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
           <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">Curated Selection</p>
@@ -483,7 +531,7 @@ export default function Home() {
 
       {/* BEST SELLERS */}
       {(bestSellers.length > 0 || loading) && (
-        <section className="py-16 sm:py-24 px-4 bg-white">
+        <section className="py-20 sm:py-32 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
             <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Customer Favorites</p>
@@ -507,7 +555,7 @@ export default function Home() {
 
       {/* NEW ARRIVALS */}
       {(newArrivals.length > 0 || loading) && (
-        <section className="py-16 sm:py-24 px-4" style={{ background: '#FAF7F2' }}>
+        <section className="py-20 sm:py-32 px-4" style={{ background: '#FAF7F2' }}>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
               <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Fresh From The Loom</p>
@@ -531,7 +579,7 @@ export default function Home() {
 
       {/* VIDEO CUSTOMER REVIEWS */}
       <LazySection>
-      <section className="py-16 sm:py-24 px-4 relative bg-white border-y border-black/5">
+      <section className="py-20 sm:py-32 px-4 relative bg-white border-y border-black/5">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
@@ -593,7 +641,7 @@ export default function Home() {
       </LazySection>
 
       {/* FAQ */}
-      <section className="py-16 sm:py-24 px-4 bg-[#FAF7F2]" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
+      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2]" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
             <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Common Questions</p>
@@ -615,7 +663,7 @@ export default function Home() {
       </section>
 
       {/* MEET OUR TEAM SECTION */}
-      <section className="py-16 sm:py-24 px-4 relative overflow-hidden bg-white border-t border-black/5">
+      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-white border-t border-black/5">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
             <p className="text-[#B69640] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">The Artisans Behind The Brand</p>
