@@ -563,3 +563,9 @@ body.light-mode .glass-card {
 .btn-outline-gold {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+
+/* Consistent lining numerals for luxury serif stats */
+.stat-number {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}

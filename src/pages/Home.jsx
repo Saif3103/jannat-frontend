@@ -290,7 +290,7 @@ export default function Home() {
           </motion.div>
 
           {/* Trust Cards Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16 items-stretch">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-8 sm:mb-10 lg:mb-12 items-stretch">
             {[
               { icon: FiShield, title: 'Premium Quality', desc: '100% handcrafted with the finest materials — no compromises' },
               { icon: FiTruck, title: 'Secure Delivery', desc: 'Safe packaging & tracked delivery across India' },
@@ -305,13 +305,17 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
-                  className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group h-full flex flex-col"
+                  className="bg-white rounded-2xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group h-full flex flex-col text-left p-5 sm:p-6 lg:p-7"
                 >
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#FAF7F2] border border-[#B69640]/15 flex items-center justify-center mb-4 sm:mb-5 group-hover:bg-[#B69640]/10 transition-colors duration-500">
-                    <Icon size={20} className="text-[#B69640]" />
+                  <div className="w-11 h-11 rounded-xl bg-[#FAF7F2] border border-[#B69640]/15 flex items-center justify-center mb-4 shrink-0 group-hover:bg-[#B69640]/10 transition-colors duration-500">
+                    <Icon size={20} className="text-[#B69640]" strokeWidth={1.75} />
                   </div>
-                  <h3 className="text-[#1A1A1A] text-sm sm:text-base font-bold mb-2 tracking-wide">{item.title}</h3>
-                  <p className="text-black/40 text-xs sm:text-sm leading-relaxed font-medium flex-1">{item.desc}</p>
+                  <h3 className="text-[#1A1A1A] text-[13px] sm:text-[15px] font-bold mb-2 tracking-wide leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="text-black/40 text-[11px] sm:text-[13px] leading-relaxed font-medium flex-1">
+                    {item.desc}
+                  </p>
                 </motion.div>
               );
             })}
@@ -322,9 +326,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }}
-            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-8 sm:p-10"
+            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] px-3 py-8 sm:px-4 sm:py-10 lg:px-2"
           >
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4">
               {[
                 { number: '500+', label: 'Happy Customers' },
                 { number: '1000+', label: 'Rugs Delivered' },
@@ -337,10 +341,19 @@ export default function Home() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  className="text-center"
+                  className={[
+                    'flex flex-col items-center justify-center text-center px-4 py-3 min-h-[84px]',
+                    i % 2 === 0 ? 'border-r border-[#B69640]/10 lg:border-r-0' : '',
+                    i < 2 ? 'border-b border-[#B69640]/10 lg:border-b-0' : '',
+                    i > 0 ? 'lg:border-l lg:border-[#B69640]/15' : '',
+                  ].filter(Boolean).join(' ')}
                 >
-                  <p className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#B69640] mb-2 leading-none">{stat.number}</p>
-                  <p className="text-black/40 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">{stat.label}</p>
+                  <p className="stat-number font-luxury text-[2rem] sm:text-[2.5rem] lg:text-[2.75rem] text-[#B69640] mb-2.5 leading-none tracking-tight">
+                    {stat.number}
+                  </p>
+                  <p className="text-black/40 text-[9px] sm:text-[10px] font-bold tracking-[0.16em] uppercase leading-tight">
+                    {stat.label}
+                  </p>
                 </motion.div>
               ))}
             </div>
