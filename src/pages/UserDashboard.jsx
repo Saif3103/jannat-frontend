@@ -8,7 +8,8 @@ import Container from '../components/layout/Container';
 import toast from 'react-hot-toast';
 import {
   FiUser, FiPackage, FiHeart, FiMapPin, FiLock, FiEdit2, FiStar, FiX,
-  FiTruck, FiDownload, FiChevronRight, FiShoppingBag
+  FiTruck, FiDownload, FiChevronRight, FiShoppingBag, FiCheck, FiClock,
+  FiUpload, FiPhone,
 } from 'react-icons/fi';
 import { generateInvoicePdf } from '../utils/generateInvoice';
 
@@ -18,20 +19,135 @@ const getImageUrl = (url) => {
   return `${BASE_URL}/${url}`;
 };
 
-const STATUS_STYLE = {
-  Pending: 'bg-amber-50 text-amber-700 border-amber-200',
-  Confirmed: 'bg-blue-50 text-blue-700 border-blue-200',
-  Processing: 'bg-purple-50 text-purple-700 border-purple-200',
-  Shipped: 'bg-orange-50 text-orange-700 border-orange-200',
-  Delivered: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  Cancelled: 'bg-red-50 text-red-700 border-red-200',
-  Returned: 'bg-gray-50 text-gray-600 border-gray-200',
+const TRACK_STEPS = ['Ordered', 'Confirmed', 'Packed', 'Shipped', 'Delivered'];
+
+const PAYMENT_LABELS = {
+  COD: 'Cash on Delivery',
+  BankTransfer: 'Bank Transfer',
+  PayAfterConfirm: 'Pay After Confirm',
+  Razorpay: 'Online',
+  UPI: 'UPI',
+  Card: 'Card',
+  Wallet: 'Wallet',
 };
+
+function getFriendlyStatus(order) {
+  const os = order.orderStatus || 'Pending';
+  const ps = order.paymentStatus || '';
+  const method = order.paymentMethod || '';
+
+  if (os === 'Cancelled') {
+    return {
+      label: 'Cancelled',
+      hint: 'This order was cancelled',
+      tone: 'bg-red-50 text-red-700 border-red-200',
+      group: 'cancelled',
+    };
+  }
+  if (os === 'Returned') {
+    return {
+      label: 'Returned',
+      hint: 'Return completed',
+      tone: 'bg-gray-50 text-gray-600 border-gray-200',
+      group: 'cancelled',
+    };
+  }
+  if (os === 'Delivered') {
+    return {
+      label: 'Delivered',
+      hint: order.deliveredAt
+        ? `Delivered on ${new Date(order.deliveredAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}`
+        : 'Your order has been delivered',
+      tone: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      group: 'delivered',
+    };
+  }
+  if (os === 'Shipped' || os === 'Out for Delivery') {
+    return {
+      label: os === 'Out for Delivery' ? 'Out for Delivery' : 'Shipped',
+      hint: order.trackingNumber
+        ? `Tracking: ${order.trackingNumber}`
+        : 'Your order is on the way',
+      tone: 'bg-sky-50 text-sky-700 border-sky-200',
+      group: 'shipped',
+    };
+  }
+  if (method === 'BankTransfer' && (ps === 'AwaitingProof' || os === 'Awaiting Payment')) {
+    return {
+      label: 'Awaiting Payment',
+      hint: 'Upload bank transfer proof to continue',
+      tone: 'bg-amber-50 text-amber-800 border-amber-200',
+      group: 'pending',
+      action: 'proof',
+    };
+  }
+  if (method === 'BankTransfer' && (ps === 'UnderReview' || os === 'Payment Pending')) {
+    return {
+      label: 'Payment Under Review',
+      hint: 'We are verifying your payment proof',
+      tone: 'bg-blue-50 text-blue-700 border-blue-200',
+      group: 'pending',
+    };
+  }
+  if (
+    os === 'Awaiting Confirmation' ||
+    (method === 'PayAfterConfirm' && ['Pending', 'Awaiting Confirmation'].includes(os))
+  ) {
+    return {
+      label: 'Awaiting Confirmation',
+      hint: 'Our team will call you to confirm this order',
+      tone: 'bg-violet-50 text-violet-700 border-violet-200',
+      group: 'pending',
+      action: 'call',
+    };
+  }
+  if (['Confirmed', 'Paid', 'Payment Received'].includes(os)) {
+    return {
+      label: 'Confirmed',
+      hint: 'Order confirmed — preparing for packing',
+      tone: 'bg-blue-50 text-blue-700 border-blue-200',
+      group: 'pending',
+    };
+  }
+  if (['Processing', 'Quality Check', 'Packed'].includes(os)) {
+    return {
+      label: os === 'Packed' ? 'Packed' : 'Processing',
+      hint: 'Your rug is being prepared with care',
+      tone: 'bg-purple-50 text-purple-700 border-purple-200',
+      group: 'pending',
+    };
+  }
+  return {
+    label: os || 'Ordered',
+    hint: 'We have received your order',
+    tone: 'bg-amber-50 text-amber-700 border-amber-200',
+    group: 'pending',
+  };
+}
+
+function getTrackStepIndex(order) {
+  const os = (order.orderStatus || '').toLowerCase();
+  if (os.includes('cancel') || os.includes('return')) return -1;
+  if (os.includes('deliver')) return 4;
+  if (os.includes('out for') || os.includes('ship')) return 3;
+  if (os.includes('pack') || os.includes('quality') || os.includes('process')) return 2;
+  if (
+    os.includes('confirm') ||
+    os.includes('paid') ||
+    os.includes('payment received') ||
+    (order.paymentMethod === 'BankTransfer' && order.paymentStatus === 'Verified')
+  ) {
+    return 1;
+  }
+  return 0;
+}
 
 export default function UserDashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
   const [orders, setOrders] = useState([]);
+  const [orderFilter, setOrderFilter] = useState('all');
+  const [expandedOrder, setExpandedOrder] = useState(null);
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -281,105 +397,309 @@ export default function UserDashboard() {
                 </motion.div>
               )}
 
-              {/* ORDERS */}
-              {activeTab === 'orders' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 sm:px-5 py-4">
-                    <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">My Orders</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Track, review, and download invoices</p>
-                  </div>
+              {/* ORDERS — Flipkart-style tracking */}
+              {activeTab === 'orders' && (() => {
+                const FILTERS = [
+                  { id: 'all', label: 'All' },
+                  { id: 'pending', label: 'In Progress' },
+                  { id: 'shipped', label: 'Shipped' },
+                  { id: 'delivered', label: 'Delivered' },
+                  { id: 'cancelled', label: 'Cancelled' },
+                ];
+                const filtered = orders.filter((o) => {
+                  if (orderFilter === 'all') return true;
+                  return getFriendlyStatus(o).group === orderFilter;
+                });
 
-                  {loading ? (
-                    <div className="bg-white rounded-lg border border-gray-200 p-10 text-center text-sm text-gray-400">
-                      Loading orders...
-                    </div>
-                  ) : orders.length === 0 ? (
-                    <div className="bg-white rounded-lg border border-gray-200 p-10 text-center">
-                      <FiShoppingBag size={40} className="text-gray-300 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-[#1A1A1A] mb-1">No orders yet</p>
-                      <p className="text-xs text-gray-500 mb-5">Start shopping our handmade collection</p>
-                      <Link
-                        to="/shop"
-                        className="inline-flex h-10 px-5 items-center rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640]"
-                      >
-                        Shop Now
-                      </Link>
-                    </div>
-                  ) : (
-                    orders.map((order) => (
-                      <div key={order._id} className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                        <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-5 py-3 bg-gray-50 border-b border-gray-100">
-                          <div className="text-left">
-                            <p className="text-[13px] font-semibold text-[#1A1A1A]">
-                              Order #{order._id.slice(-8).toUpperCase()}
-                            </p>
-                            <p className="text-[11px] text-gray-500 mt-0.5">
-                              {new Date(order.createdAt).toLocaleDateString('en-IN', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                              })}{' '}
-                              · {order.orderItems?.length} item(s)
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span
-                              className={`text-[11px] font-medium px-2.5 py-1 rounded border ${
-                                STATUS_STYLE[order.orderStatus] || STATUS_STYLE.Pending
-                              }`}
-                            >
-                              {order.orderStatus}
-                            </span>
-                            <p className="text-sm font-bold text-[#1A1A1A]">
-                              ₹{order.totalPrice?.toLocaleString('en-IN')}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="px-4 sm:px-5 py-4 flex flex-wrap gap-3">
-                          {order.orderItems?.map((item) => (
-                            <div key={item._id} className="relative group">
-                              <img
-                                src={getImageUrl(item.image)}
-                                alt={item.name}
-                                className="w-16 h-16 rounded-md object-cover border border-gray-100"
-                              />
-                              {order.orderStatus === 'Delivered' && (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setReviewProduct(item.product);
-                                    setReviewModal(true);
-                                  }}
-                                  className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center rounded-md text-[10px] text-white font-medium cursor-pointer"
-                                >
-                                  <FiStar size={12} className="mb-0.5" />
-                                  Review
-                                </button>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="px-4 sm:px-5 py-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
-                          <p className="text-[12px] text-gray-500 flex items-center gap-1.5">
-                            <FiTruck size={13} className="text-gray-400" />
-                            Tracking: <span className="text-[#1A1A1A] font-medium">{order.trackingNumber || 'Not assigned'}</span>
-                          </p>
+                return (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 sm:px-5 py-4">
+                      <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">My Orders</h2>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Track status step-by-step — clear updates & easy actions
+                      </p>
+                      <div className="flex gap-2 mt-3 overflow-x-auto pb-1 -mx-1 px-1">
+                        {FILTERS.map((f) => (
                           <button
+                            key={f.id}
                             type="button"
-                            onClick={() => handleDownloadInvoice(order)}
-                            className="flex items-center gap-1.5 text-[12px] font-medium text-[#1A1A1A] hover:text-[#B69640] border border-gray-200 px-3 py-1.5 rounded-md hover:border-[#C9A84C]/40 transition-colors cursor-pointer"
+                            onClick={() => setOrderFilter(f.id)}
+                            className={`shrink-0 px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors cursor-pointer ${
+                              orderFilter === f.id
+                                ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
+                                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
+                            }`}
                           >
-                            <FiDownload size={12} />
-                            Invoice
+                            {f.label}
                           </button>
-                        </div>
+                        ))}
                       </div>
-                    ))
-                  )}
-                </motion.div>
-              )}
+                    </div>
+
+                    {loading ? (
+                      <div className="bg-white rounded-lg border border-gray-200 p-10 text-center text-sm text-gray-400">
+                        Loading orders...
+                      </div>
+                    ) : orders.length === 0 ? (
+                      <div className="bg-white rounded-lg border border-gray-200 p-10 text-center">
+                        <FiShoppingBag size={40} className="text-gray-300 mx-auto mb-3" />
+                        <p className="text-sm font-medium text-[#1A1A1A] mb-1">No orders yet</p>
+                        <p className="text-xs text-gray-500 mb-5">Start shopping our handmade collection</p>
+                        <Link
+                          to="/shop"
+                          className="inline-flex h-10 px-5 items-center rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640]"
+                        >
+                          Shop Now
+                        </Link>
+                      </div>
+                    ) : filtered.length === 0 ? (
+                      <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-sm text-gray-500">
+                        No orders in this filter
+                      </div>
+                    ) : (
+                      filtered.map((order) => {
+                        const status = getFriendlyStatus(order);
+                        const stepIdx = getTrackStepIndex(order);
+                        const isOpen = expandedOrder === order._id;
+                        const displayId =
+                          order.orderIdDisplay ||
+                          order.trackingNumber ||
+                          `#${String(order._id).slice(-8).toUpperCase()}`;
+                        const history = order.statusHistory?.length
+                          ? [...order.statusHistory].reverse()
+                          : [
+                              {
+                                status: order.orderStatus,
+                                message: status.hint,
+                                timestamp: order.createdAt,
+                              },
+                            ];
+
+                        return (
+                          <div
+                            key={order._id}
+                            className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden"
+                          >
+                            <div className="flex flex-wrap items-start justify-between gap-3 px-4 sm:px-5 py-3.5 border-b border-gray-100 bg-[#FAFAFA]">
+                              <div>
+                                <p className="text-[13px] font-semibold text-[#1A1A1A]">{displayId}</p>
+                                <p className="text-[11px] text-gray-500 mt-0.5">
+                                  {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric',
+                                  })}
+                                  {' · '}
+                                  {PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod || 'COD'}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <span
+                                  className={`inline-flex text-[11px] font-semibold px-2.5 py-1 rounded-full border ${status.tone}`}
+                                >
+                                  {status.label}
+                                </span>
+                                <p className="text-sm font-bold text-[#1A1A1A] mt-1.5">
+                                  ₹{Number(order.totalPrice || 0).toLocaleString('en-IN')}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="px-4 sm:px-5 pt-3 flex items-start gap-2">
+                              {status.action === 'proof' ? (
+                                <FiUpload size={14} className="text-amber-600 mt-0.5 shrink-0" />
+                              ) : status.action === 'call' ? (
+                                <FiPhone size={14} className="text-violet-600 mt-0.5 shrink-0" />
+                              ) : stepIdx >= 4 ? (
+                                <FiCheck size={14} className="text-emerald-600 mt-0.5 shrink-0" />
+                              ) : (
+                                <FiClock size={14} className="text-[#C9A84C] mt-0.5 shrink-0" />
+                              )}
+                              <p className="text-[13px] text-gray-700 leading-snug">{status.hint}</p>
+                            </div>
+
+                            {stepIdx >= 0 && (
+                              <div className="px-4 sm:px-5 py-4">
+                                <div className="flex items-start justify-between gap-1">
+                                  {TRACK_STEPS.map((label, i) => {
+                                    const done = i <= stepIdx;
+                                    const current = i === stepIdx;
+                                    return (
+                                      <div key={label} className="flex-1 flex flex-col items-center min-w-0 relative">
+                                        {i < TRACK_STEPS.length - 1 && (
+                                          <div
+                                            className={`absolute top-[9px] left-[50%] right-[-50%] h-0.5 ${
+                                              i < stepIdx ? 'bg-emerald-500' : 'bg-gray-200'
+                                            }`}
+                                          />
+                                        )}
+                                        <div
+                                          className={`relative z-[1] w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 ${
+                                            done
+                                              ? 'bg-emerald-500 border-emerald-500 text-white'
+                                              : 'bg-white border-gray-300'
+                                          } ${current && done ? 'ring-2 ring-emerald-200' : ''}`}
+                                        >
+                                          {done && <FiCheck size={10} strokeWidth={3} />}
+                                        </div>
+                                        <p
+                                          className={`mt-1.5 text-[9px] sm:text-[10px] text-center leading-tight px-0.5 ${
+                                            done ? 'text-emerald-700 font-semibold' : 'text-gray-400'
+                                          }`}
+                                        >
+                                          {label}
+                                        </p>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+
+                            <div className="px-4 sm:px-5 pb-3 space-y-3">
+                              {order.orderItems?.map((item, idx) => (
+                                <div key={item._id || idx} className="flex gap-3">
+                                  <img
+                                    src={getImageUrl(item.image)}
+                                    alt={item.name}
+                                    className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-lg object-cover border border-gray-100 shrink-0"
+                                  />
+                                  <div className="min-w-0 flex-1 text-left">
+                                    <p className="text-[13px] font-medium text-[#1A1A1A] line-clamp-2">
+                                      {item.name}
+                                    </p>
+                                    <p className="text-[11px] text-gray-500 mt-0.5">
+                                      {[item.size, item.color].filter(Boolean).join(' · ') || 'Handmade rug'}
+                                      {' · Qty '}
+                                      {item.quantity || 1}
+                                    </p>
+                                    <p className="text-[13px] font-semibold text-[#1A1A1A] mt-1">
+                                      ₹{Number(item.price || 0).toLocaleString('en-IN')}
+                                    </p>
+                                  </div>
+                                  {order.orderStatus === 'Delivered' && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setReviewProduct(item.product);
+                                        setReviewModal(true);
+                                      }}
+                                      className="self-start shrink-0 text-[11px] font-medium text-[#B69640] border border-[#C9A84C]/40 px-2.5 py-1 rounded-md hover:bg-[#C9A84C]/10 cursor-pointer"
+                                    >
+                                      <span className="inline-flex items-center gap-1">
+                                        <FiStar size={11} /> Rate
+                                      </span>
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="px-4 sm:px-5 py-3 border-t border-gray-100 flex flex-wrap items-center gap-2">
+                              {status.action === 'proof' && (
+                                <Link
+                                  to={`/payment-proof/${order._id}`}
+                                  className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-[12px] font-semibold hover:bg-[#B69640]"
+                                >
+                                  <FiUpload size={13} />
+                                  Upload Payment Proof
+                                </Link>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => setExpandedOrder(isOpen ? null : order._id)}
+                                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 text-[12px] font-medium text-[#1A1A1A] hover:border-[#C9A84C]/50 cursor-pointer"
+                              >
+                                <FiTruck size={13} />
+                                {isOpen ? 'Hide details' : 'Track details'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDownloadInvoice(order)}
+                                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 text-[12px] font-medium text-[#1A1A1A] hover:border-[#C9A84C]/50 cursor-pointer"
+                              >
+                                <FiDownload size={13} />
+                                Invoice
+                              </button>
+                              <Link
+                                to="/shop"
+                                className="inline-flex items-center gap-1 h-9 px-3 rounded-lg text-[12px] font-medium text-gray-500 hover:text-[#1A1A1A]"
+                              >
+                                Buy again <FiChevronRight size={13} />
+                              </Link>
+                            </div>
+
+                            <AnimatePresence>
+                              {isOpen && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: 'auto', opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  className="overflow-hidden border-t border-gray-100 bg-[#FAFAFA]"
+                                >
+                                  <div className="px-4 sm:px-5 py-4">
+                                    <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-3">
+                                      Order updates
+                                    </p>
+                                    {history.map((h, i) => (
+                                      <div key={i} className="flex gap-3 pb-3 last:pb-0">
+                                        <div className="flex flex-col items-center">
+                                          <div className="w-2 h-2 rounded-full bg-[#C9A84C] mt-1.5" />
+                                          {i < history.length - 1 && (
+                                            <div className="w-px flex-1 bg-gray-200 my-1" />
+                                          )}
+                                        </div>
+                                        <div className="pb-1">
+                                          <p className="text-[13px] font-medium text-[#1A1A1A]">{h.status}</p>
+                                          {h.message && (
+                                            <p className="text-[12px] text-gray-500 mt-0.5">{h.message}</p>
+                                          )}
+                                          <p className="text-[11px] text-gray-400 mt-0.5">
+                                            {h.timestamp
+                                              ? new Date(h.timestamp).toLocaleString('en-IN', {
+                                                  day: 'numeric',
+                                                  month: 'short',
+                                                  hour: '2-digit',
+                                                  minute: '2-digit',
+                                                })
+                                              : ''}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    ))}
+                                    {order.shippingAddress && (
+                                      <div className="mt-3 pt-3 border-t border-gray-200">
+                                        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                                          Delivery address
+                                        </p>
+                                        <p className="text-[12px] text-gray-700 leading-relaxed">
+                                          {order.shippingAddress.name}
+                                          {order.shippingAddress.phone
+                                            ? ` · ${order.shippingAddress.phone}`
+                                            : ''}
+                                          <br />
+                                          {[
+                                            order.shippingAddress.street || order.shippingAddress.house,
+                                            order.shippingAddress.city,
+                                            order.shippingAddress.state,
+                                            order.shippingAddress.pincode,
+                                          ]
+                                            .filter(Boolean)
+                                            .join(', ')}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })
+                    )}
+                  </motion.div>
+                );
+              })()}
 
               {/* WISHLIST */}
               {activeTab === 'wishlist' && (

@@ -355,7 +355,12 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
         });
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to place order');
+      console.error('Place order failed:', err?.response?.data || err.message);
+      toast.error(
+        err.response?.data?.message ||
+          err.message ||
+          'Failed to place order. Please try again.'
+      );
     } finally {
       setLoading(false);
     }
