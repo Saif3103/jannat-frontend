@@ -14,6 +14,8 @@ const navItems = [
   { label: 'Dashboard', path: '/admin', icon: FiHome },
   { label: 'Listings', path: '/admin/products', icon: FiTag },
   { label: 'Orders', path: '/admin/orders', icon: FiShoppingBag },
+  { label: 'Payments', path: '/admin/payments', icon: FiFileText },
+  { label: 'Bookings', path: '/admin/bookings', icon: FiUsers },
   { label: 'Invoices', path: '/admin/invoices', icon: FiFileText },
   { label: 'Customers', path: '/admin/users', icon: FiUsers },
   { label: 'Categories', path: '/admin/categories', icon: FiGrid },

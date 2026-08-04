@@ -29,12 +29,17 @@ const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Cart = lazy(() => import('./pages/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
+const PaymentProof = lazy(() => import('./pages/PaymentProof'));
+const BookConsultation = lazy(() => import('./pages/BookConsultation'));
+const BookShowroom = lazy(() => import('./pages/BookShowroom'));
 const OrderTracking = lazy(() => import('./pages/OrderTracking'));
 const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 const Wishlist = lazy(() => import('./pages/Wishlist'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
 const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
+const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'));
+const AdminBookings = lazy(() => import('./pages/admin/AdminBookings'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminInvoices = lazy(() => import('./pages/admin/AdminInvoices'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
@@ -97,6 +102,9 @@ export default function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order-success" element={<OrderSuccess />} />
+                <Route path="/payment-proof/:id" element={<PaymentProof />} />
+                <Route path="/book-consultation" element={<BookConsultation />} />
+                <Route path="/book-showroom" element={<BookShowroom />} />
                 <Route path="/dashboard" element={<UserDashboard />} />
                 <Route path="/wishlist" element={<Wishlist />} />
               </Route>
@@ -106,6 +114,8 @@ export default function App() {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route path="/admin/payments" element={<AdminPayments />} />
+                <Route path="/admin/bookings" element={<AdminBookings />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
                 <Route path="/admin/invoices" element={<AdminInvoices />} />
                 <Route path="/admin/settings" element={<AdminSettings />} />

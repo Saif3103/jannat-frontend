@@ -8,13 +8,37 @@ import {
   FiClock, FiMapPin, FiPhone, FiMail, FiCopy, FiRefreshCw, FiChevronRight
 } from 'react-icons/fi';
 
-const STATUS_OPTIONS = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned'];
+const STATUS_OPTIONS = [
+  'Pending',
+  'Awaiting Confirmation',
+  'Confirmed',
+  'Awaiting Payment',
+  'Payment Pending',
+  'Paid',
+  'Payment Received',
+  'Processing',
+  'Quality Check',
+  'Packed',
+  'Shipped',
+  'Out for Delivery',
+  'Delivered',
+  'Cancelled',
+  'Returned',
+];
 
 const STATUS_META = {
   Pending: { chip: 'bg-amber-50 text-amber-700 border-amber-200' },
+  'Awaiting Confirmation': { chip: 'bg-amber-50 text-amber-700 border-amber-200' },
   Confirmed: { chip: 'bg-blue-50 text-blue-700 border-blue-200' },
+  'Awaiting Payment': { chip: 'bg-orange-50 text-orange-700 border-orange-200' },
+  'Payment Pending': { chip: 'bg-orange-50 text-orange-700 border-orange-200' },
+  Paid: { chip: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  'Payment Received': { chip: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
   Processing: { chip: 'bg-violet-50 text-violet-700 border-violet-200' },
+  'Quality Check': { chip: 'bg-violet-50 text-violet-700 border-violet-200' },
+  Packed: { chip: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
   Shipped: { chip: 'bg-orange-50 text-orange-700 border-orange-200' },
+  'Out for Delivery': { chip: 'bg-orange-50 text-orange-700 border-orange-200' },
   Delivered: { chip: 'bg-green-50 text-green-700 border-green-200' },
   Cancelled: { chip: 'bg-red-50 text-red-700 border-red-200' },
   Returned: { chip: 'bg-gray-100 text-gray-600 border-gray-200' },

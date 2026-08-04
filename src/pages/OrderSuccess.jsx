@@ -29,6 +29,7 @@ const WA =
 
 function formatOrderId(order) {
   if (!order) return 'JR-2026-00000';
+  if (order.orderIdDisplay) return order.orderIdDisplay;
   const year = new Date(order.createdAt || Date.now()).getFullYear();
   const short = (order.trackingNumber || order._id || '')
     .toString()
@@ -53,6 +54,9 @@ export default function OrderSuccess() {
   const orderId = useMemo(() => formatOrderId(order), [order]);
   const delivery =
     order?.deliveryOption === 'express' ? '1–2 Business Days' : '4–7 Business Days';
+  const flow = state?.flow;
+  const timelineSteps =
+    order?.timeline?.length > 0 ? order.timeline.map((t) => t.step) : TIMELINE;
 
   if (!order) return null;
 
@@ -141,8 +145,11 @@ export default function OrderSuccess() {
           {/* Message */}
           <div className="rounded-3xl bg-white border border-black/[0.06] p-5 sm:p-6 shadow-sm mb-6 text-center">
             <p className="text-sm text-gray-600 leading-relaxed max-w-lg mx-auto">
-              Our customer support team will contact you shortly to confirm your order and guide
-              you through the next steps.
+              {flow === 'awaiting_confirmation' || order.paymentMethod === 'PayAfterConfirm'
+                ? 'Our team will call you shortly to confirm your order and share payment guidance.'
+                : order.paymentMethod === 'BankTransfer'
+                  ? 'After you upload payment proof, our team will verify and confirm your order.'
+                  : 'Our customer support team will contact you shortly to confirm your order and guide you through the next steps.'}
             </p>
           </div>
 
@@ -150,33 +157,35 @@ export default function OrderSuccess() {
           <div className="rounded-3xl bg-white border border-black/[0.06] p-5 sm:p-6 shadow-sm mb-6">
             <h2 className="font-luxury text-2xl text-[#1A1A1A] mb-5 text-center">Order Timeline</h2>
             <ol className="relative space-y-0 max-w-md mx-auto">
-              {TIMELINE.map((step, i) => (
+              {timelineSteps.map((step, i) => {
+                const completed = order?.timeline?.[i]?.completed || i === 0;
+                return (
                 <li key={step} className="flex gap-4 pb-6 last:pb-0">
                   <div className="flex flex-col items-center">
                     <span
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                        i === 0
+                        completed
                           ? 'bg-emerald-500 text-white'
                           : 'bg-[#FAF7F2] text-[#B69640] border border-[#C9A84C]/40'
                       }`}
                     >
-                      {i === 0 ? <FiCheck size={14} /> : i + 1}
+                      {completed ? <FiCheck size={14} /> : i + 1}
                     </span>
-                    {i < TIMELINE.length - 1 && (
+                    {i < timelineSteps.length - 1 && (
                       <span className="w-px flex-1 min-h-[20px] bg-gradient-to-b from-[#C9A84C]/50 to-gray-100 mt-1" />
                     )}
                   </div>
                   <div className="pt-1.5">
                     <p
                       className={`text-sm font-semibold ${
-                        i === 0 ? 'text-emerald-700' : 'text-[#1A1A1A]'
+                        completed ? 'text-emerald-700' : 'text-[#1A1A1A]'
                       }`}
                     >
                       {step}
                     </p>
                   </div>
                 </li>
-              ))}
+              );})}
             </ol>
           </div>
 

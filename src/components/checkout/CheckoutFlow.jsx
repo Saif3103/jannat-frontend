@@ -270,6 +270,56 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
         addressType: address.addressType || 'Home',
       };
 
+      const productSnapshot = items[0]
+        ? {
+            name: items[0].name,
+            image: items[0].images?.[0],
+            price: items[0].discountPrice || items[0].price,
+            size: items[0].size,
+            color: items[0].color,
+          }
+        : {};
+
+      // Design consultation → booking form (no order)
+      if (paymentMethod === 'DesignConsultation') {
+        sessionStorage.setItem(
+          'jannat_checkout_context',
+          JSON.stringify({
+            type: 'consultation',
+            product: items[0]?._id,
+            productSnapshot,
+            customer: {
+              name: shippingAddress.name,
+              email: shippingAddress.email,
+              phone: shippingAddress.phone,
+            },
+          })
+        );
+        onClose?.();
+        navigate('/book-consultation');
+        return;
+      }
+
+      // Showroom visit → booking form (no order)
+      if (paymentMethod === 'Showroom') {
+        sessionStorage.setItem(
+          'jannat_checkout_context',
+          JSON.stringify({
+            type: 'showroom',
+            product: items[0]?._id,
+            productSnapshot,
+            customer: {
+              name: shippingAddress.name,
+              email: shippingAddress.email,
+              phone: shippingAddress.phone,
+            },
+          })
+        );
+        onClose?.();
+        navigate('/book-showroom');
+        return;
+      }
+
       const orderData = {
         orderItems: items.map((i) => ({
           product: i._id,
@@ -295,7 +345,15 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
       const { data } = await api.post('/orders', orderData);
       clearCart();
       onClose?.();
-      navigate('/order-success', { state: { order: data.order }, replace: true });
+
+      if (data.nextStep === 'bank_transfer' || paymentMethod === 'BankTransfer') {
+        navigate(`/payment-proof/${data.order._id}`, { state: { order: data.order }, replace: true });
+      } else {
+        navigate('/order-success', {
+          state: { order: data.order, flow: data.nextStep || 'success' },
+          replace: true,
+        });
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to place order');
     } finally {
