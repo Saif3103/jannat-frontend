@@ -6,6 +6,7 @@ import { FiFilter, FiX, FiChevronDown, FiShoppingBag } from 'react-icons/fi';
 import api from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
+import Container from '../components/layout/Container';
 
 const SORT_OPTIONS = [
   { label: 'Newest First', value: 'newest' },
@@ -76,7 +77,7 @@ export default function Shop() {
         <meta name="description" content="Browse our full collection of handmade luxury carpets, Persian rugs, and premium floor coverings." />
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+      <Container className="py-10 sm:py-12">
         {/* Header Section */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -228,11 +229,11 @@ export default function Shop() {
           {/* Product Grid */}
           <div className="flex-1">
             {loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
-                {[...Array(6)].map((_, i) => <div key={i} className="h-[300px] sm:h-[400px] bg-white/5 rounded-2xl sm:rounded-[2.5rem] animate-pulse" />)}
+              <div className="grid-products">
+                {[...Array(6)].map((_, i) => <div key={i} className="aspect-[3/4] bg-white/5 rounded-2xl animate-pulse" />)}
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-32 bg-white/5 rounded-[3rem] border border-dashed border-amber-900/20">
+              <div className="text-center py-24 bg-white/5 rounded-[2rem] border border-dashed border-amber-900/20">
                 <FiShoppingBag className="mx-auto text-[#1A1A1A]/20 mb-6" size={48} />
                 <h3 className="text-xl font-bold text-white mb-2 font-luxury">No masterpieces found</h3>
                 <p className="text-[#1A1A1A]/30 text-sm mb-8">Try adjusting your filters or search terms.</p>
@@ -240,7 +241,7 @@ export default function Shop() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8">
+                <div className="grid-products">
                   {products.map((p, i) => (
                     <ProductCard key={p._id} product={p} index={i} />
                   ))}
@@ -248,12 +249,12 @@ export default function Shop() {
 
                 {/* Pagination */}
                 {pages > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-20">
+                  <div className="flex items-center justify-center gap-2 mt-12 sm:mt-16">
                     {[...Array(Math.max(0, Number(pages) || 0))].map((_, i) => (
                       <button 
                         key={i} 
                         onClick={() => setParam('page', i + 1)}
-                        className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${page === i + 1 ? 'bg-[#C9A84C] text-black shadow-xl shadow-[#C9A84C]/20' : 'bg-black/5 text-[#1A1A1A]/40 hover:bg-black/10'}`}
+                        className={`w-11 h-11 rounded-2xl font-bold text-sm transition-all cursor-pointer ${page === i + 1 ? 'bg-[#C9A84C] text-black shadow-xl shadow-[#C9A84C]/20' : 'bg-black/5 text-[#1A1A1A]/40 hover:bg-black/10'}`}
                       >
                         {i + 1}
                       </button>
@@ -264,7 +265,7 @@ export default function Shop() {
             )}
           </div>
         </div>
-      </div>
+      </Container>
     </div>
     </>
   );

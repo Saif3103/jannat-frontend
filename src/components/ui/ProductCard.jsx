@@ -97,13 +97,13 @@ export default function ProductCard({ product, index = 0 }) {
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-5 flex flex-col flex-1">
-          <p className="text-black/35 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.25em] mb-1.5">
+        <div className="p-4 sm:p-5 flex flex-col flex-1 gap-0 text-left">
+          <p className="text-black/35 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.25em] mb-2">
             {product.category?.name || 'Collection'}
           </p>
 
           <Link to={`/product/${product._id}`}>
-            <h3 className="font-serif text-sm sm:text-base text-[#1A1A1A] mb-2 leading-snug line-clamp-2 hover:text-black transition-colors">
+            <h3 className="font-serif text-[13px] sm:text-[15px] text-[#1A1A1A] mb-2.5 leading-snug line-clamp-2 hover:text-black transition-colors">
               {product.name}
             </h3>
           </Link>
@@ -119,7 +119,7 @@ export default function ProductCard({ product, index = 0 }) {
 
           <div className="mt-auto pt-3 border-t border-black/[0.05]">
             <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-[#1A1A1A] text-lg sm:text-xl font-black tracking-tight">
+              <span className="text-[#1A1A1A] text-base sm:text-lg font-black tracking-tight">
                 ₹{price?.toLocaleString('en-IN')}
               </span>
               {product.discountPrice && (
@@ -132,13 +132,13 @@ export default function ProductCard({ product, index = 0 }) {
             <div className="flex gap-2">
               <button
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); toast.success('Added to bag'); }}
-                className="flex-1 bg-[#1A1A1A] text-white py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-[10px] sm:text-[11px] tracking-widest hover:bg-black transition-all active:scale-95 uppercase"
+                className="flex-1 bg-[#1A1A1A] text-white py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-[10px] sm:text-[11px] tracking-widest hover:bg-black transition-all active:scale-95 uppercase cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/50"
               >
                 <FiShoppingCart size={13} /> Add
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-gradient-to-r from-[#C9A84C] to-[#B69640] text-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-bold text-[10px] sm:text-[11px] tracking-widest hover:shadow-[0_0_15px_rgba(201,168,76,0.4)] transition-all active:scale-95 uppercase border border-[#B69640]/20"
+                className="flex-1 bg-gradient-to-r from-[#C9A84C] to-[#B69640] text-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-bold text-[10px] sm:text-[11px] tracking-widest hover:shadow-[0_0_15px_rgba(201,168,76,0.4)] transition-all active:scale-95 uppercase border border-[#B69640]/20 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/50"
               >
                 Buy Now
               </button>

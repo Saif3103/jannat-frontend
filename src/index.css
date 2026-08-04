@@ -408,3 +408,158 @@ body.light-mode .glass-card {
     -webkit-backdrop-filter: none;
   }
 }
+
+/* ── UI Polish: Container ── */
+.site-container {
+  width: 94%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-container-narrow {
+  width: 94%;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .site-container,
+  .site-container-narrow {
+    width: 90%;
+  }
+}
+
+@media (min-width: 1536px) {
+  .site-container {
+    max-width: 1400px;
+  }
+}
+
+/* ── UI Polish: Section spacing (8px system) ── */
+.section-pad {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-pad {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+/* ── UI Polish: Typography scale ── */
+.heading-hero {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.25rem, 5vw, 3.75rem); /* 36 → 60px */
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.heading-section {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem); /* 30 → 44px */
+  line-height: 1.15;
+}
+
+.heading-card {
+  font-size: clamp(1.125rem, 1.5vw, 1.5rem); /* 18 → 24px */
+  line-height: 1.35;
+}
+
+.text-body {
+  font-size: clamp(0.9375rem, 1.1vw, 1.125rem); /* 15 → 18px */
+  line-height: 1.7;
+}
+
+.text-measure {
+  max-width: 700px;
+}
+
+/* ── UI Polish: Grids ── */
+.grid-cards {
+  display: grid;
+  gap: 1.5rem; /* 24px */
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cards-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .grid-cards-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.grid-products {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .grid-products {
+    gap: 1.5rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-products {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ── UI Polish: Section header block ── */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .section-header {
+    margin-bottom: 3rem;
+  }
+}
+
+.section-header .heading-section {
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.section-header .text-body,
+.section-header p.text-measure {
+  margin-top: 0.5rem;
+}
+
+/* Button focus polish (keep existing look) */
+.btn-gold:focus-visible,
+.btn-outline-gold:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.btn-gold,
+.btn-outline-gold {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}

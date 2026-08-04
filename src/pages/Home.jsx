@@ -15,6 +15,7 @@ import api, { BASE_URL } from '../api/axios';
 import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
 import RugQuiz from '../components/ui/RugQuiz';
+import Container from '../components/layout/Container';
 
 import RugShowcaseStrip from '../components/ui/RugShowcaseStrip';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
@@ -215,38 +216,38 @@ export default function Home() {
         />
 
       {/* FESTIVE OFFER BANNER */}
-      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
+      <section className="section-pad relative overflow-hidden bg-[#0A0A0A] border-y border-amber-900/20">
         {/* Decorative Background Elements */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-amber-500/10 to-transparent pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 sm:gap-20">
+        <Container className="relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
              <div className="max-w-3xl text-center lg:text-left">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                   <p className="text-amber-500 font-black tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-6 flex items-center justify-center lg:justify-start gap-3">
+                   <p className="text-amber-500 font-black tracking-[0.4em] uppercase text-[10px] sm:text-xs mb-5 flex items-center justify-center lg:justify-start gap-3">
                       <span className="w-8 h-px bg-amber-500" /> Limited Time Exclusive
                    </p>
-                   <h2 className="font-luxury text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-10 leading-[1.05]">
+                   <h2 className="heading-hero text-white mb-6">
                       Festive Luxury <br />
                       <span className="text-[#C9A84C] italic">Collection 2026</span>
                    </h2>
-                   <p className="text-white/60 text-base sm:text-xl font-medium leading-relaxed mb-12 max-w-2xl mx-auto lg:mx-0">
-                      Celebrate the season with handcrafted masterpieces. Get up to <span className="text-white font-black text-2xl sm:text-3xl mx-1 underline decoration-amber-500 underline-offset-8">50% OFF</span> on our most exclusive hand-knotted rugs.
+                   <p className="text-white/60 text-body font-medium mb-10 text-measure mx-auto lg:mx-0">
+                      Celebrate the season with handcrafted masterpieces. Get up to <span className="text-white font-black text-xl sm:text-2xl mx-1 underline decoration-amber-500 underline-offset-8">50% OFF</span> on our most exclusive hand-knotted rugs.
                    </p>
                    
                    {/* Trust Badges Grid */}
-                   <div className="flex flex-wrap justify-center lg:justify-start gap-8 sm:gap-12">
+                   <div className="flex flex-wrap justify-center lg:justify-start gap-8 sm:gap-10">
                       <div className="flex flex-col items-center">
-                         <div className="text-[#C9A84C] mb-3"><FiShield size={28}/></div>
+                         <div className="text-[#C9A84C] mb-3"><FiShield size={24}/></div>
                          <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Premium<br/>Quality</p>
                       </div>
                       <div className="flex flex-col items-center">
-                         <div className="text-[#C9A84C] mb-3"><FiAward size={28}/></div>
+                         <div className="text-[#C9A84C] mb-3"><FiAward size={24}/></div>
                          <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Timeless<br/>Designs</p>
                       </div>
                       <div className="flex flex-col items-center">
-                         <div className="text-[#C9A84C] mb-3"><FiUsers size={28}/></div>
+                         <div className="text-[#C9A84C] mb-3"><FiUsers size={24}/></div>
                          <p className="text-[10px] text-white/50 uppercase tracking-widest font-bold text-center leading-tight">Trusted by<br/>Thousands</p>
                       </div>
                    </div>
@@ -254,42 +255,42 @@ export default function Home() {
              </div>
 
              {/* CTA Button */}
-             <div className="text-center lg:text-right">
-                <Link to="/shop" className="group flex items-center gap-4 bg-gradient-to-r from-[#C9A84C] to-[#E5C266] text-black px-12 py-5 rounded-xl font-black text-sm tracking-[0.2em] uppercase hover:scale-105 transition-all shadow-[0_15px_30px_rgba(201,168,76,0.3)]">
+             <div className="text-center lg:text-right shrink-0">
+                <Link to="/shop" className="group inline-flex items-center gap-4 bg-gradient-to-r from-[#C9A84C] to-[#E5C266] text-black px-10 py-4 rounded-xl font-black text-sm tracking-[0.2em] uppercase hover:scale-[1.02] transition-all shadow-[0_15px_30px_rgba(201,168,76,0.3)]">
                    Shop Now <FiArrowRight className="group-hover:translate-x-2 transition-transform" strokeWidth={3} />
                 </Link>
-                <p className="text-[11px] text-white/30 mt-6 uppercase tracking-[0.2em] font-medium">Exclusive Season Offers</p>
+                <p className="text-[11px] text-white/30 mt-5 uppercase tracking-[0.2em] font-medium">Exclusive Season Offers</p>
              </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* WHY INDIA TRUSTS JANNAT RUGS */}
-      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2] relative overflow-hidden">
+      <section className="section-pad bg-[#FAF7F2] relative overflow-hidden">
         {/* Decorative Background */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-[#C9A84C]/5 rounded-full -ml-36 -mt-36 blur-[100px] pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-[#C9A84C]/5 rounded-full -mr-36 -mb-36 blur-[100px] pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto relative z-10">
+        <Container className="relative z-10">
           {/* Section Header */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }}
-            className="flex flex-col items-center text-center mb-14 sm:mb-20"
+            className="section-header"
           >
-            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">Trust & Heritage</p>
-            <h2 className="font-luxury text-3xl sm:text-5xl md:text-6xl text-[#1A1A1A] mb-6 leading-tight">
+            <p className="text-[#B69640] text-[10px] sm:text-xs tracking-[0.4em] uppercase font-bold">Trust & Heritage</p>
+            <h2 className="heading-section text-[#1A1A1A]">
               Why India Trusts <br className="hidden sm:block" /><span className="italic">Jannat Rugs</span>
             </h2>
-            <div className="divider-gold w-20 sm:w-24 mb-6" />
-            <p className="text-black/50 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed font-medium">
+            <div className="divider-gold w-20 sm:w-24 mb-5" />
+            <p className="text-black/50 text-body text-measure mx-auto font-medium">
               For over a decade, we have been handcrafting premium rugs with authentic artisanship, trusted by homeowners and interior designers across India.
             </p>
           </motion.div>
 
           {/* Trust Cards Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16 sm:mb-20">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16 items-stretch">
             {[
               { icon: FiShield, title: 'Premium Quality', desc: '100% handcrafted with the finest materials — no compromises' },
               { icon: FiTruck, title: 'Secure Delivery', desc: 'Safe packaging & tracked delivery across India' },
@@ -304,13 +305,13 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
-                  className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group"
+                  className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group h-full flex flex-col"
                 >
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FAF7F2] border border-[#B69640]/15 flex items-center justify-center mb-5 group-hover:bg-[#B69640]/10 transition-colors duration-500">
-                    <Icon size={22} className="text-[#B69640]" />
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#FAF7F2] border border-[#B69640]/15 flex items-center justify-center mb-4 sm:mb-5 group-hover:bg-[#B69640]/10 transition-colors duration-500">
+                    <Icon size={20} className="text-[#B69640]" />
                   </div>
                   <h3 className="text-[#1A1A1A] text-sm sm:text-base font-bold mb-2 tracking-wide">{item.title}</h3>
-                  <p className="text-black/40 text-xs sm:text-sm leading-relaxed font-medium">{item.desc}</p>
+                  <p className="text-black/40 text-xs sm:text-sm leading-relaxed font-medium flex-1">{item.desc}</p>
                 </motion.div>
               );
             })}
@@ -321,7 +322,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }}
-            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-8 sm:p-12"
+            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-8 sm:p-10"
           >
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
               {[
@@ -338,56 +339,56 @@ export default function Home() {
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   className="text-center"
                 >
-                  <p className="font-luxury text-3xl sm:text-5xl text-[#B69640] mb-2 leading-none">{stat.number}</p>
+                  <p className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#B69640] mb-2 leading-none">{stat.number}</p>
                   <p className="text-black/40 text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase">{stat.label}</p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
-        </div>
+        </Container>
       </section>
 
       {/* QUIZ ENTRY SECTION */}
-      <section className="py-20 sm:py-32 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-pad bg-white">
+        <Container>
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-[3rem] p-10 sm:p-20 shadow-[0_20px_80px_rgba(0,0,0,0.04)] border border-white relative overflow-hidden group hover:shadow-[0_40px_100px_rgba(201,168,76,0.1)] transition-all duration-700"
+            className="bg-white rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-14 md:p-16 shadow-[0_20px_80px_rgba(0,0,0,0.04)] border border-white relative overflow-hidden group hover:shadow-[0_40px_100px_rgba(201,168,76,0.1)] transition-all duration-700"
           >
             {/* Decorative Patterns */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#C9A84C]/5 to-transparent rounded-full -mr-20 -mt-20 blur-3xl" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-[#C9A84C]/5 to-transparent rounded-full -ml-20 -mb-20 blur-3xl" />
             
-            <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-20 relative z-10">
+            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 relative z-10">
                <div className="w-full lg:w-[45%] flex justify-center">
                   <div className="relative">
-                    <div className="w-48 h-48 sm:w-64 sm:h-64 bg-[#FAF7F2] rounded-[3rem] rotate-12 flex items-center justify-center border border-[#C9A84C]/10 group-hover:rotate-6 transition-transform duration-700">
-                       <LuRug size={80} className="text-[#C9A84C] -rotate-12 group-hover:-rotate-6 transition-transform duration-700" />
+                    <div className="w-40 h-40 sm:w-56 sm:h-56 bg-[#FAF7F2] rounded-[2.5rem] rotate-12 flex items-center justify-center border border-[#C9A84C]/10 group-hover:rotate-6 transition-transform duration-700">
+                       <LuRug size={64} className="text-[#C9A84C] -rotate-12 group-hover:-rotate-6 transition-transform duration-700" />
                     </div>
-                    <div className="absolute -top-4 -right-4 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center animate-bounce">
-                       <span className="text-3xl">✨</span>
+                    <div className="absolute -top-4 -right-4 w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center animate-bounce">
+                       <span className="text-2xl">✨</span>
                     </div>
                   </div>
                </div>
                
                <div className="w-full lg:w-[55%] text-center lg:text-left">
                   <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Personalized Discovery</p>
-                  <h2 className="font-heading text-4xl sm:text-6xl text-[#1A1A1A] mb-8 leading-tight">Find Your <span className="italic font-luxury">Perfect</span> Rug</h2>
-                  <p className="text-[#64748B] text-base sm:text-xl leading-relaxed mb-12 max-w-xl mx-auto lg:mx-0">
+                  <h2 className="heading-section text-[#1A1A1A] mb-6">Find Your <span className="italic font-luxury">Perfect</span> Rug</h2>
+                  <p className="text-[#64748B] text-body mb-8 text-measure mx-auto lg:mx-0">
                     Not sure which rug fits your space? Answer 5 quick questions and our smart collection engine will curate a personalized selection just for you.
                   </p>
                   <button 
                     onClick={() => setIsQuizOpen(true)}
-                    className="btn-gold inline-flex items-center justify-center gap-4 px-12 py-5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-widest shadow-2xl hover:shadow-[#C9A84C]/20"
+                    className="btn-gold inline-flex items-center justify-center gap-3 px-10 py-4 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-widest shadow-2xl hover:shadow-[#C9A84C]/20"
                   >
-                    Start The Quiz <FiArrowRight size={20} />
+                    Start The Quiz <FiArrowRight size={18} />
                   </button>
                </div>
             </div>
           </motion.div>
-        </div>
+        </Container>
       </section>
 
       <RugQuiz isOpen={isQuizOpen} onClose={() => setIsQuizOpen(false)} />
@@ -397,22 +398,23 @@ export default function Home() {
       <RugShowcaseStrip />
 
       {/* FEATURED COLLECTION */}
-      <section className="py-20 sm:py-32 px-4 max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-          <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Curated For You</p>
-          <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Featured Collection</h2>
+      <section className="section-pad">
+        <Container>
+        <div className="section-header">
+          <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase font-bold">Curated For You</p>
+          <h2 className="heading-section text-[#1A1A1A]">Featured Collection</h2>
           <div className="divider-gold mb-4" />
-          <p className="text-black/40 max-w-lg mx-auto text-xs sm:text-sm leading-relaxed font-medium">
+          <p className="text-black/40 text-body text-measure mx-auto font-medium">
             Each carpet is a work of art, handcrafted by master artisans using centuries-old techniques.
           </p>
         </div>
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+          <div className="grid-products">
             {[...Array(4)].map((_, i) => <div key={i} className="aspect-[3/4] bg-gray-100 rounded-2xl animate-pulse" />)}
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            <div className="grid-products">
               {featuredProducts.length > 0 ? featuredProducts.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               )) : (
@@ -431,17 +433,18 @@ export default function Home() {
             )}
           </>
         )}
+        </Container>
       </section>
 
       {/* BRAND AD VIDEO SECTION */}
       {settings?.adVideo && (
         <LazySection minHeight="500px">
-        <section className="py-12 sm:py-20 px-4 bg-black relative overflow-hidden">
+        <section className="section-pad bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2" />
-          <div className="max-w-4xl mx-auto relative z-10">
-            <div className="flex flex-col items-center text-center mb-10 sm:mb-12">
-              <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-3">Our Story</p>
-              <h2 className="font-luxury text-3xl md:text-4xl text-white mb-4 sm:mb-6">Experience Jannat Rugs</h2>
+          <Container narrow className="relative z-10">
+            <div className="section-header">
+              <p className="text-white/50 text-[10px] tracking-[0.4em] uppercase">Our Story</p>
+              <h2 className="heading-section text-white">Experience Jannat Rugs</h2>
               <div className="divider-gold w-16 sm:w-20" />
             </div>
             
@@ -460,31 +463,31 @@ export default function Home() {
                 Your browser does not support the video tag.
               </video>
             </motion.div>
-          </div>
+          </Container>
         </section>
         </LazySection>
       )}
 
       {/* COLLECTIONS / CATEGORIES (Elegant Grid Layout) */}
-      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2]">
-        <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-          <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">Curated Selection</p>
-          <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Our Collections</h2>
+      <section className="section-pad bg-[#FAF7F2]">
+        <Container>
+        <div className="section-header">
+          <p className="text-[#1A1A1A] text-[10px] tracking-[0.4em] uppercase font-bold">Curated Selection</p>
+          <h2 className="heading-section text-[#1A1A1A]">Our Collections</h2>
           <div className="divider-gold w-20" />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => (
-            <Link key={cat.name} to={`/shop?search=${cat.name.split(' ')[0]}`} className="group relative h-[400px] sm:h-[500px] rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+            <Link key={cat.name} to={`/shop?search=${cat.name.split(' ')[0]}`} className="group relative h-[360px] sm:h-[420px] rounded-[1.75rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
               <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
               {/* Always visible gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               
               {/* Text always visible at bottom */}
-              <div className="absolute inset-0 p-7 sm:p-10 flex flex-col justify-end">
+              <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end text-left">
                 <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Explore Collection</p>
-                <h3 className="font-luxury text-2xl sm:text-3xl text-white mb-3">{cat.name}</h3>
+                <h3 className="font-luxury text-2xl sm:text-[1.75rem] text-white mb-3 leading-tight">{cat.name}</h3>
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-[2px] bg-[#C9A84C]" />
                   <span className="text-white/60 text-[11px] uppercase tracking-widest font-bold group-hover:text-white transition-colors">Shop Now</span>
@@ -493,7 +496,7 @@ export default function Home() {
             </Link>
           ))}
         </div>
-        </div>
+        </Container>
       </section>
 
       {/* BESPOKE SERVICE (Custom Rugs Video Split Layout) */}
@@ -511,14 +514,14 @@ export default function Home() {
           </video>
           <div className="absolute inset-0 bg-black/30" />
         </div>
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 section-alt">
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:px-16 lg:py-20 section-alt">
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="max-w-xl text-center lg:text-left">
             <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4 font-bold">The Bespoke Experience</p>
-            <h2 className="font-luxury text-3xl md:text-6xl text-[#1A1A1A] mb-4 sm:mb-6 leading-tight">
+            <h2 className="heading-section text-[#1A1A1A] mb-5">
               Custom Rugs <br /><span className="text-[#1A1A1A]">Made For You</span>
             </h2>
-            <div className="w-10 sm:w-12 h-px bg-[#B69640]/50 mb-4 sm:mb-6 mx-auto lg:mx-0" />
-            <p className="text-[#1A1A1A]/60 text-sm sm:text-base leading-relaxed mb-8 sm:mb-10 font-medium">
+            <div className="w-10 sm:w-12 h-px bg-[#B69640]/50 mb-5 mx-auto lg:mx-0" />
+            <p className="text-[#1A1A1A]/60 text-body mb-8 text-measure mx-auto lg:mx-0 font-medium">
               Create a masterpiece that reflects your unique style. From selecting the finest hand-spun wool and pure silk to choosing custom colors and dimensions, our master weavers bring your vision to life perfectly.
             </p>
             <a href="https://wa.me/919235508422?text=I%20want%20to%20inquire%20about%20a%20custom%20rug" target="_blank" rel="noreferrer" className="btn-gold inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3 sm:py-4 uppercase tracking-widest text-[10px] sm:text-xs">
@@ -531,67 +534,67 @@ export default function Home() {
 
       {/* BEST SELLERS */}
       {(bestSellers.length > 0 || loading) && (
-        <section className="py-20 sm:py-32 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Customer Favorites</p>
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Best Sellers</h2>
+        <section className="section-pad bg-white">
+          <Container>
+          <div className="section-header">
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase font-bold">Customer Favorites</p>
+            <h2 className="heading-section text-[#1A1A1A]">Best Sellers</h2>
             <div className="divider-gold" />
           </div>
           {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            <div className="grid-products">
               {[...Array(4)].map((_, i) => <div key={i} className="aspect-[3/4] bg-gray-100 rounded-2xl animate-pulse" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            <div className="grid-products">
               {bestSellers.map((p, i) => (
                 <ProductCard key={p._id} product={p} index={i} />
               ))}
             </div>
           )}
-          </div>
+          </Container>
         </section>
       )}
 
       {/* NEW ARRIVALS */}
       {(newArrivals.length > 0 || loading) && (
-        <section className="py-20 sm:py-32 px-4" style={{ background: '#FAF7F2' }}>
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
-              <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Fresh From The Loom</p>
-              <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">New Arrivals</h2>
+        <section className="section-pad" style={{ background: '#FAF7F2' }}>
+          <Container>
+            <div className="section-header">
+              <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase font-bold">Fresh From The Loom</p>
+              <h2 className="heading-section text-[#1A1A1A]">New Arrivals</h2>
               <div className="divider-gold" />
             </div>
             {loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+              <div className="grid-products">
                 {[...Array(4)].map((_, i) => <div key={i} className="aspect-[3/4] bg-gray-100 rounded-2xl animate-pulse" />)}
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+              <div className="grid-products">
                 {newArrivals.map((p, i) => (
                   <ProductCard key={p._id} product={p} index={i} />
                 ))}
               </div>
             )}
-          </div>
+          </Container>
         </section>
       )}
 
       {/* VIDEO CUSTOMER REVIEWS */}
       <LazySection>
-      <section className="py-20 sm:py-32 px-4 relative bg-white border-y border-black/5">
+      <section className="section-pad relative bg-white border-y border-black/5">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')] opacity-5 mix-blend-multiply pointer-events-none" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-3 font-bold">Real Stories</p>
-            <h2 className="font-luxury text-3xl sm:text-4xl md:text-5xl text-[#1A1A1A] mb-4">Customer Video Reviews</h2>
-            <div className="divider-gold mb-6" />
-            <p className="text-black/50 max-w-xl mx-auto text-xs sm:text-sm leading-relaxed font-medium">
+        <Container className="relative z-10">
+          <div className="section-header">
+            <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.4em] uppercase font-bold">Real Stories</p>
+            <h2 className="heading-section text-[#1A1A1A]">Customer Video Reviews</h2>
+            <div className="divider-gold mb-5" />
+            <p className="text-black/50 text-body text-measure mx-auto font-medium">
               Hear directly from our beloved clients about their experience with Jannat Rugs Co. and how our authentic hand-knotted carpets transformed their homes.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {videoReviews.length > 0 ? videoReviews.map((rev, idx) => (
               <motion.div 
                 key={rev._id} 
@@ -617,8 +620,8 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="mt-6 mb-4 text-center px-4">
-                  <p className="text-[#1A1A1A]/80 italic font-luxury text-base sm:text-xl mb-4 leading-relaxed line-clamp-2">
+                <div className="mt-5 mb-3 text-center px-4">
+                  <p className="text-[#1A1A1A]/80 italic font-luxury text-base sm:text-lg mb-3 leading-relaxed line-clamp-2">
                     "{rev.comment}"
                   </p>
                   <p className="text-[#1A1A1A] text-[10px] sm:text-xs tracking-[0.2em] uppercase font-medium">— {rev.name}, Verified Buyer</p>
@@ -636,19 +639,19 @@ export default function Home() {
               </div>
             )}
           </div>
-        </div>
+        </Container>
       </section>
       </LazySection>
 
       {/* FAQ */}
-      <section className="py-20 sm:py-32 px-4 bg-[#FAF7F2]" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
-            <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase mb-4 font-bold">Common Questions</p>
-            <h2 className="font-luxury text-3xl sm:text-5xl text-[#1A1A1A] mb-6">Everything You Need To Know</h2>
+      <section className="section-pad bg-[#FAF7F2]" style={{ borderTop: '1px solid rgba(182, 150, 64, 0.1)' }}>
+        <Container narrow>
+          <div className="section-header">
+            <p className="text-[#1A1A1A] text-[10px] tracking-[0.5em] uppercase font-bold">Common Questions</p>
+            <h2 className="heading-section text-[#1A1A1A]">Everything You Need To Know</h2>
             <div className="divider-gold w-20 sm:w-24" />
           </div>
-          <div className="space-y-4 sm:space-y-6">
+          <div className="space-y-4">
             {[
               { q: "Are your carpets genuinely handmade?", a: "Yes! Every carpet in our collection is handmade by skilled artisans using traditional techniques passed down through generations. We never sell machine-made products under the handmade label." },
               { q: "What is your return policy?", a: "We offer a 7-day hassle-free return policy. If you're not completely satisfied with your purchase, simply contact us and we'll arrange a return or exchange." },
@@ -659,23 +662,23 @@ export default function Home() {
               <FAQItem key={i} question={faq.q} answer={faq.a} />
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* MEET OUR TEAM SECTION */}
-      <section className="py-20 sm:py-32 px-4 relative overflow-hidden bg-white border-t border-black/5">
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center mb-12 sm:mb-20">
-            <p className="text-[#B69640] text-[10px] tracking-[0.4em] uppercase mb-4 font-bold">The Artisans Behind The Brand</p>
-            <h2 className="font-luxury text-4xl sm:text-6xl text-[#1A1A1A] mb-6">Meet Our Team</h2>
+      <section className="section-pad relative overflow-hidden bg-white border-t border-black/5">
+        <Container className="relative z-10">
+          <div className="section-header">
+            <p className="text-[#B69640] text-[10px] tracking-[0.4em] uppercase font-bold">The Artisans Behind The Brand</p>
+            <h2 className="heading-section text-[#1A1A1A]">Meet Our Team</h2>
             <div className="w-20 h-[1px] bg-[#B69640]" />
           </div>
 
-          <div className="space-y-16 sm:space-y-24">
+          <div className="space-y-14 sm:space-y-20">
             {TEAM.map((member, i) => {
               const Icon = member.icon;
               return (
-                <div key={member.name} className={`flex flex-col ${i % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-20`}>
+                <div key={member.name} className={`flex flex-col ${i % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-8 md:gap-14`}>
                   {/* Image */}
                   <motion.div 
                     initial={{ opacity: 0, x: i % 2 !== 0 ? 30 : -30 }}
@@ -684,7 +687,7 @@ export default function Home() {
                     transition={{ duration: 0.8 }}
                     className="w-full md:w-5/12 flex justify-center"
                   >
-                    <div className="relative w-64 h-80 sm:w-80 sm:h-[400px] rounded-t-[10rem] rounded-b-[2rem] overflow-hidden shadow-2xl border border-black/5 group bg-white">
+                    <div className="relative w-56 h-72 sm:w-72 sm:h-[360px] rounded-t-[10rem] rounded-b-[2rem] overflow-hidden shadow-2xl border border-black/5 group bg-white">
                       <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
                     </div>
@@ -704,8 +707,8 @@ export default function Home() {
                         {member.role}
                       </p>
                     </div>
-                    <h3 className="text-3xl sm:text-5xl font-luxury text-[#1A1A1A] mb-6">{member.name}</h3>
-                    <p className="text-black/60 text-sm sm:text-base leading-relaxed max-w-lg mx-auto md:mx-0 font-medium">
+                    <h3 className="text-2xl sm:text-4xl font-luxury text-[#1A1A1A] mb-5">{member.name}</h3>
+                    <p className="text-black/60 text-body text-measure mx-auto md:mx-0 font-medium">
                       {member.bio}
                     </p>
                   </motion.div>
@@ -714,12 +717,12 @@ export default function Home() {
             })}
           </div>
 
-          <div className="text-center mt-12 sm:mt-16">
+          <div className="text-center mt-12 sm:mt-14">
             <Link to="/team" className="btn-outline-gold inline-flex items-center gap-3 px-10 py-4 text-xs tracking-widest uppercase rounded-lg">
               View Full Team <FiArrowRight size={16} />
             </Link>
           </div>
-        </div>
+        </Container>
       </section>
 
 

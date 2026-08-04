@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiShoppingCart, FiHeart, FiUser, FiMenu, FiX, FiSun, FiMoon, FiLogOut, FiSettings, FiPackage } from 'react-icons/fi';
 import { useAuthStore, useCartStore, useSettingsStore, useUIStore } from '../../store';
 import api from '../../api/axios';
+import Container from './Container';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -83,36 +84,36 @@ export default function Header() {
           : (isHome ? 'bg-transparent py-4' : 'header-blur py-4')
       }`}
     >
-      <div className="max-w-[1600px] mx-auto px-6 flex items-center justify-between h-20">
+      <Container className="flex items-center justify-between h-16 md:h-20">
         
         {/* LEFT: Logo & Brand */}
-        <div className="flex-1 flex items-center justify-start gap-4">
+        <div className="flex-1 flex items-center justify-start gap-3 md:gap-4 min-w-0">
            {/* Mobile Menu Button (Left aligned on mobile) */}
            <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} id="mobile-menu-btn"
-            className="lg:hidden p-2 -ml-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors z-[110]">
+            className="lg:hidden p-2 -ml-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors z-[110] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40 rounded-lg">
             {isMobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
 
-          <Link to="/" className="flex items-center gap-3 md:gap-4 group">
+          <Link to="/" className="flex items-center gap-3 md:gap-4 group min-w-0">
             <img
               src="/logo.png"
               alt="Jannat Rugs Co."
-              className="h-10 w-10 md:h-12 md:w-12 aspect-square rounded-full object-cover border border-[#C9A84C]/20 shadow-md group-hover:scale-105 transition-transform"
+              className="h-9 w-9 md:h-11 md:w-11 aspect-square rounded-full object-cover border border-[#C9A84C]/20 shadow-md group-hover:scale-105 transition-transform shrink-0"
             />
-            <div className="flex flex-col">
-              <span className="font-luxury text-sm md:text-2xl text-gold-gradient tracking-[0.1em] font-bold leading-tight">JANNAT RUGS CO.</span>
-              <span className="text-[7px] md:text-[9px] text-black/60 tracking-[0.4em] uppercase font-bold">Handmade Luxury Rugs</span>
+            <div className="flex flex-col min-w-0">
+              <span className="font-luxury text-sm md:text-xl text-gold-gradient tracking-[0.1em] font-bold leading-tight truncate">JANNAT RUGS CO.</span>
+              <span className="text-[7px] md:text-[9px] text-black/60 tracking-[0.35em] uppercase font-bold hidden xs:block sm:block">Handmade Luxury Rugs</span>
             </div>
           </Link>
         </div>
 
         {/* CENTER: Navigation Links (Desktop Only) */}
-        <nav className="hidden lg:flex items-center justify-center gap-10">
+        <nav className="hidden lg:flex items-center justify-center gap-7 xl:gap-9">
           {navLinks.map(link => (
             <Link
               key={link.path}
               to={link.path}
-              className={`text-[11px] tracking-[0.2em] uppercase font-bold transition-all duration-300 ${
+              className={`text-[11px] tracking-[0.18em] uppercase font-bold transition-all duration-300 whitespace-nowrap ${
                 location.pathname === link.path ? 'text-[#1A1A1A]' : 'text-black/80 hover:text-black'
               }`}
             >
@@ -122,20 +123,20 @@ export default function Header() {
         </nav>
 
         {/* RIGHT: Action Icons */}
-        <div className="flex-1 flex items-center justify-end gap-2 md:gap-4">
+        <div className="flex-1 flex items-center justify-end gap-1 sm:gap-2 md:gap-3">
           {/* Search */}
           <button onClick={() => setSearchOpen(!isSearchOpen)} id="search-toggle"
-            className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors">
+            className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40 rounded-lg">
             <FiSearch size={20} />
           </button>
 
           {/* Wishlist */}
-          <Link to="/wishlist" id="wishlist-btn" className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors hidden md:flex">
+          <Link to="/wishlist" id="wishlist-btn" className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors hidden md:flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40 rounded-lg">
             <FiHeart size={20} />
           </Link>
 
           {/* Cart */}
-          <Link to="/cart" id="cart-btn" className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors relative">
+          <Link to="/cart" id="cart-btn" className="p-2 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40 rounded-lg">
             <FiShoppingCart size={20} />
             {cartCount > 0 && (
               <span className="absolute top-1 right-1 bg-[#C9A84C] text-black text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
@@ -144,13 +145,13 @@ export default function Header() {
             )}
           </Link>
 
-          <div className="w-px h-6 bg-amber-500/10 mx-1 hidden sm:block"></div>
+          <div className="w-px h-5 bg-amber-500/10 mx-0.5 hidden sm:block"></div>
 
           {/* User Profile */}
           <div className="relative">
             {user ? (
               <button onClick={() => setShowUserMenu(!showUserMenu)} id="user-menu-btn"
-                className="flex items-center gap-2 p-1 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/20 rounded-full">
+                className="flex items-center gap-2 p-1 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/20 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40">
                 {user.avatar ? (
                   <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
                 ) : (
@@ -160,7 +161,7 @@ export default function Header() {
                 )}
               </button>
             ) : (
-              <Link to="/login" className="p-2 text-black/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/10 rounded-full flex items-center justify-center">
+              <Link to="/login" className="p-2 text-black/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/10 rounded-full flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40">
                 <FiUser size={20} />
               </Link>
             )}
@@ -206,7 +207,7 @@ export default function Header() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* Search Bar */}
       <AnimatePresence>

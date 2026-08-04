@@ -24,14 +24,14 @@ export default function RugShowcaseStrip() {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-20 bg-[#FAF8F5] overflow-hidden relative">
+      <section className="section-pad bg-[#FAF8F5] overflow-hidden relative">
       {/* Decorative Background Glows */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#C9A84C]/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/40 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="text-center mb-16 px-4">
-        <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.5em] uppercase mb-4">Curated Excellence</p>
-        <h2 className="font-heading text-4xl sm:text-5xl text-[#111827]">Luxury Masterpieces</h2>
+      <div className="section-header px-[3%]">
+        <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.5em] uppercase">Curated Excellence</p>
+        <h2 className="heading-section text-[#111827]">Luxury Masterpieces</h2>
       </div>
 
       <div className="relative">
