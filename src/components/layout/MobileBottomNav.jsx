@@ -76,13 +76,13 @@ export default function MobileBottomNav() {
               <>
                 {isHome ? (
                   <span
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    className={`-mt-3 w-12 h-12 rounded-full flex items-center justify-center border-[3px] border-white shadow-[0_6px_16px_rgba(26,26,26,0.22)] ${
                       active
                         ? 'bg-[#1A1A1A] text-[#C9A84C]'
                         : 'bg-[#1A1A1A] text-white'
                     }`}
                   >
-                    <Icon size={22} strokeWidth={2.2} />
+                    <Icon size={24} strokeWidth={2.2} />
                   </span>
                 ) : (
                   <Icon
