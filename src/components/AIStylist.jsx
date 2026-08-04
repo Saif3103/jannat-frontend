@@ -5,7 +5,7 @@ import {
   FiHeart, FiShoppingCart, FiHome, FiArrowLeft
 } from 'react-icons/fi';
 import { LuPaintbrush, LuLayoutTemplate, LuArrowRightLeft, LuSparkles } from 'react-icons/lu';
-import { useCartStore, useWishlistStore, useAuthStore, useUIStore } from '../store';
+import { useCartStore, useWishlistStore, useAuthStore } from '../store';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
@@ -152,15 +152,12 @@ export default function AIStylist() {
   const messagesEndRef = useRef(null);
   const fileRef = useRef(null);
 
-  const { isChatOpen, setChatOpen } = useUIStore();
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping, recommendations]);
 
   const toggleOpen = () => {
     setIsOpen((v) => !v);
-    if (isChatOpen) setChatOpen(false);
   };
 
   const handleReset = () => {
@@ -279,11 +276,9 @@ export default function AIStylist() {
       const lower = msg.toLowerCase();
 
       if (lower.includes('support') || lower.includes('help') || lower.includes('human')) {
-        addBotMessage('Connecting you to our support chat…');
-        setTimeout(() => {
-          setIsOpen(false);
-          setChatOpen(true);
-        }, 1200);
+        addBotMessage(
+          'For live help, message us on WhatsApp — tap the WhatsApp icon in the bottom bar. Our team is happy to assist!'
+        );
         return;
       }
 

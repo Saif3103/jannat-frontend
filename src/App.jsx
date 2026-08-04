@@ -10,7 +10,6 @@ import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import AIStylist from './components/AIStylist';
-import SupportChat from './components/SupportChat';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -120,7 +119,6 @@ export default function App() {
       {showSiteChrome && <Footer />}
       {showSiteChrome && <MobileBottomNav />}
       {showSiteChrome && <AIStylist />}
-      {showSiteChrome && <SupportChat />}
     </div>
   );
 }
