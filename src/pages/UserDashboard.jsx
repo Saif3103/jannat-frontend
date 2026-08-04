@@ -284,10 +284,10 @@ export default function UserDashboard() {
   };
 
   const TABS = [
-    { id: 'profile', label: 'Profile', icon: FiUser },
+    { id: 'profile', label: 'Profile Information', icon: FiUser },
     { id: 'orders', label: 'Orders', icon: FiPackage },
     { id: 'wishlist', label: 'Wishlist', icon: FiHeart },
-    { id: 'addresses', label: 'Addresses', icon: FiMapPin },
+    { id: 'addresses', label: 'Manage Addresses', icon: FiMapPin },
     { id: 'security', label: 'Password', icon: FiLock },
   ];
 
@@ -297,48 +297,66 @@ export default function UserDashboard() {
         <title>Account | Jannat Rugs Co.</title>
       </Helmet>
 
-      <div className="pt-20 sm:pt-24 min-h-screen bg-[#F5F5F5] text-left pb-16">
-        <Container className="py-6 sm:py-8">
-          {/* Page header — Flipkart/Myntra style */}
-          <div className="mb-5 sm:mb-6">
-            <p className="text-[11px] text-gray-500 mb-1">
-              Home <span className="mx-1">/</span> Account
-            </p>
-            <h1 className="text-xl sm:text-2xl font-semibold text-[#1A1A1A]">
-              Account
-            </h1>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-start">
-            {/* Sidebar */}
-            <aside className="lg:col-span-3 bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-              <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100 bg-[#FAF7F2]">
-                <div className="w-11 h-11 rounded-full bg-[#C9A84C]/25 flex items-center justify-center text-[#1A1A1A] font-semibold text-base shrink-0">
+      <div className="pt-20 sm:pt-24 min-h-screen bg-[#f1f3f6] text-left pb-20">
+        <Container className="py-5 sm:py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-start">
+            {/* Sidebar — Flipkart style */}
+            <aside className="lg:col-span-3 bg-white shadow-sm">
+              <div className="flex items-center gap-3.5 px-4 py-4 border-b border-gray-100">
+                <div className="w-12 h-12 rounded-full bg-[#2874f0] text-white flex items-center justify-center font-semibold text-lg shrink-0">
                   {user?.name?.[0]?.toUpperCase() || 'U'}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[11px] text-gray-500">Hello,</p>
-                  <p className="text-sm font-semibold text-[#1A1A1A] truncate">{user?.name}</p>
+                  <p className="text-sm text-gray-500 leading-none mb-1">Hello,</p>
+                  <p className="text-base font-semibold text-[#212121] truncate leading-tight">
+                    {user?.name || 'User'}
+                  </p>
                 </div>
               </div>
 
-              <nav className="py-1">
-                {TABS.map(({ id, label, icon: Icon }) => {
+              <nav className="py-2">
+                <p className="px-4 pt-2 pb-1.5 text-xs font-semibold tracking-wide text-gray-400 uppercase">
+                  My Orders
+                </p>
+                {TABS.filter((t) => t.id === 'orders').map(({ id, label, icon: Icon }) => {
                   const active = activeTab === id;
                   return (
                     <button
                       key={id}
                       type="button"
                       onClick={() => switchTab(id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 text-[13px] transition-colors cursor-pointer border-l-[3px] ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-[15px] cursor-pointer border-l-4 ${
                         active
-                          ? 'bg-[#FAF7F2] text-[#1A1A1A] font-semibold border-[#C9A84C]'
-                          : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-[#1A1A1A]'
+                          ? 'bg-[#f5f7ff] text-[#2874f0] font-medium border-[#2874f0]'
+                          : 'text-[#212121] border-transparent hover:bg-gray-50'
                       }`}
                     >
-                      <Icon size={16} className={active ? 'text-[#B69640]' : 'text-gray-400'} />
+                      <Icon size={18} className={active ? 'text-[#2874f0]' : 'text-gray-500'} />
                       {label}
-                      <FiChevronRight size={14} className={`ml-auto ${active ? 'text-[#B69640]' : 'text-gray-300'}`} />
+                      <FiChevronRight size={16} className="ml-auto text-gray-300" />
+                    </button>
+                  );
+                })}
+
+                <p className="px-4 pt-3 pb-1.5 text-xs font-semibold tracking-wide text-gray-400 uppercase border-t border-gray-100 mt-1">
+                  Account Settings
+                </p>
+                {TABS.filter((t) => t.id !== 'orders').map(({ id, label, icon: Icon }) => {
+                  const active = activeTab === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => switchTab(id)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-[15px] cursor-pointer border-l-4 ${
+                        active
+                          ? 'bg-[#f5f7ff] text-[#2874f0] font-medium border-[#2874f0]'
+                          : 'text-[#212121] border-transparent hover:bg-gray-50'
+                      }`}
+                    >
+                      <Icon size={18} className={active ? 'text-[#2874f0]' : 'text-gray-500'} />
+                      {label}
+                      <FiChevronRight size={16} className="ml-auto text-gray-300" />
                     </button>
                   );
                 })}
@@ -346,133 +364,230 @@ export default function UserDashboard() {
             </aside>
 
             {/* Main content */}
-            <div className="lg:col-span-9 min-w-0">
+            <div className="lg:col-span-9 min-w-0 space-y-3">
               {/* PROFILE */}
               {activeTab === 'profile' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-gray-100">
-                      <div>
-                        <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Personal Information</h2>
-                        <p className="text-xs text-gray-500 mt-0.5">Manage your account details</p>
-                      </div>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                  {/* Personal Information */}
+                  <div className="bg-white shadow-sm">
+                    <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-100">
+                      <h2 className="text-lg sm:text-xl font-medium text-[#212121]">
+                        Personal Information
+                      </h2>
                       <button
                         type="button"
                         onClick={() => setEditMode(!editMode)}
-                        className="flex items-center gap-1.5 text-[13px] font-medium text-[#B69640] hover:text-[#1A1A1A] transition-colors cursor-pointer"
+                        className="text-[15px] font-medium text-[#2874f0] hover:underline cursor-pointer"
                       >
-                        <FiEdit2 size={14} />
                         {editMode ? 'Cancel' : 'Edit'}
                       </button>
                     </div>
 
-                    <div className="p-4 sm:p-5">
+                    <div className="px-5 sm:px-6 py-5 sm:py-6">
                       {editMode ? (
-                        <form onSubmit={updateProfile} className="space-y-4 max-w-md">
+                        <form onSubmit={updateProfile} className="max-w-xl space-y-5">
                           <div>
-                            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">Full Name</label>
+                            <label className="text-sm text-gray-500 block mb-2">Full Name</label>
                             <input
                               value={formData.name}
                               onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                              className="w-full h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                              className="w-full h-12 border border-gray-300 px-3.5 text-[15px] text-[#212121] outline-none focus:border-[#2874f0]"
                               required
                             />
                           </div>
                           <div>
-                            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">Phone</label>
+                            <label className="text-sm text-gray-500 block mb-2">Mobile Number</label>
                             <input
                               value={formData.phone}
                               onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
-                              className="w-full h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                              className="w-full h-12 border border-gray-300 px-3.5 text-[15px] text-[#212121] outline-none focus:border-[#2874f0]"
+                              placeholder="Enter mobile number"
                             />
                           </div>
-                          <button
-                            type="submit"
-                            className="h-11 px-6 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] transition-colors cursor-pointer"
-                          >
-                            Save Changes
-                          </button>
+                          <div className="flex gap-3 pt-1">
+                            <button
+                              type="submit"
+                              className="h-11 px-8 bg-[#2874f0] text-white text-[15px] font-medium hover:bg-[#1f63d4] cursor-pointer"
+                            >
+                              SAVE
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditMode(false);
+                                setFormData({ name: user?.name || '', phone: user?.phone || '' });
+                              }}
+                              className="h-11 px-5 text-[15px] font-medium text-gray-600 hover:text-[#212121] cursor-pointer"
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </form>
                       ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-                          {[
-                            { label: 'Full Name', value: user?.name },
-                            { label: 'Email Address', value: user?.email },
-                            { label: 'Mobile Number', value: user?.phone || 'Not added' },
-                            { label: 'Account Type', value: user?.role === 'admin' ? 'Administrator' : 'Customer' },
-                          ].map((f) => (
-                            <div key={f.label} className="text-left">
-                              <p className="text-[12px] text-gray-500 mb-1">{f.label}</p>
-                              <p className="text-[14px] font-medium text-[#1A1A1A] break-all">{f.value}</p>
-                            </div>
-                          ))}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1.5">Full Name</p>
+                            <p className="text-[16px] text-[#212121] font-medium break-words">
+                              {user?.name || '—'}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1.5">Email Address</p>
+                            <p className="text-[16px] text-[#212121] font-medium break-all">
+                              {user?.email || '—'}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1.5">Mobile Number</p>
+                            <p className="text-[16px] text-[#212121] font-medium">
+                              {user?.phone || (
+                                <button
+                                  type="button"
+                                  onClick={() => setEditMode(true)}
+                                  className="text-[#2874f0] font-medium cursor-pointer"
+                                >
+                                  + Add number
+                                </button>
+                              )}
+                            </p>
+                          </div>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  {/* Addresses preview on profile */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-gray-100">
+                  {/* Email card (Flipkart-like separate row feel) */}
+                  {!editMode && (
+                    <div className="bg-white shadow-sm px-5 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3">
                       <div>
-                        <h2 className="text-base font-semibold text-[#1A1A1A]">Delivery Addresses</h2>
-                        <p className="text-xs text-gray-500 mt-0.5">Saved for faster checkout</p>
+                        <p className="text-sm text-gray-500 mb-1">Email</p>
+                        <p className="text-[15px] text-[#212121]">{user?.email}</p>
                       </div>
+                      <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 border border-emerald-100">
+                        Verified
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Quick shortcuts */}
+                  <div className="bg-white shadow-sm">
+                    <div className="px-5 sm:px-6 py-4 border-b border-gray-100">
+                      <h2 className="text-lg sm:text-xl font-medium text-[#212121]">Shortcuts</h2>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-gray-100">
+                      {[
+                        { id: 'orders', label: 'Orders', icon: FiPackage, sub: 'Track & manage' },
+                        { id: 'wishlist', label: 'Wishlist', icon: FiHeart, sub: 'Saved items' },
+                        { id: 'addresses', label: 'Addresses', icon: FiMapPin, sub: 'Delivery info' },
+                        { id: 'security', label: 'Password', icon: FiLock, sub: 'Login & security' },
+                      ].map(({ id, label, icon: Icon, sub }) => (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => switchTab(id)}
+                          className="flex flex-col items-start gap-2 px-5 py-5 text-left hover:bg-gray-50 cursor-pointer transition-colors"
+                        >
+                          <Icon size={22} className="text-[#2874f0]" />
+                          <div>
+                            <p className="text-[15px] font-medium text-[#212121]">{label}</p>
+                            <p className="text-sm text-gray-500 mt-0.5">{sub}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Manage Addresses preview */}
+                  <div className="bg-white shadow-sm">
+                    <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-100">
+                      <h2 className="text-lg sm:text-xl font-medium text-[#212121]">
+                        Manage Addresses
+                      </h2>
                       <button
                         type="button"
                         onClick={() => {
                           switchTab('addresses');
                           setTimeout(openNewAddress, 0);
                         }}
-                        className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-[12px] font-semibold hover:bg-[#B69640] cursor-pointer"
+                        className="text-[15px] font-medium text-[#2874f0] hover:underline cursor-pointer"
                       >
-                        <FiPlus size={14} /> Add
+                        + Add New
                       </button>
                     </div>
-                    <div className="p-4 sm:p-5">
+
+                    <div className="px-5 sm:px-6 py-5">
                       {addresses.length === 0 ? (
-                        <div className="text-center py-6">
-                          <FiMapPin size={28} className="text-gray-300 mx-auto mb-2" />
-                          <p className="text-sm text-gray-600 mb-3">No address saved yet</p>
+                        <div className="py-8 text-center">
+                          <FiMapPin size={32} className="text-gray-300 mx-auto mb-3" />
+                          <p className="text-[15px] text-[#212121] font-medium mb-1">
+                            No addresses found
+                          </p>
+                          <p className="text-sm text-gray-500 mb-4">
+                            Add an address for faster checkout
+                          </p>
                           <button
                             type="button"
                             onClick={() => switchTab('addresses')}
-                            className="text-[13px] font-medium text-[#B69640] cursor-pointer"
+                            className="h-10 px-5 border border-[#2874f0] text-[#2874f0] text-[14px] font-medium hover:bg-[#f5f7ff] cursor-pointer"
                           >
-                            Add your first address →
+                            ADD ADDRESS
                           </button>
                         </div>
                       ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           {addresses.slice(0, 2).map((addr) => (
                             <div
                               key={addr._id}
-                              className="rounded-xl border border-gray-100 bg-[#FAFAFA] px-4 py-3 text-left"
+                              className="border border-gray-200 p-4 sm:p-5 text-left"
                             >
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="text-[11px] font-semibold uppercase tracking-wide text-[#B69640]">
+                              <div className="flex flex-wrap items-center gap-2 mb-2">
+                                <span className="text-[11px] font-semibold tracking-wide uppercase text-gray-600 border border-gray-300 px-2 py-0.5">
                                   {addr.addressType || addr.label || 'Home'}
                                 </span>
                                 {addr.isDefault && (
-                                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                  <span className="text-[11px] font-medium text-[#2874f0]">
                                     Default
                                   </span>
                                 )}
                               </div>
-                              <p className="text-[13px] font-medium text-[#1A1A1A]">{addr.name}</p>
-                              <p className="text-[12px] text-gray-600 mt-0.5 leading-relaxed">
+                              <p className="text-[15px] font-medium text-[#212121]">
+                                {addr.name}
+                                {addr.phone ? (
+                                  <span className="font-normal text-gray-600">
+                                    {' '}
+                                    · {addr.phone}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <p className="text-[14px] text-gray-600 mt-1.5 leading-relaxed max-w-2xl">
                                 {formatAddressLine(addr)}
                               </p>
-                              {addr.phone && (
-                                <p className="text-[12px] text-gray-500 mt-1">{addr.phone}</p>
-                              )}
+                              <div className="flex gap-4 mt-3 pt-1">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    switchTab('addresses');
+                                    setTimeout(() => openEditAddress(addr), 0);
+                                  }}
+                                  className="text-[14px] font-medium text-[#2874f0] cursor-pointer"
+                                >
+                                  EDIT
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => switchTab('addresses')}
+                                  className="text-[14px] font-medium text-gray-500 hover:text-[#212121] cursor-pointer"
+                                >
+                                  VIEW ALL
+                                </button>
+                              </div>
                             </div>
                           ))}
                           {addresses.length > 2 && (
                             <button
                               type="button"
                               onClick={() => switchTab('addresses')}
-                              className="text-[12px] font-medium text-[#B69640] cursor-pointer"
+                              className="text-[14px] font-medium text-[#2874f0] cursor-pointer"
                             >
                               View all {addresses.length} addresses →
                             </button>
@@ -501,26 +616,28 @@ export default function UserDashboard() {
 
               {/* WISHLIST */}
               {activeTab === 'wishlist' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 sm:px-5 py-4 mb-3">
-                    <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Wishlist</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Saved products for later</p>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                  <div className="bg-white shadow-sm px-5 sm:px-6 py-4">
+                    <h2 className="text-lg sm:text-xl font-medium text-[#212121]">My Wishlist</h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {wishlist.length} {wishlist.length === 1 ? 'item' : 'items'}
+                    </p>
                   </div>
 
                   {loading ? (
-                    <div className="bg-white rounded-lg border border-gray-200 p-10 text-center text-sm text-gray-400">
+                    <div className="bg-white shadow-sm p-12 text-center text-[15px] text-gray-400">
                       Loading wishlist...
                     </div>
                   ) : wishlist.length === 0 ? (
-                    <div className="bg-white rounded-lg border border-gray-200 p-10 text-center">
+                    <div className="bg-white shadow-sm p-12 text-center">
                       <FiHeart size={40} className="text-gray-300 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-[#1A1A1A] mb-1">Your wishlist is empty</p>
-                      <p className="text-xs text-gray-500 mb-5">Save rugs you love while browsing</p>
+                      <p className="text-[16px] font-medium text-[#212121] mb-1">Your wishlist is empty</p>
+                      <p className="text-sm text-gray-500 mb-5">Save items you like while shopping</p>
                       <Link
                         to="/shop"
-                        className="inline-flex h-10 px-5 items-center rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640]"
+                        className="inline-flex h-11 px-6 items-center bg-[#2874f0] text-white text-[15px] font-medium hover:bg-[#1f63d4]"
                       >
-                        Browse Products
+                        CONTINUE SHOPPING
                       </Link>
                     </div>
                   ) : (
@@ -529,16 +646,16 @@ export default function UserDashboard() {
                         <Link
                           key={p._id}
                           to={`/product/${p._id}`}
-                          className="bg-white rounded-lg border border-gray-200 p-3 flex gap-3 hover:border-[#C9A84C]/40 hover:shadow-sm transition-all"
+                          className="bg-white shadow-sm p-4 flex gap-4 hover:shadow-md transition-shadow"
                         >
                           <img
                             src={getImageUrl(p.images?.[0])}
                             alt={p.name}
-                            className="w-20 h-20 object-cover rounded-md border border-gray-100 shrink-0"
+                            className="w-24 h-24 object-cover border border-gray-100 shrink-0"
                           />
                           <div className="min-w-0 text-left flex flex-col justify-center">
-                            <p className="text-[13px] font-medium text-[#1A1A1A] line-clamp-2 mb-1">{p.name}</p>
-                            <p className="text-sm font-bold text-[#1A1A1A]">
+                            <p className="text-[15px] text-[#212121] line-clamp-2 mb-1.5">{p.name}</p>
+                            <p className="text-[16px] font-semibold text-[#212121]">
                               ₹{(p.discountPrice || p.price)?.toLocaleString('en-IN')}
                             </p>
                           </div>
@@ -551,19 +668,19 @@ export default function UserDashboard() {
 
               {/* ADDRESSES */}
               {activeTab === 'addresses' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-4 sm:px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                  <div className="bg-white shadow-sm px-5 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3">
                     <div>
-                      <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Saved Addresses</h2>
-                      <p className="text-xs text-gray-500 mt-0.5">Add, edit, or set a default delivery address</p>
+                      <h2 className="text-lg sm:text-xl font-medium text-[#212121]">Manage Addresses</h2>
+                      <p className="text-sm text-gray-500 mt-1">{addresses.length} saved</p>
                     </div>
                     {!showAddressForm && (
                       <button
                         type="button"
                         onClick={openNewAddress}
-                        className="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] cursor-pointer"
+                        className="h-10 px-4 border border-[#2874f0] text-[#2874f0] text-[14px] font-medium hover:bg-[#f5f7ff] cursor-pointer"
                       >
-                        <FiPlus size={15} /> Add Address
+                        + ADD A NEW ADDRESS
                       </button>
                     )}
                   </div>
@@ -571,11 +688,11 @@ export default function UserDashboard() {
                   {showAddressForm && (
                     <form
                       onSubmit={saveAddress}
-                      className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-5 space-y-4"
+                      className="bg-white shadow-sm p-5 sm:p-6 space-y-4"
                     >
                       <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold text-[#1A1A1A]">
-                          {editingAddressId ? 'Edit Address' : 'New Address'}
+                        <h3 className="text-[16px] font-medium text-[#212121]">
+                          {editingAddressId ? 'Edit Address' : 'Add a new address'}
                         </h3>
                         <button
                           type="button"
@@ -583,9 +700,9 @@ export default function UserDashboard() {
                             setShowAddressForm(false);
                             setEditingAddressId(null);
                           }}
-                          className="p-1.5 rounded-md text-gray-400 hover:bg-gray-100 cursor-pointer"
+                          className="p-1.5 text-gray-400 hover:text-[#212121] cursor-pointer"
                         >
-                          <FiX size={16} />
+                          <FiX size={18} />
                         </button>
                       </div>
 
@@ -595,58 +712,58 @@ export default function UserDashboard() {
                             key={t}
                             type="button"
                             onClick={() => setAddressForm((p) => ({ ...p, addressType: t }))}
-                            className={`h-9 px-3.5 rounded-lg text-[12px] font-medium border cursor-pointer ${
+                            className={`h-9 px-4 text-[13px] font-medium border cursor-pointer ${
                               addressForm.addressType === t
-                                ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
-                                : 'bg-white text-gray-600 border-gray-200'
+                                ? 'border-[#2874f0] text-[#2874f0] bg-[#f5f7ff]'
+                                : 'border-gray-300 text-gray-600'
                             }`}
                           >
-                            {t === 'Home' ? <span className="inline-flex items-center gap-1"><FiHome size={12} /> Home</span> : t}
+                            {t}
                           </button>
                         ))}
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                          { key: 'name', label: 'Full Name *', placeholder: 'Receiver name' },
-                          { key: 'phone', label: 'Phone *', placeholder: '10-digit mobile' },
-                          { key: 'email', label: 'Email', placeholder: 'optional' },
-                          { key: 'house', label: 'House / Flat', placeholder: 'Flat, floor, building' },
-                          { key: 'street', label: 'Street / Area *', placeholder: 'Street, locality', full: true },
-                          { key: 'landmark', label: 'Landmark', placeholder: 'Near…' },
-                          { key: 'city', label: 'City *', placeholder: 'City' },
+                          { key: 'name', label: 'Name *', placeholder: 'Full name' },
+                          { key: 'phone', label: '10-digit mobile number *', placeholder: 'Mobile number' },
+                          { key: 'email', label: 'Email', placeholder: 'Email (optional)' },
+                          { key: 'house', label: 'Flat, House no., Building *', placeholder: 'House / Flat' },
+                          { key: 'street', label: 'Area, Street, Sector *', placeholder: 'Street / Area', full: true },
+                          { key: 'landmark', label: 'Landmark', placeholder: 'Nearby landmark' },
+                          { key: 'city', label: 'City / District *', placeholder: 'City' },
                           { key: 'state', label: 'State', placeholder: 'State' },
-                          { key: 'pincode', label: 'Pincode *', placeholder: '6-digit PIN' },
+                          { key: 'pincode', label: 'Pincode *', placeholder: 'Pincode' },
                         ].map((f) => (
                           <div key={f.key} className={f.full ? 'sm:col-span-2' : ''}>
-                            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">{f.label}</label>
+                            <label className="text-sm text-gray-500 block mb-1.5">{f.label}</label>
                             <input
                               value={addressForm[f.key]}
                               onChange={(e) => setAddressForm((p) => ({ ...p, [f.key]: e.target.value }))}
                               placeholder={f.placeholder}
-                              className="w-full h-11 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                              className="w-full h-11 border border-gray-300 px-3 text-[15px] outline-none focus:border-[#2874f0]"
                             />
                           </div>
                         ))}
                       </div>
 
-                      <label className="flex items-center gap-2 text-[13px] text-gray-700 cursor-pointer">
+                      <label className="flex items-center gap-2.5 text-[14px] text-[#212121] cursor-pointer">
                         <input
                           type="checkbox"
                           checked={addressForm.isDefault}
                           onChange={(e) => setAddressForm((p) => ({ ...p, isDefault: e.target.checked }))}
-                          className="rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
+                          className="w-4 h-4 accent-[#2874f0]"
                         />
-                        Set as default address
+                        Make this my default address
                       </label>
 
-                      <div className="flex flex-wrap gap-2 pt-1">
+                      <div className="flex flex-wrap gap-3 pt-1">
                         <button
                           type="submit"
                           disabled={addressSaving}
-                          className="h-11 px-5 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] disabled:opacity-60 cursor-pointer"
+                          className="h-11 px-8 bg-[#2874f0] text-white text-[15px] font-medium hover:bg-[#1f63d4] disabled:opacity-60 cursor-pointer"
                         >
-                          {addressSaving ? 'Saving...' : editingAddressId ? 'Update Address' : 'Save Address'}
+                          {addressSaving ? 'SAVING...' : 'SAVE'}
                         </button>
                         <button
                           type="button"
@@ -654,80 +771,76 @@ export default function UserDashboard() {
                             setShowAddressForm(false);
                             setEditingAddressId(null);
                           }}
-                          className="h-11 px-4 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 cursor-pointer"
+                          className="h-11 px-5 text-[15px] font-medium text-gray-600 cursor-pointer"
                         >
-                          Cancel
+                          CANCEL
                         </button>
                       </div>
                     </form>
                   )}
 
                   {!showAddressForm && addresses.length === 0 && (
-                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+                    <div className="bg-white shadow-sm p-12 text-center">
                       <FiMapPin size={36} className="text-gray-300 mx-auto mb-3" />
-                      <p className="text-sm font-medium text-[#1A1A1A] mb-1">No saved addresses</p>
-                      <p className="text-xs text-gray-500 mb-5 max-w-sm mx-auto">
-                        Save your delivery address once — it will be ready at checkout.
+                      <p className="text-[16px] font-medium text-[#212121] mb-1">No addresses available</p>
+                      <p className="text-sm text-gray-500 mb-5">
+                        Add an address to make checkout faster
                       </p>
                       <button
                         type="button"
                         onClick={openNewAddress}
-                        className="inline-flex h-10 px-5 items-center gap-1.5 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] cursor-pointer"
+                        className="h-11 px-6 bg-[#2874f0] text-white text-[15px] font-medium hover:bg-[#1f63d4] cursor-pointer"
                       >
-                        <FiPlus size={15} /> Add Address
+                        ADD ADDRESS
                       </button>
                     </div>
                   )}
 
                   {!showAddressForm &&
                     addresses.map((addr) => (
-                      <div
-                        key={addr._id}
-                        className={`bg-white rounded-xl border shadow-sm overflow-hidden ${
-                          addr.isDefault ? 'border-[#C9A84C]/50' : 'border-gray-200'
-                        }`}
-                      >
-                        <div className="px-4 sm:px-5 py-4 text-left">
+                      <div key={addr._id} className="bg-white shadow-sm">
+                        <div className="px-5 sm:px-6 py-5 text-left">
                           <div className="flex flex-wrap items-center gap-2 mb-2">
-                            <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-[#B69640]">
-                              <FiHome size={11} />
+                            <span className="text-[11px] font-semibold tracking-wide uppercase text-gray-600 border border-gray-300 px-2 py-0.5">
                               {addr.addressType || addr.label || 'Home'}
                             </span>
                             {addr.isDefault && (
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                Default
-                              </span>
+                              <span className="text-[12px] font-medium text-[#2874f0]">Default</span>
                             )}
                           </div>
-                          <p className="text-[14px] font-semibold text-[#1A1A1A]">{addr.name || '—'}</p>
-                          <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">{formatAddressLine(addr)}</p>
-                          <p className="text-[12px] text-gray-500 mt-1.5">
-                            {[addr.phone, addr.email].filter(Boolean).join(' · ')}
+                          <p className="text-[15px] font-medium text-[#212121]">
+                            {addr.name || '—'}
+                            {addr.phone ? (
+                              <span className="font-normal text-gray-600"> · {addr.phone}</span>
+                            ) : null}
+                          </p>
+                          <p className="text-[14px] text-gray-600 mt-1.5 leading-relaxed max-w-2xl">
+                            {formatAddressLine(addr)}
                           </p>
                         </div>
-                        <div className="px-4 sm:px-5 py-3 border-t border-gray-100 flex flex-wrap gap-2 bg-[#FAFAFA]">
+                        <div className="px-5 sm:px-6 py-3 border-t border-gray-100 flex flex-wrap gap-5">
                           <button
                             type="button"
                             onClick={() => openEditAddress(addr)}
-                            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 bg-white text-[12px] font-medium text-[#1A1A1A] cursor-pointer hover:border-[#C9A84C]/50"
+                            className="text-[14px] font-medium text-[#2874f0] cursor-pointer"
                           >
-                            <FiEdit2 size={12} /> Edit
+                            EDIT
                           </button>
                           {!addr.isDefault && (
                             <button
                               type="button"
                               onClick={() => makeDefaultAddress(addr._id)}
-                              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 bg-white text-[12px] font-medium text-[#1A1A1A] cursor-pointer hover:border-[#C9A84C]/50"
+                              className="text-[14px] font-medium text-gray-600 hover:text-[#212121] cursor-pointer"
                             >
-                              <FiCheck size={12} /> Set Default
+                              SET AS DEFAULT
                             </button>
                           )}
                           <button
                             type="button"
                             onClick={() => removeAddress(addr._id)}
-                            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-red-100 bg-white text-[12px] font-medium text-red-600 cursor-pointer hover:bg-red-50"
+                            className="text-[14px] font-medium text-gray-600 hover:text-red-600 cursor-pointer"
                           >
-                            <FiTrash2 size={12} /> Remove
+                            REMOVE
                           </button>
                         </div>
                       </div>
@@ -906,25 +1019,24 @@ function ChangePasswordForm() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden max-w-lg"
+      className="bg-white shadow-sm max-w-xl"
     >
-      <div className="px-4 sm:px-5 py-4 border-b border-gray-100">
-        <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Change Password</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Keep your account secure</p>
+      <div className="px-5 sm:px-6 py-4 border-b border-gray-100">
+        <h2 className="text-lg sm:text-xl font-medium text-[#212121]">Change Password</h2>
       </div>
-      <form onSubmit={submit} className="p-4 sm:p-5 space-y-4">
+      <form onSubmit={submit} className="px-5 sm:px-6 py-5 sm:py-6 space-y-5">
         {[
           { key: 'oldPassword', label: 'Current Password' },
           { key: 'newPassword', label: 'New Password' },
           { key: 'confirm', label: 'Confirm New Password' },
         ].map((f) => (
           <div key={f.key}>
-            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">{f.label}</label>
+            <label className="text-sm text-gray-500 block mb-2">{f.label}</label>
             <input
               type="password"
               value={form[f.key]}
               onChange={(e) => setForm((p) => ({ ...p, [f.key]: e.target.value }))}
-              className="w-full h-11 rounded-md border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+              className="w-full h-12 border border-gray-300 px-3.5 text-[15px] text-[#212121] outline-none focus:border-[#2874f0]"
               required
               minLength={6}
             />
@@ -933,9 +1045,9 @@ function ChangePasswordForm() {
         <button
           type="submit"
           disabled={loading}
-          className="h-11 px-6 rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] disabled:opacity-60 cursor-pointer"
+          className="h-11 px-8 bg-[#2874f0] text-white text-[15px] font-medium hover:bg-[#1f63d4] disabled:opacity-60 cursor-pointer"
         >
-          {loading ? 'Updating...' : 'Update Password'}
+          {loading ? 'UPDATING...' : 'SAVE'}
         </button>
       </form>
     </motion.div>
