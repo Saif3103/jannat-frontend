@@ -56,6 +56,7 @@ export default function Team() {
       image: saifSrc,
       bio: 'Saif powers the digital soul of Jannat Rugs — from building this very store to running campaigns that connect our artisans with customers worldwide. His tech expertise and creative marketing strategies bring Jannat Rugs into the modern era.',
       tag: 'The Innovator',
+      imageClass: 'scale-[1.35] origin-[50%_15%]',
     },
   ];
 
@@ -127,7 +128,9 @@ export default function Team() {
                         key={member.image}
                         src={member.image}
                         alt={member.name}
-                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                        className={`w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 ${
+                          member.imageClass || ''
+                        }`}
                       />
                       {/* Tag badge */}
                       <div
