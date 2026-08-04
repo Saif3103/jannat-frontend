@@ -3,13 +3,14 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import api, { BASE_URL } from '../api/axios';
-import { useAuthStore } from '../store';
+import { useAuthStore, useSettingsStore } from '../store';
 import Container from '../components/layout/Container';
 import toast from 'react-hot-toast';
 import {
   FiUser, FiPackage, FiHeart, FiMapPin, FiLock, FiEdit2, FiStar, FiX,
   FiTruck, FiDownload, FiChevronRight, FiShoppingBag
 } from 'react-icons/fi';
+import { generateInvoicePdf } from '../utils/generateInvoice';
 
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=800';
@@ -100,18 +101,12 @@ export default function UserDashboard() {
     }
   };
 
-  const handleDownloadInvoice = async (orderId) => {
+  const handleDownloadInvoice = async (order) => {
     try {
-      const response = await api.get(`/invoices/order/${orderId}/download`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `invoice-${orderId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      generateInvoicePdf(order, useSettingsStore.getState().settings || {});
+      toast.success('Invoice downloaded');
     } catch {
-      toast.error('Invoice not available yet');
+      toast.error('Could not generate invoice');
     }
   };
 
@@ -373,7 +368,7 @@ export default function UserDashboard() {
                           </p>
                           <button
                             type="button"
-                            onClick={() => handleDownloadInvoice(order._id)}
+                            onClick={() => handleDownloadInvoice(order)}
                             className="flex items-center gap-1.5 text-[12px] font-medium text-[#1A1A1A] hover:text-[#B69640] border border-gray-200 px-3 py-1.5 rounded-md hover:border-[#C9A84C]/40 transition-colors cursor-pointer"
                           >
                             <FiDownload size={12} />
