@@ -16,12 +16,42 @@ const EMPTY = {
   stock: '1',
   tags: '',
   colors: '',
+  sizes: [],
   isFeatured: false,
   processingTime: '1-2 weeks',
   originPostcode: '281001',
   returnPolicy: '7 days',
   manufacturerInfo: '',
 };
+
+/** Currency-prefixed price input with aligned ₹ icon */
+function PriceInput({ value, onChange, disabled, placeholder, className = '' }) {
+  return (
+    <div
+      className={`flex items-center h-11 rounded-xl border border-gray-200 bg-white overflow-hidden focus-within:border-[#C9A84C] focus-within:ring-2 focus-within:ring-[#C9A84C]/15 ${
+        disabled ? 'bg-gray-50 border-gray-100' : ''
+      } ${className}`}
+    >
+      <span
+        className={`w-8 shrink-0 flex items-center justify-center text-sm leading-none select-none ${
+          disabled ? 'text-gray-300' : 'text-gray-500'
+        }`}
+        aria-hidden
+      >
+        ₹
+      </span>
+      <input
+        type="text"
+        inputMode="numeric"
+        value={value ?? ''}
+        onChange={onChange}
+        disabled={disabled}
+        placeholder={placeholder}
+        className="flex-1 min-w-0 h-full pr-3 bg-transparent text-sm text-[#1A1A1A] outline-none disabled:text-gray-400 disabled:cursor-not-allowed"
+      />
+    </div>
+  );
+}
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -71,6 +101,7 @@ export default function AdminProducts() {
       category: p.category?._id,
       tags: p.tags?.join(', '),
       colors: p.colors?.join(', '),
+      sizes: Array.isArray(p.sizes) ? p.sizes.map((s) => ({ label: s.label, price: s.price ?? '' })) : [],
       processingTime: p.processingTime || '1-2 weeks',
       originPostcode: p.originPostcode || '281001',
       returnPolicy: p.returnPolicy || '7 days',
@@ -102,8 +133,15 @@ export default function AdminProducts() {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => {
         if (['images', '_id', '__v', 'createdAt', 'updatedAt', 'reviews', 'slug'].includes(k)) return;
-        if (k === 'sizes') fd.append(k, JSON.stringify(v));
-        else if (typeof v === 'boolean') fd.append(k, v.toString());
+        if (k === 'sizes') {
+          const normalized = (Array.isArray(v) ? v : [])
+            .filter((s) => s?.label)
+            .map((s) => ({
+              label: s.label,
+              price: Number(String(s.price).replace(/,/g, '')) || 0,
+            }));
+          fd.append(k, JSON.stringify(normalized));
+        } else if (typeof v === 'boolean') fd.append(k, v.toString());
         else if (v !== null && v !== undefined) fd.append(k, v);
       });
 
@@ -521,22 +559,22 @@ export default function AdminProducts() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className={labelClass}>
-                    Price (₹) <span className="text-red-500">*</span>
+                    Price <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
+                  <PriceInput
                     value={form.price}
-                    onChange={(e) => setForm({ ...form, price: e.target.value })}
-                    className={fieldClass}
+                    onChange={(e) =>
+                      setForm({ ...form, price: e.target.value.replace(/[^0-9.]/g, '') })
+                    }
                   />
                 </div>
                 <div>
-                  <label className={labelClass}>Sale price (₹)</label>
-                  <input
-                    type="text"
+                  <label className={labelClass}>Sale price</label>
+                  <PriceInput
                     value={form.discountPrice}
-                    onChange={(e) => setForm({ ...form, discountPrice: e.target.value })}
-                    className={fieldClass}
+                    onChange={(e) =>
+                      setForm({ ...form, discountPrice: e.target.value.replace(/[^0-9.]/g, '') })
+                    }
                     placeholder="Optional"
                   />
                 </div>
@@ -618,18 +656,24 @@ export default function AdminProducts() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                 <div>
                   <h4 className="font-semibold text-[15px]">Variations</h4>
-                  <p className="text-[12px] text-gray-500">Select available sizes</p>
+                  <p className="text-[12px] text-gray-500">Select sizes and set a custom price for each</p>
                 </div>
               </div>
 
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-3">
-                Size (feet) · {sizes.length} options
-              </p>
+              <div className="hidden sm:grid grid-cols-[7rem_1fr] gap-4 px-3 mb-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Size (ft)</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Price</p>
+              </div>
 
               <div className="space-y-2">
                 {sizes.map((s) => {
                   const selected = (form.sizes || []).some((v) => v.label === s.label);
-                  const currentPrice = (form.sizes || []).find((v) => v.label === s.label)?.price || s.price;
+                  const saved = (form.sizes || []).find((v) => v.label === s.label);
+                  const defaultPrice = Number(s.price.replace(/,/g, ''));
+                  const currentPrice =
+                    saved?.price !== undefined && saved?.price !== null && saved?.price !== ''
+                      ? saved.price
+                      : defaultPrice;
                   return (
                     <div
                       key={s.label}
@@ -646,7 +690,7 @@ export default function AdminProducts() {
                             if (e.target.checked) {
                               setForm({
                                 ...form,
-                                sizes: [...current, { label: s.label, price: Number(s.price.replace(/,/g, '')) }],
+                                sizes: [...current, { label: s.label, price: defaultPrice }],
                               });
                             } else {
                               setForm({ ...form, sizes: current.filter((v) => v.label !== s.label) });
@@ -656,22 +700,27 @@ export default function AdminProducts() {
                         />
                         <span className="text-sm font-semibold">{s.label}</span>
                       </label>
-                      <div className="relative flex-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₹</span>
-                        <input
-                          type="text"
+                      <div className="flex-1 min-w-0">
+                        <p className="sm:hidden text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">
+                          Price
+                        </p>
+                        <PriceInput
                           value={currentPrice}
                           disabled={!selected}
+                          placeholder={selected ? 'Enter price' : 'Select size to edit'}
+                          className="h-10 rounded-lg"
                           onChange={(e) => {
-                            const val = e.target.value.replace(/,/g, '');
+                            const cleaned = e.target.value.replace(/[^0-9]/g, '');
                             const current = [...(form.sizes || [])];
                             const idx = current.findIndex((v) => v.label === s.label);
                             if (idx > -1) {
-                              current[idx].price = Number(val);
+                              current[idx] = {
+                                ...current[idx],
+                                price: cleaned === '' ? '' : Number(cleaned),
+                              };
                               setForm({ ...form, sizes: current });
                             }
                           }}
-                          className="w-full h-10 pl-7 pr-3 border border-gray-200 rounded-lg bg-white text-sm disabled:bg-gray-50 disabled:text-gray-400 outline-none focus:border-[#C9A84C]"
                         />
                       </div>
                     </div>
