@@ -17,9 +17,7 @@ export default function MobileBottomNav() {
     pathname === '/login' ||
     pathname === '/register';
 
-  const homeActive = pathname === '/';
-
-  const sideItems = [
+  const items = [
     {
       id: 'shop',
       label: 'Shop',
@@ -34,14 +32,20 @@ export default function MobileBottomNav() {
       icon: FiGrid,
       active: pathname.startsWith('/categories'),
     },
-    { id: 'home-spacer', center: true },
+    {
+      id: 'home',
+      label: 'Home',
+      path: '/',
+      icon: FiHome,
+      active: pathname === '/',
+      home: true,
+    },
     {
       id: 'whatsapp',
       label: 'WhatsApp',
       href: WA_LINK,
       icon: FaWhatsapp,
       external: true,
-      active: false,
     },
     {
       id: 'profile',
@@ -58,55 +62,50 @@ export default function MobileBottomNav() {
       aria-label="Main navigation"
     >
       <div className="bg-white/95 backdrop-blur-xl border-t border-black/[0.06] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] pb-[env(safe-area-inset-bottom,0px)]">
-        <div className="relative grid grid-cols-5 h-[58px] max-w-lg mx-auto px-1">
-          {/* Center Home — elevated, no label */}
-          <Link
-            to="/"
-            aria-label="Home"
-            aria-current={homeActive ? 'page' : undefined}
-            className="absolute left-1/2 -translate-x-1/2 -top-5 z-10 flex items-center justify-center"
-          >
-            <span
-              className={`w-12 h-12 rounded-full flex items-center justify-center border-[3px] border-white shadow-[0_8px_22px_rgba(26,26,26,0.25)] transition-transform active:scale-95 ${
-                homeActive
-                  ? 'bg-[#1A1A1A] text-[#C9A84C] ring-2 ring-[#C9A84C]/30'
-                  : 'bg-[#1A1A1A] text-white'
-              }`}
-            >
-              <FiHome size={20} strokeWidth={2.2} />
-            </span>
-          </Link>
-
-          {sideItems.map((item) => {
-            if (item.center) {
-              return <div key={item.id} className="pointer-events-none" aria-hidden="true" />;
-            }
-
+        <div className="grid grid-cols-5 h-[60px] max-w-lg mx-auto px-1 items-center">
+          {items.map((item) => {
             const Icon = item.icon;
-            const className = `flex flex-col items-center justify-center gap-0.5 min-w-0 transition-colors ${
-              item.active ? 'text-[#1A1A1A]' : 'text-gray-400'
+            const isHome = item.home;
+            const active = !!item.active;
+
+            const className = `flex flex-col items-center justify-center gap-0.5 min-w-0 h-full transition-colors ${
+              active ? 'text-[#1A1A1A]' : 'text-gray-400'
             }`;
 
             const content = (
               <>
-                <Icon
-                  size={item.external ? 21 : 20}
-                  strokeWidth={item.active ? 2.3 : 1.8}
-                  className={
-                    item.external
-                      ? 'text-[#25D366]'
-                      : item.active
-                        ? 'text-[#C9A84C]'
-                        : ''
-                  }
-                />
-                <span
-                  className={`text-[10px] leading-none truncate max-w-full ${
-                    item.active ? 'font-bold' : 'font-medium'
-                  }`}
-                >
-                  {item.label}
-                </span>
+                {isHome ? (
+                  <span
+                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      active
+                        ? 'bg-[#1A1A1A] text-[#C9A84C]'
+                        : 'bg-[#1A1A1A] text-white'
+                    }`}
+                  >
+                    <Icon size={22} strokeWidth={2.2} />
+                  </span>
+                ) : (
+                  <Icon
+                    size={item.external ? 23 : 22}
+                    strokeWidth={active ? 2.3 : 1.9}
+                    className={
+                      item.external
+                        ? 'text-[#25D366]'
+                        : active
+                          ? 'text-[#C9A84C]'
+                          : ''
+                    }
+                  />
+                )}
+                {!isHome && (
+                  <span
+                    className={`text-[10px] leading-none truncate max-w-full ${
+                      active ? 'font-bold' : 'font-medium'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                )}
               </>
             );
 
@@ -129,7 +128,8 @@ export default function MobileBottomNav() {
               <Link
                 key={item.id}
                 to={item.path}
-                aria-current={item.active ? 'page' : undefined}
+                aria-label={isHome ? 'Home' : undefined}
+                aria-current={active ? 'page' : undefined}
                 className={className}
               >
                 {content}
