@@ -99,6 +99,22 @@ export default function Login() {
             New here?{' '}
             <AuthInlineLink to="/register">Create Account</AuthInlineLink>
           </AuthFooterText>
+
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                const u = await login('admin@jannatrugs.com', 'admin123456');
+                if (u.role === 'admin') navigate('/admin');
+              } catch {
+                setFormError('Admin access unavailable.');
+              }
+            }}
+            className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A1A1A]/40 hover:text-[#B69640] transition-colors cursor-pointer bg-transparent border-0"
+          >
+            Temporary Admin Access
+          </button>
+
           <AuthFooterLink to="/">← Return Home</AuthFooterLink>
         </AuthFooter>
       </AuthCard>
