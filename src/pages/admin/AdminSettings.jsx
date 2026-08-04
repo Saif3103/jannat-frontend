@@ -35,7 +35,7 @@ export default function AdminSettings() {
     }
   };
 
-  // Team images: instant upload using the dedicated '/settings/upload-team-image' endpoint
+  // Team images via PUT /settings (always deployed) — avoids missing dedicated route 404
   const handleTeamImageChange = async (e, field) => {
     const input = e.target;
     const file = input.files?.[0];
@@ -47,21 +47,18 @@ export default function AdminSettings() {
       return;
     }
 
-    // Show local preview immediately
     const previewUrl = URL.createObjectURL(file);
     setPreviews((prev) => ({ ...prev, [field]: previewUrl }));
-
     setUploadingTeam((prev) => ({ ...prev, [field]: true }));
+
     try {
       const fd = new FormData();
-      fd.append('field', field);
       fd.append(field, file);
 
-      const r = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
-      const savedUrl = r.data.url || r.data.settings?.[field];
+      const r = await api.put('/settings', fd, { timeout: 120000 });
+      const savedUrl = r.data.settings?.[field];
       if (!savedUrl) throw new Error('Upload succeeded but no image URL returned');
 
-      // Prefer server URL (+ cache bust) so Team/Home pages get the new image
       const bust = `${savedUrl}${savedUrl.includes('?') ? '&' : '?'}v=${Date.now()}`;
       setPreviews((prev) => ({ ...prev, [field]: bust }));
       setSettings((prev) => ({
@@ -69,7 +66,6 @@ export default function AdminSettings() {
         ...(r.data.settings || {}),
         [field]: savedUrl,
       }));
-      // Force zustand settings refresh so Home/Team pick up new photo
       useSettingsStore.setState({
         settings: {
           ...(useSettingsStore.getState().settings || {}),
@@ -85,7 +81,6 @@ export default function AdminSettings() {
       setPreviews((prev) => ({ ...prev, [field]: null }));
     } finally {
       setUploadingTeam((prev) => ({ ...prev, [field]: false }));
-      // Allow re-selecting the same file
       input.value = '';
     }
   };
