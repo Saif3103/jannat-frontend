@@ -10,7 +10,6 @@ import {
   FiEdit2,
   FiTrash2,
   FiX,
-  FiMapPin,
   FiPhone,
   FiMail,
   FiPackage,
@@ -320,21 +319,19 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
     );
   }
 
-  const primaryItem = items[0];
-
   return (
     <div className={`text-left ${variant === 'page' ? 'max-w-5xl mx-auto' : ''}`}>
       {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-[#B69640] font-semibold mb-1">
+      <div className="mb-8 sm:mb-10 pb-6 border-b border-black/[0.06]">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-2">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-[#B69640] font-semibold">
               Secure checkout
             </p>
-            <h2 className="font-luxury text-2xl sm:text-3xl text-[#1A1A1A]">
+            <h2 className="font-luxury text-[1.75rem] sm:text-[2.15rem] leading-tight text-[#1A1A1A]">
               Review Your Order
             </h2>
-            <p className="text-sm text-gray-500 mt-1.5 max-w-md">
+            <p className="text-[13px] sm:text-sm text-gray-500 leading-relaxed max-w-lg">
               Please review your order details before confirming your purchase.
             </p>
           </div>
@@ -342,7 +339,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 hover:text-[#1A1A1A] cursor-pointer shrink-0"
+              className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#1A1A1A] cursor-pointer shrink-0 shadow-sm"
               aria-label="Close"
             >
               <FiX size={18} />
@@ -351,73 +348,101 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 lg:gap-8">
-        <div className="space-y-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:gap-10 items-start">
+        <div className="space-y-8">
           {/* Product information */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-4">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-6">
               Product information
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-8">
               {items.map((item) => {
                 const unit = item.discountPrice || item.price || 0;
                 return (
-                  <div key={`${item._id}-${item.size}-${item.color}`} className="flex gap-4">
+                  <div
+                    key={`${item._id}-${item.size}-${item.color}`}
+                    className="flex flex-col sm:flex-row gap-5 sm:gap-6"
+                  >
                     <img
                       src={imgUrl(item.images?.[0])}
                       alt={item.name}
-                      className="w-24 h-28 sm:w-28 sm:h-32 rounded-2xl object-cover shrink-0 bg-[#FAF7F2]"
+                      className="w-full sm:w-32 h-44 sm:h-40 rounded-2xl object-cover shrink-0 bg-[#FAF7F2]"
                     />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-luxury text-lg sm:text-xl text-[#1A1A1A] leading-snug">
-                        {item.name}
-                      </h4>
-                      <p className="text-xs text-[#B69640] mt-1">
-                        Collection: {item.category?.name || item.type || 'Jannat Rugs'}
-                      </p>
-                      <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[12px] text-gray-600">
-                        {item.material && (
-                          <p>
-                            <span className="text-gray-400">Material:</span> {item.material}
-                          </p>
-                        )}
-                        {item.size && (
-                          <p>
-                            <span className="text-gray-400">Size:</span> {item.size}
-                          </p>
-                        )}
-                        {item.color && (
-                          <p>
-                            <span className="text-gray-400">Color:</span> {item.color}
-                          </p>
-                        )}
-                        <p className="text-emerald-600 font-medium flex items-center gap-1">
-                          <FiCheck size={12} /> In Stock
+                    <div className="flex-1 min-w-0 space-y-4">
+                      <div>
+                        <h4 className="font-luxury text-xl sm:text-2xl text-[#1A1A1A] leading-snug">
+                          {item.name}
+                        </h4>
+                        <p className="text-[13px] text-[#B69640] mt-2 font-medium">
+                          Collection · {item.category?.name || item.type || 'Jannat Rugs'}
                         </p>
                       </div>
-                      <div className="mt-3 flex flex-wrap items-center gap-3 justify-between">
-                        <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden h-9 bg-white">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              updateQuantity(item._id, item.size, item.color, Math.max(1, item.quantity - 1))
-                            }
-                            className="w-9 h-full flex items-center justify-center hover:bg-gray-50 cursor-pointer"
-                          >
-                            <FiMinus size={12} />
-                          </button>
-                          <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              updateQuantity(item._id, item.size, item.color, item.quantity + 1)
-                            }
-                            className="w-9 h-full flex items-center justify-center hover:bg-gray-50 cursor-pointer"
-                          >
-                            <FiPlus size={12} />
-                          </button>
+
+                      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[13px]">
+                        {item.material && (
+                          <div className="flex flex-col gap-0.5">
+                            <dt className="text-gray-400 text-[11px] uppercase tracking-wider">Material</dt>
+                            <dd className="text-[#1A1A1A] font-medium">{item.material}</dd>
+                          </div>
+                        )}
+                        {item.size && (
+                          <div className="flex flex-col gap-0.5">
+                            <dt className="text-gray-400 text-[11px] uppercase tracking-wider">Size</dt>
+                            <dd className="text-[#1A1A1A] font-medium">{item.size}</dd>
+                          </div>
+                        )}
+                        {item.color && (
+                          <div className="flex flex-col gap-0.5">
+                            <dt className="text-gray-400 text-[11px] uppercase tracking-wider">Color</dt>
+                            <dd className="text-[#1A1A1A] font-medium">{item.color}</dd>
+                          </div>
+                        )}
+                        <div className="flex flex-col gap-0.5">
+                          <dt className="text-gray-400 text-[11px] uppercase tracking-wider">Availability</dt>
+                          <dd className="text-emerald-600 font-medium flex items-center gap-1.5">
+                            <FiCheck size={14} /> In Stock
+                          </dd>
                         </div>
-                        <p className="text-base font-bold text-[#1A1A1A]">
+                        <div className="flex flex-col gap-0.5">
+                          <dt className="text-gray-400 text-[11px] uppercase tracking-wider">Unit price</dt>
+                          <dd className="text-[#1A1A1A] font-semibold">
+                            ₹{Number(unit).toLocaleString('en-IN')}
+                          </dd>
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                          <dt className="text-gray-400 text-[11px] uppercase tracking-wider">Estimated delivery</dt>
+                          <dd className="text-[#1A1A1A] font-medium">
+                            {delivery === 'express' ? '1–2 Business Days' : '4–7 Business Days'}
+                          </dd>
+                        </div>
+                      </dl>
+
+                      <div className="flex flex-wrap items-center gap-4 justify-between pt-2 border-t border-gray-100">
+                        <div className="flex items-center gap-3">
+                          <span className="text-[11px] uppercase tracking-wider text-gray-400">Qty</span>
+                          <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden h-10 bg-white">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                updateQuantity(item._id, item.size, item.color, Math.max(1, item.quantity - 1))
+                              }
+                              className="w-10 h-full flex items-center justify-center hover:bg-gray-50 cursor-pointer"
+                            >
+                              <FiMinus size={13} />
+                            </button>
+                            <span className="w-10 text-center text-sm font-semibold">{item.quantity}</span>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                updateQuantity(item._id, item.size, item.color, item.quantity + 1)
+                              }
+                              className="w-10 h-full flex items-center justify-center hover:bg-gray-50 cursor-pointer"
+                            >
+                              <FiPlus size={13} />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-lg font-bold text-[#1A1A1A]">
                           ₹{(unit * item.quantity).toLocaleString('en-IN')}
                         </p>
                       </div>
@@ -426,32 +451,12 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                 );
               })}
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-3 gap-3 text-[12px]">
-              <div>
-                <p className="text-gray-400">Unit price</p>
-                <p className="font-semibold text-[#1A1A1A]">
-                  ₹{(primaryItem.discountPrice || primaryItem.price || 0).toLocaleString('en-IN')}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-400">Shipping</p>
-                <p className={`font-semibold ${shipping === 0 ? 'text-emerald-600' : 'text-[#1A1A1A]'}`}>
-                  {shipping === 0 ? 'FREE' : `₹${shipping}`}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-400">Estimated delivery</p>
-                <p className="font-semibold text-[#1A1A1A]">
-                  {delivery === 'express' ? '1–2 Business Days' : '4–7 Business Days'}
-                </p>
-              </div>
-            </div>
           </section>
 
           {/* Delivery address */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <div className="flex items-center justify-between gap-3 mb-6">
+              <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">
                 Delivery address
               </h3>
               {!showAddressForm && (
@@ -467,7 +472,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                     });
                     setShowAddressForm(true);
                   }}
-                  className="text-xs font-semibold text-[#B69640] flex items-center gap-1 cursor-pointer"
+                  className="text-[12px] font-semibold text-[#B69640] flex items-center gap-1.5 cursor-pointer shrink-0"
                 >
                   <FiPlus size={14} /> Add New Address
                 </button>
@@ -475,11 +480,11 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
             </div>
 
             {!showAddressForm && addresses.length > 0 && (
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {addresses.map((addr) => (
                   <div
                     key={addr.id}
-                    className={`rounded-2xl border p-3.5 transition-all cursor-pointer ${
+                    className={`rounded-2xl border p-4 sm:p-5 transition-all cursor-pointer ${
                       selectedAddressId === addr.id
                         ? 'border-[#C9A84C] bg-[#FAF7F2] ring-1 ring-[#C9A84C]/40'
                         : 'border-gray-100 hover:border-gray-200'
@@ -489,10 +494,10 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                       setContact({ phone: addr.phone, email: addr.email || user?.email || '' });
                     }}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-start gap-2.5 min-w-0">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 min-w-0">
                         <span
-                          className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                          className={`mt-1 w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                             selectedAddressId === addr.id
                               ? 'border-[#C9A84C] bg-[#C9A84C]'
                               : 'border-gray-300'
@@ -502,19 +507,19 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                             <span className="w-1.5 h-1.5 rounded-full bg-white" />
                           )}
                         </span>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-[#1A1A1A]">
+                        <div className="min-w-0 space-y-1.5">
+                          <p className="text-[15px] font-semibold text-[#1A1A1A]">
                             {addr.name}{' '}
-                            <span className="text-[10px] font-medium text-[#B69640] ml-1">
+                            <span className="text-[10px] font-semibold text-[#B69640] ml-1.5 tracking-wide uppercase">
                               {addr.addressType || 'Home'}
                             </span>
                           </p>
-                          <p className="text-[12px] text-gray-500 mt-0.5 leading-relaxed">
+                          <p className="text-[13px] text-gray-500 leading-relaxed">
                             {[addr.house, addr.street, addr.landmark, addr.city, addr.state, addr.pincode]
                               .filter(Boolean)
                               .join(', ')}
                           </p>
-                          <p className="text-[11px] text-gray-400 mt-1">{addr.phone}</p>
+                          <p className="text-[12px] text-gray-400">{addr.phone}</p>
                         </div>
                       </div>
                       <div className="flex gap-1 shrink-0">
@@ -524,9 +529,9 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                             e.stopPropagation();
                             editAddress(addr);
                           }}
-                          className="w-8 h-8 rounded-lg hover:bg-white flex items-center justify-center text-gray-400 hover:text-[#1A1A1A] cursor-pointer"
+                          className="w-9 h-9 rounded-xl hover:bg-white flex items-center justify-center text-gray-400 hover:text-[#1A1A1A] cursor-pointer"
                         >
-                          <FiEdit2 size={13} />
+                          <FiEdit2 size={14} />
                         </button>
                         <button
                           type="button"
@@ -534,9 +539,9 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                             e.stopPropagation();
                             deleteAddress(addr.id);
                           }}
-                          className="w-8 h-8 rounded-lg hover:bg-white flex items-center justify-center text-gray-400 hover:text-red-500 cursor-pointer"
+                          className="w-9 h-9 rounded-xl hover:bg-white flex items-center justify-center text-gray-400 hover:text-red-500 cursor-pointer"
                         >
-                          <FiTrash2 size={13} />
+                          <FiTrash2 size={14} />
                         </button>
                       </div>
                     </div>
@@ -546,7 +551,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
             )}
 
             {showAddressForm && (
-              <form onSubmit={saveAddressForm} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={saveAddressForm} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { key: 'name', label: 'Full Name', required: true },
                   { key: 'phone', label: 'Phone', required: true },
@@ -560,7 +565,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                   { key: 'pincode', label: 'Pincode', required: true },
                 ].map((f) => (
                   <div key={f.key} className={f.full ? 'sm:col-span-2' : ''}>
-                    <label className="text-[11px] font-medium text-gray-500 mb-1 block">
+                    <label className="text-[11px] font-medium text-gray-500 mb-1.5 block tracking-wide">
                       {f.label}
                       {f.required && <span className="text-red-400"> *</span>}
                     </label>
@@ -568,21 +573,21 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                       required={f.required}
                       value={form[f.key] || ''}
                       onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-                      className="w-full h-11 px-3 rounded-xl border border-gray-200 bg-white text-sm outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                      className="w-full h-11 px-3.5 rounded-xl border border-gray-200 bg-white text-sm outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
                     />
                   </div>
                 ))}
-                <div className="sm:col-span-2">
-                  <label className="text-[11px] font-medium text-gray-500 mb-1.5 block">
+                <div className="sm:col-span-2 pt-1">
+                  <label className="text-[11px] font-medium text-gray-500 mb-2.5 block tracking-wide">
                     Address Type
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2.5">
                     {['Home', 'Office'].map((t) => (
                       <button
                         key={t}
                         type="button"
                         onClick={() => setForm({ ...form, addressType: t })}
-                        className={`h-9 px-4 rounded-full text-xs font-semibold border cursor-pointer ${
+                        className={`h-10 px-5 rounded-full text-xs font-semibold border cursor-pointer ${
                           form.addressType === t
                             ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
                             : 'bg-white text-gray-600 border-gray-200'
@@ -593,7 +598,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                     ))}
                   </div>
                 </div>
-                <div className="sm:col-span-2 flex gap-2 pt-1">
+                <div className="sm:col-span-2 flex flex-col sm:flex-row gap-3 pt-3">
                   {addresses.length > 0 && (
                     <button
                       type="button"
@@ -618,41 +623,41 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
           </section>
 
           {/* Contact */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-4">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-6">
               Contact details
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="text-[11px] text-gray-500 mb-1 flex items-center gap-1.5">
+                <label className="text-[11px] text-gray-500 mb-1.5 flex items-center gap-1.5 tracking-wide uppercase">
                   <FiPhone size={12} /> Phone Number
                 </label>
                 <input
                   value={contact.phone}
                   onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-                  className="w-full h-11 px-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C]"
                 />
               </div>
               <div>
-                <label className="text-[11px] text-gray-500 mb-1 flex items-center gap-1.5">
+                <label className="text-[11px] text-gray-500 mb-1.5 flex items-center gap-1.5 tracking-wide uppercase">
                   <FiMail size={12} /> Email Address
                 </label>
                 <input
                   type="email"
                   value={contact.email}
                   onChange={(e) => setContact({ ...contact, email: e.target.value })}
-                  className="w-full h-11 px-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C]"
                 />
               </div>
             </div>
           </section>
 
           {/* Delivery options */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-4">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-6">
               Delivery options
             </h3>
-            <div className="space-y-2.5">
+            <div className="space-y-3.5">
               {[
                 {
                   id: 'standard',
@@ -671,14 +676,14 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                   key={opt.id}
                   type="button"
                   onClick={() => setDelivery(opt.id)}
-                  className={`w-full text-left rounded-2xl border p-4 flex items-center gap-3 transition-all cursor-pointer ${
+                  className={`w-full text-left rounded-2xl border px-4 py-4 sm:px-5 sm:py-5 flex items-center gap-4 transition-all cursor-pointer ${
                     delivery === opt.id
                       ? 'border-[#C9A84C] bg-[#FAF7F2]'
                       : 'border-gray-100 hover:border-gray-200'
                   }`}
                 >
                   <span
-                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                       delivery === opt.id ? 'border-[#C9A84C]' : 'border-gray-300'
                     }`}
                   >
@@ -687,36 +692,36 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                     )}
                   </span>
                   <FiTruck className="text-[#B69640] shrink-0" size={18} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#1A1A1A]">{opt.title}</p>
-                    <p className="text-[11px] text-gray-500">Estimated: {opt.eta}</p>
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <p className="text-[15px] font-semibold text-[#1A1A1A]">{opt.title}</p>
+                    <p className="text-[12px] text-gray-500">Estimated: {opt.eta}</p>
                   </div>
-                  <span className="text-sm font-bold text-[#1A1A1A]">{opt.price}</span>
+                  <span className="text-sm font-bold text-[#1A1A1A] shrink-0">{opt.price}</span>
                 </button>
               ))}
             </div>
           </section>
 
           {/* Payment */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-4">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-6">
               Payment options
             </h3>
-            <div className="space-y-2.5">
+            <div className="space-y-3.5">
               {PAYMENT_OPTIONS.map((opt) => (
                 <button
                   key={opt.id}
                   type="button"
                   onClick={() => setPaymentMethod(opt.id)}
-                  className={`w-full text-left rounded-2xl border p-4 transition-all cursor-pointer ${
+                  className={`w-full text-left rounded-2xl border px-4 py-4 sm:px-5 sm:py-5 transition-all cursor-pointer ${
                     paymentMethod === opt.id
                       ? 'border-[#C9A84C] bg-[#FAF7F2]'
                       : 'border-gray-100 hover:border-gray-200'
                   }`}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3.5">
                     <span
-                      className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                      className={`mt-1 w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                         paymentMethod === opt.id ? 'border-[#C9A84C]' : 'border-gray-300'
                       }`}
                     >
@@ -724,9 +729,9 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                         <span className="w-2 h-2 rounded-full bg-[#C9A84C]" />
                       )}
                     </span>
-                    <div>
-                      <p className="text-sm font-semibold text-[#1A1A1A]">{opt.label}</p>
-                      <p className="text-[12px] text-gray-500 mt-0.5 leading-relaxed">{opt.desc}</p>
+                    <div className="space-y-1.5 min-w-0">
+                      <p className="text-[15px] font-semibold text-[#1A1A1A]">{opt.label}</p>
+                      <p className="text-[13px] text-gray-500 leading-relaxed">{opt.desc}</p>
                     </div>
                   </div>
                 </button>
@@ -735,79 +740,77 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
           </section>
 
           {/* Coupon */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-3">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-5">
               Coupon
             </h3>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 value={couponInput}
                 onChange={(e) => setCouponInput(e.target.value)}
                 placeholder="Enter coupon code"
-                className="flex-1 h-11 px-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C] uppercase"
+                className="flex-1 h-11 px-3.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C] uppercase"
               />
               <button
                 type="button"
                 onClick={applyCoupon}
-                className="h-11 px-5 rounded-xl bg-[#1A1A1A] text-white text-sm font-semibold cursor-pointer"
+                className="h-11 px-6 rounded-xl bg-[#1A1A1A] text-white text-sm font-semibold cursor-pointer shrink-0"
               >
                 Apply
               </button>
             </div>
             {couponMsg && (
-              <p
-                className={`text-xs mt-2 ${
-                  coupon ? 'text-emerald-600' : 'text-red-500'
-                }`}
-              >
+              <p className={`text-[13px] mt-3 ${coupon ? 'text-emerald-600' : 'text-red-500'}`}>
                 {couponMsg}
               </p>
             )}
           </section>
 
           {/* Special request */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-3">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 shadow-[0_8px_40px_rgba(0,0,0,0.04)]">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 mb-5">
               Special request
             </h3>
             <textarea
-              rows={3}
+              rows={4}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Please call before delivery. Gift packing required. Deliver only after 5 PM."
-              className="w-full px-3 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C] resize-none"
+              className="w-full px-3.5 py-3.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#C9A84C] resize-none leading-relaxed"
             />
           </section>
 
           {/* Trust */}
-          <section className="rounded-3xl border border-[#C9A84C]/25 bg-gradient-to-br from-[#FAF7F2] to-white p-4 sm:p-5">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <section className="rounded-[24px] border border-[#C9A84C]/25 bg-gradient-to-br from-[#FAF7F2] to-white p-5 sm:p-7">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {TRUST.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2 text-[11px] text-[#1A1A1A]/80">
-                  <Icon className="text-[#B69640] shrink-0" size={14} />
-                  <span>{text}</span>
+                <div key={text} className="flex items-center gap-3 text-[13px] text-[#1A1A1A]/80">
+                  <span className="w-8 h-8 rounded-full bg-white border border-[#C9A84C]/25 flex items-center justify-center shrink-0">
+                    <Icon className="text-[#B69640]" size={14} />
+                  </span>
+                  <span className="leading-snug">{text}</span>
                 </div>
               ))}
             </div>
           </section>
 
           {/* Checkboxes + actions (mobile) */}
-          <section className="rounded-3xl border border-black/[0.06] bg-white/80 backdrop-blur-xl p-4 sm:p-5 space-y-3 lg:hidden">
-            <label className="flex items-start gap-2.5 text-sm text-[#1A1A1A] cursor-pointer">
+          <section className="rounded-[24px] border border-black/[0.06] bg-white p-5 sm:p-7 space-y-4 lg:hidden">
+            <label className="flex items-start gap-3 text-[13px] text-[#1A1A1A] cursor-pointer leading-relaxed">
               <input
                 type="checkbox"
                 checked={reviewed}
                 onChange={(e) => setReviewed(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
               />
               I have reviewed my order details.
             </label>
-            <label className="flex items-start gap-2.5 text-sm text-[#1A1A1A] cursor-pointer">
+            <label className="flex items-start gap-3 text-[13px] text-[#1A1A1A] cursor-pointer leading-relaxed">
               <input
                 type="checkbox"
                 checked={terms}
                 onChange={(e) => setTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
               />
               <span>
                 I agree to the{' '}
@@ -821,7 +824,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
               type="button"
               disabled={loading}
               onClick={placeOrder}
-              className="w-full h-12 rounded-xl bg-[#C9A84C] text-[#1A1A1A] font-semibold text-sm hover:bg-[#B69640] disabled:opacity-50 cursor-pointer"
+              className="w-full h-12 rounded-xl bg-[#C9A84C] text-[#1A1A1A] font-semibold text-sm hover:bg-[#B69640] disabled:opacity-50 cursor-pointer mt-2"
             >
               {loading ? 'Confirming…' : 'Confirm Order'}
             </button>
@@ -836,40 +839,40 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
         </div>
 
         {/* Summary sidebar */}
-        <aside className="lg:sticky lg:top-24 h-fit space-y-4">
-          <div className="rounded-3xl border border-black/[0.06] bg-white/90 backdrop-blur-xl p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)]">
-            <h3 className="font-luxury text-xl text-[#1A1A1A] mb-4">Order Summary</h3>
-            <div className="space-y-2.5 text-sm">
-              <div className="flex justify-between">
+        <aside className="lg:sticky lg:top-24 h-fit space-y-5">
+          <div className="rounded-[24px] border border-black/[0.06] bg-white p-6 shadow-[0_12px_40px_rgba(0,0,0,0.06)]">
+            <h3 className="font-luxury text-2xl text-[#1A1A1A] mb-5">Order Summary</h3>
+            <div className="space-y-3.5 text-[14px]">
+              <div className="flex justify-between gap-4">
                 <span className="text-gray-500">Subtotal</span>
-                <span className="font-medium">₹{subtotal.toLocaleString('en-IN')}</span>
+                <span className="font-medium shrink-0">₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span className="text-gray-500">Shipping</span>
-                <span className={`font-medium ${shipping === 0 ? 'text-emerald-600' : ''}`}>
+                <span className={`font-medium shrink-0 ${shipping === 0 ? 'text-emerald-600' : ''}`}>
                   {shipping === 0 ? 'FREE' : `₹${shipping.toLocaleString('en-IN')}`}
                 </span>
               </div>
               {discount > 0 && (
-                <div className="flex justify-between text-emerald-600">
+                <div className="flex justify-between gap-4 text-emerald-600">
                   <span>Discount</span>
-                  <span className="font-medium">−₹{discount.toLocaleString('en-IN')}</span>
+                  <span className="font-medium shrink-0">−₹{discount.toLocaleString('en-IN')}</span>
                 </div>
               )}
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span className="text-gray-500">Tax (5%)</span>
-                <span className="font-medium">₹{tax.toLocaleString('en-IN')}</span>
+                <span className="font-medium shrink-0">₹{tax.toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between pt-3 border-t border-gray-100 items-baseline">
+              <div className="flex justify-between gap-4 pt-4 border-t border-gray-100 items-baseline">
                 <span className="font-luxury text-lg text-[#1A1A1A]">Grand Total</span>
-                <span className="font-luxury text-2xl text-[#1A1A1A]">
+                <span className="font-luxury text-2xl text-[#1A1A1A] shrink-0">
                   ₹{total.toLocaleString('en-IN')}
                 </span>
               </div>
             </div>
 
-            <div className="hidden lg:block space-y-3 mt-5 pt-4 border-t border-gray-100">
-              <label className="flex items-start gap-2.5 text-[13px] text-[#1A1A1A] cursor-pointer">
+            <div className="hidden lg:block space-y-4 mt-6 pt-5 border-t border-gray-100">
+              <label className="flex items-start gap-3 text-[13px] text-[#1A1A1A] cursor-pointer leading-relaxed">
                 <input
                   type="checkbox"
                   checked={reviewed}
@@ -878,7 +881,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
                 />
                 I have reviewed my order details.
               </label>
-              <label className="flex items-start gap-2.5 text-[13px] text-[#1A1A1A] cursor-pointer">
+              <label className="flex items-start gap-3 text-[13px] text-[#1A1A1A] cursor-pointer leading-relaxed">
                 <input
                   type="checkbox"
                   checked={terms}
@@ -912,16 +915,18 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-[#FAF7F2] border border-[#C9A84C]/20 p-4 flex flex-wrap gap-2">
+          <div className="rounded-2xl bg-[#FAF7F2] border border-[#C9A84C]/20 p-5 flex flex-wrap gap-2.5">
             {['Free Shipping*', '100% Handmade', 'Premium Quality', 'Secure Checkout'].map((b) => (
               <span
                 key={b}
-                className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white border border-[#C9A84C]/25 text-[#1A1A1A]"
+                className="text-[11px] font-semibold px-3 py-1.5 rounded-full bg-white border border-[#C9A84C]/25 text-[#1A1A1A]"
               >
                 {b}
               </span>
             ))}
-            <p className="w-full text-[10px] text-gray-400 mt-1">*On orders above ₹5,000 (standard)</p>
+            <p className="w-full text-[11px] text-gray-400 mt-1 leading-relaxed">
+              *On orders above ₹5,000 (standard delivery)
+            </p>
           </div>
         </aside>
       </div>
