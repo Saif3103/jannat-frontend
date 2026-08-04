@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import AuthLayout from '../components/auth/AuthLayout';
-import AuthButton from '../components/auth/AuthButton';
-import AuthLink from '../components/auth/AuthLink';
-import AuthMessage from '../components/auth/AuthMessage';
+import {
+  AuthLayout,
+  AuthCard,
+  AuthButton,
+  AuthFooter,
+  AuthFooterLink,
+  AuthFooterText,
+  AuthMessage,
+} from '../components/auth';
 import api from '../api/axios';
 
 const OTP_LENGTH = 6;
@@ -121,60 +126,62 @@ export default function VerifyOTP() {
   };
 
   return (
-    <AuthLayout
-      title="Verify OTP"
-      subtitle={
-        email
-          ? `Enter the 6-digit code sent to ${email}`
-          : 'Enter the 6-digit verification code'
-      }
-      panelTitle={<>Secure<br />Verification</>}
-      panelTagline="A quiet checkpoint between you and your private collection."
-      panelCta="Back to Sign In"
-      panelCtaTo="/login"
-    >
-      <AuthMessage type="error" message={formError} />
-      <AuthMessage type="success" message={success} />
+    <AuthLayout title="Verify OTP">
+      <AuthCard
+        title="Verify OTP"
+        subtitle={
+          email
+            ? `Enter the 6-digit code sent to ${email}`
+            : 'Enter the 6-digit verification code'
+        }
+      >
+        <AuthMessage type="error" message={formError} />
+        <AuthMessage type="success" message={success} />
 
-      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-        <fieldset>
-          <legend className="sr-only">One-time password</legend>
-          <div className="flex justify-center gap-2.5 sm:gap-3" onPaste={handlePaste}>
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                ref={(el) => {
-                  inputsRef.current[index] = el;
-                }}
-                type="text"
-                inputMode="numeric"
-                autoComplete={index === 0 ? 'one-time-code' : 'off'}
-                maxLength={1}
-                value={digit}
-                aria-label={`Digit ${index + 1}`}
-                onChange={(e) => handleChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                className="w-11 h-14 sm:w-12 sm:h-14 rounded-2xl text-center text-xl font-semibold text-white bg-[#111111] border border-white/[0.08] outline-none transition-all duration-300 focus:border-[#C9A96E]/70 focus:ring-4 focus:ring-[#C9A96E]/12"
-              />
-            ))}
+        <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
+          <fieldset>
+            <legend className="sr-only">One-time password</legend>
+            <div className="flex justify-center gap-2.5 sm:gap-3" onPaste={handlePaste}>
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => {
+                    inputsRef.current[index] = el;
+                  }}
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete={index === 0 ? 'one-time-code' : 'off'}
+                  maxLength={1}
+                  value={digit}
+                  aria-label={`Digit ${index + 1}`}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className="w-11 h-14 sm:w-12 sm:h-14 rounded-2xl text-center text-xl font-light text-white bg-[#121212] border border-white/[0.08] outline-none transition-all duration-300 focus:border-[#C9A96E] focus:ring-2 focus:ring-[#C9A96E]/20"
+                />
+              ))}
+            </div>
+          </fieldset>
+
+          <div className="mt-8">
+            <AuthButton loading={loading}>Verify Code</AuthButton>
           </div>
-        </fieldset>
+        </form>
 
-        <AuthButton loading={loading}>Verify Code</AuthButton>
-      </form>
-
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <p className="text-sm text-[#A0A0A0]">
-          Didn’t receive the code?{' '}
-          <AuthLink as="button" onClick={handleResend} className="text-[#C9A96E]">
-            {resending ? 'Sending…' : 'Resend'}
-          </AuthLink>
-        </p>
-        <AuthLink to="/forgot-password">← Change email</AuthLink>
-        <AuthLink to="/login" className="text-[#A0A0A0]/70">
-          Back to Sign In
-        </AuthLink>
-      </div>
+        <AuthFooter>
+          <AuthFooterText>
+            Didn’t receive the code?{' '}
+            <button
+              type="button"
+              onClick={handleResend}
+              className="text-[#C9A96E] transition-colors duration-300 hover:text-white cursor-pointer bg-transparent border-0 p-0 text-sm focus-visible:outline-none focus-visible:underline"
+            >
+              {resending ? 'Sending…' : 'Resend'}
+            </button>
+          </AuthFooterText>
+          <AuthFooterLink to="/forgot-password">← Change email</AuthFooterLink>
+          <AuthFooterLink to="/login">Back to Sign In</AuthFooterLink>
+        </AuthFooter>
+      </AuthCard>
     </AuthLayout>
   );
 }

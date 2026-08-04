@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { FiMail, FiLock, FiShield } from 'react-icons/fi';
-import AuthLayout from '../components/auth/AuthLayout';
-import AuthInput from '../components/auth/AuthInput';
-import AuthButton from '../components/auth/AuthButton';
-import AuthLink from '../components/auth/AuthLink';
-import AuthMessage from '../components/auth/AuthMessage';
+import { Mail, Lock } from 'lucide-react';
+import {
+  AuthLayout,
+  AuthCard,
+  AuthInput,
+  AuthButton,
+  AuthFooter,
+  AuthFooterLink,
+  AuthFooterText,
+  AuthInlineLink,
+  AuthMessage,
+} from '../components/auth';
 import { useAuthStore } from '../store';
 
 export default function Login() {
@@ -47,79 +53,58 @@ export default function Login() {
   };
 
   return (
-    <AuthLayout
-      title="Sign In"
-      subtitle="Enter your credentials to continue shopping"
-      panelTitle={<>Welcome<br />Back</>}
-      panelTagline="Sign in to explore handcrafted carpets curated for timeless interiors."
-      panelCta="Create Account"
-      panelCtaTo="/register"
-    >
-      <AuthMessage type="error" message={formError} />
+    <AuthLayout title="Sign In">
+      <AuthCard
+        title="Sign In"
+        subtitle="Enter your credentials to continue"
+      >
+        <AuthMessage type="error" message={formError} />
 
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        <AuthInput
-          label="Email"
-          type="email"
-          autoComplete="email"
-          autoFocus
-          required
-          icon={FiMail}
-          value={form.email}
-          onChange={setField('email')}
-          placeholder="you@example.com"
-          error={errors.email}
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
+          <div className="flex flex-col gap-5">
+            <AuthInput
+              label="Email"
+              type="email"
+              autoComplete="email"
+              autoFocus
+              required
+              icon={Mail}
+              value={form.email}
+              onChange={setField('email')}
+              placeholder="you@example.com"
+              error={errors.email}
+            />
 
-        <AuthInput
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          required
-          icon={FiLock}
-          value={form.password}
-          onChange={setField('password')}
-          placeholder="Enter your password"
-          error={errors.password}
-        />
+            <AuthInput
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              required
+              icon={Lock}
+              value={form.password}
+              onChange={setField('password')}
+              placeholder="Enter your password"
+              error={errors.password}
+            />
+          </div>
 
-        <div className="flex justify-end pt-1">
-          <AuthLink to="/forgot-password">Forgot password?</AuthLink>
-        </div>
+          <div className="mt-2 flex justify-center">
+            <AuthFooterLink to="/forgot-password">Forgot password?</AuthFooterLink>
+          </div>
 
-        <div className="pt-2">
-          <AuthButton loading={isLoading}>Sign In</AuthButton>
-        </div>
-      </form>
+          <div className="mt-8">
+            <AuthButton loading={isLoading}>Sign In</AuthButton>
+          </div>
+        </form>
 
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <p className="text-sm text-[#A0A0A0]">
-          New here?{' '}
-          <AuthLink to="/register" className="text-[#C9A96E] hover:text-[#E7C78A]">
-            Create an account
-          </AuthLink>
-        </p>
-
-        <button
-          type="button"
-          onClick={async () => {
-            try {
-              const u = await login('admin@jannatrugs.com', 'admin123456');
-              if (u.role === 'admin') navigate('/admin');
-            } catch {
-              setFormError('Admin access unavailable.');
-            }
-          }}
-          className="text-[11px] text-[#A0A0A0]/80 hover:text-[#C9A96E] font-semibold uppercase tracking-[0.2em] flex items-center gap-2 transition-colors duration-300 focus-visible:outline-none focus-visible:text-[#C9A96E]"
-        >
-          <FiShield size={13} aria-hidden="true" />
-          Admin Access
-        </button>
-
-        <AuthLink to="/" className="text-[#A0A0A0]/70">
-          ← Return to Home
-        </AuthLink>
-      </div>
+        <AuthFooter>
+          <AuthFooterText>
+            New here?{' '}
+            <AuthInlineLink to="/register">Create Account</AuthInlineLink>
+          </AuthFooterText>
+          <AuthFooterLink to="/">← Return Home</AuthFooterLink>
+        </AuthFooter>
+      </AuthCard>
     </AuthLayout>
   );
 }

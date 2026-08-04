@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiUser, FiMail, FiPhone, FiLock } from 'react-icons/fi';
-import AuthLayout from '../components/auth/AuthLayout';
-import AuthInput from '../components/auth/AuthInput';
-import AuthButton from '../components/auth/AuthButton';
-import AuthLink from '../components/auth/AuthLink';
-import AuthMessage from '../components/auth/AuthMessage';
+import { User, Phone, Mail, Lock } from 'lucide-react';
+import {
+  AuthLayout,
+  AuthCard,
+  AuthInput,
+  AuthButton,
+  AuthFooter,
+  AuthFooterLink,
+  AuthFooterText,
+  AuthInlineLink,
+  AuthMessage,
+} from '../components/auth';
 import { useAuthStore } from '../store';
 
 export default function Register() {
@@ -59,95 +65,90 @@ export default function Register() {
   };
 
   return (
-    <AuthLayout
-      title="Create Account"
-      subtitle="Join Jannat Rugs Co. and discover handcrafted luxury"
-      panelTitle={<>Hello,<br />Friend</>}
-      panelTagline="Already part of the family? Sign in to continue your collection."
-      panelCta="Sign In"
-      panelCtaTo="/login"
-      reverse
-    >
-      <AuthMessage type="error" message={formError} />
+    <AuthLayout title="Create Account">
+      <AuthCard
+        title="Create Account"
+        subtitle="Join Jannat Rugs Co. and discover handcrafted luxury"
+      >
+        <AuthMessage type="error" message={formError} />
 
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        <AuthInput
-          label="Full Name"
-          type="text"
-          autoComplete="name"
-          autoFocus
-          required
-          icon={FiUser}
-          value={form.name}
-          onChange={setField('name')}
-          placeholder="Your full name"
-          error={errors.name}
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
+          <div className="flex flex-col gap-5">
+            <AuthInput
+              label="Full Name"
+              type="text"
+              autoComplete="name"
+              autoFocus
+              required
+              icon={User}
+              value={form.name}
+              onChange={setField('name')}
+              placeholder="Your full name"
+              error={errors.name}
+            />
 
-        <AuthInput
-          label="Phone"
-          type="tel"
-          autoComplete="tel"
-          icon={FiPhone}
-          value={form.phone}
-          onChange={setField('phone')}
-          placeholder="Optional"
-          error={errors.phone}
-        />
+            <AuthInput
+              label="Phone"
+              type="tel"
+              autoComplete="tel"
+              icon={Phone}
+              value={form.phone}
+              onChange={setField('phone')}
+              placeholder="Optional"
+              error={errors.phone}
+            />
 
-        <AuthInput
-          label="Email"
-          type="email"
-          autoComplete="email"
-          required
-          icon={FiMail}
-          value={form.email}
-          onChange={setField('email')}
-          placeholder="you@example.com"
-          error={errors.email}
-        />
+            <AuthInput
+              label="Email"
+              type="email"
+              autoComplete="email"
+              required
+              icon={Mail}
+              value={form.email}
+              onChange={setField('email')}
+              placeholder="you@example.com"
+              error={errors.email}
+            />
 
-        <AuthInput
-          label="Password"
-          type="password"
-          autoComplete="new-password"
-          required
-          minLength={6}
-          icon={FiLock}
-          value={form.password}
-          onChange={setField('password')}
-          placeholder="Min. 6 characters"
-          error={errors.password}
-        />
+            <AuthInput
+              label="Password"
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={6}
+              icon={Lock}
+              value={form.password}
+              onChange={setField('password')}
+              placeholder="Min. 6 characters"
+              error={errors.password}
+            />
 
-        <AuthInput
-          label="Confirm Password"
-          type="password"
-          autoComplete="new-password"
-          required
-          icon={FiLock}
-          value={form.confirm}
-          onChange={setField('confirm')}
-          placeholder="Re-enter password"
-          error={errors.confirm}
-        />
+            <AuthInput
+              label="Confirm Password"
+              type="password"
+              autoComplete="new-password"
+              required
+              icon={Lock}
+              value={form.confirm}
+              onChange={setField('confirm')}
+              placeholder="Re-enter password"
+              error={errors.confirm}
+            />
+          </div>
 
-        <div className="pt-3">
-          <AuthButton loading={isLoading}>Create Account</AuthButton>
-        </div>
-      </form>
+          <div className="mt-8">
+            <AuthButton loading={isLoading}>Create Account</AuthButton>
+          </div>
+        </form>
 
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <p className="text-sm text-[#A0A0A0]">
-          Already have an account?{' '}
-          <AuthLink to="/login" className="text-[#C9A96E] hover:text-[#E7C78A]">
-            Sign in
-          </AuthLink>
-        </p>
-        <AuthLink to="/" className="text-[#A0A0A0]/70">
-          ← Return to Home
-        </AuthLink>
-      </div>
+        <AuthFooter>
+          <AuthFooterText>
+            Already have an account?{' '}
+            <AuthInlineLink to="/login">Sign In</AuthInlineLink>
+          </AuthFooterText>
+          <AuthFooterLink to="/">← Return Home</AuthFooterLink>
+        </AuthFooter>
+      </AuthCard>
     </AuthLayout>
   );
 }

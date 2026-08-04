@@ -1,9 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
-/**
- * Inline success / error banner for auth forms.
- */
 export default function AuthMessage({ type = 'error', message }) {
   if (!message) return null;
 
@@ -13,20 +10,20 @@ export default function AuthMessage({ type = 'error', message }) {
     <AnimatePresence>
       <motion.div
         role={isError ? 'alert' : 'status'}
-        initial={{ opacity: 0, y: -8, height: 0 }}
-        animate={{ opacity: 1, y: 0, height: 'auto' }}
-        exit={{ opacity: 0, y: -8, height: 0 }}
+        initial={{ opacity: 0, y: -6 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
         className={[
-          'mb-6 flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm leading-relaxed text-left',
+          'mb-5 flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm leading-relaxed',
           isError
-            ? 'bg-red-500/10 border border-red-400/25 text-red-300'
-            : 'bg-emerald-500/10 border border-emerald-400/25 text-emerald-300',
+            ? 'bg-red-500/10 border border-red-400/20 text-red-300'
+            : 'bg-emerald-500/10 border border-emerald-400/20 text-emerald-300',
         ].join(' ')}
       >
         {isError ? (
-          <FiAlertCircle className="shrink-0 mt-0.5" size={18} aria-hidden="true" />
+          <AlertCircle className="shrink-0 mt-0.5" size={18} strokeWidth={1.5} aria-hidden="true" />
         ) : (
-          <FiCheckCircle className="shrink-0 mt-0.5" size={18} aria-hidden="true" />
+          <CheckCircle2 className="shrink-0 mt-0.5" size={18} strokeWidth={1.5} aria-hidden="true" />
         )}
         <span>{message}</span>
       </motion.div>

@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { FiLock } from 'react-icons/fi';
+import { Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
-import AuthLayout from '../components/auth/AuthLayout';
-import AuthInput from '../components/auth/AuthInput';
-import AuthButton from '../components/auth/AuthButton';
-import AuthLink from '../components/auth/AuthLink';
-import AuthMessage from '../components/auth/AuthMessage';
+import {
+  AuthLayout,
+  AuthCard,
+  AuthInput,
+  AuthButton,
+  AuthFooter,
+  AuthFooterLink,
+  AuthMessage,
+} from '../components/auth';
 import api from '../api/axios';
 
 export default function ResetPassword() {
@@ -73,55 +77,53 @@ export default function ResetPassword() {
   };
 
   return (
-    <AuthLayout
-      title="Reset Password"
-      subtitle="Choose a new password for your account"
-      panelTitle={<>Craft a<br />New Key</>}
-      panelTagline="Protect your wishlist, orders, and curated favourites with a fresh password."
-      panelCta="Back to Sign In"
-      panelCtaTo="/login"
-    >
-      <AuthMessage type="error" message={formError} />
-      <AuthMessage type="success" message={success} />
+    <AuthLayout title="Reset Password">
+      <AuthCard
+        title="Reset Password"
+        subtitle="Choose a new password for your account"
+      >
+        <AuthMessage type="error" message={formError} />
+        <AuthMessage type="success" message={success} />
 
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        <AuthInput
-          label="New Password"
-          type="password"
-          autoComplete="new-password"
-          autoFocus
-          required
-          minLength={6}
-          icon={FiLock}
-          value={form.password}
-          onChange={setField('password')}
-          placeholder="Min. 6 characters"
-          error={errors.password}
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
+          <div className="flex flex-col gap-5">
+            <AuthInput
+              label="New Password"
+              type="password"
+              autoComplete="new-password"
+              autoFocus
+              required
+              minLength={6}
+              icon={Lock}
+              value={form.password}
+              onChange={setField('password')}
+              placeholder="Min. 6 characters"
+              error={errors.password}
+            />
 
-        <AuthInput
-          label="Confirm Password"
-          type="password"
-          autoComplete="new-password"
-          required
-          icon={FiLock}
-          value={form.confirm}
-          onChange={setField('confirm')}
-          placeholder="Re-enter new password"
-          error={errors.confirm}
-        />
+            <AuthInput
+              label="Confirm Password"
+              type="password"
+              autoComplete="new-password"
+              required
+              icon={Lock}
+              value={form.confirm}
+              onChange={setField('confirm')}
+              placeholder="Re-enter new password"
+              error={errors.confirm}
+            />
+          </div>
 
-        <div className="pt-2">
-          <AuthButton loading={loading}>Update Password</AuthButton>
-        </div>
-      </form>
+          <div className="mt-8">
+            <AuthButton loading={loading}>Update Password</AuthButton>
+          </div>
+        </form>
 
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <AuthLink to="/login">← Back to Sign In</AuthLink>
-        <AuthLink to="/" className="text-[#A0A0A0]/70">
-          Return to Home
-        </AuthLink>
-      </div>
+        <AuthFooter>
+          <AuthFooterLink to="/login">← Back to Sign In</AuthFooterLink>
+          <AuthFooterLink to="/">Return Home</AuthFooterLink>
+        </AuthFooter>
+      </AuthCard>
     </AuthLayout>
   );
 }

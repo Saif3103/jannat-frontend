@@ -397,35 +397,14 @@ body.light-mode .glass-card {
 
 /* ── Auth experience ── */
 .auth-page {
-  color: var(--auth-text);
-  background: var(--auth-bg);
+  color: #ffffff;
+  background: #0A0A0A;
   text-align: left;
 }
 
-.auth-glass {
-  background: rgba(17, 17, 17, 0.72);
-  border: 1px solid var(--auth-border);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-}
-
-.auth-input {
-  letter-spacing: 0.02em;
-}
-
-.auth-btn:not(:disabled):hover {
-  box-shadow: 0 14px 36px rgba(201, 169, 110, 0.38);
-}
-
-@keyframes auth-shimmer {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
 @media (max-width: 768px) {
-  .auth-glass {
+  .auth-page [class*="backdrop-blur"] {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: rgba(17, 17, 17, 0.96);
   }
 }

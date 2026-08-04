@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail } from 'react-icons/fi';
+import { Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
-import AuthLayout from '../components/auth/AuthLayout';
-import AuthInput from '../components/auth/AuthInput';
-import AuthButton from '../components/auth/AuthButton';
-import AuthLink from '../components/auth/AuthLink';
-import AuthMessage from '../components/auth/AuthMessage';
+import {
+  AuthLayout,
+  AuthCard,
+  AuthInput,
+  AuthButton,
+  AuthFooter,
+  AuthFooterLink,
+  AuthMessage,
+} from '../components/auth';
 import api from '../api/axios';
 
 export default function ForgotPassword() {
@@ -40,7 +44,6 @@ export default function ForgotPassword() {
       toast.success('Check your inbox for the code');
       setTimeout(() => navigate(`/verify-otp?email=${encodeURIComponent(email.trim())}`), 900);
     } catch (err) {
-      // Preserve UX when backend endpoint is not yet available
       const message =
         err.response?.data?.message ||
         (err.response?.status === 404
@@ -54,45 +57,41 @@ export default function ForgotPassword() {
   };
 
   return (
-    <AuthLayout
-      title="Forgot Password"
-      subtitle="Enter your email and we’ll send a verification code"
-      panelTitle={<>Reset with<br />Ease</>}
-      panelTagline="Secure access to your Jannat account — crafted with the same care as our rugs."
-      panelCta="Back to Sign In"
-      panelCtaTo="/login"
-    >
-      <AuthMessage type="error" message={formError} />
-      <AuthMessage type="success" message={success} />
+    <AuthLayout title="Forgot Password">
+      <AuthCard
+        title="Forgot Password"
+        subtitle="Enter your email and we’ll send a verification code"
+      >
+        <AuthMessage type="error" message={formError} />
+        <AuthMessage type="success" message={success} />
 
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        <AuthInput
-          label="Email Address"
-          type="email"
-          autoComplete="email"
-          autoFocus
-          required
-          icon={FiMail}
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setError('');
-          }}
-          placeholder="you@example.com"
-          error={error}
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
+          <AuthInput
+            label="Email Address"
+            type="email"
+            autoComplete="email"
+            autoFocus
+            required
+            icon={Mail}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError('');
+            }}
+            placeholder="you@example.com"
+            error={error}
+          />
 
-        <div className="pt-2">
-          <AuthButton loading={loading}>Send Reset Code</AuthButton>
-        </div>
-      </form>
+          <div className="mt-8">
+            <AuthButton loading={loading}>Send Reset Code</AuthButton>
+          </div>
+        </form>
 
-      <div className="mt-8 flex flex-col items-center gap-4">
-        <AuthLink to="/login">← Back to Sign In</AuthLink>
-        <AuthLink to="/" className="text-[#A0A0A0]/70">
-          Return to Home
-        </AuthLink>
-      </div>
+        <AuthFooter>
+          <AuthFooterLink to="/login">← Back to Sign In</AuthFooterLink>
+          <AuthFooterLink to="/">Return Home</AuthFooterLink>
+        </AuthFooter>
+      </AuthCard>
     </AuthLayout>
   );
 }
