@@ -14,7 +14,7 @@ import Loader from '../components/ui/Loader';
 import RoomVisualizer from '../components/ui/RoomVisualizer';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
 import Container from '../components/layout/Container';
-import { useCartStore, useAuthStore, useWishlistStore, useRecommendationStore } from '../store';
+import { useCartStore, useAuthStore, useWishlistStore, useRecommendationStore, useUIStore } from '../store';
 import toast from 'react-hot-toast';
 
 const getImageUrl = (url) => {
@@ -37,6 +37,7 @@ export default function ProductDetail() {
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { openCheckout } = useUIStore();
 
   useEffect(() => {
     setLoading(true);
@@ -64,7 +65,11 @@ export default function ProductDetail() {
   const handleBuyNow = () => {
     if (!product) return;
     addToCart(product, qty, selectedSize?.label);
-    navigate('/checkout');
+    if (!user) {
+      navigate('/login?redirect=checkout');
+      return;
+    }
+    openCheckout();
   };
 
   if (loading) return <div className="pt-24"><Loader fullscreen /></div>;

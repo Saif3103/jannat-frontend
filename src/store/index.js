@@ -150,6 +150,7 @@ export const useUIStore = create((set, get) => ({
   isMobileMenuOpen: false,
   isChatOpen: false,
   isSearchOpen: false,
+  isCheckoutOpen: false,
 
   toggleDarkMode: () => {
     const newMode = !get().isDarkMode;
@@ -159,6 +160,8 @@ export const useUIStore = create((set, get) => ({
   setMobileMenuOpen: (val) => set({ isMobileMenuOpen: val }),
   setChatOpen: (val) => set({ isChatOpen: val }),
   setSearchOpen: (val) => set({ isSearchOpen: val }),
+  openCheckout: () => set({ isCheckoutOpen: true }),
+  closeCheckout: () => set({ isCheckoutOpen: false }),
 }));
 
 // RECOMMENDATION STORE

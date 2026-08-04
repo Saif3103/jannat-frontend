@@ -10,6 +10,7 @@ import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import AIStylist from './components/AIStylist';
+import CheckoutModal from './components/checkout/CheckoutModal';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -27,6 +28,7 @@ const VerifyOTP = lazy(() => import('./pages/VerifyOTP'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Cart = lazy(() => import('./pages/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout'));
+const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
 const OrderTracking = lazy(() => import('./pages/OrderTracking'));
 const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 const Wishlist = lazy(() => import('./pages/Wishlist'));
@@ -94,6 +96,7 @@ export default function App() {
               {/* Protected User Routes */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-success" element={<OrderSuccess />} />
                 <Route path="/dashboard" element={<UserDashboard />} />
                 <Route path="/wishlist" element={<Wishlist />} />
               </Route>
@@ -119,6 +122,7 @@ export default function App() {
       {showSiteChrome && <Footer />}
       {showSiteChrome && <MobileBottomNav />}
       {showSiteChrome && <AIStylist />}
+      {showSiteChrome && <CheckoutModal />}
     </div>
   );
 }

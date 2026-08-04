@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiStar } from 'react-icons/fi';
-import { useCartStore, useAuthStore, useWishlistStore } from '../../store';
+import { useCartStore, useAuthStore, useWishlistStore, useUIStore } from '../../store';
 import { BASE_URL } from '../../api/axios';
 import toast from 'react-hot-toast';
 
@@ -25,6 +25,7 @@ export default function ProductCard({ product, index = 0 }) {
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const { openCheckout } = useUIStore();
   const navigate = useNavigate();
   const [imgLoaded, setImgLoaded] = useState(false);
 
@@ -32,7 +33,11 @@ export default function ProductCard({ product, index = 0 }) {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product, 1);
-    navigate('/checkout');
+    if (!user) {
+      navigate('/login?redirect=checkout');
+      return;
+    }
+    openCheckout();
   };
 
   const price = product.discountPrice || product.price;
