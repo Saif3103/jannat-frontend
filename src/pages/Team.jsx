@@ -24,13 +24,18 @@ export default function Team() {
     return `${BASE_URL}/${url}`;
   };
 
+  // Rebuild when settings images change so Team page always shows latest uploads
+  const founderSrc = getImageUrl(settings?.founderImage);
+  const sahanaSrc = getImageUrl(settings?.sahanaImage, PLACEHOLDER_F);
+  const saifSrc = getImageUrl(settings?.saifImage);
+
   const TEAM = [
     {
       name: 'Azeem Ansari',
       role: 'Founder & Creative Director',
       icon: GiQueenCrown,
       color: '#B69640',
-      image: getImageUrl(settings?.founderImage),
+      image: founderSrc,
       bio: 'Founded Jannat Rugs Co. from a deep passion for preserving India\'s rich weaving heritage. With decades of expertise, Azeem leads with vision — blending centuries-old tradition with modern aesthetics to create timeless masterpieces that grace homes around the world.',
       tag: 'The Visionary',
     },
@@ -39,7 +44,7 @@ export default function Team() {
       role: 'Co-Founder & Brand Strategist',
       icon: FiTrendingUp,
       color: '#C96B8A',
-      image: getImageUrl(settings?.sahanaImage, PLACEHOLDER_F),
+      image: sahanaSrc,
       bio: 'Sahana is the creative force behind Jannat Rugs\' brand identity. As Co-Founder, she drives the brand vision, aesthetic direction, and customer experience — ensuring every touchpoint reflects luxury, warmth, and trust.',
       tag: 'The Creative',
     },
@@ -48,7 +53,7 @@ export default function Team() {
       role: 'Developer & Digital Marketing',
       icon: FiCode,
       color: '#3B82F6',
-      image: getImageUrl(settings?.saifImage, PLACEHOLDER),
+      image: saifSrc,
       bio: 'Saif powers the digital soul of Jannat Rugs — from building this very store to running campaigns that connect our artisans with customers worldwide. His tech expertise and creative marketing strategies bring Jannat Rugs into the modern era.',
       tag: 'The Innovator',
     },
@@ -119,6 +124,7 @@ export default function Team() {
                     />
                     <div className="relative w-72 h-[360px] sm:w-80 sm:h-[420px] rounded-3xl overflow-hidden shadow-2xl">
                       <img
+                        key={member.image}
                         src={member.image}
                         alt={member.name}
                         className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"

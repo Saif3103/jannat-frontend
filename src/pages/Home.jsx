@@ -701,7 +701,7 @@ export default function Home() {
                     className="w-full md:w-5/12 flex justify-center"
                   >
                     <div className="relative w-56 h-72 sm:w-72 sm:h-[360px] rounded-t-[10rem] rounded-b-[2rem] overflow-hidden shadow-2xl border border-black/5 group bg-white">
-                      <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                      <img key={member.image} src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
                     </div>
                   </motion.div>

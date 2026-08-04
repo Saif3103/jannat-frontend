@@ -37,29 +37,56 @@ export default function AdminSettings() {
 
   // Team images: instant upload using the dedicated '/settings/upload-team-image' endpoint
   const handleTeamImageChange = async (e, field) => {
-    const file = e.target.files?.[0];
+    const input = e.target;
+    const file = input.files?.[0];
     if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (JPG, PNG, or WebP)');
+      input.value = '';
+      return;
+    }
 
     // Show local preview immediately
     const previewUrl = URL.createObjectURL(file);
-    setPreviews(prev => ({ ...prev, [field]: previewUrl }));
+    setPreviews((prev) => ({ ...prev, [field]: previewUrl }));
 
-    setUploadingTeam(prev => ({ ...prev, [field]: true }));
+    setUploadingTeam((prev) => ({ ...prev, [field]: true }));
     try {
       const fd = new FormData();
-      fd.append('field', field); // specify field in body
-      fd.append(field, file);    // send file
-      
+      fd.append('field', field);
+      fd.append(field, file);
+
       const r = await api.post('/settings/upload-team-image', fd, { timeout: 120000 });
+      const savedUrl = r.data.url || r.data.settings?.[field];
+      if (!savedUrl) throw new Error('Upload succeeded but no image URL returned');
+
+      // Prefer server URL (+ cache bust) so Team/Home pages get the new image
+      const bust = `${savedUrl}${savedUrl.includes('?') ? '&' : '?'}v=${Date.now()}`;
+      setPreviews((prev) => ({ ...prev, [field]: bust }));
+      setSettings((prev) => ({
+        ...(prev || {}),
+        ...(r.data.settings || {}),
+        [field]: savedUrl,
+      }));
+      // Force zustand settings refresh so Home/Team pick up new photo
+      useSettingsStore.setState({
+        settings: {
+          ...(useSettingsStore.getState().settings || {}),
+          ...(r.data.settings || {}),
+          [field]: savedUrl,
+        },
+      });
+      await useSettingsStore.getState().fetchSettings();
       toast.success('Photo uploaded!');
-      setSettings(r.data.settings);
-      useSettingsStore.getState().fetchSettings();
     } catch (err) {
       console.error('Team image upload error:', err?.response?.data || err);
       toast.error(err?.response?.data?.message || 'Upload failed. Please try again.');
-      setPreviews(prev => ({ ...prev, [field]: null }));
+      setPreviews((prev) => ({ ...prev, [field]: null }));
     } finally {
-      setUploadingTeam(prev => ({ ...prev, [field]: false }));
+      setUploadingTeam((prev) => ({ ...prev, [field]: false }));
+      // Allow re-selecting the same file
+      input.value = '';
     }
   };
 
@@ -246,43 +273,126 @@ export default function AdminSettings() {
 
                 {/* Azeem Ansari */}
                 <div className="space-y-3 text-center">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Azeem Ansari<br/><span className="text-gray-300 font-normal normal-case">Founder</span></label>
-                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                    Azeem Ansari
+                    <br />
+                    <span className="text-gray-300 font-normal normal-case">Founder</span>
+                  </p>
+                  <label className="relative mx-auto block w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
                     {uploadingTeam.founderImage ? (
-                      <div className="flex flex-col items-center gap-2"><div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" /><span className="text-[9px] text-blue-500 font-bold">Uploading...</span></div>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gray-50">
+                        <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+                        <span className="text-[9px] text-blue-500 font-bold">Uploading...</span>
+                      </div>
                     ) : (previews.founderImage || settings.founderImage) ? (
-                      <><img src={previews.founderImage || getImageUrl(settings.founderImage)} alt="Founder" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => handleTeamImageChange(e, 'founderImage')} className="hidden" />
+                      <>
+                        <img
+                          key={previews.founderImage || settings.founderImage}
+                          src={previews.founderImage || getImageUrl(settings.founderImage)}
+                          alt="Founder"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                          <FiUpload className="text-white" size={20} />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                        <FiUpload className="text-gray-300" size={24} />
+                        <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                      onChange={(e) => handleTeamImageChange(e, 'founderImage')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      disabled={!!uploadingTeam.founderImage}
+                    />
                   </label>
                 </div>
 
                 {/* Sahana Ansari */}
                 <div className="space-y-3 text-center">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Sahana Ansari<br/><span className="text-gray-300 font-normal normal-case">Co-Founder</span></label>
-                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-pink-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                    Sahana Ansari
+                    <br />
+                    <span className="text-gray-300 font-normal normal-case">Co-Founder</span>
+                  </p>
+                  <label className="relative mx-auto block w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-pink-300 cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
                     {uploadingTeam.sahanaImage ? (
-                      <div className="flex flex-col items-center gap-2"><div className="w-8 h-8 border-2 border-pink-400 border-t-transparent rounded-full animate-spin" /><span className="text-[9px] text-pink-500 font-bold">Uploading...</span></div>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gray-50">
+                        <div className="w-8 h-8 border-2 border-pink-400 border-t-transparent rounded-full animate-spin" />
+                        <span className="text-[9px] text-pink-500 font-bold">Uploading...</span>
+                      </div>
                     ) : (previews.sahanaImage || settings.sahanaImage) ? (
-                      <><img src={previews.sahanaImage || getImageUrl(settings.sahanaImage)} alt="Sahana" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => handleTeamImageChange(e, 'sahanaImage')} className="hidden" />
+                      <>
+                        <img
+                          key={previews.sahanaImage || settings.sahanaImage}
+                          src={previews.sahanaImage || getImageUrl(settings.sahanaImage)}
+                          alt="Sahana"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                          <FiUpload className="text-white" size={20} />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                        <FiUpload className="text-gray-300" size={24} />
+                        <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                      onChange={(e) => handleTeamImageChange(e, 'sahanaImage')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      disabled={!!uploadingTeam.sahanaImage}
+                    />
                   </label>
                 </div>
 
                 {/* Saif Ali */}
                 <div className="space-y-3 text-center">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] block">Saif Ali<br/><span className="text-gray-300 font-normal normal-case">Developer & Marketing</span></label>
-                  <label className="relative mx-auto w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                    Saif Ali
+                    <br />
+                    <span className="text-gray-300 font-normal normal-case">Developer & Marketing</span>
+                  </p>
+                  <label className="relative mx-auto block w-full aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-blue-300 cursor-pointer overflow-hidden transition-all bg-gray-50 group shadow-inner">
                     {uploadingTeam.saifImage ? (
-                      <div className="flex flex-col items-center gap-2"><div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" /><span className="text-[9px] text-blue-500 font-bold">Uploading...</span></div>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gray-50">
+                        <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+                        <span className="text-[9px] text-blue-500 font-bold">Uploading...</span>
+                      </div>
                     ) : (previews.saifImage || settings.saifImage) ? (
-                      <><img src={previews.saifImage || getImageUrl(settings.saifImage)} alt="Saif" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><FiUpload className="text-white" size={20} /></div></>
-                    ) : (<div className="flex flex-col items-center gap-1"><FiUpload className="text-gray-300" size={24} /><span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Upload Photo</span></div>)}
-                    <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" onChange={e => handleTeamImageChange(e, 'saifImage')} className="hidden" />
+                      <>
+                        <img
+                          key={previews.saifImage || settings.saifImage}
+                          src={previews.saifImage || getImageUrl(settings.saifImage)}
+                          alt="Saif Ali"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                          <FiUpload className="text-white" size={20} />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                        <FiUpload className="text-gray-300" size={24} />
+                        <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">
+                          Upload Photo
+                        </span>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                      onChange={(e) => handleTeamImageChange(e, 'saifImage')}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      disabled={!!uploadingTeam.saifImage}
+                    />
                   </label>
                 </div>
 
