@@ -290,7 +290,7 @@ export default function Home() {
           </motion.div>
 
           {/* Trust Cards Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-8 sm:mb-10 lg:mb-12 items-stretch">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 mb-10 sm:mb-14 lg:mb-16 items-stretch">
             {[
               { icon: FiShield, title: 'Premium Quality', desc: '100% handcrafted with the finest materials — no compromises' },
               { icon: FiTruck, title: 'Secure Delivery', desc: 'Safe packaging & tracked delivery across India' },
@@ -305,15 +305,15 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
-                  className="bg-white rounded-2xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group h-full flex flex-col text-left p-5 sm:p-6 lg:p-7"
+                  className="bg-white rounded-2xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_50px_rgba(182,150,64,0.12)] hover:border-[#B69640]/25 transition-all duration-500 group h-full flex flex-col text-left p-5 sm:p-6 lg:p-7 min-h-[180px] sm:min-h-[200px]"
                 >
                   <div className="w-11 h-11 rounded-xl bg-[#FAF7F2] border border-[#B69640]/15 flex items-center justify-center mb-4 shrink-0 group-hover:bg-[#B69640]/10 transition-colors duration-500">
                     <Icon size={20} className="text-[#B69640]" strokeWidth={1.75} />
                   </div>
-                  <h3 className="text-[#1A1A1A] text-[13px] sm:text-[15px] font-bold mb-2 tracking-wide leading-snug">
+                  <h3 className="text-[#1A1A1A] text-[13px] sm:text-[15px] font-bold mb-2.5 tracking-wide leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-black/40 text-[11px] sm:text-[13px] leading-relaxed font-medium flex-1">
+                  <p className="text-black/40 text-[11px] sm:text-[13px] leading-relaxed font-medium pb-1">
                     {item.desc}
                   </p>
                 </motion.div>
@@ -326,7 +326,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }}
-            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] px-3 py-8 sm:px-4 sm:py-10 lg:px-2"
+            className="bg-white rounded-2xl sm:rounded-3xl border border-[#B69640]/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] px-3 py-9 sm:px-4 sm:py-11 lg:px-2 mt-2"
           >
             <div className="grid grid-cols-2 lg:grid-cols-4">
               {[
@@ -342,7 +342,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   className={[
-                    'flex flex-col items-center justify-center text-center px-4 py-3 min-h-[84px]',
+                    'flex flex-col items-center justify-center text-center px-4 py-4 sm:py-5 min-h-[96px]',
                     i % 2 === 0 ? 'border-r border-[#B69640]/10 lg:border-r-0' : '',
                     i < 2 ? 'border-b border-[#B69640]/10 lg:border-b-0' : '',
                     i > 0 ? 'lg:border-l lg:border-[#B69640]/15' : '',
