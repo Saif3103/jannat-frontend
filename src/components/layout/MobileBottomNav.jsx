@@ -62,7 +62,7 @@ export default function MobileBottomNav() {
       aria-label="Main navigation"
     >
       <div className="bg-white/95 backdrop-blur-xl border-t border-black/[0.06] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] pb-[env(safe-area-inset-bottom,0px)]">
-        <div className="grid grid-cols-5 h-[60px] max-w-lg mx-auto px-1 items-center">
+        <div className="grid grid-cols-5 h-[64px] max-w-lg mx-auto px-1 items-center">
           {items.map((item) => {
             const Icon = item.icon;
             const isHome = item.home;
@@ -97,15 +97,13 @@ export default function MobileBottomNav() {
                     }
                   />
                 )}
-                {!isHome && (
-                  <span
-                    className={`text-[10px] leading-none truncate max-w-full ${
-                      active ? 'font-bold' : 'font-medium'
-                    }`}
-                  >
-                    {item.label}
-                  </span>
-                )}
+                <span
+                  className={`text-[10px] leading-none truncate max-w-full ${
+                    active ? 'font-bold text-[#1A1A1A]' : 'font-medium'
+                  } ${isHome ? 'mt-0.5' : ''}`}
+                >
+                  {item.label}
+                </span>
               </>
             );
 
