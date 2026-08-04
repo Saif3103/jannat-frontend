@@ -90,6 +90,25 @@ function saveAddresses(userId, list) {
   localStorage.setItem(`jannat_addresses_${userId}`, JSON.stringify(list));
 }
 
+function mapApiAddress(a) {
+  return {
+    id: a._id || a.id,
+    _id: a._id || a.id,
+    name: a.name || '',
+    phone: a.phone || '',
+    email: a.email || '',
+    house: a.house || '',
+    street: a.street || '',
+    landmark: a.landmark || '',
+    city: a.city || '',
+    state: a.state || '',
+    pincode: a.pincode || '',
+    country: a.country || 'India',
+    addressType: a.addressType || a.label || 'Home',
+    isDefault: Boolean(a.isDefault),
+  };
+}
+
 /**
  * @param {{ variant?: 'modal' | 'page', onClose?: () => void }} props
  */
@@ -116,25 +135,61 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
 
   useEffect(() => {
     if (!user?._id) return;
-    const list = loadAddresses(user._id);
-    setAddresses(list);
-    if (list.length) {
-      setSelectedAddressId(list[0].id);
-      setShowAddressForm(false);
-      setContact({
-        phone: list[0].phone || user.phone || '',
-        email: list[0].email || user.email || '',
-      });
-    } else {
-      setShowAddressForm(true);
-      setForm({
-        ...emptyAddress,
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-      });
-      setContact({ phone: user.phone || '', email: user.email || '' });
-    }
+    let cancelled = false;
+
+    (async () => {
+      let list = [];
+      try {
+        const { data } = await api.get('/users/profile');
+        list = (data.user?.addresses || []).map(mapApiAddress);
+      } catch {
+        list = [];
+      }
+
+      // Migrate any local-only addresses once
+      const local = loadAddresses(user._id);
+      if (!list.length && local.length) {
+        for (const a of local) {
+          try {
+            const { data } = await api.post('/users/address', {
+              ...a,
+              isDefault: a.isDefault || false,
+            });
+            list = (data.addresses || []).map(mapApiAddress);
+          } catch {
+            /* keep local */
+          }
+        }
+        if (!list.length) list = local.map((a) => ({ ...a, id: a.id || a._id }));
+      }
+
+      if (cancelled) return;
+      setAddresses(list);
+      saveAddresses(user._id, list);
+
+      const preferred = list.find((a) => a.isDefault) || list[0];
+      if (preferred) {
+        setSelectedAddressId(preferred.id);
+        setShowAddressForm(false);
+        setContact({
+          phone: preferred.phone || user.phone || '',
+          email: preferred.email || user.email || '',
+        });
+      } else {
+        setShowAddressForm(true);
+        setForm({
+          ...emptyAddress,
+          name: user.name || '',
+          email: user.email || '',
+          phone: user.phone || '',
+        });
+        setContact({ phone: user.phone || '', email: user.email || '' });
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [user]);
 
   const subtotal = useMemo(
@@ -168,7 +223,7 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
     [user]
   );
 
-  const saveAddressForm = (e) => {
+  const saveAddressForm = async (e) => {
     e.preventDefault();
     if (!form.name || !form.phone || !form.street || !form.city || !form.pincode) {
       toast.error('Please fill required address fields');
@@ -176,37 +231,78 @@ export default function CheckoutFlow({ variant = 'page', onClose }) {
     }
     const entry = {
       ...form,
-      id: editingId || `addr_${Date.now()}`,
       email: form.email || contact.email || user?.email || '',
+      isDefault: addresses.length === 0 || form.isDefault,
     };
-    let next;
-    if (editingId) {
-      next = addresses.map((a) => (a.id === editingId ? entry : a));
-    } else {
-      next = [...addresses, entry];
+
+    try {
+      let list;
+      if (editingId && String(editingId).length === 24) {
+        const { data } = await api.put(`/users/address/${editingId}`, entry);
+        list = (data.addresses || []).map(mapApiAddress);
+      } else {
+        const { data } = await api.post('/users/address', entry);
+        list = (data.addresses || []).map(mapApiAddress);
+      }
+      persistAddresses(list);
+      const selected = list.find((a) => a.isDefault) || list[list.length - 1];
+      setSelectedAddressId(selected?.id || null);
+      setContact({ phone: selected?.phone || entry.phone, email: selected?.email || entry.email });
+      setShowAddressForm(false);
+      setEditingId(null);
+      setForm(emptyAddress);
+      toast.success(editingId ? 'Address updated' : 'Address saved');
+    } catch (err) {
+      // Offline/local fallback
+      const localEntry = { ...entry, id: editingId || `addr_${Date.now()}` };
+      let next;
+      if (editingId) {
+        next = addresses.map((a) => (a.id === editingId ? localEntry : a));
+      } else {
+        next = [...addresses, localEntry];
+      }
+      persistAddresses(next);
+      setSelectedAddressId(localEntry.id);
+      setContact({ phone: localEntry.phone, email: localEntry.email });
+      setShowAddressForm(false);
+      setEditingId(null);
+      setForm(emptyAddress);
+      toast.success(editingId ? 'Address updated' : 'Address saved');
+      if (err?.response?.data?.message) {
+        console.error(err.response.data.message);
+      }
     }
-    persistAddresses(next);
-    setSelectedAddressId(entry.id);
-    setContact({ phone: entry.phone, email: entry.email });
-    setShowAddressForm(false);
-    setEditingId(null);
-    setForm(emptyAddress);
-    toast.success(editingId ? 'Address updated' : 'Address saved');
   };
 
   const editAddress = (addr) => {
-    setEditingId(addr.id);
+    setEditingId(addr.id || addr._id);
     setForm({ ...emptyAddress, ...addr });
     setShowAddressForm(true);
   };
 
-  const deleteAddress = (id) => {
+  const deleteAddress = async (id) => {
+    try {
+      if (String(id).length === 24) {
+        const { data } = await api.delete(`/users/address/${id}`);
+        const list = (data.addresses || []).map(mapApiAddress);
+        persistAddresses(list);
+        if (selectedAddressId === id) {
+          setSelectedAddressId(list[0]?.id || null);
+          if (!list.length) setShowAddressForm(true);
+        }
+        toast.success('Address removed');
+        return;
+      }
+    } catch {
+      /* fall through to local */
+    }
     const next = addresses.filter((a) => a.id !== id);
     persistAddresses(next);
     if (selectedAddressId === id) {
       setSelectedAddressId(next[0]?.id || null);
       if (!next.length) setShowAddressForm(true);
     }
+    toast.success('Address removed');
   };
 
   const applyCoupon = async () => {

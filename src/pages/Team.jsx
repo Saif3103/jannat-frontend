@@ -20,14 +20,14 @@ export default function Team() {
 
   const getImageUrl = (url, fallback = PLACEHOLDER) => {
     if (!url) return fallback;
-    if (url.startsWith('http') || url.startsWith('blob:')) return url;
+    if (url.startsWith('http') || url.startsWith('blob:') || url.startsWith('/')) return url;
     return `${BASE_URL}/${url}`;
   };
 
   // Rebuild when settings images change so Team page always shows latest uploads
   const founderSrc = getImageUrl(settings?.founderImage);
   const sahanaSrc = getImageUrl(settings?.sahanaImage, PLACEHOLDER_F);
-  const saifSrc = getImageUrl(settings?.saifImage);
+  const saifSrc = getImageUrl(settings?.saifImage, '/saif-ali.jpg');
 
   const TEAM = [
     {

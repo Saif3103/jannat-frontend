@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import api, { BASE_URL } from '../api/axios';
 import { useAuthStore, useSettingsStore } from '../store';
 import Container from '../components/layout/Container';
+import OrderHistory from '../components/account/OrderHistory';
 import toast from 'react-hot-toast';
 import {
   FiUser, FiPackage, FiHeart, FiMapPin, FiLock, FiEdit2, FiStar, FiX,
-  FiTruck, FiDownload, FiChevronRight, FiShoppingBag, FiCheck, FiClock,
-  FiUpload, FiPhone,
+  FiChevronRight, FiCheck, FiPlus, FiTrash2, FiHome,
 } from 'react-icons/fi';
 import { generateInvoicePdf } from '../utils/generateInvoice';
 
@@ -19,127 +19,25 @@ const getImageUrl = (url) => {
   return `${BASE_URL}/${url}`;
 };
 
-const TRACK_STEPS = ['Ordered', 'Confirmed', 'Packed', 'Shipped', 'Delivered'];
-
-const PAYMENT_LABELS = {
-  COD: 'Cash on Delivery',
-  BankTransfer: 'Bank Transfer',
-  PayAfterConfirm: 'Pay After Confirm',
-  Razorpay: 'Online',
-  UPI: 'UPI',
-  Card: 'Card',
-  Wallet: 'Wallet',
+const EMPTY_ADDRESS = {
+  name: '',
+  phone: '',
+  email: '',
+  house: '',
+  street: '',
+  landmark: '',
+  city: '',
+  state: '',
+  pincode: '',
+  country: 'India',
+  addressType: 'Home',
+  isDefault: false,
 };
 
-function getFriendlyStatus(order) {
-  const os = order.orderStatus || 'Pending';
-  const ps = order.paymentStatus || '';
-  const method = order.paymentMethod || '';
-
-  if (os === 'Cancelled') {
-    return {
-      label: 'Cancelled',
-      hint: 'This order was cancelled',
-      tone: 'bg-red-50 text-red-700 border-red-200',
-      group: 'cancelled',
-    };
-  }
-  if (os === 'Returned') {
-    return {
-      label: 'Returned',
-      hint: 'Return completed',
-      tone: 'bg-gray-50 text-gray-600 border-gray-200',
-      group: 'cancelled',
-    };
-  }
-  if (os === 'Delivered') {
-    return {
-      label: 'Delivered',
-      hint: order.deliveredAt
-        ? `Delivered on ${new Date(order.deliveredAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}`
-        : 'Your order has been delivered',
-      tone: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-      group: 'delivered',
-    };
-  }
-  if (os === 'Shipped' || os === 'Out for Delivery') {
-    return {
-      label: os === 'Out for Delivery' ? 'Out for Delivery' : 'Shipped',
-      hint: order.trackingNumber
-        ? `Tracking: ${order.trackingNumber}`
-        : 'Your order is on the way',
-      tone: 'bg-sky-50 text-sky-700 border-sky-200',
-      group: 'shipped',
-    };
-  }
-  if (method === 'BankTransfer' && (ps === 'AwaitingProof' || os === 'Awaiting Payment')) {
-    return {
-      label: 'Awaiting Payment',
-      hint: 'Upload bank transfer proof to continue',
-      tone: 'bg-amber-50 text-amber-800 border-amber-200',
-      group: 'pending',
-      action: 'proof',
-    };
-  }
-  if (method === 'BankTransfer' && (ps === 'UnderReview' || os === 'Payment Pending')) {
-    return {
-      label: 'Payment Under Review',
-      hint: 'We are verifying your payment proof',
-      tone: 'bg-blue-50 text-blue-700 border-blue-200',
-      group: 'pending',
-    };
-  }
-  if (
-    os === 'Awaiting Confirmation' ||
-    (method === 'PayAfterConfirm' && ['Pending', 'Awaiting Confirmation'].includes(os))
-  ) {
-    return {
-      label: 'Awaiting Confirmation',
-      hint: 'Our team will call you to confirm this order',
-      tone: 'bg-violet-50 text-violet-700 border-violet-200',
-      group: 'pending',
-      action: 'call',
-    };
-  }
-  if (['Confirmed', 'Paid', 'Payment Received'].includes(os)) {
-    return {
-      label: 'Confirmed',
-      hint: 'Order confirmed — preparing for packing',
-      tone: 'bg-blue-50 text-blue-700 border-blue-200',
-      group: 'pending',
-    };
-  }
-  if (['Processing', 'Quality Check', 'Packed'].includes(os)) {
-    return {
-      label: os === 'Packed' ? 'Packed' : 'Processing',
-      hint: 'Your rug is being prepared with care',
-      tone: 'bg-purple-50 text-purple-700 border-purple-200',
-      group: 'pending',
-    };
-  }
-  return {
-    label: os || 'Ordered',
-    hint: 'We have received your order',
-    tone: 'bg-amber-50 text-amber-700 border-amber-200',
-    group: 'pending',
-  };
-}
-
-function getTrackStepIndex(order) {
-  const os = (order.orderStatus || '').toLowerCase();
-  if (os.includes('cancel') || os.includes('return')) return -1;
-  if (os.includes('deliver')) return 4;
-  if (os.includes('out for') || os.includes('ship')) return 3;
-  if (os.includes('pack') || os.includes('quality') || os.includes('process')) return 2;
-  if (
-    os.includes('confirm') ||
-    os.includes('paid') ||
-    os.includes('payment received') ||
-    (order.paymentMethod === 'BankTransfer' && order.paymentStatus === 'Verified')
-  ) {
-    return 1;
-  }
-  return 0;
+function formatAddressLine(a) {
+  return [a.house, a.street, a.landmark, a.city, a.state, a.pincode]
+    .filter(Boolean)
+    .join(', ');
 }
 
 export default function UserDashboard() {
@@ -147,8 +45,12 @@ export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
   const [orders, setOrders] = useState([]);
   const [orderFilter, setOrderFilter] = useState('all');
-  const [expandedOrder, setExpandedOrder] = useState(null);
   const [wishlist, setWishlist] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [editingAddressId, setEditingAddressId] = useState(null);
+  const [addressForm, setAddressForm] = useState(EMPTY_ADDRESS);
+  const [addressSaving, setAddressSaving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const { user, updateUser } = useAuthStore();
@@ -170,6 +72,7 @@ export default function UserDashboard() {
   useEffect(() => {
     if (activeTab === 'orders') fetchOrders();
     if (activeTab === 'wishlist') fetchWishlist();
+    if (activeTab === 'addresses' || activeTab === 'profile') fetchAddresses();
   }, [activeTab]);
 
   useEffect(() => {
@@ -180,14 +83,18 @@ export default function UserDashboard() {
     setActiveTab(id);
     setSearchParams(id === 'profile' ? {} : { tab: id });
     setEditMode(false);
+    setShowAddressForm(false);
+    setEditingAddressId(null);
   };
 
   const fetchOrders = async () => {
     setLoading(true);
     try {
       const { data } = await api.get('/orders/my-orders');
-      setOrders(data.orders);
-    } catch {} finally {
+      setOrders(data.orders || []);
+    } catch {
+      setOrders([]);
+    } finally {
       setLoading(false);
     }
   };
@@ -197,8 +104,119 @@ export default function UserDashboard() {
     try {
       const { data } = await api.get('/users/profile');
       setWishlist(data.user.wishlist || []);
-    } catch {} finally {
+      if (data.user?.addresses) setAddresses(data.user.addresses);
+    } catch {
+      /* ignore */
+    } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAddresses = async () => {
+    try {
+      const { data } = await api.get('/users/profile');
+      setAddresses(data.user?.addresses || []);
+      if (data.user) updateUser(data.user);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const openNewAddress = () => {
+    setEditingAddressId(null);
+    setAddressForm({
+      ...EMPTY_ADDRESS,
+      name: user?.name || '',
+      phone: user?.phone || '',
+      email: user?.email || '',
+      isDefault: addresses.length === 0,
+    });
+    setShowAddressForm(true);
+  };
+
+  const openEditAddress = (addr) => {
+    setEditingAddressId(addr._id);
+    setAddressForm({
+      ...EMPTY_ADDRESS,
+      name: addr.name || '',
+      phone: addr.phone || '',
+      email: addr.email || '',
+      house: addr.house || '',
+      street: addr.street || '',
+      landmark: addr.landmark || '',
+      city: addr.city || '',
+      state: addr.state || '',
+      pincode: addr.pincode || '',
+      country: addr.country || 'India',
+      addressType: addr.addressType || addr.label || 'Home',
+      isDefault: Boolean(addr.isDefault),
+    });
+    setShowAddressForm(true);
+  };
+
+  const saveAddress = async (e) => {
+    e.preventDefault();
+    if (!addressForm.name || !addressForm.phone || !addressForm.street || !addressForm.city || !addressForm.pincode) {
+      toast.error('Please fill name, phone, street, city and pincode');
+      return;
+    }
+    setAddressSaving(true);
+    try {
+      let data;
+      if (editingAddressId) {
+        ({ data } = await api.put(`/users/address/${editingAddressId}`, addressForm));
+      } else {
+        ({ data } = await api.post('/users/address', addressForm));
+      }
+      setAddresses(data.addresses || []);
+      setShowAddressForm(false);
+      setEditingAddressId(null);
+      setAddressForm(EMPTY_ADDRESS);
+      toast.success(editingAddressId ? 'Address updated' : 'Address saved');
+      // Keep checkout local cache in sync
+      if (user?._id) {
+        localStorage.setItem(
+          `jannat_addresses_${user._id}`,
+          JSON.stringify(
+            (data.addresses || []).map((a) => ({
+              ...a,
+              id: a._id,
+              addressType: a.addressType || a.label || 'Home',
+            }))
+          )
+        );
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Could not save address');
+    } finally {
+      setAddressSaving(false);
+    }
+  };
+
+  const removeAddress = async (id) => {
+    if (!window.confirm('Remove this address?')) return;
+    try {
+      const { data } = await api.delete(`/users/address/${id}`);
+      setAddresses(data.addresses || []);
+      toast.success('Address removed');
+      if (user?._id) {
+        localStorage.setItem(
+          `jannat_addresses_${user._id}`,
+          JSON.stringify((data.addresses || []).map((a) => ({ ...a, id: a._id })))
+        );
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Could not remove address');
+    }
+  };
+
+  const makeDefaultAddress = async (id) => {
+    try {
+      const { data } = await api.put(`/users/address/${id}/default`);
+      setAddresses(data.addresses || []);
+      toast.success('Default address updated');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Could not update default');
     }
   };
 
@@ -331,375 +349,155 @@ export default function UserDashboard() {
             <div className="lg:col-span-9 min-w-0">
               {/* PROFILE */}
               {activeTab === 'profile' && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
-                >
-                  <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-gray-100">
-                    <div>
-                      <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Personal Information</h2>
-                      <p className="text-xs text-gray-500 mt-0.5">Manage your account details</p>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-gray-100">
+                      <div>
+                        <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Personal Information</h2>
+                        <p className="text-xs text-gray-500 mt-0.5">Manage your account details</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setEditMode(!editMode)}
+                        className="flex items-center gap-1.5 text-[13px] font-medium text-[#B69640] hover:text-[#1A1A1A] transition-colors cursor-pointer"
+                      >
+                        <FiEdit2 size={14} />
+                        {editMode ? 'Cancel' : 'Edit'}
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setEditMode(!editMode)}
-                      className="flex items-center gap-1.5 text-[13px] font-medium text-[#B69640] hover:text-[#1A1A1A] transition-colors cursor-pointer"
-                    >
-                      <FiEdit2 size={14} />
-                      {editMode ? 'Cancel' : 'Edit'}
-                    </button>
+
+                    <div className="p-4 sm:p-5">
+                      {editMode ? (
+                        <form onSubmit={updateProfile} className="space-y-4 max-w-md">
+                          <div>
+                            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">Full Name</label>
+                            <input
+                              value={formData.name}
+                              onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
+                              className="w-full h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">Phone</label>
+                            <input
+                              value={formData.phone}
+                              onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
+                              className="w-full h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            className="h-11 px-6 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] transition-colors cursor-pointer"
+                          >
+                            Save Changes
+                          </button>
+                        </form>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+                          {[
+                            { label: 'Full Name', value: user?.name },
+                            { label: 'Email Address', value: user?.email },
+                            { label: 'Mobile Number', value: user?.phone || 'Not added' },
+                            { label: 'Account Type', value: user?.role === 'admin' ? 'Administrator' : 'Customer' },
+                          ].map((f) => (
+                            <div key={f.label} className="text-left">
+                              <p className="text-[12px] text-gray-500 mb-1">{f.label}</p>
+                              <p className="text-[14px] font-medium text-[#1A1A1A] break-all">{f.value}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="p-4 sm:p-5">
-                    {editMode ? (
-                      <form onSubmit={updateProfile} className="space-y-4 max-w-md">
-                        <div>
-                          <label className="text-[12px] font-medium text-gray-600 block mb-1.5">Full Name</label>
-                          <input
-                            value={formData.name}
-                            onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
-                            className="w-full h-11 rounded-md border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[12px] font-medium text-gray-600 block mb-1.5">Phone</label>
-                          <input
-                            value={formData.phone}
-                            onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
-                            className="w-full h-11 rounded-md border border-gray-200 bg-white px-3 text-sm text-[#1A1A1A] outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
-                          />
-                        </div>
-                        <button
-                          type="submit"
-                          className="h-11 px-6 rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] transition-colors cursor-pointer"
-                        >
-                          Save Changes
-                        </button>
-                      </form>
-                    ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-                        {[
-                          { label: 'Full Name', value: user?.name },
-                          { label: 'Email Address', value: user?.email },
-                          { label: 'Mobile Number', value: user?.phone || 'Not added' },
-                          { label: 'Account Type', value: user?.role === 'admin' ? 'Administrator' : 'Customer' },
-                        ].map((f) => (
-                          <div key={f.label} className="text-left">
-                            <p className="text-[12px] text-gray-500 mb-1">{f.label}</p>
-                            <p className="text-[14px] font-medium text-[#1A1A1A] break-all">{f.value}</p>
-                          </div>
-                        ))}
+                  {/* Addresses preview on profile */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-gray-100">
+                      <div>
+                        <h2 className="text-base font-semibold text-[#1A1A1A]">Delivery Addresses</h2>
+                        <p className="text-xs text-gray-500 mt-0.5">Saved for faster checkout</p>
                       </div>
-                    )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          switchTab('addresses');
+                          setTimeout(openNewAddress, 0);
+                        }}
+                        className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-[12px] font-semibold hover:bg-[#B69640] cursor-pointer"
+                      >
+                        <FiPlus size={14} /> Add
+                      </button>
+                    </div>
+                    <div className="p-4 sm:p-5">
+                      {addresses.length === 0 ? (
+                        <div className="text-center py-6">
+                          <FiMapPin size={28} className="text-gray-300 mx-auto mb-2" />
+                          <p className="text-sm text-gray-600 mb-3">No address saved yet</p>
+                          <button
+                            type="button"
+                            onClick={() => switchTab('addresses')}
+                            className="text-[13px] font-medium text-[#B69640] cursor-pointer"
+                          >
+                            Add your first address →
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {addresses.slice(0, 2).map((addr) => (
+                            <div
+                              key={addr._id}
+                              className="rounded-xl border border-gray-100 bg-[#FAFAFA] px-4 py-3 text-left"
+                            >
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-[11px] font-semibold uppercase tracking-wide text-[#B69640]">
+                                  {addr.addressType || addr.label || 'Home'}
+                                </span>
+                                {addr.isDefault && (
+                                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    Default
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-[13px] font-medium text-[#1A1A1A]">{addr.name}</p>
+                              <p className="text-[12px] text-gray-600 mt-0.5 leading-relaxed">
+                                {formatAddressLine(addr)}
+                              </p>
+                              {addr.phone && (
+                                <p className="text-[12px] text-gray-500 mt-1">{addr.phone}</p>
+                              )}
+                            </div>
+                          ))}
+                          {addresses.length > 2 && (
+                            <button
+                              type="button"
+                              onClick={() => switchTab('addresses')}
+                              className="text-[12px] font-medium text-[#B69640] cursor-pointer"
+                            >
+                              View all {addresses.length} addresses →
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               )}
 
-              {/* ORDERS — Flipkart-style tracking */}
-              {activeTab === 'orders' && (() => {
-                const FILTERS = [
-                  { id: 'all', label: 'All' },
-                  { id: 'pending', label: 'In Progress' },
-                  { id: 'shipped', label: 'Shipped' },
-                  { id: 'delivered', label: 'Delivered' },
-                  { id: 'cancelled', label: 'Cancelled' },
-                ];
-                const filtered = orders.filter((o) => {
-                  if (orderFilter === 'all') return true;
-                  return getFriendlyStatus(o).group === orderFilter;
-                });
-
-                return (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 sm:px-5 py-4">
-                      <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">My Orders</h2>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        Track status step-by-step — clear updates & easy actions
-                      </p>
-                      <div className="flex gap-2 mt-3 overflow-x-auto pb-1 -mx-1 px-1">
-                        {FILTERS.map((f) => (
-                          <button
-                            key={f.id}
-                            type="button"
-                            onClick={() => setOrderFilter(f.id)}
-                            className={`shrink-0 px-3 py-1.5 rounded-full text-[12px] font-medium border transition-colors cursor-pointer ${
-                              orderFilter === f.id
-                                ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
-                                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            {f.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {loading ? (
-                      <div className="bg-white rounded-lg border border-gray-200 p-10 text-center text-sm text-gray-400">
-                        Loading orders...
-                      </div>
-                    ) : orders.length === 0 ? (
-                      <div className="bg-white rounded-lg border border-gray-200 p-10 text-center">
-                        <FiShoppingBag size={40} className="text-gray-300 mx-auto mb-3" />
-                        <p className="text-sm font-medium text-[#1A1A1A] mb-1">No orders yet</p>
-                        <p className="text-xs text-gray-500 mb-5">Start shopping our handmade collection</p>
-                        <Link
-                          to="/shop"
-                          className="inline-flex h-10 px-5 items-center rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640]"
-                        >
-                          Shop Now
-                        </Link>
-                      </div>
-                    ) : filtered.length === 0 ? (
-                      <div className="bg-white rounded-lg border border-gray-200 p-8 text-center text-sm text-gray-500">
-                        No orders in this filter
-                      </div>
-                    ) : (
-                      filtered.map((order) => {
-                        const status = getFriendlyStatus(order);
-                        const stepIdx = getTrackStepIndex(order);
-                        const isOpen = expandedOrder === order._id;
-                        const displayId =
-                          order.orderIdDisplay ||
-                          order.trackingNumber ||
-                          `#${String(order._id).slice(-8).toUpperCase()}`;
-                        const history = order.statusHistory?.length
-                          ? [...order.statusHistory].reverse()
-                          : [
-                              {
-                                status: order.orderStatus,
-                                message: status.hint,
-                                timestamp: order.createdAt,
-                              },
-                            ];
-
-                        return (
-                          <div
-                            key={order._id}
-                            className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden"
-                          >
-                            <div className="flex flex-wrap items-start justify-between gap-3 px-4 sm:px-5 py-3.5 border-b border-gray-100 bg-[#FAFAFA]">
-                              <div>
-                                <p className="text-[13px] font-semibold text-[#1A1A1A]">{displayId}</p>
-                                <p className="text-[11px] text-gray-500 mt-0.5">
-                                  {new Date(order.createdAt).toLocaleDateString('en-IN', {
-                                    day: 'numeric',
-                                    month: 'short',
-                                    year: 'numeric',
-                                  })}
-                                  {' · '}
-                                  {PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod || 'COD'}
-                                </p>
-                              </div>
-                              <div className="text-right">
-                                <span
-                                  className={`inline-flex text-[11px] font-semibold px-2.5 py-1 rounded-full border ${status.tone}`}
-                                >
-                                  {status.label}
-                                </span>
-                                <p className="text-sm font-bold text-[#1A1A1A] mt-1.5">
-                                  ₹{Number(order.totalPrice || 0).toLocaleString('en-IN')}
-                                </p>
-                              </div>
-                            </div>
-
-                            <div className="px-4 sm:px-5 pt-3 flex items-start gap-2">
-                              {status.action === 'proof' ? (
-                                <FiUpload size={14} className="text-amber-600 mt-0.5 shrink-0" />
-                              ) : status.action === 'call' ? (
-                                <FiPhone size={14} className="text-violet-600 mt-0.5 shrink-0" />
-                              ) : stepIdx >= 4 ? (
-                                <FiCheck size={14} className="text-emerald-600 mt-0.5 shrink-0" />
-                              ) : (
-                                <FiClock size={14} className="text-[#C9A84C] mt-0.5 shrink-0" />
-                              )}
-                              <p className="text-[13px] text-gray-700 leading-snug">{status.hint}</p>
-                            </div>
-
-                            {stepIdx >= 0 && (
-                              <div className="px-4 sm:px-5 py-4">
-                                <div className="flex items-start justify-between gap-1">
-                                  {TRACK_STEPS.map((label, i) => {
-                                    const done = i <= stepIdx;
-                                    const current = i === stepIdx;
-                                    return (
-                                      <div key={label} className="flex-1 flex flex-col items-center min-w-0 relative">
-                                        {i < TRACK_STEPS.length - 1 && (
-                                          <div
-                                            className={`absolute top-[9px] left-[50%] right-[-50%] h-0.5 ${
-                                              i < stepIdx ? 'bg-emerald-500' : 'bg-gray-200'
-                                            }`}
-                                          />
-                                        )}
-                                        <div
-                                          className={`relative z-[1] w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 ${
-                                            done
-                                              ? 'bg-emerald-500 border-emerald-500 text-white'
-                                              : 'bg-white border-gray-300'
-                                          } ${current && done ? 'ring-2 ring-emerald-200' : ''}`}
-                                        >
-                                          {done && <FiCheck size={10} strokeWidth={3} />}
-                                        </div>
-                                        <p
-                                          className={`mt-1.5 text-[9px] sm:text-[10px] text-center leading-tight px-0.5 ${
-                                            done ? 'text-emerald-700 font-semibold' : 'text-gray-400'
-                                          }`}
-                                        >
-                                          {label}
-                                        </p>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            )}
-
-                            <div className="px-4 sm:px-5 pb-3 space-y-3">
-                              {order.orderItems?.map((item, idx) => (
-                                <div key={item._id || idx} className="flex gap-3">
-                                  <img
-                                    src={getImageUrl(item.image)}
-                                    alt={item.name}
-                                    className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-lg object-cover border border-gray-100 shrink-0"
-                                  />
-                                  <div className="min-w-0 flex-1 text-left">
-                                    <p className="text-[13px] font-medium text-[#1A1A1A] line-clamp-2">
-                                      {item.name}
-                                    </p>
-                                    <p className="text-[11px] text-gray-500 mt-0.5">
-                                      {[item.size, item.color].filter(Boolean).join(' · ') || 'Handmade rug'}
-                                      {' · Qty '}
-                                      {item.quantity || 1}
-                                    </p>
-                                    <p className="text-[13px] font-semibold text-[#1A1A1A] mt-1">
-                                      ₹{Number(item.price || 0).toLocaleString('en-IN')}
-                                    </p>
-                                  </div>
-                                  {order.orderStatus === 'Delivered' && (
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        setReviewProduct(item.product);
-                                        setReviewModal(true);
-                                      }}
-                                      className="self-start shrink-0 text-[11px] font-medium text-[#B69640] border border-[#C9A84C]/40 px-2.5 py-1 rounded-md hover:bg-[#C9A84C]/10 cursor-pointer"
-                                    >
-                                      <span className="inline-flex items-center gap-1">
-                                        <FiStar size={11} /> Rate
-                                      </span>
-                                    </button>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-
-                            <div className="px-4 sm:px-5 py-3 border-t border-gray-100 flex flex-wrap items-center gap-2">
-                              {status.action === 'proof' && (
-                                <Link
-                                  to={`/payment-proof/${order._id}`}
-                                  className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-[12px] font-semibold hover:bg-[#B69640]"
-                                >
-                                  <FiUpload size={13} />
-                                  Upload Payment Proof
-                                </Link>
-                              )}
-                              <button
-                                type="button"
-                                onClick={() => setExpandedOrder(isOpen ? null : order._id)}
-                                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 text-[12px] font-medium text-[#1A1A1A] hover:border-[#C9A84C]/50 cursor-pointer"
-                              >
-                                <FiTruck size={13} />
-                                {isOpen ? 'Hide details' : 'Track details'}
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => handleDownloadInvoice(order)}
-                                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 text-[12px] font-medium text-[#1A1A1A] hover:border-[#C9A84C]/50 cursor-pointer"
-                              >
-                                <FiDownload size={13} />
-                                Invoice
-                              </button>
-                              <Link
-                                to="/shop"
-                                className="inline-flex items-center gap-1 h-9 px-3 rounded-lg text-[12px] font-medium text-gray-500 hover:text-[#1A1A1A]"
-                              >
-                                Buy again <FiChevronRight size={13} />
-                              </Link>
-                            </div>
-
-                            <AnimatePresence>
-                              {isOpen && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: 'auto', opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  className="overflow-hidden border-t border-gray-100 bg-[#FAFAFA]"
-                                >
-                                  <div className="px-4 sm:px-5 py-4">
-                                    <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-3">
-                                      Order updates
-                                    </p>
-                                    {history.map((h, i) => (
-                                      <div key={i} className="flex gap-3 pb-3 last:pb-0">
-                                        <div className="flex flex-col items-center">
-                                          <div className="w-2 h-2 rounded-full bg-[#C9A84C] mt-1.5" />
-                                          {i < history.length - 1 && (
-                                            <div className="w-px flex-1 bg-gray-200 my-1" />
-                                          )}
-                                        </div>
-                                        <div className="pb-1">
-                                          <p className="text-[13px] font-medium text-[#1A1A1A]">{h.status}</p>
-                                          {h.message && (
-                                            <p className="text-[12px] text-gray-500 mt-0.5">{h.message}</p>
-                                          )}
-                                          <p className="text-[11px] text-gray-400 mt-0.5">
-                                            {h.timestamp
-                                              ? new Date(h.timestamp).toLocaleString('en-IN', {
-                                                  day: 'numeric',
-                                                  month: 'short',
-                                                  hour: '2-digit',
-                                                  minute: '2-digit',
-                                                })
-                                              : ''}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    ))}
-                                    {order.shippingAddress && (
-                                      <div className="mt-3 pt-3 border-t border-gray-200">
-                                        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
-                                          Delivery address
-                                        </p>
-                                        <p className="text-[12px] text-gray-700 leading-relaxed">
-                                          {order.shippingAddress.name}
-                                          {order.shippingAddress.phone
-                                            ? ` · ${order.shippingAddress.phone}`
-                                            : ''}
-                                          <br />
-                                          {[
-                                            order.shippingAddress.street || order.shippingAddress.house,
-                                            order.shippingAddress.city,
-                                            order.shippingAddress.state,
-                                            order.shippingAddress.pincode,
-                                          ]
-                                            .filter(Boolean)
-                                            .join(', ')}
-                                        </p>
-                                      </div>
-                                    )}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        );
-                      })
-                    )}
-                  </motion.div>
-                );
-              })()}
+              {/* ORDERS */}
+              {activeTab === 'orders' && (
+                <OrderHistory
+                  orders={orders}
+                  loading={loading}
+                  orderFilter={orderFilter}
+                  setOrderFilter={setOrderFilter}
+                  onInvoice={handleDownloadInvoice}
+                  onReview={(product) => {
+                    setReviewProduct(product);
+                    setReviewModal(true);
+                  }}
+                />
+              )}
 
               {/* WISHLIST */}
               {activeTab === 'wishlist' && (
@@ -753,28 +551,187 @@ export default function UserDashboard() {
 
               {/* ADDRESSES */}
               {activeTab === 'addresses' && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
-                >
-                  <div className="px-4 sm:px-5 py-4 border-b border-gray-100">
-                    <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Saved Addresses</h2>
-                    <p className="text-xs text-gray-500 mt-0.5">Delivery addresses for checkout</p>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm px-4 sm:px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h2 className="text-base sm:text-lg font-semibold text-[#1A1A1A]">Saved Addresses</h2>
+                      <p className="text-xs text-gray-500 mt-0.5">Add, edit, or set a default delivery address</p>
+                    </div>
+                    {!showAddressForm && (
+                      <button
+                        type="button"
+                        onClick={openNewAddress}
+                        className="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] cursor-pointer"
+                      >
+                        <FiPlus size={15} /> Add Address
+                      </button>
+                    )}
                   </div>
-                  <div className="p-8 sm:p-10 text-center">
-                    <FiMapPin size={36} className="text-gray-300 mx-auto mb-3" />
-                    <p className="text-sm font-medium text-[#1A1A1A] mb-1">No saved addresses</p>
-                    <p className="text-xs text-gray-500 mb-5 max-w-sm mx-auto">
-                      Addresses you add during checkout will appear here for faster ordering.
-                    </p>
-                    <Link
-                      to="/shop"
-                      className="inline-flex h-10 px-5 items-center rounded-md bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640]"
+
+                  {showAddressForm && (
+                    <form
+                      onSubmit={saveAddress}
+                      className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-5 space-y-4"
                     >
-                      Continue Shopping
-                    </Link>
-                  </div>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-semibold text-[#1A1A1A]">
+                          {editingAddressId ? 'Edit Address' : 'New Address'}
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowAddressForm(false);
+                            setEditingAddressId(null);
+                          }}
+                          className="p-1.5 rounded-md text-gray-400 hover:bg-gray-100 cursor-pointer"
+                        >
+                          <FiX size={16} />
+                        </button>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {['Home', 'Work', 'Other'].map((t) => (
+                          <button
+                            key={t}
+                            type="button"
+                            onClick={() => setAddressForm((p) => ({ ...p, addressType: t }))}
+                            className={`h-9 px-3.5 rounded-lg text-[12px] font-medium border cursor-pointer ${
+                              addressForm.addressType === t
+                                ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
+                                : 'bg-white text-gray-600 border-gray-200'
+                            }`}
+                          >
+                            {t === 'Home' ? <span className="inline-flex items-center gap-1"><FiHome size={12} /> Home</span> : t}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {[
+                          { key: 'name', label: 'Full Name *', placeholder: 'Receiver name' },
+                          { key: 'phone', label: 'Phone *', placeholder: '10-digit mobile' },
+                          { key: 'email', label: 'Email', placeholder: 'optional' },
+                          { key: 'house', label: 'House / Flat', placeholder: 'Flat, floor, building' },
+                          { key: 'street', label: 'Street / Area *', placeholder: 'Street, locality', full: true },
+                          { key: 'landmark', label: 'Landmark', placeholder: 'Near…' },
+                          { key: 'city', label: 'City *', placeholder: 'City' },
+                          { key: 'state', label: 'State', placeholder: 'State' },
+                          { key: 'pincode', label: 'Pincode *', placeholder: '6-digit PIN' },
+                        ].map((f) => (
+                          <div key={f.key} className={f.full ? 'sm:col-span-2' : ''}>
+                            <label className="text-[12px] font-medium text-gray-600 block mb-1.5">{f.label}</label>
+                            <input
+                              value={addressForm[f.key]}
+                              onChange={(e) => setAddressForm((p) => ({ ...p, [f.key]: e.target.value }))}
+                              placeholder={f.placeholder}
+                              className="w-full h-11 rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                            />
+                          </div>
+                        ))}
+                      </div>
+
+                      <label className="flex items-center gap-2 text-[13px] text-gray-700 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={addressForm.isDefault}
+                          onChange={(e) => setAddressForm((p) => ({ ...p, isDefault: e.target.checked }))}
+                          className="rounded border-gray-300 text-[#C9A84C] focus:ring-[#C9A84C]"
+                        />
+                        Set as default address
+                      </label>
+
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        <button
+                          type="submit"
+                          disabled={addressSaving}
+                          className="h-11 px-5 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] disabled:opacity-60 cursor-pointer"
+                        >
+                          {addressSaving ? 'Saving...' : editingAddressId ? 'Update Address' : 'Save Address'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowAddressForm(false);
+                            setEditingAddressId(null);
+                          }}
+                          className="h-11 px-4 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
+                  {!showAddressForm && addresses.length === 0 && (
+                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+                      <FiMapPin size={36} className="text-gray-300 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-[#1A1A1A] mb-1">No saved addresses</p>
+                      <p className="text-xs text-gray-500 mb-5 max-w-sm mx-auto">
+                        Save your delivery address once — it will be ready at checkout.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={openNewAddress}
+                        className="inline-flex h-10 px-5 items-center gap-1.5 rounded-lg bg-[#C9A84C] text-[#1A1A1A] text-sm font-semibold hover:bg-[#B69640] cursor-pointer"
+                      >
+                        <FiPlus size={15} /> Add Address
+                      </button>
+                    </div>
+                  )}
+
+                  {!showAddressForm &&
+                    addresses.map((addr) => (
+                      <div
+                        key={addr._id}
+                        className={`bg-white rounded-xl border shadow-sm overflow-hidden ${
+                          addr.isDefault ? 'border-[#C9A84C]/50' : 'border-gray-200'
+                        }`}
+                      >
+                        <div className="px-4 sm:px-5 py-4 text-left">
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-[#B69640]">
+                              <FiHome size={11} />
+                              {addr.addressType || addr.label || 'Home'}
+                            </span>
+                            {addr.isDefault && (
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                Default
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[14px] font-semibold text-[#1A1A1A]">{addr.name || '—'}</p>
+                          <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">{formatAddressLine(addr)}</p>
+                          <p className="text-[12px] text-gray-500 mt-1.5">
+                            {[addr.phone, addr.email].filter(Boolean).join(' · ')}
+                          </p>
+                        </div>
+                        <div className="px-4 sm:px-5 py-3 border-t border-gray-100 flex flex-wrap gap-2 bg-[#FAFAFA]">
+                          <button
+                            type="button"
+                            onClick={() => openEditAddress(addr)}
+                            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 bg-white text-[12px] font-medium text-[#1A1A1A] cursor-pointer hover:border-[#C9A84C]/50"
+                          >
+                            <FiEdit2 size={12} /> Edit
+                          </button>
+                          {!addr.isDefault && (
+                            <button
+                              type="button"
+                              onClick={() => makeDefaultAddress(addr._id)}
+                              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 bg-white text-[12px] font-medium text-[#1A1A1A] cursor-pointer hover:border-[#C9A84C]/50"
+                            >
+                              <FiCheck size={12} /> Set Default
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => removeAddress(addr._id)}
+                            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-red-100 bg-white text-[12px] font-medium text-red-600 cursor-pointer hover:bg-red-50"
+                          >
+                            <FiTrash2 size={12} /> Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                 </motion.div>
               )}
 
