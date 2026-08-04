@@ -151,11 +151,11 @@ export default function Header() {
           <div className="relative">
             {user ? (
               <button onClick={() => setShowUserMenu(!showUserMenu)} id="user-menu-btn"
-                className="flex items-center gap-2 p-1 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors border border-amber-900/20 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40">
+                className="flex items-center gap-2 p-0.5 text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/40 cursor-pointer">
                 {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
+                  <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover border border-gray-200" />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-[#1A1A1A] text-xs font-bold">
+                  <div className="w-8 h-8 rounded-full bg-[#C9A84C]/20 flex items-center justify-center text-[#1A1A1A] text-xs font-semibold border border-[#C9A84C]/25">
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -169,37 +169,64 @@ export default function Header() {
             <AnimatePresence>
               {showUserMenu && user && (
                 <motion.div
-                  initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 12, scale: 0.95 }}
-                  className="absolute right-0 top-full mt-4 w-72 bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 z-50 p-2"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.18 }}
+                  className="absolute right-0 top-full mt-3 w-[280px] bg-white rounded-lg overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-gray-200 z-50 text-left"
                 >
-                  <div className="px-5 py-4 border-b border-gray-100 mb-1">
-                    <p className="text-gray-900 font-bold text-base font-sans tracking-wide leading-tight">{user.name}</p>
-                    <p className="text-gray-400 text-xs font-mono mt-1 break-all">{user.email}</p>
+                  {/* Myntra-style account header */}
+                  <div className="px-4 py-3.5 bg-[#FAF7F2] border-b border-gray-100">
+                    <p className="text-[11px] text-gray-500 mb-0.5">Hello,</p>
+                    <p className="text-[15px] font-semibold text-[#1A1A1A] leading-tight truncate">{user.name}</p>
+                    <p className="text-[12px] text-gray-500 mt-1 truncate font-sans">{user.email}</p>
                   </div>
-                  <div className="space-y-1">
+
+                  <div className="py-1.5">
                     {user.role === 'admin' && (
-                      <Link 
-                        to="/admin" 
-                        onClick={() => setShowUserMenu(false)} 
-                        className="flex items-center gap-4 px-5 py-3.5 text-gray-800 hover:bg-[#C9A84C]/10 hover:text-[#C9A84C] text-sm font-bold tracking-wider uppercase transition-all duration-200 rounded-xl"
+                      <Link
+                        to="/admin"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-gray-700 hover:bg-gray-50 hover:text-[#1A1A1A] transition-colors"
                       >
-                        <FiSettings size={18} /> Admin Panel
+                        <FiSettings size={16} className="text-gray-400 shrink-0" />
+                        Admin Panel
                       </Link>
                     )}
-                    <Link 
-                      to="/dashboard" 
-                      onClick={() => setShowUserMenu(false)} 
-                      className="flex items-center gap-4 px-5 py-3.5 text-gray-700 hover:bg-gray-50 text-sm font-bold tracking-wider uppercase transition-all duration-200 rounded-xl"
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-gray-700 hover:bg-gray-50 hover:text-[#1A1A1A] transition-colors"
                     >
-                      <FiUser size={18} /> My Profile
+                      <FiUser size={16} className="text-gray-400 shrink-0" />
+                      Profile
                     </Link>
-                    <button 
-                      onClick={() => { logout(); setShowUserMenu(false); }} 
-                      className="flex items-center gap-4 px-5 py-3.5 text-red-500 hover:bg-red-50 hover:text-red-600 text-sm font-bold tracking-wider uppercase transition-all duration-200 rounded-xl w-full text-left"
+                    <Link
+                      to="/dashboard?tab=orders"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-gray-700 hover:bg-gray-50 hover:text-[#1A1A1A] transition-colors"
                     >
-                      <FiLogOut size={18} /> Logout
+                      <FiPackage size={16} className="text-gray-400 shrink-0" />
+                      Orders
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-gray-700 hover:bg-gray-50 hover:text-[#1A1A1A] transition-colors"
+                    >
+                      <FiHeart size={16} className="text-gray-400 shrink-0" />
+                      Wishlist
+                    </Link>
+                  </div>
+
+                  <div className="border-t border-gray-100 py-1.5">
+                    <button
+                      type="button"
+                      onClick={() => { logout(); setShowUserMenu(false); }}
+                      className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-gray-700 hover:bg-gray-50 w-full text-left transition-colors cursor-pointer"
+                    >
+                      <FiLogOut size={16} className="text-gray-400 shrink-0" />
+                      Logout
                     </button>
                   </div>
                 </motion.div>
