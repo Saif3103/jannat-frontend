@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FiStar, FiHeart, FiShoppingCart, FiTruck, FiShield, 
-  FiRefreshCw, FiChevronLeft, FiChevronRight, FiShoppingBag,
-  FiCheckCircle, FiEdit3, FiPackage, FiMaximize
+import {
+  FiStar, FiHeart, FiShoppingCart, FiTruck, FiShield,
+  FiChevronLeft, FiChevronRight, FiEdit3, FiMaximize,
+  FiMinus, FiPlus, FiMapPin, FiGrid, FiArrowUp
 } from 'react-icons/fi';
 import { GiRugbyConversion as LuRug } from 'react-icons/gi';
 import { TbCircleCheckFilled } from 'react-icons/tb';
 import api, { BASE_URL } from '../api/axios';
-import ProductCard from '../components/ui/ProductCard';
 import Loader from '../components/ui/Loader';
 import RoomVisualizer from '../components/ui/RoomVisualizer';
 import SmartRecommendations from '../components/ui/SmartRecommendations';
+import Container from '../components/layout/Container';
 import { useCartStore, useAuthStore, useWishlistStore, useRecommendationStore } from '../store';
 import toast from 'react-hot-toast';
 
@@ -27,16 +27,16 @@ export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-  const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
-  
+  const [showSticky, setShowSticky] = useState(false);
+  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
+
   const { addToCart } = useCartStore();
   const { user } = useAuthStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
-  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -46,14 +46,14 @@ export default function ProductDetail() {
       useRecommendationStore.getState().addViewedProduct(r.data.product);
       setActiveImg(0);
       if (r.data.product.sizes?.length) setSelectedSize(r.data.product.sizes[0]);
-      
-      if (r.data.product.category?._id) {
-        api.get(`/products?category=${r.data.product.category._id}&limit=4`).then(rel => {
-          setRelated(rel.data.products.filter(p => p._id !== id));
-        });
-      }
     }).catch(() => toast.error('Product not found')).finally(() => setLoading(false));
   }, [id, user]);
+
+  useEffect(() => {
+    const handleScroll = () => setShowSticky(window.scrollY > 480);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -67,322 +67,392 @@ export default function ProductDetail() {
     navigate('/checkout');
   };
 
-  const [showSticky, setShowSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Show sticky bar after scrolling down 600px
-      if (window.scrollY > 600) {
-        setShowSticky(true);
-      } else {
-        setShowSticky(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   if (loading) return <div className="pt-24"><Loader fullscreen /></div>;
-  if (!product) return <div className="pt-24 text-center text-gray-400 py-20 font-luxury text-2xl">Product not found</div>;
+  if (!product) {
+    return (
+      <div className="pt-24 text-center text-gray-400 py-20 font-luxury text-2xl">
+        Product not found
+      </div>
+    );
+  }
 
   const basePrice = product.discountPrice || product.price;
   const priceDisplay = selectedSize?.price || basePrice;
   const originalPrice = product.price;
   const hasDiscount = product.discountPrice && product.discountPrice < product.price;
-  const discountPercent = hasDiscount ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0;
-  
-  const images = product.images?.length ? product.images : ['https://images.unsplash.com/photo-1600166898405-da9535204843?w=800'];
+  const discountPercent = hasDiscount
+    ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
+    : 0;
+
+  const images = product.images?.length
+    ? product.images
+    : ['https://images.unsplash.com/photo-1600166898405-da9535204843?w=800'];
+
+  const sizeOptions = product.sizes?.length > 0
+    ? product.sizes
+    : [
+        { label: '120 x 180 cm' },
+        { label: '160 x 230 cm' },
+        { label: '200 x 290 cm' },
+        { label: '240 x 340 cm' },
+      ];
+
+  const inWishlist = isInWishlist(product._id);
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen pt-24 pb-20 font-sans text-[#1A1A1A]">
+    <div className="bg-[#FAF7F2] min-h-screen pt-20 sm:pt-24 pb-28 md:pb-20 font-sans text-[#1A1A1A] text-left">
       <Helmet>
         <title>{product.name} | Jannat Rugs Co.</title>
       </Helmet>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-10 py-6 sm:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          
-          {/* LEFT COLUMN */}
-          <div className="space-y-8">
-            {/* Main Image */}
-            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white shadow-sm border border-gray-100 group">
-              <div className="absolute top-6 left-6 z-10">
-                <span className="bg-[#1A1A1A] text-white px-5 py-2 rounded-lg font-bold text-[10px] tracking-[0.2em] uppercase">New</span>
+      <Container className="py-6 sm:py-8 lg:py-10">
+        {/* Breadcrumb-style category */}
+        <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase text-black/40 mb-5 sm:mb-6">
+          Home / Shop / {product.category?.name || 'Collection'}
+        </p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
+
+          {/* ── LEFT: Gallery (sticky on desktop) ── */}
+          <div className="lg:col-span-6 xl:col-span-7 lg:sticky lg:top-28 space-y-4">
+            <div className="relative aspect-[4/5] sm:aspect-[5/6] rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-sm border border-black/[0.06] group">
+              <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+                {product.isBestSeller && (
+                  <span className="bg-[#1A1A1A] text-white px-3 py-1.5 rounded-lg font-bold text-[9px] tracking-[0.15em] uppercase">
+                    Best Seller
+                  </span>
+                )}
+                {hasDiscount && (
+                  <span className="bg-[#E31E24] text-white px-3 py-1.5 rounded-lg font-bold text-[9px] tracking-[0.15em] uppercase">
+                    {discountPercent}% OFF
+                  </span>
+                )}
               </div>
-              <button 
+
+              <button
+                type="button"
                 onClick={() => toggleWishlist(product._id, !!user)}
-                className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-red-500 transition-all shadow-lg border border-gray-100 group">
-                <FiHeart size={20} className={isInWishlist(product._id) ? 'fill-red-500 text-red-500' : ''} />
+                aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-red-500 transition-all shadow-md border border-gray-100 cursor-pointer"
+              >
+                <FiHeart size={18} className={inWishlist ? 'fill-red-500 text-red-500' : ''} />
               </button>
 
               <AnimatePresence mode="wait">
-                <motion.img 
+                <motion.img
                   key={activeImg}
-                  src={getImageUrl(images[activeImg])} 
+                  src={getImageUrl(images[activeImg])}
+                  alt={product.name}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
                   className="w-full h-full object-cover"
                 />
               </AnimatePresence>
 
-              {/* Navigation Arrows */}
-              <button onClick={() => setActiveImg(p => (p - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-[#1A1A1A] shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-                <FiChevronLeft size={24} />
-              </button>
-              <button onClick={() => setActiveImg(p => (p + 1) % images.length)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-[#1A1A1A] shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-                <FiChevronRight size={24} />
-              </button>
+              {images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setActiveImg(p => (p - 1 + images.length) % images.length)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 flex items-center justify-center text-[#1A1A1A] shadow-md opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity cursor-pointer"
+                    aria-label="Previous image"
+                  >
+                    <FiChevronLeft size={22} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveImg(p => (p + 1) % images.length)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 flex items-center justify-center text-[#1A1A1A] shadow-md opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity cursor-pointer"
+                    aria-label="Next image"
+                  >
+                    <FiChevronRight size={22} />
+                  </button>
+                </>
+              )}
             </div>
 
-            {/* Thumbnail Carousel */}
-            <div className="flex gap-4 overflow-x-auto no-scrollbar py-2">
+            {/* Thumbnails */}
+            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
               {images.map((img, i) => (
-                <button key={i} onClick={() => setActiveImg(i)}
-                  className={`flex-shrink-0 w-24 h-24 rounded-2xl overflow-hidden border-2 transition-all ${activeImg === i ? 'border-[#C9A84C]' : 'border-transparent opacity-60'}`}>
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setActiveImg(i)}
+                  className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                    activeImg === i
+                      ? 'border-[#C9A84C] opacity-100'
+                      : 'border-transparent opacity-55 hover:opacity-85'
+                  }`}
+                >
                   <img src={getImageUrl(img)} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
-              <button className="flex-shrink-0 w-24 h-24 rounded-2xl border-2 border-transparent bg-white/50 flex items-center justify-center text-gray-400">
-                <FiChevronRight size={24} />
-              </button>
             </div>
 
-            {/* Feature Icons Grid - Clean Unified Layout */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-12 border-t border-b border-gray-100/50">
-               {[
-                 { icon: LuRug, label: '100% Premium Wool' },
-                 { icon: FiGrid, label: 'Traditional Hand Knotted' },
-                 { icon: FiShield, label: 'Durable & Long Lasting' },
-                 { icon: FiStar, label: 'Rich Colors & Design' }
-               ].map((f, i) => (
-                 <div key={i} className="flex flex-col items-center text-center group">
-                   <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] flex items-center justify-center text-[#1A1A1A] mb-4 transition-all group-hover:bg-[#C9A84C] group-hover:text-white">
-                     <f.icon size={20} />
-                   </div>
-                   <p className="text-[10px] font-bold text-[#1A1A1A]/80 uppercase tracking-widest leading-tight px-2">{f.label}</p>
-                 </div>
-               ))}
+            {/* Feature strip */}
+            <div className="hidden sm:grid grid-cols-4 gap-3 pt-2">
+              {[
+                { icon: LuRug, label: 'Premium Wool' },
+                { icon: FiGrid, label: 'Hand Knotted' },
+                { icon: FiShield, label: 'Long Lasting' },
+                { icon: FiStar, label: 'Rich Design' },
+              ].map((f, i) => (
+                <div key={i} className="flex flex-col items-center text-center py-3 px-2 rounded-xl bg-white border border-black/[0.04]">
+                  <div className="w-9 h-9 rounded-lg bg-[#FAF7F2] flex items-center justify-center text-[#B69640] mb-2">
+                    <f.icon size={16} />
+                  </div>
+                  <p className="text-[9px] font-bold text-[#1A1A1A]/70 uppercase tracking-wider leading-tight">
+                    {f.label}
+                  </p>
+                </div>
+              ))}
             </div>
-
-
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="space-y-10">
+          {/* ── RIGHT: Buy panel ── */}
+          <div className="lg:col-span-6 xl:col-span-5 space-y-6 sm:space-y-7">
+
+            {/* Title + rating + price — above the fold */}
             <div>
-              <p className="text-[#1A1A1A] text-[11px] font-bold tracking-[0.3em] uppercase mb-4">{product.category?.name || 'Collection'}</p>
-              <h1 className="font-luxury text-5xl sm:text-6xl text-[#1A1A1A] mb-6 leading-tight">{product.name}</h1>
-              
-              <div className="flex items-center gap-4 mb-8">
-                 <div className="flex text-[#1A1A1A]">
-                    {[...Array(5)].map((_, i) => <FiStar key={i} size={16} fill="currentColor" />)}
-                 </div>
-                 <span className="text-sm text-gray-400">(128 Reviews)</span>
-                 <span className="text-gray-300">|</span>
-                 <span className="flex items-center gap-2 text-sm font-bold">4.8 <FiStar size={14} className="fill-amber-400 text-[#1A1A1A]" /></span>
+              <p className="text-[#B69640] text-[10px] sm:text-[11px] font-bold tracking-[0.28em] uppercase mb-2">
+                {product.category?.name || 'Collection'}
+              </p>
+              <h1 className="font-luxury text-[1.75rem] sm:text-[2.25rem] lg:text-[2.5rem] text-[#1A1A1A] leading-[1.15] mb-3">
+                {product.name}
+              </h1>
+
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5">
+                <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2 py-1 rounded-md text-xs font-bold">
+                  4.8 <FiStar size={11} className="fill-current" />
+                </div>
+                <span className="text-sm text-gray-400">(128 Reviews)</span>
               </div>
 
-              <div className="space-y-1">
-                 <div className="flex items-baseline gap-4">
-                    <p className="text-4xl sm:text-5xl font-bold tracking-tight text-[#111827]">₹{priceDisplay?.toLocaleString()}</p>
-                    {hasDiscount && (
-                      <div className="flex items-center gap-3">
-                        <span className="text-lg text-gray-400 line-through">₹{originalPrice?.toLocaleString()}</span>
-                        <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">{discountPercent}% OFF</span>
-                      </div>
-                    )}
-                 </div>
-                 <p className="text-xs text-gray-400">Inclusive of all taxes</p>
+              <div className="flex flex-wrap items-end gap-3">
+                <p className="text-[1.75rem] sm:text-[2rem] font-black tracking-tight text-[#111827] leading-none">
+                  ₹{priceDisplay?.toLocaleString('en-IN')}
+                </p>
+                {hasDiscount && (
+                  <>
+                    <span className="text-base text-gray-400 line-through pb-0.5">
+                      ₹{originalPrice?.toLocaleString('en-IN')}
+                    </span>
+                    <span className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-md text-[11px] font-bold mb-0.5">
+                      {discountPercent}% OFF
+                    </span>
+                  </>
+                )}
               </div>
+              <p className="text-[11px] text-gray-400 mt-2">Inclusive of all taxes · Free shipping above ₹5,000</p>
             </div>
 
-            {/* Specs Grid */}
-            <div className="grid grid-cols-2 gap-4">
-               {[
-                 { label: 'Material', value: product.material || 'Wool', icon: LuRug },
-                 { label: 'Weave', value: 'Hand Knotted', icon: FiGrid },
-                 { label: 'Origin', value: 'Turkey', icon: FiMapPin },
-                 { label: 'Pile Height', value: '8-10 mm', icon: FiArrowUp }
-               ].map((s, i) => (
-                 <div key={i} className="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 transition-all hover:shadow-sm">
-                    <div className="text-gray-400"><s.icon size={18} /></div>
-                    <div>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{s.label}</p>
-                      <p className="text-xs font-bold mt-1">{s.value}</p>
-                    </div>
-                 </div>
-               ))}
-            </div>
-
-            {/* Size Selector */}
-            <div className="space-y-6">
-               <p className="text-sm font-bold uppercase tracking-widest">Size</p>
-               <div className="grid grid-cols-3 gap-4">
-                  {(product.sizes?.length > 0 ? product.sizes : [{label: '120 x 180 cm'}, {label: '160 x 230 cm'}, {label: '200 x 290 cm'}, {label: '240 x 340 cm'}]).map((s, i) => (
-                    <button 
-                      key={i} 
+            {/* Size — required before buy */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1A1A1A]">
+                  Select Size
+                </p>
+                <button
+                  type="button"
+                  className="flex items-center gap-1.5 text-[11px] font-bold text-gray-500 hover:text-[#1A1A1A] transition-colors cursor-pointer"
+                >
+                  <FiEdit3 size={12} /> Custom size
+                </button>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {sizeOptions.map((s, i) => {
+                  const active = selectedSize?.label === s.label;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
                       onClick={() => setSelectedSize(s)}
-                      className={`py-4 rounded-xl border text-sm font-bold transition-all ${selectedSize?.label === s.label ? 'border-[#C9A84C] bg-[#FAF7F2] text-[#1A1A1A] ring-1 ring-[#C9A84C]' : 'border-gray-200 hover:border-gray-400'}`}>
+                      className={`min-h-[48px] px-3 py-3 rounded-xl border text-[12px] sm:text-[13px] font-bold transition-all cursor-pointer ${
+                        active
+                          ? 'border-[#C9A84C] bg-[#FAF7F2] text-[#1A1A1A] ring-1 ring-[#C9A84C]'
+                          : 'border-gray-200 bg-white hover:border-gray-400 text-[#1A1A1A]/80'
+                      }`}
+                    >
                       {s.label}
                     </button>
-                  ))}
-               </div>
-               <button className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-[#1A1A1A] transition-colors">
-                  <FiEdit3 /> Custom size available
-               </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Qty + CTAs — Flipkart/Myntra style primary actions */}
+            <div className="space-y-3 pt-1">
+              <div className="flex items-stretch gap-3">
+                <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden h-12 sm:h-14 bg-white shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setQty(q => Math.max(1, q - 1))}
+                    className="w-11 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-100 cursor-pointer"
+                    aria-label="Decrease quantity"
+                  >
+                    <FiMinus size={14} />
+                  </button>
+                  <span className="w-12 text-center font-bold text-base">{qty}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQty(q => q + 1)}
+                    className="w-11 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-100 cursor-pointer"
+                    aria-label="Increase quantity"
+                  >
+                    <FiPlus size={14} />
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className="flex-1 h-12 sm:h-14 rounded-xl border-2 border-[#1A1A1A] bg-white text-[#1A1A1A] font-bold text-[11px] sm:text-xs tracking-[0.12em] uppercase hover:bg-gray-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <FiShoppingCart size={16} /> Add to Cart
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                className="w-full h-12 sm:h-14 rounded-xl bg-[#C9A84C] text-[#0A0A0A] font-bold text-[11px] sm:text-xs tracking-[0.14em] uppercase hover:bg-[#B69640] hover:shadow-[0_8px_24px_rgba(201,168,76,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                Buy Now
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsVisualizerOpen(true)}
+                className="w-full h-11 rounded-xl bg-white border border-dashed border-[#C9A84C]/45 text-[#1A1A1A] font-bold text-[10px] tracking-[0.12em] uppercase hover:border-[#C9A84C] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <FiMaximize className="text-[#C9A84C]" size={16} /> Try in Your Room
+              </button>
+
+              <div className="flex items-center justify-center gap-5 pt-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                <span className="flex items-center gap-1.5"><FiShield size={12} /> Secure Payment</span>
+                <span className="flex items-center gap-1.5"><FiTruck size={12} /> Free Shipping</span>
+              </div>
+            </div>
+
+            {/* Specs */}
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { label: 'Material', value: product.material || 'Wool', icon: LuRug },
+                { label: 'Weave', value: 'Hand Knotted', icon: FiGrid },
+                { label: 'Origin', value: 'Turkey', icon: FiMapPin },
+                { label: 'Pile Height', value: '8-10 mm', icon: FiArrowUp },
+              ].map((s, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-3"
+                >
+                  <div className="text-[#B69640] shrink-0"><s.icon size={16} /></div>
+                  <div className="min-w-0 text-left">
+                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{s.label}</p>
+                    <p className="text-xs font-bold mt-0.5 truncate">{s.value}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Highlights */}
-            <div className="space-y-6 pt-10 border-t border-gray-100/50">
-               <h3 className="text-sm font-bold uppercase tracking-[0.2em]">Highlights</h3>
-               <div className="space-y-4">
-                  {[
-                    'Traditional Turkish craftsmanship',
-                    'Premium wool for extra softness',
-                    'Vibrant colors that last for years',
-                    'Perfect for living room & bedroom'
-                  ].map((h, i) => (
-                    <div key={i} className="flex items-center gap-4">
-                       <TbCircleCheckFilled size={20} className="text-[#1A1A1A] opacity-60" />
-                       <p className="text-sm font-medium text-[#1A1A1A]/80">{h}</p>
-                    </div>
-                  ))}
-               </div>
+            <div className="pt-5 border-t border-gray-200/70">
+              <h3 className="text-xs font-bold uppercase tracking-[0.18em] mb-4">Highlights</h3>
+              <div className="space-y-3">
+                {[
+                  'Traditional Turkish craftsmanship',
+                  'Premium wool for extra softness',
+                  'Vibrant colors that last for years',
+                  'Perfect for living room & bedroom',
+                ].map((h, i) => (
+                  <div key={i} className="flex items-start gap-3 text-left">
+                    <TbCircleCheckFilled size={18} className="text-[#B69640] shrink-0 mt-0.5" />
+                    <p className="text-sm font-medium text-[#1A1A1A]/75 leading-snug">{h}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Why You'll Love It Section */}
-            <div className="bg-[#FAF7F2] p-8 rounded-[2rem] border border-[#C9A84C]/20 relative">
-               <div className="flex items-center gap-3 mb-4">
-                  <FiHeart className="text-[#1A1A1A]" />
-                  <h4 className="font-luxury text-xl">Why You'll Love It</h4>
-               </div>
-               <p className="font-luxury text-lg leading-relaxed text-[#1A1A1A]/70">
-                 The {product.name} brings timeless elegance and warmth to your space. Handcrafted with precision, this rug combines durability with rich cultural heritage.
-               </p>
-            </div>
-
-            {/* Actions */}
-            <div className="space-y-4 pt-4">
-               {/* VISUALIZE IN YOUR SPACE CTA */}
-               <button 
-                 onClick={() => setIsVisualizerOpen(true)}
-                 className="w-full bg-[#FAF7F2] border-2 border-dashed border-[#C9A84C]/30 text-[#1A1A1A] py-5 rounded-2xl font-bold tracking-[0.1em] hover:border-[#C9A84C] transition-all flex items-center justify-center gap-3 group mb-2"
-               >
-                  <FiMaximize className="text-[#C9A84C] group-hover:scale-110 transition-transform" size={20} /> TRY IN YOUR ROOM
-               </button>
-
-               <div className="flex items-center gap-4 mb-2">
-                 <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden h-14 bg-white">
-                    <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-12 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-100">
-                      <FiMinus size={14} />
-                    </button>
-                    <span className="w-14 text-center font-bold text-lg">{qty}</span>
-                    <button onClick={() => setQty(q => q + 1)} className="w-12 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-100">
-                      <FiPlus size={14} />
-                    </button>
-                 </div>
-                 <button onClick={handleAddToCart} className="flex-1 bg-white border border-gray-200 text-[#111827] h-14 rounded-xl font-bold tracking-[0.05em] hover:bg-gray-50 transition-all flex items-center justify-center gap-3">
-                   <FiShoppingCart size={18} /> ADD TO CART
-                 </button>
-               </div>
-               <button onClick={handleBuyNow} className="w-full bg-gradient-to-r from-[#111827] to-[#1F2937] text-white h-14 rounded-xl font-bold tracking-[0.1em] hover:scale-[1.01] active:scale-95 transition-all shadow-xl">
-                  BUY NOW
-               </button>
-               <div className="flex items-center justify-center gap-6 pt-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                  <span className="flex items-center gap-2"><FiShield /> Secure Payment</span>
-                  <span className="flex items-center gap-2"><FiTruck /> Free Shipping</span>
-               </div>
+            {/* Why you'll love it */}
+            <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#C9A84C]/20">
+              <div className="flex items-center gap-2.5 mb-3">
+                <FiHeart className="text-[#B69640]" size={16} />
+                <h4 className="font-luxury text-lg sm:text-xl text-[#1A1A1A]">Why You&apos;ll Love It</h4>
+              </div>
+              <p className="font-luxury text-base leading-relaxed text-[#1A1A1A]/65 text-left">
+                The {product.name} brings timeless elegance and warmth to your space. Handcrafted with precision, this rug combines durability with rich cultural heritage.
+              </p>
             </div>
           </div>
         </div>
 
-        <RoomVisualizer 
-          isOpen={isVisualizerOpen} 
-          onClose={() => setIsVisualizerOpen(false)} 
-          product={product} 
+        <RoomVisualizer
+          isOpen={isVisualizerOpen}
+          onClose={() => setIsVisualizerOpen(false)}
+          product={product}
         />
 
-        {/* SMART RECOMMENDATIONS */}
-        <SmartRecommendations currentProduct={product} title="Perfect Matches For Your Space" />
-      </div>
+        <div className="mt-12 sm:mt-16">
+          <SmartRecommendations currentProduct={product} title="Perfect Matches For Your Space" />
+        </div>
+      </Container>
 
-      {/* STICKY ADD TO CART BAR */}
+      {/* Sticky buy bar — Flipkart/Myntra style */}
       <AnimatePresence>
         {showSticky && (
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="fixed bottom-0 md:bottom-8 left-0 right-0 z-[999] px-0 md:px-4 pointer-events-none"
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+            className="fixed bottom-0 left-0 right-0 z-[999] pointer-events-none"
           >
-            <div className="max-w-[1200px] mx-auto w-full pointer-events-auto">
-               <div className="bg-white/92 backdrop-blur-[18px] border border-white/40 shadow-[0_10px_40px_rgba(0,0,0,0.12)] rounded-none md:rounded-[22px] px-4 md:px-8 py-3 md:py-4 flex items-center justify-between gap-4">
-                  
-                  {/* Left: Product Info (Desktop Only) */}
-                  <div className="hidden md:flex items-center gap-5">
-                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
-                      <img src={getImageUrl(images[0])} alt={product.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                      <h4 className="font-heading font-bold text-[#111827] text-base truncate max-w-[240px] tracking-tight">{product.name}</h4>
-                      <div className="flex items-center gap-3 text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1 opacity-70">
-                        <span className="flex items-center gap-1.5"><FiTruck size={14} className="text-[#C9A84C]" /> Free Shipping</span>
-                        <span className="text-gray-200">|</span>
-                        <span className="flex items-center gap-1.5"><FiShield size={14} className="text-[#C9A84C]" /> Secure Checkout</span>
-                      </div>
-                    </div>
+            <div className="pointer-events-auto bg-white/95 backdrop-blur-xl border-t border-black/[0.08] shadow-[0_-8px_30px_rgba(0,0,0,0.08)] md:border md:border-black/[0.06] md:rounded-2xl md:shadow-[0_10px_40px_rgba(0,0,0,0.12)] md:max-w-[1100px] md:mx-auto md:mb-5 md:overflow-hidden">
+              <div className="px-3 py-2.5 sm:px-5 sm:py-3 flex items-center gap-3 sm:gap-4">
+
+                <div className="hidden md:flex items-center gap-3 min-w-0 flex-1">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
+                    <img src={getImageUrl(images[0])} alt="" className="w-full h-full object-cover" />
                   </div>
-
-                  {/* Middle/Left: Price Section */}
-                  <div className="flex-1 md:flex-none flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:gap-0">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl md:text-3xl font-black text-[#111827] tracking-tight">\u20B9{priceDisplay?.toLocaleString()}</span>
-                      {hasDiscount && (
-                        <span className="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg text-[10px] font-black tracking-tighter">
-                          {discountPercent}% OFF
-                        </span>
-                      )}
-                    </div>
-                    {hasDiscount && (
-                      <span className="text-[10px] md:text-xs text-gray-400 line-through font-medium md:mt-1 tracking-wider">
-                        \u20B9{originalPrice?.toLocaleString()}
-                      </span>
-                    )}
-                    <span className="text-[8px] text-gray-300 font-bold uppercase tracking-[0.2em] md:hidden">Inc. Taxes</span>
+                  <div className="min-w-0 text-left">
+                    <h4 className="font-bold text-[#111827] text-sm truncate max-w-[220px]">{product.name}</h4>
+                    <p className="text-[10px] text-gray-400 font-medium truncate">
+                      {selectedSize?.label || 'Standard size'}
+                    </p>
                   </div>
+                </div>
 
-                  {/* Right: Actions */}
-                  <div className="flex items-center gap-2 md:gap-4">
-                    {/* Qty Selector (Desktop Only) */}
-                    <div className="hidden lg:flex items-center border border-gray-200 rounded-xl overflow-hidden h-12 bg-white">
-                      <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-10 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-r border-gray-100">
-                        <FiMinus size={12} />
-                      </button>
-                      <span className="w-10 text-center font-bold text-sm">{qty}</span>
-                      <button onClick={() => setQty(q => q + 1)} className="w-10 h-full flex items-center justify-center hover:bg-gray-50 transition-colors border-l border-gray-100">
-                        <FiPlus size={12} />
-                      </button>
-                    </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-lg sm:text-xl font-black text-[#111827] tracking-tight">
+                    ₹{priceDisplay?.toLocaleString('en-IN')}
+                  </span>
+                  {hasDiscount && (
+                    <span className="hidden sm:inline bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-bold">
+                      {discountPercent}% OFF
+                    </span>
+                  )}
+                </div>
 
-                    <div className="flex items-center gap-2 w-full md:w-auto">
-                      <button 
-                        onClick={handleAddToCart}
-                        className="bg-white border border-gray-200 text-[#111827] h-12 md:h-14 px-4 md:px-8 rounded-xl font-bold text-[11px] md:text-sm tracking-wide hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
-                      >
-                        <FiShoppingCart size={16} className="hidden md:block" /> ADD
-                      </button>
-                      <button 
-                        onClick={handleBuyNow}
-                        className="bg-gradient-to-r from-[#111827] to-[#1F2937] text-white h-12 md:h-14 px-5 md:px-10 rounded-xl font-bold text-[11px] md:text-sm tracking-wide hover:scale-[1.02] active:scale-95 transition-all shadow-lg flex items-center justify-center"
-                      >
-                        BUY NOW
-                      </button>
-                    </div>
-                  </div>
-
-               </div>
+                <div className="flex items-center gap-2 flex-1 md:flex-none justify-end">
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    className="flex-1 md:flex-none h-11 px-4 sm:px-6 rounded-xl border-2 border-[#1A1A1A] bg-white text-[#1A1A1A] font-bold text-[10px] sm:text-xs tracking-wide uppercase hover:bg-gray-50 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <FiShoppingCart size={14} className="hidden sm:block" />
+                    Add
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    className="flex-1 md:flex-none h-11 px-4 sm:px-8 rounded-xl bg-[#C9A84C] text-[#0A0A0A] font-bold text-[10px] sm:text-xs tracking-wide uppercase hover:bg-[#B69640] transition-all shadow-md flex items-center justify-center cursor-pointer"
+                  >
+                    Buy Now
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
@@ -390,10 +460,3 @@ export default function ProductDetail() {
     </div>
   );
 }
-
-// Icon fallbacks
-const FiGrid = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
-const FiMapPin = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>;
-const FiArrowUp = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>;
-const FiMinus = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
-const FiPlus = (props) => <svg {...props} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
