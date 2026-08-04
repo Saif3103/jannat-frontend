@@ -22,6 +22,9 @@ const Team = lazy(() => import('./pages/Team'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const VerifyOTP = lazy(() => import('./pages/VerifyOTP'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Cart = lazy(() => import('./pages/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const OrderTracking = lazy(() => import('./pages/OrderTracking'));
@@ -44,6 +47,13 @@ export default function App() {
   const { fetchSettings } = useSettingsStore();
   const { isDarkMode } = useUIStore();
   const isAdminPage = location.pathname.startsWith('/admin');
+  const isAuthPage = [
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/verify-otp',
+    '/reset-password',
+  ].includes(location.pathname);
 
   useEffect(() => {
     fetchSettings();
@@ -55,7 +65,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent">
-      {!isAdminPage && <Header />}
+      {!isAdminPage && !isAuthPage && <Header />}
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <Suspense fallback={<Loader fullscreen />}>
@@ -70,6 +80,9 @@ export default function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/verify-otp" element={<VerifyOTP />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/order-tracking" element={<OrderTracking />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -99,9 +112,9 @@ export default function App() {
           </Suspense>
         </AnimatePresence>
       </main>
-      {!isAdminPage && <Footer />}
-      {!isAdminPage && <AIStylist />}
-      {!isAdminPage && <WhatsAppButton />}
+      {!isAdminPage && !isAuthPage && <Footer />}
+      {!isAdminPage && !isAuthPage && <AIStylist />}
+      {!isAdminPage && !isAuthPage && <WhatsAppButton />}
     </div>
   );
 }

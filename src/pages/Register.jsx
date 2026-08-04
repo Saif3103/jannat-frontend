@@ -1,147 +1,153 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import { FiUser, FiMail, FiPhone, FiLock } from 'react-icons/fi';
+import AuthLayout from '../components/auth/AuthLayout';
+import AuthInput from '../components/auth/AuthInput';
+import AuthButton from '../components/auth/AuthButton';
+import AuthLink from '../components/auth/AuthLink';
+import AuthMessage from '../components/auth/AuthMessage';
 import { useAuthStore } from '../store';
-import toast from 'react-hot-toast';
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', phone: '' });
-  const [showPw, setShowPw] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirm: '',
+    phone: '',
+  });
+  const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState('');
   const navigate = useNavigate();
   const { register, isLoading } = useAuthStore();
 
+  const validate = () => {
+    const next = {};
+    if (!form.name.trim()) next.name = 'Full name is required';
+    if (!form.email.trim()) next.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Enter a valid email address';
+    if (form.phone && !/^[+\d][\d\s-]{6,}$/.test(form.phone)) next.phone = 'Enter a valid phone number';
+    if (!form.password) next.password = 'Password is required';
+    else if (form.password.length < 6) next.password = 'Password must be at least 6 characters';
+    if (!form.confirm) next.confirm = 'Please confirm your password';
+    else if (form.password !== form.confirm) next.confirm = 'Passwords do not match';
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirm) return toast.error('Passwords do not match');
+    setFormError('');
+    if (!validate()) return;
+
     try {
-      await register(form.name, form.email, form.password, form.phone);
+      await register({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        password: form.password,
+      });
       navigate('/');
-    } catch (err) {}
+    } catch (err) {
+      setFormError(err.response?.data?.message || 'Unable to create account. Please try again.');
+    }
+  };
+
+  const setField = (key) => (e) => {
+    setForm((p) => ({ ...p, [key]: e.target.value }));
+    if (errors[key]) setErrors((p) => ({ ...p, [key]: '' }));
   };
 
   return (
-    <>
-      <Helmet><title>Create Account | Jannat Rugs Co.</title></Helmet>
+    <AuthLayout
+      title="Create Account"
+      subtitle="Join Jannat Rugs Co. and discover handcrafted luxury"
+      panelTitle={<>Hello,<br />Friend</>}
+      panelTagline="Already part of the family? Sign in to continue your collection."
+      panelCta="Sign In"
+      panelCtaTo="/login"
+      reverse
+    >
+      <AuthMessage type="error" message={formError} />
 
-      <div className="min-h-screen bg-[#F0EDE8] flex items-center justify-center p-4 sm:p-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row-reverse min-h-[640px]"
-        >
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <AuthInput
+          label="Full Name"
+          type="text"
+          autoComplete="name"
+          autoFocus
+          required
+          icon={FiUser}
+          value={form.name}
+          onChange={setField('name')}
+          placeholder="Your full name"
+          error={errors.name}
+        />
 
-          {/* ── RIGHT PANEL (dark) ── */}
-          <div className="relative md:w-[42%] bg-[#1A1A1A] flex flex-col items-center justify-center p-12 overflow-hidden">
-            <div className="absolute top-6 left-6 w-10 h-10 rotate-45 border-2 border-[#C9A84C]/40 rounded-sm" />
-            <div className="absolute top-16 left-10 w-5 h-5 rotate-45 bg-[#C9A84C]/20 rounded-sm" />
-            <div className="absolute bottom-10 right-6 w-14 h-14 rotate-45 border-2 border-[#C9A84C]/30 rounded-sm" />
-            <div className="absolute bottom-24 right-12 w-6 h-6 rotate-45 bg-[#C9A84C]/15 rounded-sm" />
-            <div className="absolute -bottom-10 -right-10 w-44 h-44 rounded-full border border-[#C9A84C]/10" />
-            <div className="absolute -top-10 -left-10 w-44 h-44 rounded-full border border-[#C9A84C]/10" />
+        <AuthInput
+          label="Phone"
+          type="tel"
+          autoComplete="tel"
+          icon={FiPhone}
+          value={form.phone}
+          onChange={setField('phone')}
+          placeholder="Optional"
+          error={errors.phone}
+        />
 
-            <div className="text-center relative z-10">
-              <div className="w-14 h-px bg-[#C9A84C]/60 mx-auto mb-8" />
-              <h2 className="font-luxury text-5xl text-white mb-5 leading-tight">
-                Hello,<br />Friend!
-              </h2>
-              <p className="text-white/50 text-base leading-relaxed max-w-[200px] mx-auto mb-12">
-                Already have an account? Sign in to continue.
-              </p>
-              <Link
-                to="/login"
-                className="inline-block border-2 border-white/30 text-white text-sm font-bold tracking-[0.2em] uppercase px-10 py-4 rounded-full hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all duration-300"
-              >
-                Sign In
-              </Link>
-            </div>
-          </div>
+        <AuthInput
+          label="Email"
+          type="email"
+          autoComplete="email"
+          required
+          icon={FiMail}
+          value={form.email}
+          onChange={setField('email')}
+          placeholder="you@example.com"
+          error={errors.email}
+        />
 
-          {/* ── LEFT PANEL (form) ── */}
-          <div className="flex-1 flex flex-col items-center justify-center px-10 sm:px-16 py-12">
-            <div className="w-full max-w-sm">
+        <AuthInput
+          label="Password"
+          type="password"
+          autoComplete="new-password"
+          required
+          minLength={6}
+          icon={FiLock}
+          value={form.password}
+          onChange={setField('password')}
+          placeholder="Min. 6 characters"
+          error={errors.password}
+        />
 
-              {/* Logo above Create Account heading */}
-              <div className="flex flex-col items-center mb-6">
-                <Link to="/" className="flex flex-col items-center gap-2">
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden border border-[#C9A84C]/40 shadow-md">
-                    <img src="/logo.png" alt="Jannat Rugs" className="w-full h-full object-cover" />
-                  </div>
-                  <span className="text-[#1A1A1A] text-xs font-bold tracking-[0.25em] uppercase mt-2">Jannat Rugs Co.</span>
-                </Link>
-              </div>
+        <AuthInput
+          label="Confirm Password"
+          type="password"
+          autoComplete="new-password"
+          required
+          icon={FiLock}
+          value={form.confirm}
+          onChange={setField('confirm')}
+          placeholder="Re-enter password"
+          error={errors.confirm}
+        />
 
-              <h1 className="font-luxury text-4xl sm:text-5xl text-[#1A1A1A] text-center mb-3">Create Account</h1>
-              <p className="text-[#aaa] text-sm text-center mb-10 tracking-wide">Join the Jannat family today</p>
+        <div className="pt-3">
+          <AuthButton loading={isLoading}>Create Account</AuthButton>
+        </div>
+      </form>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                  type="text" required autoFocus
-                  value={form.name}
-                  onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                  className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                  placeholder="Full Name"
-                />
-
-                <input
-                  type="tel"
-                  value={form.phone}
-                  onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                  className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                  placeholder="Phone (optional)"
-                />
-
-                <input
-                  type="email" required
-                  value={form.email}
-                  onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                  className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                  placeholder="Email"
-                />
-
-                <div className="relative">
-                  <input
-                    type={showPw ? 'text' : 'password'} required minLength={6}
-                    value={form.password}
-                    onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                    className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 pr-14 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                    placeholder="Password (min 6)"
-                  />
-                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#C9A84C] transition-colors">
-                    {showPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
-                  </button>
-                </div>
-
-                <input
-                  type={showPw ? 'text' : 'password'} required
-                  value={form.confirm}
-                  onChange={e => setForm(p => ({ ...p, confirm: e.target.value }))}
-                  className="w-full bg-[#F7F5F2] border border-gray-200 rounded-2xl px-6 py-5 text-base text-[#1A1A1A] placeholder:text-gray-400 focus:border-[#C9A84C] focus:ring-4 focus:ring-[#C9A84C]/10 outline-none transition-all"
-                  placeholder="Confirm Password"
-                />
-
-                <button
-                  type="submit" disabled={isLoading}
-                  className="w-full py-6 mt-6 bg-[#1A1A1A] text-white rounded-2xl font-bold text-base tracking-[0.3em] uppercase hover:bg-[#C9A84C] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 cursor-pointer"
-                >
-                  {isLoading
-                    ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    : 'Create Account'}
-                </button>
-              </form>
-
-              <div className="mt-8 text-center">
-                <Link to="/" className="text-sm text-gray-400 hover:text-gray-700 transition-colors font-medium">
-                  ← Return to Home
-                </Link>
-              </div>
-            </div>
-          </div>
-
-        </motion.div>
+      <div className="mt-8 flex flex-col items-center gap-4">
+        <p className="text-sm text-[#A0A0A0]">
+          Already have an account?{' '}
+          <AuthLink to="/login" className="text-[#C9A96E] hover:text-[#E7C78A]">
+            Sign in
+          </AuthLink>
+        </p>
+        <AuthLink to="/" className="text-[#A0A0A0]/70">
+          ← Return to Home
+        </AuthLink>
       </div>
-    </>
+    </AuthLayout>
   );
 }
