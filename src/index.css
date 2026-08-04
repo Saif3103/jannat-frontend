@@ -395,6 +395,11 @@ body.light-mode .glass-card {
   color: #9ca3af !important;
 }
 
+/* Admin mobile safe area for bottom nav */
+.admin-panel .safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* ── Auth experience ── */
 .auth-page {
   color: #1A1A1A;

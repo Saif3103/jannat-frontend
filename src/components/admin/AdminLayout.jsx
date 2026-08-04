@@ -1,6 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiHome, FiTag, FiShoppingBag, FiUsers, FiGrid, FiSpeaker, FiSettings, FiLogOut, FiMenu, FiX, FiSearch, FiBell, FiFileText } from 'react-icons/fi';
-import { useState } from 'react';
+import {
+  FiHome, FiTag, FiShoppingBag, FiUsers, FiGrid, FiSpeaker,
+  FiSettings, FiLogOut, FiMenu, FiX, FiBell, FiFileText, FiExternalLink
+} from 'react-icons/fi';
+import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../store';
 
 const navItems = [
@@ -14,121 +17,219 @@ const navItems = [
   { label: 'Settings', path: '/admin/settings', icon: FiSettings },
 ];
 
+function getPageTitle(pathname) {
+  if (pathname === '/admin') return 'Dashboard';
+  const item = navItems.find((n) => n.path !== '/admin' && pathname.startsWith(n.path));
+  return item?.label || 'Admin';
+}
+
 export default function AdminLayout({ children }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const { logout, user } = useAuthStore();
   const navigate = useNavigate();
+  const title = getPageTitle(pathname);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  const NavLink = ({ label, path, icon: Icon }) => {
+    const isActive = pathname === path || (path !== '/admin' && pathname.startsWith(path));
+    return (
+      <Link
+        to={path}
+        onClick={() => setOpen(false)}
+        className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-[14px] transition-colors ${
+          isActive
+            ? 'bg-[#1A1A1A] text-white font-semibold shadow-sm'
+            : 'text-gray-600 hover:bg-gray-100 hover:text-[#1A1A1A] font-medium'
+        }`}
+      >
+        <Icon size={18} className={isActive ? 'text-[#C9A84C]' : 'text-gray-400'} />
+        {label}
+      </Link>
+    );
+  };
 
   return (
-    <div className="admin-panel min-h-screen flex bg-[#F8F9FA] text-[#222222] font-sans">
-      {/* Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-72 flex flex-col transition-transform duration-300 bg-white border-r border-gray-200 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-        <div className="flex items-center justify-between px-6 py-7 border-b border-gray-100">
-          <Link to="/admin" className="font-bold text-xl text-[#222] tracking-tight">
-            Jannat Rugs
+    <div className="admin-panel min-h-screen flex bg-[#F4F4F5] text-[#1A1A1A] font-sans text-left">
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-[260px] shrink-0 flex-col bg-white border-r border-gray-200 sticky top-0 h-screen">
+        <div className="px-5 py-5 border-b border-gray-100">
+          <Link to="/admin" className="flex items-center gap-3">
+            <img src="/logo.png" alt="" className="w-9 h-9 rounded-full object-cover border border-[#C9A84C]/30" />
+            <div>
+              <p className="text-[15px] font-bold leading-tight">Jannat Rugs</p>
+              <p className="text-[11px] text-gray-400">Admin Panel</p>
+            </div>
           </Link>
-          <button onClick={() => setOpen(!open)} className="lg:hidden text-gray-500">
-            <FiMenu size={22} />
-          </button>
-          <button className="hidden lg:block text-gray-400">
-            <FiMenu size={22} />
-          </button>
         </div>
 
-        {/* Search */}
-        <div className="px-5 py-6">
-          <div className="relative group">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#1A1A1A] transition-colors" size={16} />
-            <input 
-              type="text" 
-              placeholder="Search" 
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 pl-11 pr-4 text-sm text-[#222] placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-[#C9A84C]/40 transition-all"
-            />
-          </div>
-        </div>
-        
-        <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
-          {navItems.map(({ label, path, icon: Icon }) => {
-            const isActive = pathname === path || (path !== '/admin' && pathname.startsWith(path));
-            return (
-              <Link key={label} to={path} onClick={() => setOpen(false)}
-                className={`flex items-center gap-4 px-5 py-3 rounded-xl text-[14px] font-medium transition-all duration-200 ${
-                  isActive
-                    ? 'bg-gray-100 text-[#222] font-bold border border-gray-200' 
-                    : 'text-gray-500 hover:text-[#222] hover:bg-gray-50'
-                }`}>
-                <Icon size={19} className={isActive ? 'text-[#1A1A1A]' : ''} />
-                {label}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {navItems.map((item) => (
+            <NavLink key={item.path} {...item} />
+          ))}
         </nav>
-        
-        <div className="mt-auto p-6 space-y-6 border-t border-gray-100">
-          <div>
-            <p className="text-[10px] font-bold text-gray-400 mb-4 uppercase tracking-[0.2em]">Sales channels</p>
-            <div className="flex items-center gap-3 px-1">
-              <div className="w-8 h-8 rounded-lg overflow-hidden border border-gray-100 p-1">
-                <img src="/logo.png" alt="" className="w-full h-full object-contain" 
-                  onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=J&background=C9A84C&color=FFF' }} />
-              </div>
-              <span className="text-sm font-semibold text-gray-600">JannatRugsCo</span>
-            </div>
-          </div>
 
-          <div className="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#C9A84C] flex items-center justify-center text-white font-bold text-sm shadow-sm">
-                {user?.name?.[0] || 'A'}
+        <div className="p-4 border-t border-gray-100 space-y-3">
+          <Link
+            to="/"
+            target="_blank"
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-[13px] text-gray-500 hover:bg-gray-50 hover:text-[#1A1A1A] transition-colors"
+          >
+            <FiExternalLink size={15} />
+            View storefront
+          </Link>
+          <div className="flex items-center justify-between gap-2 bg-[#FAF7F2] rounded-xl px-3 py-3 border border-[#C9A84C]/15">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-9 h-9 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#1A1A1A] font-bold text-sm shrink-0">
+                {user?.name?.[0]?.toUpperCase() || 'A'}
               </div>
-              <div className="overflow-hidden">
-                <p className="text-sm font-bold text-[#222] truncate max-w-[110px]">{user?.name || 'Admin'}</p>
-                <p className="text-[11px] text-gray-400 font-medium">Owner</p>
+              <div className="min-w-0">
+                <p className="text-[13px] font-semibold truncate">{user?.name || 'Admin'}</p>
+                <p className="text-[11px] text-gray-500">Owner</p>
               </div>
             </div>
-            <button onClick={() => { logout(); navigate('/login'); }} className="text-gray-400 hover:text-red-500 transition-colors p-2" title="Logout">
-              <FiLogOut size={18} />
+            <button
+              type="button"
+              onClick={() => { logout(); navigate('/login'); }}
+              className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-white transition-colors cursor-pointer"
+              title="Logout"
+            >
+              <FiLogOut size={16} />
             </button>
           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-        {/* Header */}
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md px-6 lg:px-10 py-5 flex items-center justify-between border-b border-gray-200">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setOpen(true)} className="lg:hidden text-[#222]">
-              <FiMenu size={24} />
-            </button>
-            <div className="space-y-0.5">
-              <h1 className="font-bold text-2xl text-[#222]">Dashboard</h1>
-              <p className="text-gray-400 text-xs hidden sm:block">Welcome back, Admin!</p>
+      {/* Mobile drawer */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-[85%] max-w-[300px] bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 lg:hidden ${
+          open ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
+          <div className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="" className="w-8 h-8 rounded-full object-cover" />
+            <div>
+              <p className="text-sm font-bold">Jannat Rugs</p>
+              <p className="text-[10px] text-gray-400">Admin</p>
             </div>
           </div>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-600 cursor-pointer"
+            aria-label="Close menu"
+          >
+            <FiX size={20} />
+          </button>
+        </div>
 
-          <div className="flex items-center gap-4">
-            <div className="relative cursor-pointer group">
-              <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 group-hover:text-[#1A1A1A] transition-all">
-                <FiBell size={20} />
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {navItems.map((item) => (
+            <NavLink key={item.path} {...item} />
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-gray-100">
+          <button
+            type="button"
+            onClick={() => { logout(); navigate('/login'); }}
+            className="w-full flex items-center justify-center gap-2 h-11 rounded-xl bg-gray-50 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
+          >
+            <FiLogOut size={16} />
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Main */}
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="lg:hidden w-10 h-10 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-[#1A1A1A] cursor-pointer shrink-0"
+                aria-label="Open menu"
+              >
+                <FiMenu size={20} />
+              </button>
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-xl font-bold text-[#1A1A1A] truncate">{title}</h1>
+                <p className="text-[11px] sm:text-xs text-gray-400 truncate">
+                  Welcome back{user?.name ? `, ${user.name.split(' ')[0]}` : ''}
+                </p>
               </div>
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#C9A84C] text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">5</span>
             </div>
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200">
-              <img src="/logo.png" alt="" className="w-full h-full object-contain" 
-                 onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Admin&background=C9A84C&color=FFF' }} />
+
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                to="/"
+                className="hidden sm:inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50"
+              >
+                <FiExternalLink size={13} />
+                Store
+              </Link>
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400">
+                  <FiBell size={18} />
+                </div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center text-[#1A1A1A] text-sm font-bold lg:hidden">
+                {user?.name?.[0]?.toUpperCase() || 'A'}
+              </div>
             </div>
           </div>
         </header>
 
-        <main className="flex-1 px-6 lg:px-10 py-8">
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-5 sm:py-6 pb-24 lg:pb-8">
           {children}
         </main>
-      </div>
 
-      {/* Mobile Overlay */}
-      {open && <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden" onClick={() => setOpen(false)} />}
+        {/* Mobile bottom nav — quick access */}
+        <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-gray-200 safe-bottom">
+          <div className="grid grid-cols-5 h-16">
+            {[
+              navItems[0],
+              navItems[1],
+              navItems[2],
+              navItems[3],
+              navItems[7],
+            ].map(({ label, path, icon: Icon }) => {
+              const isActive = pathname === path || (path !== '/admin' && pathname.startsWith(path));
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium ${
+                    isActive ? 'text-[#1A1A1A]' : 'text-gray-400'
+                  }`}
+                >
+                  <Icon size={18} className={isActive ? 'text-[#C9A84C]' : ''} />
+                  <span className="truncate max-w-[64px]">{label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
     </div>
   );
 }
