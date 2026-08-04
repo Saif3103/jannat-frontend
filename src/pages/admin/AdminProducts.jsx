@@ -669,11 +669,13 @@ export default function AdminProducts() {
                 {sizes.map((s) => {
                   const selected = (form.sizes || []).some((v) => v.label === s.label);
                   const saved = (form.sizes || []).find((v) => v.label === s.label);
-                  const defaultPrice = Number(s.price.replace(/,/g, ''));
-                  const currentPrice =
-                    saved?.price !== undefined && saved?.price !== null && saved?.price !== ''
-                      ? saved.price
-                      : defaultPrice;
+                  const defaultPrice = Number(String(s.price).replace(/,/g, ''));
+                  // When selected, keep whatever the user typed — including empty — so erase + retype works
+                  const currentPrice = selected
+                    ? saved?.price === undefined || saved?.price === null
+                      ? ''
+                      : String(saved.price)
+                    : String(defaultPrice);
                   return (
                     <div
                       key={s.label}
@@ -690,7 +692,7 @@ export default function AdminProducts() {
                             if (e.target.checked) {
                               setForm({
                                 ...form,
-                                sizes: [...current, { label: s.label, price: defaultPrice }],
+                                sizes: [...current, { label: s.label, price: String(defaultPrice) }],
                               });
                             } else {
                               setForm({ ...form, sizes: current.filter((v) => v.label !== s.label) });
@@ -716,7 +718,7 @@ export default function AdminProducts() {
                             if (idx > -1) {
                               current[idx] = {
                                 ...current[idx],
-                                price: cleaned === '' ? '' : Number(cleaned),
+                                price: cleaned,
                               };
                               setForm({ ...form, sizes: current });
                             }

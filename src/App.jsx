@@ -10,6 +10,7 @@ import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import AIStylist from './components/AIStylist';
+import SupportChat from './components/SupportChat';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -38,6 +39,7 @@ const AdminInvoices = lazy(() => import('./pages/admin/AdminInvoices'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminCategories = lazy(() => import('./pages/admin/AdminCategories'));
 const AdminOffers = lazy(() => import('./pages/admin/AdminOffers'));
+const AdminSupport = lazy(() => import('./pages/admin/AdminSupport'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -107,6 +109,7 @@ export default function App() {
                 <Route path="/admin/settings" element={<AdminSettings />} />
                 <Route path="/admin/categories" element={<AdminCategories />} />
                 <Route path="/admin/offers" element={<AdminOffers />} />
+                <Route path="/admin/support" element={<AdminSupport />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />
@@ -117,6 +120,7 @@ export default function App() {
       {showSiteChrome && <Footer />}
       {showSiteChrome && <MobileBottomNav />}
       {showSiteChrome && <AIStylist />}
+      {showSiteChrome && <SupportChat />}
     </div>
   );
 }

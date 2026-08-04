@@ -1,10 +1,14 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FiHome, FiTag, FiShoppingBag, FiUsers, FiGrid, FiSpeaker,
-  FiSettings, FiLogOut, FiMenu, FiX, FiBell, FiFileText, FiExternalLink
+  FiSettings, FiLogOut, FiMenu, FiX, FiBell, FiFileText, FiExternalLink, FiMessageSquare
 } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../store';
+import api from '../../api/axios';
+import {
+  connectSupportSocket,
+} from '../../utils/supportSocket';
 
 const navItems = [
   { label: 'Dashboard', path: '/admin', icon: FiHome },
@@ -14,6 +18,7 @@ const navItems = [
   { label: 'Customers', path: '/admin/users', icon: FiUsers },
   { label: 'Categories', path: '/admin/categories', icon: FiGrid },
   { label: 'Marketing', path: '/admin/offers', icon: FiSpeaker },
+  { label: 'Support', path: '/admin/support', icon: FiMessageSquare },
   { label: 'Settings', path: '/admin/settings', icon: FiSettings },
 ];
 
@@ -26,7 +31,8 @@ function getPageTitle(pathname) {
 export default function AdminLayout({ children }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
-  const { logout, user } = useAuthStore();
+  const [supportUnread, setSupportUnread] = useState(0);
+  const { logout, user, token } = useAuthStore();
   const navigate = useNavigate();
   const title = getPageTitle(pathname);
 
@@ -39,8 +45,39 @@ export default function AdminLayout({ children }) {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  useEffect(() => {
+    let mounted = true;
+    const loadUnread = async () => {
+      try {
+        const { data } = await api.get('/support/admin/unread');
+        if (mounted) setSupportUnread(data.unreadTotal || 0);
+      } catch {
+        /* ignore */
+      }
+    };
+    loadUnread();
+    const socket = connectSupportSocket({ token, isAdmin: true });
+    socket.emit('join:admin');
+    const onMessage = (payload) => {
+      if (payload?.message?.sender === 'customer') loadUnread();
+    };
+    const onNotify = () => loadUnread();
+    socket.on('message:new', onMessage);
+    socket.on('conversation:new', onNotify);
+    socket.on('notification:new', onNotify);
+    const interval = setInterval(loadUnread, 60000);
+    return () => {
+      mounted = false;
+      socket.off('message:new', onMessage);
+      socket.off('conversation:new', onNotify);
+      socket.off('notification:new', onNotify);
+      clearInterval(interval);
+    };
+  }, [token]);
+
   const NavLink = ({ label, path, icon: Icon }) => {
     const isActive = pathname === path || (path !== '/admin' && pathname.startsWith(path));
+    const showBadge = path === '/admin/support' && supportUnread > 0;
     return (
       <Link
         to={path}
@@ -52,7 +89,14 @@ export default function AdminLayout({ children }) {
         }`}
       >
         <Icon size={18} className={isActive ? 'text-[#C9A84C]' : 'text-gray-400'} />
-        {label}
+        <span className="flex-1">{label}</span>
+        {showBadge && (
+          <span className={`min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center ${
+            isActive ? 'bg-[#C9A84C] text-[#1A1A1A]' : 'bg-red-500 text-white'
+          }`}>
+            {supportUnread > 9 ? '9+' : supportUnread}
+          </span>
+        )}
       </Link>
     );
   };
@@ -188,9 +232,18 @@ export default function AdminLayout({ children }) {
                 Store
               </Link>
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400">
+                <Link
+                  to="/admin/support"
+                  className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#C9A84C] relative"
+                  aria-label="Support notifications"
+                >
                   <FiBell size={18} />
-                </div>
+                  {supportUnread > 0 && (
+                    <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                      {supportUnread > 9 ? '9+' : supportUnread}
+                    </span>
+                  )}
+                </Link>
               </div>
               <div className="w-10 h-10 rounded-full bg-[#C9A84C]/20 border border-[#C9A84C]/30 flex items-center justify-center text-[#1A1A1A] text-sm font-bold lg:hidden">
                 {user?.name?.[0]?.toUpperCase() || 'A'}
@@ -210,9 +263,9 @@ export default function AdminLayout({ children }) {
               navItems[0],
               navItems[1],
               navItems[2],
-              navItems[3],
-              navItems[7],
-            ].map(({ label, path, icon: Icon }) => {
+              navItems.find((n) => n.path === '/admin/support'),
+              navItems.find((n) => n.path === '/admin/settings'),
+            ].filter(Boolean).map(({ label, path, icon: Icon }) => {
               const isActive = pathname === path || (path !== '/admin' && pathname.startsWith(path));
               return (
                 <Link

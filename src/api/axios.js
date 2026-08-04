@@ -17,21 +17,28 @@ const api = axios.create({
 
 export { BASE_URL };
 
-// Request interceptor – attach JWT token
+// Request interceptor – attach JWT token + guest id for support
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('jannat_token');
     if (token) config.headers.Authorization = `Bearer ${token}`;
+    const guestId = localStorage.getItem('jannat_guest_id');
+    if (guestId) config.headers['X-Guest-Id'] = guestId;
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response interceptor – handle 401
+// Response interceptor – handle 401 (skip support guest endpoints)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const url = error.config?.url || '';
+    const isSupportPublic =
+      url.includes('/support/') &&
+      !url.includes('/support/admin');
+
+    if (error.response?.status === 401 && !isSupportPublic) {
       localStorage.removeItem('jannat_token');
       localStorage.removeItem('jannat_user');
       window.location.href = '/login';
