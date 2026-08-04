@@ -324,7 +324,7 @@ export default function AIStylist() {
   const currentStep = stylistStep >= 1 && stylistStep <= 4 ? STEPS[stylistStep - 1] : null;
 
   return (
-    <div className="fixed bottom-[18px] right-[18px] sm:bottom-6 sm:right-6 z-[9999] font-sans">
+    <div className="fixed bottom-[88px] right-[18px] md:bottom-6 md:right-6 z-[9999] font-sans">
       {/* FAB */}
       {!isOpen && (
         <motion.button

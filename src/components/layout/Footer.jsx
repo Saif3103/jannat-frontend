@@ -35,7 +35,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative font-sans">
+    <footer className="relative font-sans pb-[72px] md:pb-0">
       
       {/* 1. CTA SECTION */}
       <div className="relative h-[360px] sm:h-[420px] flex items-center justify-center overflow-hidden">

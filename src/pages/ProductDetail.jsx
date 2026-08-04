@@ -407,7 +407,7 @@ export default function ProductDetail() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.28, ease: 'easeOut' }}
-            className="fixed bottom-0 left-0 right-0 z-[999] pointer-events-none"
+            className="fixed bottom-[62px] md:bottom-0 left-0 right-0 z-[850] pointer-events-none pb-[env(safe-area-inset-bottom,0px)] md:pb-0"
           >
             <div className="pointer-events-auto bg-white/95 backdrop-blur-xl border-t border-black/[0.08] shadow-[0_-8px_30px_rgba(0,0,0,0.08)] md:border md:border-black/[0.06] md:rounded-2xl md:shadow-[0_10px_40px_rgba(0,0,0,0.12)] md:max-w-[1100px] md:mx-auto md:mb-5 md:overflow-hidden">
               <div className="px-3 py-2.5 sm:px-5 sm:py-3 flex items-center gap-3 sm:gap-4">

@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useSettingsStore, useAuthStore, useUIStore } from './store';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import MobileBottomNav from './components/layout/MobileBottomNav';
 
 import WhatsAppButton from './components/WhatsAppButton';
 import Loader from './components/ui/Loader';
@@ -63,9 +64,11 @@ export default function App() {
     document.body.classList.toggle('light-mode', !isDarkMode);
   }, [isDarkMode]);
 
+  const showSiteChrome = !isAdminPage && !isAuthPage;
+
   return (
     <div className="min-h-screen flex flex-col bg-transparent">
-      {!isAdminPage && !isAuthPage && <Header />}
+      {showSiteChrome && <Header />}
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <Suspense fallback={<Loader fullscreen />}>
@@ -112,9 +115,10 @@ export default function App() {
           </Suspense>
         </AnimatePresence>
       </main>
-      {!isAdminPage && !isAuthPage && <Footer />}
-      {!isAdminPage && !isAuthPage && <AIStylist />}
-      {!isAdminPage && !isAuthPage && <WhatsAppButton />}
+      {showSiteChrome && <Footer />}
+      {showSiteChrome && <MobileBottomNav />}
+      {showSiteChrome && <AIStylist />}
+      {showSiteChrome && <WhatsAppButton />}
     </div>
   );
 }
