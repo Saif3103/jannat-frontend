@@ -6,7 +6,6 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import MobileBottomNav from './components/layout/MobileBottomNav';
 
-import WhatsAppButton from './components/WhatsAppButton';
 import Loader from './components/ui/Loader';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -118,7 +117,6 @@ export default function App() {
       {showSiteChrome && <Footer />}
       {showSiteChrome && <MobileBottomNav />}
       {showSiteChrome && <AIStylist />}
-      {showSiteChrome && <WhatsAppButton />}
     </div>
   );
 }

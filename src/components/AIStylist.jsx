@@ -324,22 +324,21 @@ export default function AIStylist() {
   const currentStep = stylistStep >= 1 && stylistStep <= 4 ? STEPS[stylistStep - 1] : null;
 
   return (
-    <div className="fixed bottom-[88px] right-[18px] md:bottom-6 md:right-6 z-[9999] font-sans">
-      {/* FAB */}
+    <div className="fixed bottom-[88px] right-[16px] md:bottom-6 md:right-6 z-[9999] font-sans">
+      {/* FAB — icon only */}
       {!isOpen && (
         <motion.button
           type="button"
           onClick={toggleOpen}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2.5 h-12 pl-3.5 pr-4 rounded-full bg-[#1A1A1A] text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] border border-[#C9A84C]/35 cursor-pointer"
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.94 }}
+          aria-label="Jannat AI"
+          title="Jannat AI"
+          className="w-11 h-11 rounded-full bg-[#1A1A1A] text-[#C9A84C] flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.28)] border border-[#C9A84C]/35 cursor-pointer"
         >
-          <span className="w-7 h-7 rounded-full bg-[#C9A84C]/20 flex items-center justify-center">
-            <LuSparkles size={14} className="text-[#C9A84C]" />
-          </span>
-          <span className="text-[13px] font-semibold">Jannat AI</span>
+          <LuSparkles size={18} />
         </motion.button>
       )}
 
