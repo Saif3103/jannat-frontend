@@ -54,10 +54,7 @@ export default function Login() {
 
   return (
     <AuthLayout title="Sign In">
-      <AuthCard
-        title="Sign In"
-        subtitle="Enter your credentials to continue"
-      >
+      <AuthCard title="Sign In" subtitle="Welcome back to handmade luxury">
         <AuthMessage type="error" message={formError} />
 
         <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
@@ -88,11 +85,11 @@ export default function Login() {
             />
           </div>
 
-          <div className="mt-2 flex justify-center">
+          <div className="mt-3 flex justify-end">
             <AuthFooterLink to="/forgot-password">Forgot password?</AuthFooterLink>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-7">
             <AuthButton loading={isLoading}>Sign In</AuthButton>
           </div>
         </form>

@@ -3,7 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 /**
- * Luxury auth field — icon inset, 56px height, gold focus.
+ * Auth field with icon as flex sibling (never overlaps text).
  */
 const AuthInput = forwardRef(function AuthInput(
   {
@@ -25,23 +25,30 @@ const AuthInput = forwardRef(function AuthInput(
   const resolvedType = isPassword && showPassword ? 'text' : type;
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full text-left ${className}`}>
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#C9A96E] mb-2"
+          className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B69640] mb-2"
         >
           {label}
         </label>
       )}
 
-      <div className="relative">
+      <div
+        className={[
+          'auth-field group flex items-center h-14 rounded-2xl bg-[#FAF7F2] border transition-all duration-300',
+          error
+            ? 'border-red-400/60 ring-2 ring-red-400/10'
+            : 'border-black/[0.08] hover:border-[#C9A84C]/50 focus-within:border-[#C9A84C] focus-within:ring-2 focus-within:ring-[#C9A84C]/15',
+        ].join(' ')}
+      >
         {Icon && (
           <span
-            className="pointer-events-none absolute left-0 top-0 z-10 flex h-14 w-[52px] items-center justify-center text-[#A5A5A5]"
+            className="flex h-full w-12 shrink-0 items-center justify-center text-[#1A1A1A]/35 group-focus-within:text-[#B69640] transition-colors"
             aria-hidden="true"
           >
-            <Icon size={20} strokeWidth={1.5} />
+            <Icon size={18} strokeWidth={1.75} />
           </span>
         )}
 
@@ -52,13 +59,10 @@ const AuthInput = forwardRef(function AuthInput(
           aria-invalid={error ? 'true' : 'false'}
           aria-describedby={error ? errorId : undefined}
           className={[
-            'w-full h-14 rounded-2xl bg-[#121212] text-[15px] text-white placeholder:text-[#A5A5A5]/70',
-            'border border-white/[0.08] outline-none transition-all duration-300',
-            'hover:border-white/[0.14]',
-            'focus:border-[#C9A96E] focus:ring-2 focus:ring-[#C9A96E]/20',
-            Icon ? 'pl-[52px]' : 'pl-4',
-            isPassword ? 'pr-[52px]' : 'pr-4',
-            error ? 'border-red-400/50 focus:border-red-400 focus:ring-red-400/15' : '',
+            'auth-field-input min-w-0 flex-1 h-full bg-transparent text-[15px] text-[#1A1A1A]',
+            'placeholder:text-[#1A1A1A]/35 outline-none border-0 shadow-none',
+            Icon ? 'pl-0' : 'pl-4',
+            isPassword ? 'pr-2' : 'pr-4',
           ].join(' ')}
           {...props}
         />
@@ -67,10 +71,10 @@ const AuthInput = forwardRef(function AuthInput(
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-0 top-0 flex h-14 w-[52px] items-center justify-center text-[#A5A5A5] hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer focus-visible:outline-none focus-visible:text-[#C9A96E]"
+            className="flex h-full w-12 shrink-0 items-center justify-center text-[#1A1A1A]/35 hover:text-[#B69640] transition-colors cursor-pointer focus-visible:outline-none focus-visible:text-[#B69640]"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
-            {showPassword ? <EyeOff size={20} strokeWidth={1.5} /> : <Eye size={20} strokeWidth={1.5} />}
+            {showPassword ? <EyeOff size={18} strokeWidth={1.75} /> : <Eye size={18} strokeWidth={1.75} />}
           </button>
         )}
       </div>
@@ -83,7 +87,7 @@ const AuthInput = forwardRef(function AuthInput(
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-2 text-xs text-red-400"
+            className="mt-2 text-xs text-red-500 text-left"
           >
             {error}
           </motion.p>

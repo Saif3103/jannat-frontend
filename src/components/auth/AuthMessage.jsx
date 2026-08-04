@@ -14,10 +14,10 @@ export default function AuthMessage({ type = 'error', message }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         className={[
-          'mb-5 flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm leading-relaxed',
+          'mb-5 flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm leading-relaxed text-left',
           isError
-            ? 'bg-red-500/10 border border-red-400/20 text-red-300'
-            : 'bg-emerald-500/10 border border-emerald-400/20 text-emerald-300',
+            ? 'bg-red-50 border border-red-200 text-red-600'
+            : 'bg-emerald-50 border border-emerald-200 text-emerald-700',
         ].join(' ')}
       >
         {isError ? (

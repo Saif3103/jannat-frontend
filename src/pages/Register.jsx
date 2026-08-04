@@ -66,14 +66,11 @@ export default function Register() {
 
   return (
     <AuthLayout title="Create Account">
-      <AuthCard
-        title="Create Account"
-        subtitle="Join Jannat Rugs Co. and discover handcrafted luxury"
-      >
+      <AuthCard title="Create Account" subtitle="Join Jannat Rugs Co. for handcrafted luxury">
         <AuthMessage type="error" message={formError} />
 
         <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4">
             <AuthInput
               label="Full Name"
               type="text"
@@ -136,7 +133,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="mt-8">
+          <div className="mt-7">
             <AuthButton loading={isLoading}>Create Account</AuthButton>
           </div>
         </form>

@@ -156,7 +156,7 @@ export default function VerifyOTP() {
                   aria-label={`Digit ${index + 1}`}
                   onChange={(e) => handleChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="w-11 h-14 sm:w-12 sm:h-14 rounded-2xl text-center text-xl font-light text-white bg-[#121212] border border-white/[0.08] outline-none transition-all duration-300 focus:border-[#C9A96E] focus:ring-2 focus:ring-[#C9A96E]/20"
+                  className="w-11 h-14 sm:w-12 sm:h-14 rounded-2xl text-center text-xl font-light text-[#1A1A1A] bg-[#FAF7F2] border border-black/[0.08] outline-none transition-all duration-300 focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
                 />
               ))}
             </div>
@@ -173,7 +173,7 @@ export default function VerifyOTP() {
             <button
               type="button"
               onClick={handleResend}
-              className="text-[#C9A96E] transition-colors duration-300 hover:text-white cursor-pointer bg-transparent border-0 p-0 text-sm focus-visible:outline-none focus-visible:underline"
+              className="text-[#B69640] transition-colors duration-300 hover:text-[#1A1A1A] cursor-pointer bg-transparent border-0 p-0 text-sm focus-visible:outline-none focus-visible:underline"
             >
               {resending ? 'Sending…' : 'Resend'}
             </button>
