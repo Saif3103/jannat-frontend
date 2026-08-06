@@ -105,22 +105,22 @@ export default function ProductDetail() {
   const inWishlist = isInWishlist(product._id);
 
   return (
-    <div className="bg-[#FAF7F2] min-h-screen pt-20 sm:pt-24 pb-28 md:pb-20 font-sans text-[#1A1A1A] text-left">
+    <div className="bg-[#FAF7F2] min-h-screen pt-24 sm:pt-28 pb-32 md:pb-24 font-sans text-[#1A1A1A] text-left">
       <Helmet>
         <title>{product.name} | Jannat Rugs Co.</title>
       </Helmet>
 
-      <Container className="py-6 sm:py-8 lg:py-10">
+      <Container className="py-8 sm:py-10 lg:py-12">
         {/* Breadcrumb-style category */}
-        <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase text-black/40 mb-5 sm:mb-6">
+        <p className="text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase text-black/40 mb-6 sm:mb-8">
           Home / Shop / {product.category?.name || 'Collection'}
         </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
 
           {/* ── LEFT: Gallery (sticky on desktop) ── */}
-          <div className="lg:col-span-6 xl:col-span-7 lg:sticky lg:top-28 space-y-4">
-            <div className="relative aspect-[4/5] sm:aspect-[5/6] rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-sm border border-black/[0.06] group">
+          <div className="lg:col-span-6 xl:col-span-7 lg:sticky lg:top-28 space-y-6">
+            <div className="relative aspect-[4/5] sm:aspect-[5/6] rounded-[20px] overflow-hidden bg-white shadow-sm border border-black/[0.06] group">
               <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                 {product.isBestSeller && (
                   <span className="bg-[#1A1A1A] text-white px-3 py-1.5 rounded-lg font-bold text-[9px] tracking-[0.15em] uppercase">
@@ -179,13 +179,13 @@ export default function ProductDetail() {
             </div>
 
             {/* Thumbnails */}
-            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-1">
               {images.map((img, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setActiveImg(i)}
-                  className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                  className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer ${
                     activeImg === i
                       ? 'border-[#C9A84C] opacity-100'
                       : 'border-transparent opacity-55 hover:opacity-85'
@@ -197,18 +197,18 @@ export default function ProductDetail() {
             </div>
 
             {/* Feature strip */}
-            <div className="hidden sm:grid grid-cols-4 gap-3 pt-2">
+            <div className="hidden sm:grid grid-cols-4 gap-4 pt-2">
               {[
                 { icon: LuRug, label: 'Premium Wool' },
                 { icon: FiGrid, label: 'Hand Knotted' },
                 { icon: FiShield, label: 'Long Lasting' },
                 { icon: FiStar, label: 'Rich Design' },
               ].map((f, i) => (
-                <div key={i} className="flex flex-col items-center text-center py-3 px-2 rounded-xl bg-white border border-black/[0.04]">
-                  <div className="w-9 h-9 rounded-lg bg-[#FAF7F2] flex items-center justify-center text-[#B69640] mb-2">
-                    <f.icon size={16} />
+                <div key={i} className="flex flex-col items-center text-center py-4 px-3 rounded-[20px] bg-white border border-black/[0.04]">
+                  <div className="w-10 h-10 rounded-xl bg-[#FAF7F2] flex items-center justify-center text-[#B69640] mb-3">
+                    <f.icon size={18} />
                   </div>
-                  <p className="text-[9px] font-bold text-[#1A1A1A]/70 uppercase tracking-wider leading-tight">
+                  <p className="text-[10px] font-bold text-[#1A1A1A]/70 uppercase tracking-wider leading-tight">
                     {f.label}
                   </p>
                 </div>
@@ -217,40 +217,40 @@ export default function ProductDetail() {
           </div>
 
           {/* ── RIGHT: Buy panel ── */}
-          <div className="lg:col-span-6 xl:col-span-5 space-y-6 sm:space-y-7">
+          <div className="lg:col-span-6 xl:col-span-5 space-y-8 sm:space-y-10">
 
             {/* Title + rating + price — above the fold */}
-            <div>
+            <div className="space-y-4">
               <p className="text-[#B69640] text-[10px] sm:text-[11px] font-bold tracking-[0.28em] uppercase mb-2">
                 {product.category?.name || 'Collection'}
               </p>
-              <h1 className="font-luxury text-[1.75rem] sm:text-[2.25rem] lg:text-[2.5rem] text-[#1A1A1A] leading-[1.15] mb-3">
+              <h1 className="font-luxury text-[2rem] sm:text-[2.5rem] lg:text-[2.75rem] text-[#1A1A1A] leading-[1.15] mb-4">
                 {product.name}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5">
-                <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2 py-1 rounded-md text-xs font-bold">
-                  4.8 <FiStar size={11} className="fill-current" />
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-6">
+                <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold">
+                  4.8 <FiStar size={12} className="fill-current" />
                 </div>
                 <span className="text-sm text-gray-400">(128 Reviews)</span>
               </div>
 
-              <div className="flex flex-wrap items-end gap-3">
-                <p className="text-[1.75rem] sm:text-[2rem] font-black tracking-tight text-[#111827] leading-none">
+              <div className="flex flex-wrap items-end gap-4">
+                <p className="text-[2rem] sm:text-[2.25rem] font-black tracking-tight text-[#111827] leading-none">
                   ₹{priceDisplay?.toLocaleString('en-IN')}
                 </p>
                 {hasDiscount && (
                   <>
-                    <span className="text-base text-gray-400 line-through pb-0.5">
+                    <span className="text-lg text-gray-400 line-through pb-0.5">
                       ₹{originalPrice?.toLocaleString('en-IN')}
                     </span>
-                    <span className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-md text-[11px] font-bold mb-0.5">
+                    <span className="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-lg text-[11px] font-bold mb-0.5">
                       {discountPercent}% OFF
                     </span>
                   </>
                 )}
               </div>
-              <p className="text-[11px] text-gray-400 mt-2">Inclusive of all taxes · Free shipping above ₹5,000</p>
+              <p className="text-[12px] text-gray-400 mt-3">Inclusive of all taxes · Free shipping above ₹5,000</p>
             </div>
 
             {/* Size — required before buy */}

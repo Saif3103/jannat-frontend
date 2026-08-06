@@ -57,7 +57,7 @@ export default function ProductCard({ product, index = 0 }) {
       transition={{ delay: index * 0.04, duration: 0.4 }}
       className="group h-full"
     >
-      <div className="bg-white rounded-2xl overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+      <div className="bg-white rounded-[20px] overflow-hidden border border-black/[0.06] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
 
         {/* Image with shimmer skeleton */}
         <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 flex-shrink-0">
@@ -79,14 +79,14 @@ export default function ProductCard({ product, index = 0 }) {
           </Link>
 
           {/* Badges */}
-          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
+          <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
             {product.isBestSeller && (
-              <span className="bg-black text-white text-[7px] sm:text-[8px] font-bold px-2 py-1 rounded-full uppercase tracking-widest shadow">
+              <span className="bg-black text-white text-[7px] sm:text-[8px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow">
                 Best Seller
               </span>
             )}
             {discount > 0 && (
-              <span className="bg-[#E31E24] text-white text-[7px] sm:text-[8px] font-bold px-2 py-1 rounded-full uppercase tracking-widest shadow">
+              <span className="bg-[#E31E24] text-white text-[7px] sm:text-[8px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow">
                 -{discount}% OFF
               </span>
             )}
@@ -95,36 +95,36 @@ export default function ProductCard({ product, index = 0 }) {
           {/* Wishlist */}
           <button
             onClick={(e) => { e.preventDefault(); toggleWishlist(product._id, !!user); }}
-            className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow ${inWishlist ? 'text-red-500' : 'text-black/30 hover:text-black'}`}
+            className={`absolute top-3 right-3 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-all shadow ${inWishlist ? 'text-red-500' : 'text-black/30 hover:text-black'}`}
           >
-            <FiHeart size={15} fill={inWishlist ? 'currentColor' : 'none'} />
+            <FiHeart size={16} fill={inWishlist ? 'currentColor' : 'none'} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-5 flex flex-col flex-1 gap-0 text-left">
+        <div className="p-4 sm:p-5 lg:p-6 flex flex-col flex-1 text-left">
           <p className="text-black/35 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.25em] mb-2">
             {product.category?.name || 'Collection'}
           </p>
 
           <Link to={`/product/${product._id}`}>
-            <h3 className="font-serif text-[13px] sm:text-[15px] text-[#1A1A1A] mb-2.5 leading-snug line-clamp-2 hover:text-black transition-colors">
+            <h3 className="font-serif text-sm sm:text-base text-[#1A1A1A] mb-3 leading-snug line-clamp-2 hover:text-black transition-colors">
               {product.name}
             </h3>
           </Link>
 
-          <div className="flex items-center gap-1.5 mb-3">
+          <div className="flex items-center gap-2 mb-4">
             <div className="flex text-amber-400">
               {[...Array(5)].map((_, i) => (
-                <FiStar key={i} size={10} fill="currentColor" />
+                <FiStar key={i} size={11} fill="currentColor" />
               ))}
             </div>
-            <span className="text-[9px] text-black/30 font-semibold">(128)</span>
+            <span className="text-[10px] text-black/40 font-semibold">(128)</span>
           </div>
 
-          <div className="mt-auto pt-3 border-t border-black/[0.05]">
-            <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-[#1A1A1A] text-base sm:text-lg font-black tracking-tight">
+          <div className="mt-auto pt-4 border-t border-black/[0.06] flex flex-col gap-4">
+            <div className="flex items-baseline gap-2">
+              <span className="text-[#1A1A1A] text-lg sm:text-xl font-black tracking-tight">
                 ₹{price?.toLocaleString('en-IN')}
               </span>
               {product.discountPrice && (
@@ -134,16 +134,16 @@ export default function ProductCard({ product, index = 0 }) {
               )}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <button
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product, 1); toast.success('Added to bag'); }}
-                className="flex-1 bg-[#1A1A1A] text-white py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-semibold text-[10px] sm:text-[11px] tracking-widest hover:bg-black transition-all active:scale-95 uppercase cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/50"
+                className="flex-1 bg-[#1A1A1A] text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold text-[10px] sm:text-[11px] tracking-widest hover:bg-black transition-all active:scale-95 uppercase cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/50"
               >
-                <FiShoppingCart size={13} /> Add
+                <FiShoppingCart size={14} /> Add
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-gradient-to-r from-[#C9A84C] to-[#B69640] text-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 font-bold text-[10px] sm:text-[11px] tracking-widest hover:shadow-[0_0_15px_rgba(201,168,76,0.4)] transition-all active:scale-95 uppercase border border-[#B69640]/20 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/50"
+                className="flex-1 bg-gradient-to-r from-[#C9A84C] to-[#B69640] text-black py-3 rounded-xl flex items-center justify-center gap-2 font-bold text-[10px] sm:text-[11px] tracking-widest hover:shadow-[0_0_15px_rgba(201,168,76,0.4)] transition-all active:scale-95 uppercase border border-[#B69640]/20 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]/50"
               >
                 Buy Now
               </button>

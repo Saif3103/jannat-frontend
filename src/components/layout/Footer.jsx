@@ -82,14 +82,14 @@ export default function Footer() {
       </div>
 
       {/* 3. MAIN FOOTER */}
-      <div className="bg-[#FAF7F2] py-12 sm:py-16">
+      <div className="bg-[#FAF7F2] pt-20 pb-12">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           
           {/* Quick Links */}
           <div className="space-y-6 text-center md:text-left">
             <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.35em] uppercase font-bold">Quick Links</h4>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+            <div className="grid grid-cols-2 gap-x-12 gap-y-6">
               {links.map(link => (
                 <Link 
                   key={link.path} 
@@ -105,7 +105,7 @@ export default function Footer() {
           {/* Contact & Socials */}
           <div className="space-y-6 flex flex-col items-center md:items-end text-center md:text-right">
             <h4 className="text-[#1A1A1A] text-[10px] tracking-[0.35em] uppercase font-bold">Get In Touch</h4>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <a href="mailto:jannatrugs786@gmail.com" className="flex items-center gap-2.5 text-black/55 hover:text-[#1A1A1A] transition-colors text-sm justify-center md:justify-end">
                 <FiMail size={14} /> jannatrugs786@gmail.com
               </a>
@@ -114,7 +114,7 @@ export default function Footer() {
               </a>
             </div>
             
-            <div className="flex gap-3 pt-1 justify-center md:justify-end">
+            <div className="flex gap-4 pt-2 justify-center md:justify-end">
               {[
                 { icon: FiInstagram, href: '#' },
                 { icon: FiFacebook, href: '#' },
@@ -126,9 +126,9 @@ export default function Footer() {
                   href={href} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="w-9 h-9 rounded-full border border-amber-900/20 flex items-center justify-center text-black/55 hover:border-amber-600 hover:text-[#1A1A1A] transition-all duration-300 shadow-sm bg-white"
+                  className="w-10 h-10 rounded-full border border-amber-900/20 flex items-center justify-center text-black/55 hover:border-amber-600 hover:text-[#1A1A1A] transition-all duration-300 shadow-sm bg-white"
                 >
-                  <Icon size={14} />
+                  <Icon size={15} />
                 </a>
               ))}
             </div>
@@ -138,9 +138,9 @@ export default function Footer() {
       </div>
 
       {/* 4. COPYRIGHT */}
-      <div className="bg-[#1A1A1A] py-5">
+      <div className="bg-[#1A1A1A] py-6">
         <Container>
-          <p className="text-white/30 text-[10px] tracking-[0.25em] uppercase text-center">
+          <p className="text-white/40 text-[10px] tracking-[0.25em] uppercase text-center">
             © {new Date().getFullYear()} Jannat Rugs Co. All Rights Reserved.
           </p>
         </Container>
