@@ -490,24 +490,32 @@ export default function Home() {
           <div className="divider-gold w-20" />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => (
-            <Link key={cat.name} to={`/shop?search=${cat.name.split(' ')[0]}`} className="group relative h-[360px] sm:h-[420px] rounded-[1.75rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
-              <img src={getImageUrl(cat.image || cat.img)} alt={cat.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+          {(categories.length > 0 ? categories.slice(0, 3) : CATEGORIES_DEFAULT.slice(0, 3)).map((cat, i) => {
+            const imgSrc = cat.image || cat.img || CATEGORIES_DEFAULT[i % CATEGORIES_DEFAULT.length]?.img;
+            return (
+            <Link key={cat.name || cat._id} to={`/shop?search=${(cat.name || '').split(' ')[0]}`} className="group relative h-[220px] sm:h-[360px] md:h-[420px] rounded-[1.25rem] sm:rounded-[1.75rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+              <img
+                src={getImageUrl(imgSrc)}
+                alt={cat.name}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                onError={(e) => { e.target.src = CATEGORIES_DEFAULT[i % CATEGORIES_DEFAULT.length]?.img; }}
+              />
               {/* Always visible gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               
               {/* Text always visible at bottom */}
-              <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end text-left">
-                <p className="text-[#C9A84C] text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Explore Collection</p>
-                <h3 className="font-luxury text-2xl sm:text-[1.75rem] text-white mb-3 leading-tight">{cat.name}</h3>
+              <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-end text-left">
+                <p className="text-[#C9A84C] text-[8px] sm:text-[10px] font-bold tracking-[0.3em] uppercase mb-1 sm:mb-2">Explore Collection</p>
+                <h3 className="font-luxury text-base sm:text-2xl md:text-[1.75rem] text-white mb-2 sm:mb-3 leading-tight">{cat.name}</h3>
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-[2px] bg-[#C9A84C]" />
-                  <span className="text-white/60 text-[11px] uppercase tracking-widest font-bold group-hover:text-white transition-colors">Shop Now</span>
+                  <div className="w-6 sm:w-10 h-[2px] bg-[#C9A84C]" />
+                  <span className="text-white/60 text-[9px] sm:text-[11px] uppercase tracking-widest font-bold group-hover:text-white transition-colors">Shop Now</span>
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
         </Container>
       </section>

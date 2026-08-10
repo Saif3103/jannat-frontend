@@ -96,7 +96,7 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
           {recommendations.map((p, i) => (
             <motion.div
               key={p._id}
@@ -106,15 +106,15 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
               viewport={{ once: true }}
               className="group"
             >
-              <div className="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-white hover:shadow-[0_40px_100px_rgba(201,168,76,0.12)] transition-all duration-700 h-full flex flex-col relative overflow-hidden">
+              <div className="bg-white/90 backdrop-blur-md rounded-[1.5rem] sm:rounded-[2.5rem] p-3 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-white hover:shadow-[0_40px_100px_rgba(201,168,76,0.12)] transition-all duration-700 h-full flex flex-col relative overflow-hidden">
                 
                 {/* Match Score Badge */}
-                <div className="absolute top-6 left-6 z-20 bg-black/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl border border-white/10 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]" />
-                  <span className="text-[11px] font-black text-white tracking-widest">{p.matchScore}% MATCH</span>
+                <div className="absolute top-3 left-3 sm:top-6 sm:left-6 z-20 bg-black/90 backdrop-blur-md px-2 sm:px-4 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-xl border border-white/10 flex items-center gap-1 sm:gap-3">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]" />
+                  <span className="text-[9px] sm:text-[11px] font-black text-white tracking-widest">{p.matchScore}% MATCH</span>
                 </div>
 
-                <Link to={`/product/${p._id}`} className="relative block overflow-hidden rounded-[2rem] aspect-[4/5] mb-8 shadow-inner">
+                <Link to={`/product/${p._id}`} className="relative block overflow-hidden rounded-[1.25rem] sm:rounded-[2rem] aspect-[4/5] mb-3 sm:mb-8 shadow-inner">
                   <img 
                     src={p.images?.[0]} 
                     alt={p.name} 
@@ -123,28 +123,28 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </Link>
 
-                <div className="flex-1 space-y-4 px-2">
-                  <div className="flex justify-between items-start gap-4">
-                    <h3 className="text-[#1A1A1A] font-bold text-xl tracking-tight group-hover:text-amber-700 transition-colors leading-snug line-clamp-2">
+                <div className="flex-1 space-y-2 sm:space-y-4 px-1 sm:px-2">
+                  <div className="flex justify-between items-start gap-1 sm:gap-4">
+                    <h3 className="text-[#1A1A1A] font-bold text-[11px] sm:text-xl tracking-tight group-hover:text-amber-700 transition-colors leading-snug line-clamp-2">
                       {p.name}
                     </h3>
                     <button 
                       onClick={() => toggleWishlist(p._id, !!user)}
-                      className={`p-3 rounded-2xl transition-all shadow-sm ${isInWishlist(p._id) ? 'text-red-500 bg-red-50' : 'text-gray-300 bg-gray-50 hover:text-red-500 hover:bg-red-50'}`}
+                      className={`p-1.5 sm:p-3 rounded-xl sm:rounded-2xl transition-all shadow-sm ${isInWishlist(p._id) ? 'text-red-500 bg-red-50' : 'text-gray-300 bg-gray-50 hover:text-red-500 hover:bg-red-50'}`}
                     >
-                      <FiHeart fill={isInWishlist(p._id) ? "currentColor" : "none"} size={20} />
+                      <FiHeart fill={isInWishlist(p._id) ? "currentColor" : "none"} size={14} className="sm:w-5 sm:h-5" />
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-4">
-                    <span className="text-2xl font-black text-[#1A1A1A]">₹{p.discountPrice?.toLocaleString() || p.price?.toLocaleString()}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm sm:text-2xl font-black text-[#1A1A1A]">₹{p.discountPrice?.toLocaleString() || p.price?.toLocaleString()}</span>
                     {p.discountPrice && (
-                      <span className="text-sm text-gray-300 line-through">₹{p.price.toLocaleString()}</span>
+                      <span className="text-[10px] sm:text-sm text-gray-300 line-through">₹{p.price.toLocaleString()}</span>
                     )}
                   </div>
 
-                  {/* Trust Insight */}
-                  <div className="bg-[#FAF7F2] rounded-2xl p-4 border border-amber-500/5 group-hover:border-amber-500/20 transition-colors">
+                  {/* Trust Insight — hidden on mobile to save space */}
+                  <div className="hidden sm:block bg-[#FAF7F2] rounded-2xl p-4 border border-amber-500/5 group-hover:border-amber-500/20 transition-colors">
                     <p className="text-[10px] font-black text-amber-700 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
                       <FiStar size={12} className="fill-amber-700" /> Stylist Insight
                     </p>
@@ -156,9 +156,9 @@ export default function SmartRecommendations({ title = "You May Love These Luxur
 
                 <Link 
                   to={`/product/${p._id}`}
-                  className="mt-10 w-full py-5 bg-[#1A1A1A] text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-black transition-all shadow-[0_15px_30px_rgba(0,0,0,0.2)] active:scale-95"
+                  className="mt-3 sm:mt-10 w-full py-2.5 sm:py-5 bg-[#1A1A1A] text-white rounded-xl sm:rounded-2xl text-[9px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] flex items-center justify-center gap-2 sm:gap-4 hover:bg-black transition-all shadow-[0_15px_30px_rgba(0,0,0,0.2)] active:scale-95"
                 >
-                  View Masterpiece <FiEye size={20} />
+                  View <FiEye size={14} className="sm:w-5 sm:h-5" />
                 </Link>
               </div>
             </motion.div>
