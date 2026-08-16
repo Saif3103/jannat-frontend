@@ -324,7 +324,7 @@ export default function UserDashboard() {
       </Helmet>
 
       <div className="pt-20 sm:pt-24 min-h-screen bg-[#F5F3EE] pb-28 text-left">
-        <div className="max-w-lg mx-auto px-3 sm:px-4 py-4 space-y-3">
+        <div className="max-w-lg mx-auto px-4 sm:px-5 py-4 space-y-3">
 
           {/* ── Hello Card ─────────────────────────────────────────────── */}
           <Section>
