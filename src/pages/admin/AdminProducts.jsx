@@ -101,7 +101,13 @@ export default function AdminProducts() {
       category: p.category?._id,
       tags: p.tags?.join(', '),
       colors: p.colors?.join(', '),
-      sizes: Array.isArray(p.sizes) ? p.sizes.map((s) => ({ label: s.label, price: s.price ?? '' })) : [],
+      sizes: Array.isArray(p.sizes)
+        ? p.sizes.map((s) => ({
+            label: s.label,
+            price: s.price ?? '',
+            discountPrice: s.discountPrice ?? '',
+          }))
+        : [],
       processingTime: p.processingTime || '1-2 weeks',
       originPostcode: p.originPostcode || '281001',
       returnPolicy: p.returnPolicy || '7 days',
@@ -139,6 +145,9 @@ export default function AdminProducts() {
             .map((s) => ({
               label: s.label,
               price: Number(String(s.price).replace(/,/g, '')) || 0,
+              discountPrice: s.discountPrice !== '' && s.discountPrice !== undefined
+                ? Number(String(s.discountPrice).replace(/,/g, '')) || 0
+                : undefined,
             }));
           fd.append(k, JSON.stringify(normalized));
         } else if (typeof v === 'boolean') fd.append(k, v.toString());
@@ -660,9 +669,10 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              <div className="hidden sm:grid grid-cols-[7rem_1fr] gap-4 px-3 mb-2">
+              <div className="hidden sm:grid grid-cols-[7rem_1fr_1fr] gap-4 px-3 mb-2">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Size (ft)</p>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Price</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Actual Price (MRP)</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Selling Price</p>
               </div>
 
               <div className="space-y-2">
@@ -670,12 +680,16 @@ export default function AdminProducts() {
                   const selected = (form.sizes || []).some((v) => v.label === s.label);
                   const saved = (form.sizes || []).find((v) => v.label === s.label);
                   const defaultPrice = Number(String(s.price).replace(/,/g, ''));
-                  // When selected, keep whatever the user typed — including empty — so erase + retype works
                   const currentPrice = selected
                     ? saved?.price === undefined || saved?.price === null
                       ? ''
                       : String(saved.price)
                     : String(defaultPrice);
+                  const currentDiscount = selected
+                    ? saved?.discountPrice === undefined || saved?.discountPrice === null
+                      ? ''
+                      : String(saved.discountPrice)
+                    : '';
                   return (
                     <div
                       key={s.label}
@@ -683,6 +697,7 @@ export default function AdminProducts() {
                         selected ? 'bg-white border-[#C9A84C]/40' : 'bg-white/70 border-gray-100'
                       }`}
                     >
+                      {/* Size checkbox */}
                       <label className="flex items-center gap-3 sm:w-28 shrink-0 cursor-pointer">
                         <input
                           type="checkbox"
@@ -692,7 +707,7 @@ export default function AdminProducts() {
                             if (e.target.checked) {
                               setForm({
                                 ...form,
-                                sizes: [...current, { label: s.label, price: String(defaultPrice) }],
+                                sizes: [...current, { label: s.label, price: String(defaultPrice), discountPrice: '' }],
                               });
                             } else {
                               setForm({ ...form, sizes: current.filter((v) => v.label !== s.label) });
@@ -702,28 +717,61 @@ export default function AdminProducts() {
                         />
                         <span className="text-sm font-semibold">{s.label}</span>
                       </label>
+
+                      {/* Actual Price (MRP) */}
                       <div className="flex-1 min-w-0">
                         <p className="sm:hidden text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">
-                          Price
+                          Actual Price (MRP)
                         </p>
                         <PriceInput
                           value={currentPrice}
                           disabled={!selected}
-                          placeholder={selected ? 'Enter price' : 'Select size to edit'}
+                          placeholder={selected ? 'Enter MRP' : '—'}
                           className="h-10 rounded-lg"
                           onChange={(e) => {
                             const cleaned = e.target.value.replace(/[^0-9]/g, '');
                             const current = [...(form.sizes || [])];
                             const idx = current.findIndex((v) => v.label === s.label);
                             if (idx > -1) {
-                              current[idx] = {
-                                ...current[idx],
-                                price: cleaned,
-                              };
+                              current[idx] = { ...current[idx], price: cleaned };
                               setForm({ ...form, sizes: current });
                             }
                           }}
                         />
+                      </div>
+
+                      {/* Selling Price */}
+                      <div className="flex-1 min-w-0">
+                        <p className="sm:hidden text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">
+                          Selling Price
+                        </p>
+                        <PriceInput
+                          value={currentDiscount}
+                          disabled={!selected}
+                          placeholder={selected ? 'Optional sale price' : '—'}
+                          className={`h-10 rounded-lg ${
+                            selected && currentDiscount && Number(currentDiscount) < Number(currentPrice)
+                              ? 'border-emerald-400 focus-within:border-emerald-500 focus-within:ring-emerald-100'
+                              : ''
+                          }`}
+                          onChange={(e) => {
+                            const cleaned = e.target.value.replace(/[^0-9]/g, '');
+                            const current = [...(form.sizes || [])];
+                            const idx = current.findIndex((v) => v.label === s.label);
+                            if (idx > -1) {
+                              current[idx] = { ...current[idx], discountPrice: cleaned };
+                              setForm({ ...form, sizes: current });
+                            }
+                          }}
+                        />
+                        {selected && currentDiscount && Number(currentDiscount) > 0 && Number(currentDiscount) < Number(currentPrice) && (
+                          <p className="text-[10px] text-emerald-600 mt-1 font-medium">
+                            {Math.round(((Number(currentPrice) - Number(currentDiscount)) / Number(currentPrice)) * 100)}% off
+                          </p>
+                        )}
+                        {selected && currentDiscount && Number(currentDiscount) >= Number(currentPrice) && Number(currentPrice) > 0 && (
+                          <p className="text-[10px] text-red-500 mt-1">Must be less than MRP</p>
+                        )}
                       </div>
                     </div>
                   );
