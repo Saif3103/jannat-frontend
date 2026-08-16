@@ -41,9 +41,9 @@ export default function Footer() {
       <div className="relative h-[360px] sm:h-[420px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1600&q=80" 
-            alt="Luxury Space" 
-            className="w-full h-full object-cover grayscale-[0.3]"
+            src="/rug-cta-bg.jpg" 
+            alt="Luxury Handmade Rug" 
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#FAF7F2]/95 via-[#FAF7F2]/50 to-[#FAF7F2]/80" />
         </div>
