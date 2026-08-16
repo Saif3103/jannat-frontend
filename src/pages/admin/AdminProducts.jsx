@@ -217,12 +217,11 @@ export default function AdminProducts() {
           {/* Toolbar */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="relative flex-1">
-              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search listings..."
-                className="w-full h-11 pl-10 pr-4 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
+                className="w-full h-11 pl-4 pr-4 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/15"
               />
             </div>
             <button
